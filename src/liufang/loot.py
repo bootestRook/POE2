@@ -30,12 +30,14 @@ class LootRuntime:
         drop_pools: dict[str, list[DropEntry]],
         rarity_weights: dict[str, int],
         affix_generator: AffixGenerator,
+        player_stats: dict[str, int | float | bool] | None = None,
         rng: random.Random | None = None,
     ) -> None:
         self._definitions = definitions
         self._drop_pools = drop_pools
         self._rarity_weights = rarity_weights
         self._affix_generator = affix_generator
+        self._player_stats = dict(player_stats or {})
         self._rng = rng or random.Random()
         self._next_instance_number = 1
 
@@ -46,6 +48,7 @@ class LootRuntime:
         definitions: dict[str, GemDefinition],
         rarity_weights: dict[str, int],
         affix_generator: AffixGenerator,
+        player_stats: dict[str, int | float | bool] | None = None,
         rng: random.Random | None = None,
     ) -> "LootRuntime":
         pools_data = load_toml(config_root / "loot" / "gem_drop_pools.toml")
@@ -61,11 +64,23 @@ class LootRuntime:
                     )
                 )
             pools[pool_name] = entries
-        return cls(definitions, pools, rarity_weights, affix_generator, rng=rng)
+        return cls(definitions, pools, rarity_weights, affix_generator, player_stats=player_stats, rng=rng)
+
+    def set_player_stats(self, player_stats: dict[str, int | float | bool]) -> None:
+        self._player_stats = dict(player_stats)
+
+    def generate_drops(self) -> tuple[GemInstance, ...]:
+        quantity_add = self._numeric_player_stat("gem_drop_quantity_add_percent")
+        expected_extra = max(0.0, quantity_add) / 100.0
+        count = 1 + int(expected_extra)
+        fractional = expected_extra - int(expected_extra)
+        if fractional > 0 and self._rng.random() < fractional:
+            count += 1
+        return tuple(self.generate_drop() for _ in range(max(1, count)))
 
     def generate_drop(self) -> GemInstance:
         base_gem_id = self._choose_base_gem_id()
-        rarity = self._weighted_key(self._rarity_weights)
+        rarity = self._weighted_key(self._rarity_weights_with_player_bonus())
         definition = self._definitions[base_gem_id]
         instance = GemInstance(
             instance_id=self._next_instance_id(),
@@ -140,6 +155,23 @@ class LootRuntime:
             if pick <= current:
                 return key
         return next(reversed(weights))
+
+    def _rarity_weights_with_player_bonus(self) -> dict[str, int]:
+        rarity_add = max(0.0, self._numeric_player_stat("gem_drop_rarity_add_percent"))
+        if rarity_add <= 0:
+            return dict(self._rarity_weights)
+        weights = dict(self._rarity_weights)
+        weights["magic"] = max(1, round(weights.get("magic", 1) * (1.0 + rarity_add / 100.0)))
+        weights["rare"] = max(1, round(weights.get("rare", 1) * (1.0 + rarity_add / 50.0)))
+        return weights
+
+    def _numeric_player_stat(self, stat: str) -> float:
+        value = self._player_stats.get(stat, 0.0)
+        if isinstance(value, bool):
+            return 1.0 if value else 0.0
+        if isinstance(value, (int, float)):
+            return float(value)
+        return 0.0
 
     def _next_instance_id(self) -> str:
         instance_id = f"gem_inst_{self._next_instance_number:06d}"

@@ -30,6 +30,97 @@ class Player:
     position: Position
     item_interaction_reach: float
     move_speed: float = 1.0
+    current_mana: float = 0.0
+    max_mana: float = 0.0
+    mana_regen_flat: float = 0.0
+    current_energy_shield: float = 0.0
+    max_energy_shield: float = 0.0
+    energy_shield_charge_speed_percent: float = 0.0
+    energy_shield_charge_delay_ms: int = 2000
+    armor: float = 0.0
+    armor_add_percent: float = 0.0
+    evasion: float = 0.0
+    evasion_add_percent: float = 0.0
+    attack_block_chance_percent: float = 0.0
+    spell_block_chance_percent: float = 0.0
+    block_damage_reduction_percent: float = 0.0
+    damage_mitigation_final_percent: float = 0.0
+    physical_damage_reduction_percent: float = 0.0
+    fire_resistance_percent: float = 0.0
+    cold_resistance_percent: float = 0.0
+    lightning_resistance_percent: float = 0.0
+    chaos_resistance_percent: float = 0.0
+    elemental_resistance_percent: float = 0.0
+    _energy_shield_recharge_delay_remaining_ms: int = 0
+
+    def sync_runtime_bounds(self) -> None:
+        self.max_life = max(1.0, float(self.max_life))
+        self.current_life = min(max(0.0, float(self.current_life)), self.max_life)
+        self.max_mana = max(0.0, float(self.max_mana))
+        self.current_mana = min(max(0.0, float(self.current_mana)), self.max_mana)
+        self.max_energy_shield = max(0.0, float(self.max_energy_shield))
+        self.current_energy_shield = min(max(0.0, float(self.current_energy_shield)), self.max_energy_shield)
+
+    def regenerate(self, delta_ms: int) -> None:
+        seconds = max(0, delta_ms) / 1000.0
+        if self.max_mana > 0 and self.mana_regen_flat > 0:
+            self.current_mana = min(self.max_mana, self.current_mana + self.mana_regen_flat * seconds)
+        if self.max_energy_shield <= 0:
+            return
+        if self._energy_shield_recharge_delay_remaining_ms > 0:
+            remaining_delay = self._energy_shield_recharge_delay_remaining_ms
+            self._energy_shield_recharge_delay_remaining_ms = max(0, remaining_delay - max(0, delta_ms))
+            if delta_ms <= remaining_delay:
+                return
+            seconds = (delta_ms - remaining_delay) / 1000.0
+        if self.energy_shield_charge_speed_percent > 0:
+            recharge_per_second = self.max_energy_shield * self.energy_shield_charge_speed_percent / 100.0
+            self.current_energy_shield = min(self.max_energy_shield, self.current_energy_shield + recharge_per_second * seconds)
+
+    def take_hit(self, damage: float, *, damage_type: str = "physical", hit_kind: str = "attack", avoidable: bool = True) -> float:
+        incoming = max(0.0, float(damage))
+        if incoming <= 0:
+            return 0.0
+        if avoidable:
+            incoming *= 1.0 - self._evasion_chance()
+        incoming *= 1.0 - self._block_chance(hit_kind) * max(0.0, self.block_damage_reduction_percent / 100.0)
+        incoming = self._mitigated_damage(incoming, damage_type)
+        self._energy_shield_recharge_delay_remaining_ms = max(0, int(self.energy_shield_charge_delay_ms))
+        shield_damage = min(self.current_energy_shield, incoming)
+        self.current_energy_shield -= shield_damage
+        life_damage = incoming - shield_damage
+        self.current_life = max(0.0, self.current_life - life_damage)
+        return life_damage
+
+    def _mitigated_damage(self, damage: float, damage_type: str) -> float:
+        result = damage
+        if damage_type == "physical":
+            effective_armor = max(0.0, self.armor * (1.0 + self.armor_add_percent / 100.0))
+            armor_reduction = effective_armor / (effective_armor + 10.0 * result) if result > 0 else 0.0
+            result *= 1.0 - min(0.9, armor_reduction)
+            result *= 1.0 - min(0.9, max(0.0, self.physical_damage_reduction_percent) / 100.0)
+        result *= 1.0 - min(0.9, max(0.0, self._resistance(damage_type)) / 100.0)
+        result *= 1.0 - min(0.9, max(0.0, self.damage_mitigation_final_percent) / 100.0)
+        return max(0.0, result)
+
+    def _resistance(self, damage_type: str) -> float:
+        if damage_type == "fire":
+            return self.fire_resistance_percent + self.elemental_resistance_percent
+        if damage_type == "cold":
+            return self.cold_resistance_percent + self.elemental_resistance_percent
+        if damage_type == "lightning":
+            return self.lightning_resistance_percent + self.elemental_resistance_percent
+        if damage_type == "chaos":
+            return self.chaos_resistance_percent
+        return 0.0
+
+    def _evasion_chance(self) -> float:
+        effective_evasion = max(0.0, self.evasion * (1.0 + self.evasion_add_percent / 100.0))
+        return min(0.95, effective_evasion / (effective_evasion + 1000.0)) if effective_evasion > 0 else 0.0
+
+    def _block_chance(self, hit_kind: str) -> float:
+        chance = self.spell_block_chance_percent if hit_kind == "spell" else self.attack_block_chance_percent
+        return min(0.75, max(0.0, chance) / 100.0)
 
 
 @dataclass
@@ -112,6 +203,13 @@ class CombatSession:
         if not active_skill_instances:
             raise CombatStartError("combat.error.no_active_skill", "没有主动技能宝石不可进入战斗")
         skill_effect_calculator.apply_player_stat_contributions(player)
+        loot_runtime.set_player_stats(
+            {
+                key: value
+                for key, value in vars(player).items()
+                if isinstance(value, (int, float, bool))
+            }
+        )
 
         session = cls(
             player=player,
@@ -130,6 +228,7 @@ class CombatSession:
 
     def tick(self, delta_ms: int) -> tuple[SkillReleaseEvent, ...]:
         self.elapsed_ms += delta_ms
+        self.player.regenerate(delta_ms)
         events: list[SkillReleaseEvent] = list(self._consume_pending_skill_events(delta_ms))
         for cooldown in self._cooldowns.values():
             cooldown.remaining_ms = max(0, cooldown.remaining_ms - delta_ms)
@@ -228,15 +327,21 @@ class CombatSession:
         return tuple(picked)
 
     def _drop_from_monster(self, monster: Monster) -> DroppedGem:
-        dropped = DroppedGem(
-            drop_id=f"drop_{self._next_drop_number:06d}",
-            gem_instance=self.loot_runtime.generate_drop(),
-            position=monster.position,
-            picked_up=False,
-        )
-        self._next_drop_number += 1
-        self.dropped_gems.append(dropped)
-        return dropped
+        first_drop: DroppedGem | None = None
+        for gem_instance in self.loot_runtime.generate_drops():
+            dropped = DroppedGem(
+                drop_id=f"drop_{self._next_drop_number:06d}",
+                gem_instance=gem_instance,
+                position=monster.position,
+                picked_up=False,
+            )
+            self._next_drop_number += 1
+            self.dropped_gems.append(dropped)
+            if first_drop is None:
+                first_drop = dropped
+        if first_drop is None:
+            raise RuntimeError("loot runtime did not generate any drops")
+        return first_drop
 
     def _first_alive_monster(self) -> Monster | None:
         for monster in self.monsters:

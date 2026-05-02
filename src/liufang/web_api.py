@@ -4,7 +4,6 @@ import json
 import random
 from dataclasses import dataclass, field
 from pathlib import Path
-from types import SimpleNamespace
 from typing import Any
 
 from .affixes import AffixGenerator
@@ -25,6 +24,7 @@ from .gem_board import SudokuGemBoard
 from .inventory import GemInventory, GemInstance
 from .loot import LootRuntime
 from .presentation import PresentationService
+from .player_stats import aggregate_player_stats
 from .skill_editor import SkillEditorService
 from .skill_effects import FinalSkillInstance, SkillEffectCalculator, SkillEffectError
 
@@ -291,7 +291,7 @@ class V1WebAppApi:
         )
 
     def _new_player(self, player_id: str) -> Player:
-        base_stats = load_player_base_stats(self.config_root)
+        base_stats = aggregate_player_stats(load_player_base_stats(self.config_root)).values
         return Player(
             player_id,
             current_life=float(base_stats.get("current_life", 100)),
@@ -299,20 +299,40 @@ class V1WebAppApi:
             position=Position(0, 0),
             item_interaction_reach=2,
             move_speed=float(base_stats.get("move_speed", 1.0)),
+            current_mana=float(base_stats.get("current_mana", 0)),
+            max_mana=float(base_stats.get("max_mana", 0)),
+            mana_regen_flat=float(base_stats.get("mana_regen_flat", 0)),
+            current_energy_shield=float(base_stats.get("current_energy_shield", 0)),
+            max_energy_shield=float(base_stats.get("max_energy_shield", 0)),
+            energy_shield_charge_speed_percent=float(base_stats.get("energy_shield_charge_speed_percent", 0)),
+            energy_shield_charge_delay_ms=int(base_stats.get("energy_shield_charge_delay_ms", 2000)),
+            armor=float(base_stats.get("armor", 0)),
+            armor_add_percent=float(base_stats.get("armor_add_percent", 0)),
+            evasion=float(base_stats.get("evasion", 0)),
+            evasion_add_percent=float(base_stats.get("evasion_add_percent", 0)),
+            attack_block_chance_percent=float(base_stats.get("attack_block_chance_percent", 0)),
+            spell_block_chance_percent=float(base_stats.get("spell_block_chance_percent", 0)),
+            block_damage_reduction_percent=float(base_stats.get("block_damage_reduction_percent", 0)),
+            damage_mitigation_final_percent=float(base_stats.get("damage_mitigation_final_percent", 0)),
+            physical_damage_reduction_percent=float(base_stats.get("physical_damage_reduction_percent", 0)),
+            fire_resistance_percent=float(base_stats.get("fire_resistance_percent", 0)),
+            cold_resistance_percent=float(base_stats.get("cold_resistance_percent", 0)),
+            lightning_resistance_percent=float(base_stats.get("lightning_resistance_percent", 0)),
+            chaos_resistance_percent=float(base_stats.get("chaos_resistance_percent", 0)),
+            elemental_resistance_percent=float(base_stats.get("elemental_resistance_percent", 0)),
         )
 
     def _calculated_player_stat_values(self) -> dict[str, Any]:
         base_stats = dict(load_player_base_stats(self.config_root))
-        player = SimpleNamespace(**base_stats)
-        self._calculator().apply_player_stat_contributions(player)
-        for key in list(base_stats):
-            if hasattr(player, key):
-                base_stats[key] = getattr(player, key)
-        return base_stats
+        modifiers = self._calculator().calculate_player_stat_modifiers()
+        return aggregate_player_stats(base_stats, modifiers).values
 
     def _player_stats_view(self) -> dict[str, Any]:
         stat_definitions = load_player_stat_definitions(self.config_root)
-        stat_values = self._calculated_player_stat_values()
+        base_stats = dict(load_player_base_stats(self.config_root))
+        modifiers = self._calculator().calculate_player_stat_modifiers()
+        stat_context = aggregate_player_stats(base_stats, modifiers)
+        stat_values = stat_context.values
         return {
             stat_id: {
                 "label_text": self.presenter.localizer.text(definition.name_key),
@@ -322,6 +342,7 @@ class V1WebAppApi:
                 "v1_status": definition.v1_status,
                 "runtime_effective": definition.runtime_effective,
                 "affix_spawn_enabled_v1": definition.affix_spawn_enabled_v1,
+                "trace": stat_context.trace.get(stat_id, {}),
             }
             for stat_id, definition in stat_definitions.items()
         }

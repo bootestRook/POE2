@@ -90,6 +90,24 @@ class LootInventoryTest(unittest.TestCase):
         self.assertIsNone(instance.board_position)
         self.assertFalse(hasattr(instance, "skill_template"))
 
+    def test_player_drop_quantity_and_rarity_stats_affect_generation(self) -> None:
+        loot = LootRuntime.from_configs(
+            self.config_root,
+            self.definitions,
+            {"normal": 100, "magic": 10, "rare": 5},
+            self.generator(2),
+            player_stats={
+                "gem_drop_quantity_add_percent": 200,
+                "gem_drop_rarity_add_percent": 100,
+            },
+            rng=random.Random(2),
+        )
+
+        drops = loot.generate_drops()
+
+        self.assertEqual(len(drops), 3)
+        self.assertEqual(loot._rarity_weights_with_player_bonus(), {"normal": 100, "magic": 20, "rare": 15})
+
     def test_pickup_inventory_lock_filter_and_sort(self) -> None:
         inventory = GemInventory(self.definitions)
         loot = LootRuntime.from_configs(

@@ -36,6 +36,8 @@ EXPECTED_FILES = [
     "affixes/affix_tiers.toml",
     "loot/gem_drop_pools.toml",
     "loot/drop_weight_rules.toml",
+    "monsters/monster_defs.toml",
+    "monsters/monster_groups.toml",
     "localization/zh_cn.toml",
 ]
 EXPECTED_SKILL_PACKAGE_FILES = [
@@ -60,51 +62,114 @@ EXPECTED_SKILL_PACKAGE_FILES = [
 ]
 
 REQUIRED_STATS = {
+    "strength",
+    "dexterity",
+    "intelligence",
     "max_life",
     "current_life",
+    "life_regen_flat",
+    "max_mana",
+    "current_mana",
+    "mana_regen_flat",
+    "max_energy_shield",
+    "current_energy_shield",
+    "energy_shield_charge_speed_percent",
+    "energy_shield_charge_delay_ms",
     "move_speed",
-    "support_link_limit",
-    "damage_add_percent",
-    "damage_final_percent",
-    "hit_damage_add_percent",
-    "hit_damage_final_percent",
-    "attack_speed_add_percent",
-    "cast_speed_add_percent",
-    "skill_speed_final_percent",
-    "cooldown_reduction_percent",
-    "added_cooldown_ms",
-    "area_add_percent",
-    "projectile_count_add",
-    "chain_count_add",
-    "pierce_count_add",
-    "projectile_speed_add_percent",
-    "base_crit_chance_percent",
-    "crit_chance_add_percent",
-    "crit_damage_add_percent",
-    "cannot_crit",
-    "status_chance_add_percent",
     "physical_damage_add_percent",
     "fire_damage_add_percent",
     "cold_damage_add_percent",
     "lightning_damage_add_percent",
+    "chaos_damage_add_percent",
     "elemental_damage_add_percent",
+    "non_physical_damage_add_percent",
+    "all_damage_type_add_percent",
+    "hit_damage_add_percent",
+    "dot_damage_add_percent",
+    "secondary_damage_add_percent",
+    "ailment_damage_add_percent",
+    "minion_damage_add_percent",
     "attack_damage_add_percent",
     "spell_damage_add_percent",
     "melee_damage_add_percent",
     "ranged_damage_add_percent",
     "projectile_damage_add_percent",
     "area_damage_add_percent",
-    "active_gem_level_add",
-    "gem_level",
+    "chain_damage_add_percent",
+    "pierce_damage_add_percent",
+    "orbit_damage_add_percent",
+    "trap_mine_damage_add_percent",
+    "aura_effect_add_percent",
+    "buff_effect_add_percent",
+    "damage_add_percent",
+    "damage_final_percent",
+    "damage_taken_final_percent",
+    "hit_damage_final_percent",
+    "dot_damage_final_percent",
+    "skill_damage_effectiveness_percent",
+    "double_damage_chance_percent",
+    "resistance_penetration_percent",
+    "conversion_physical_to_fire_percent",
+    "conversion_physical_to_cold_percent",
+    "conversion_physical_to_lightning_percent",
+    "attack_speed_add_percent",
+    "cast_speed_add_percent",
+    "skill_speed_final_percent",
+    "cooldown_reduction_percent",
+    "added_cooldown_ms",
+    "cooldown_recovery_final_percent",
+    "projectile_speed_add_percent",
+    "base_crit_chance_percent",
+    "crit_chance_add_percent",
+    "crit_rating",
+    "crit_damage_rating",
+    "crit_damage_add_percent",
+    "crit_damage_final_percent",
+    "derived_crit_chance_percent",
+    "derived_crit_damage_percent",
+    "cannot_crit",
+    "area_add_percent",
+    "area_final_percent",
+    "projectile_count_add",
+    "chain_count_add",
+    "pierce_count_add",
+    "duration_add_percent",
+    "skill_effect_frequency_add_percent",
+    "explosion_radius_add_percent",
+    "status_chance_add_percent",
+    "ignite_chance_add_percent",
+    "frostbite_chance_add_percent",
+    "shock_chance_add_percent",
+    "trauma_chance_add_percent",
+    "armor",
+    "armor_add_percent",
+    "evasion",
+    "evasion_add_percent",
+    "attack_block_chance_percent",
+    "spell_block_chance_percent",
+    "block_damage_reduction_percent",
+    "damage_mitigation_final_percent",
+    "physical_damage_reduction_percent",
+    "fire_resistance_percent",
+    "cold_resistance_percent",
+    "lightning_resistance_percent",
+    "chaos_resistance_percent",
+    "elemental_resistance_percent",
+    "gem_drop_quantity_add_percent",
+    "gem_drop_rarity_add_percent",
     "source_power_row",
     "source_power_column",
     "source_power_box",
+    "source_power_adjacent",
     "target_power_row",
     "target_power_column",
     "target_power_box",
+    "target_power_adjacent",
     "conduit_power_row",
     "conduit_power_column",
     "conduit_power_box",
+    "relation_effect_final_percent",
+    "adjacent_bonus_final_percent",
 }
 
 OBSOLETE_PLAYER_STATS = {
@@ -115,6 +180,64 @@ OBSOLETE_PLAYER_STATS = {
 }
 ALLOWED_PLAYER_STAT_STATUSES = {"V1_ACTIVE", "V1_DISPLAY_ONLY", "V1_RESERVED", "V2_PLUS"}
 ALLOWED_PLAYER_STAT_VALUE_TYPES = {"number", "integer", "percent", "boolean"}
+MONSTER_TIER_NUMERIC_RULES = {
+    "normal": {"min": 100000, "max": 199999, "group": 1001},
+    "magic": {"min": 200000, "max": 299999, "group": 2001},
+    "epic": {"min": 300000, "max": 399999, "group": 3001},
+    "boss": {"min": 400000, "max": 499999, "group": 4001},
+}
+ALLOWED_MONSTER_GEOMETRY_SHAPES = {
+    "circle_ring",
+    "triangle",
+    "square_dot",
+    "diamond_tail",
+    "double_triangle",
+    "hex_eye",
+    "cluster",
+    "needle_ghost",
+    "circle_square",
+    "tri_in_tri",
+    "crystal_cross",
+    "hex_core",
+    "broken_ring_bolt",
+    "square_invtri",
+    "wind_wheel",
+    "double_diamond",
+    "tri_crown",
+    "ring_square_corners",
+    "star_diamonds",
+    "hex_tri_layers",
+    "square_spikes",
+    "double_ring_eye",
+    "obelisk",
+    "twin_shadow",
+    "boss_king",
+    "boss_void",
+    "boss_pinwheel",
+    "boss_star_mother",
+    "boss_judicator",
+    "boss_eclipse",
+    "boss_mirror",
+    "boss_triad",
+}
+ALLOWED_MONSTER_MOVEMENT_KINDS = {
+    "normal",
+    "normal_slow",
+    "normal_pause",
+    "normal_desynced",
+    "drift",
+    "step_dash",
+    "side_step",
+    "blink_short",
+    "blink_long",
+    "lunge",
+    "anchor_cast",
+    "orbit",
+    "phase_swap",
+    "phase_step",
+}
+ALLOWED_MONSTER_FALLBACK_VISUALS = {"enemy_imp", "enemy_brute"}
+HEX_COLOR_PATTERN = re.compile(r"^#[0-9A-Fa-f]{6}$")
 
 REQUIRED_TAGS = {
     "gem",
@@ -171,7 +294,7 @@ REQUIRED_TAGS = {
     "support_shape",
 }
 
-REQUIRED_DAMAGE_TYPES = {"physical", "fire", "cold", "lightning"}
+REQUIRED_DAMAGE_TYPES = {"physical", "fire", "cold", "lightning", "chaos"}
 REQUIRED_STATUS_EFFECTS = {"burning", "chill", "bleed"}
 REQUIRED_BOARD_RELATIONS = {"adjacent", "same_row", "same_column", "same_box"}
 REQUIRED_BOARD_LOCALIZATION_KEYS = {
@@ -473,6 +596,119 @@ def require_localized_key(
         errors.append(f"{label}: '{entry_id}' localization must not expose internal id")
 
 
+def validate_monster_configs(
+    monster_data: dict[str, Any],
+    group_data: dict[str, Any],
+    localization: dict[str, str],
+    errors: list[str],
+) -> None:
+    monsters = items(monster_data, "monsters")
+    monster_ids = unique_ids(monsters, "monsters", errors)
+    numeric_ids: set[int] = set()
+    marker_ids: set[str] = set()
+    monster_tiers: dict[str, str] = {}
+    monsters_by_group: dict[int, set[str]] = {}
+
+    if len(monsters) != 32:
+        errors.append("monsters: expected 32 seed geometric monster definitions")
+
+    for monster in monsters:
+        monster_id = monster.get("id")
+        context = f"monsters:{monster_id or '<unknown>'}"
+        tier = monster.get("tier")
+        numeric_id = monster.get("numeric_id")
+        group_numeric_id = monster.get("group_numeric_id")
+
+        if not isinstance(numeric_id, int):
+            errors.append(f"{context}: numeric_id must be an integer")
+        else:
+            expected_id = f"mon_{numeric_id}"
+            if monster_id != expected_id:
+                errors.append(f"{context}: id must match numeric_id as '{expected_id}'")
+            if numeric_id in numeric_ids:
+                errors.append(f"{context}: duplicate numeric_id '{numeric_id}'")
+            numeric_ids.add(numeric_id)
+
+        if tier not in MONSTER_TIER_NUMERIC_RULES:
+            errors.append(f"{context}: unknown tier '{tier}'")
+        elif isinstance(numeric_id, int):
+            rule = MONSTER_TIER_NUMERIC_RULES[tier]
+            if not rule["min"] <= numeric_id <= rule["max"]:
+                errors.append(f"{context}: numeric_id must be in {tier} range {rule['min']}..{rule['max']}")
+            if group_numeric_id != rule["group"]:
+                errors.append(f"{context}: group_numeric_id must be {rule['group']} for tier '{tier}'")
+
+        if isinstance(monster_id, str):
+            monster_tiers[monster_id] = str(tier)
+        if isinstance(group_numeric_id, int) and isinstance(monster_id, str):
+            monsters_by_group.setdefault(group_numeric_id, set()).add(monster_id)
+
+        marker_id = monster.get("marker_id")
+        if not isinstance(marker_id, str) or not re.match(r"^[NMEB]-\d{2}$", marker_id):
+            errors.append(f"{context}: marker_id must use N-01/M-01/E-01/B-01 style")
+        elif marker_id in marker_ids:
+            errors.append(f"{context}: duplicate marker_id '{marker_id}'")
+        else:
+            marker_ids.add(marker_id)
+
+        if monster.get("geometry_shape") not in ALLOWED_MONSTER_GEOMETRY_SHAPES:
+            errors.append(f"{context}: unknown geometry_shape '{monster.get('geometry_shape')}'")
+        if monster.get("movement_kind") not in ALLOWED_MONSTER_MOVEMENT_KINDS:
+            errors.append(f"{context}: unknown movement_kind '{monster.get('movement_kind')}'")
+        if monster.get("fallback_unit_visual") not in ALLOWED_MONSTER_FALLBACK_VISUALS:
+            errors.append(f"{context}: fallback_unit_visual must be enemy_imp or enemy_brute")
+        if not isinstance(monster.get("size_px"), int) or monster.get("size_px") <= 0:
+            errors.append(f"{context}: size_px must be a positive integer")
+        for field in ("primary_color", "accent_color"):
+            if not isinstance(monster.get(field), str) or not HEX_COLOR_PATTERN.match(monster[field]):
+                errors.append(f"{context}: {field} must be #RRGGBB")
+        for field in ("movement_interval_sec", "movement_distance_px"):
+            if not isinstance(monster.get(field), (int, float)) or monster[field] < 0:
+                errors.append(f"{context}: {field} must be non-negative")
+        require_localization(monster, "monsters", localization, errors)
+
+    groups = items(group_data, "monster_groups")
+    group_ids = unique_ids(groups, "monster groups", errors)
+    expected_group_ids = {f"monster_group_{rule['group']}" for rule in MONSTER_TIER_NUMERIC_RULES.values()}
+    if group_ids != expected_group_ids:
+        errors.append("monster groups must exactly cover 1001 normal, 2001 magic, 3001 epic, and 4001 boss")
+
+    for group in groups:
+        group_id = group.get("id")
+        context = f"monster_groups:{group_id or '<unknown>'}"
+        tier = group.get("tier")
+        numeric_id = group.get("numeric_id")
+        member_ids = group.get("member_ids", [])
+        if tier not in MONSTER_TIER_NUMERIC_RULES:
+            errors.append(f"{context}: unknown tier '{tier}'")
+            expected_numeric_id = None
+        else:
+            expected_numeric_id = MONSTER_TIER_NUMERIC_RULES[tier]["group"]
+            if numeric_id != expected_numeric_id:
+                errors.append(f"{context}: numeric_id must be {expected_numeric_id} for tier '{tier}'")
+            if group_id != f"monster_group_{expected_numeric_id}":
+                errors.append(f"{context}: id must be monster_group_{expected_numeric_id}")
+
+        if group.get("selection_policy") != "uniform":
+            errors.append(f"{context}: selection_policy must be uniform")
+        if not isinstance(member_ids, list) or not member_ids:
+            errors.append(f"{context}: member_ids must be a non-empty array")
+            member_ids = []
+        if len(member_ids) != len(set(member_ids)):
+            errors.append(f"{context}: member_ids must be unique")
+        for member_id in member_ids:
+            if member_id not in monster_ids:
+                errors.append(f"{context}: unknown monster member '{member_id}'")
+                continue
+            if monster_tiers.get(member_id) != tier:
+                errors.append(f"{context}: member '{member_id}' is tier '{monster_tiers.get(member_id)}', not '{tier}'")
+        if isinstance(expected_numeric_id, int):
+            expected_members = monsters_by_group.get(expected_numeric_id, set())
+            if set(member_ids) != expected_members:
+                errors.append(f"{context}: member_ids must exactly match monsters assigned to group {expected_numeric_id}")
+        require_localization(group, "monster groups", localization, errors)
+
+
 def check_tags(tag_refs: Any, tag_ids: set[str], context: str, errors: list[str]) -> None:
     if tag_refs is None:
         return
@@ -601,6 +837,12 @@ def validate() -> list[str]:
     if not isinstance(localization, dict):
         errors.append("localization/zh_cn.toml: [strings] table is required")
         localization = {}
+    validate_monster_configs(
+        data.get("monsters/monster_defs.toml", {}),
+        data.get("monsters/monster_groups.toml", {}),
+        localization,
+        errors,
+    )
     try:
         skill_packages = load_skill_packages(CONFIGS)
     except Exception as exc:
@@ -710,13 +952,13 @@ def validate() -> list[str]:
             errors.append(f"character panel row '{row_id}': obsolete stat_id '{stat_id}'")
         if not isinstance(row.get("icon_text"), str) or not row.get("icon_text"):
             errors.append(f"character panel row '{row_id}': icon_text is required")
-        if row.get("formatter") not in {"auto", "integer", "number", "percent", "multiplier", "seconds_from_ms", "boolean"}:
+        if row.get("formatter") not in {"auto", "integer", "number", "percent", "multiplier", "seconds_from_ms", "boolean", "rating"}:
             errors.append(f"character panel row '{row_id}': invalid formatter '{row.get('formatter')}'")
 
     damage_types = items(data.get("combat/damage_types.toml", {}), "damage_types")
     damage_type_ids = unique_ids(damage_types, "damage types", errors)
     if damage_type_ids != REQUIRED_DAMAGE_TYPES:
-        errors.append("damage types must be exactly physical, fire, cold, and lightning")
+        errors.append("damage types must be exactly physical, fire, cold, lightning, and chaos")
     for damage_type in damage_types:
         require_localization(damage_type, "damage types", localization, errors)
         require_localized_key(damage_type, "display_name_key", "damage types", localization, errors)

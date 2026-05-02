@@ -5,8 +5,13 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 import { ISO_TILE_H, ISO_TILE_W, unprojectScreenToWorld } from "./isoProjection";
 import { BAKED_BATTLE_MAPS, bakedMapAssetById, DEFAULT_BAKED_BATTLE_MAP_ID } from "./bakedMapAssets";
 import { BakedBattleMapData, isMapPointWalkable, loadBakedBattleMap, MapPoint, resolveWalkableMove } from "./bakedMapLoader";
+import mapSpawnV1Config from "../configs/monsters/map_spawn_v1.json";
 import map001Document from "../map/map_001.json";
+import { generateProceduralMonsterSpawns } from "./mapSpawnRuntime";
+import type { MapSpawnV1Config, ProceduralSpawnDebugSummary, ProceduralSpawnRarity, ProceduralZoneType } from "./mapSpawnRuntime";
 import { getAnimationFrame, resolveDirection, resolveUnitAnimation, UnitAnimationContext, UnitAnimationFrame } from "./unitAnimation";
+import { BattleGeometryCanvas } from "./BattleGeometryCanvas";
+import type { BattleGeometrySnapshot } from "./battleGeometryRenderer";
 import {
   selectEnemyUnitType,
   UNIT_ANIMATION_ASSETS,
@@ -715,6 +720,11 @@ type Enemy = {
   authored?: boolean;
   boss?: boolean;
   spawnPlanSourceId?: string;
+  proceduralMonsterPackId?: string;
+  proceduralZoneType?: ProceduralZoneType;
+  spawnRarity?: ProceduralSpawnRarity;
+  lifeMultiplier?: number;
+  damageMultiplier?: number;
   aggroLocked?: boolean;
   runtimeTier?: EnemyRuntimeTier;
   nextThinkAt?: number;
@@ -1000,6 +1010,8 @@ const BATTLE_CAMERA_ANCHOR_X = "50vw";
 const BATTLE_CAMERA_ANCHOR_Y = "54vh";
 const BATTLE_CAMERA_FOLLOW_OFFSET_Y = 0;
 const BATTLE_ENTITY_Z_INDEX_BASE = 10;
+const CANVAS_GEOMETRY_BATTLE_OBJECTS = true;
+const CANVAS_GEOMETRY_SKILL_EFFECTS = true;
 const FIRE_BOLT_FAKE_Z = 22;
 const FIRE_BOLT_PROJECTILE_FAKE_Z = 0;
 const FIRE_BOLT_TRAIL_LENGTH = 0;
@@ -4037,6 +4049,7 @@ function GameApp() {
   const [authoredSpawnPlanActive, setAuthoredSpawnPlanActive] = useState(false);
   const [authoredAggroSources, setAuthoredAggroSources] = useState<RuntimeEncounterAggroSource[]>([]);
   const [spawnPlanWarnings, setSpawnPlanWarnings] = useState<string[]>([]);
+  const [proceduralSpawnDebug, setProceduralSpawnDebug] = useState<ProceduralSpawnDebugSummary | null>(null);
   const [notice, setNotice] = useState("正在载入。");
   const [playing, setPlaying] = useState(() => skillEditorMode);
   const [player, setPlayer] = useState({ x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2, hp: 100, maxHp: 100 });
@@ -6272,28 +6285,49 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     setBagOpen(false);
     triggeredEncounterSourceIds.current = new Set();
     let startedAuthoredSpawnPlan = false;
+    let startedProceduralSpawnPlan = false;
+    let spawnDebugLog: string | null = null;
     if (skillEditorMode) {
       setAuthoredSpawnPlanActive(false);
       setAuthoredAggroSources([]);
       setSpawnPlanWarnings([]);
+      setProceduralSpawnDebug(null);
       const nextEnemies = createSkillTestDummies(1, player.x, player.y);
       enemiesStateRef.current = nextEnemies;
       setEnemies(nextEnemies);
       nextEnemyId.current = SKILL_TEST_DUMMY_OFFSETS.length + 1;
     } else {
-      const authoredSpawnPlan = createAuthoredSpawnPlanEnemies(loadRuntimeAuthoredSpawnPlanData(battleMap), battleMap, nextEnemyId.current);
-      if (authoredSpawnPlan.enemies.length > 0) {
+      const proceduralSpawnPlan = createProceduralSpawnPlanEnemies(battleMap, nextEnemyId.current, selectedMapId);
+      if (proceduralSpawnPlan.enemies.length > 0) {
+        nextEnemyId.current = proceduralSpawnPlan.nextId;
+        setAuthoredSpawnPlanActive(true);
+        setAuthoredAggroSources(proceduralSpawnPlan.aggroSources);
+        startedProceduralSpawnPlan = true;
+        setSpawnPlanWarnings([]);
+        setProceduralSpawnDebug(proceduralSpawnPlan.debug);
+        enemiesStateRef.current = proceduralSpawnPlan.enemies;
+        setEnemies(proceduralSpawnPlan.enemies);
+        spawnDebugLog = proceduralSpawnLogLine(proceduralSpawnPlan.debug);
+      } else {
+        setProceduralSpawnDebug(proceduralSpawnPlan.debug);
+      }
+
+      if (!startedProceduralSpawnPlan) {
+        const authoredSpawnPlan = createAuthoredSpawnPlanEnemies(loadRuntimeAuthoredSpawnPlanData(battleMap), battleMap, nextEnemyId.current);
+        if (authoredSpawnPlan.enemies.length > 0) {
         nextEnemyId.current = authoredSpawnPlan.nextId;
         setAuthoredSpawnPlanActive(true);
         setAuthoredAggroSources(authoredSpawnPlan.aggroSources);
         startedAuthoredSpawnPlan = true;
         setSpawnPlanWarnings(authoredSpawnPlan.warnings);
+        setProceduralSpawnDebug(null);
         enemiesStateRef.current = authoredSpawnPlan.enemies;
         setEnemies(authoredSpawnPlan.enemies);
-      } else {
+        } else {
         setAuthoredSpawnPlanActive(false);
         setAuthoredAggroSources([]);
         setSpawnPlanWarnings([]);
+        setProceduralSpawnDebug(null);
         const nextEnemies = [
           createEnemy(nextEnemyId.current++, player.x, player.y, battleMap),
           createEnemy(nextEnemyId.current++, player.x, player.y, battleMap),
@@ -6301,10 +6335,16 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         ];
         enemiesStateRef.current = nextEnemies;
         setEnemies(nextEnemies);
+        }
       }
     }
-    setCombatLogs([`${battleMap.displayName} 战斗开始。WASD 移动，技能会自动释放。`]);
-    setNotice(startedAuthoredSpawnPlan
+    setCombatLogs([
+      `${battleMap.displayName} 战斗开始。WASD 移动，技能会自动释放。`,
+      ...(spawnDebugLog ? [spawnDebugLog] : [])
+    ]);
+    setNotice(startedProceduralSpawnPlan
+      ? `${battleMap.displayName} 程序化遭遇战斗中。按 C 管理背包。`
+      : startedAuthoredSpawnPlan
       ? `${battleMap.displayName} 预设遭遇战斗中。按 C 管理背包。`
       : `${battleMap.displayName} 战斗中。按 C 管理背包。`
     );
@@ -6377,6 +6417,135 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
   const battleAnimationContexts = createBattleAnimationContexts(playerVisual.current, enemyVisuals.current, visibleEnemies, player, animationNowMs, statNumber(state.player_stats?.move_speed, 1));
   const terrainWidth = battleMap?.meta.world_width ?? MAP_VISUAL_WIDTH;
   const terrainHeight = battleMap?.meta.world_height ?? MAP_VISUAL_HEIGHT;
+  const battleGeometrySnapshot: BattleGeometrySnapshot = {
+    width: terrainWidth,
+    height: terrainHeight,
+    timeMs: animationNowMs,
+    camera: battleCamera,
+    terrain: runtimeUsesEditorMap ? {
+      tiles: battleMap.editorTiles,
+      tileSize: battleMap.meta.grid_size,
+      width: battleMap.meta.world_width,
+      height: battleMap.meta.world_height
+    } : undefined,
+    player: {
+      ...player,
+      moving: Math.hypot(playerVisual.current.movementVector.x, playerVisual.current.movementVector.y) > 0.001
+    },
+    enemies: visibleEnemies.map((enemy) => ({
+      id: enemy.id,
+      x: enemy.x,
+      y: enemy.y,
+      hp: enemy.hp,
+      maxHp: enemy.maxHp,
+      monsterId: enemy.monsterId,
+      boss: enemy.boss,
+      runtimeTier: enemy.runtimeTier
+    })),
+    projectiles: bolts.map((bolt) => ({
+      id: bolt.id,
+      x: bolt.x,
+      y: bolt.y,
+      targetX: bolt.targetX,
+      targetY: bolt.targetY,
+      velocityX: bolt.velocityX,
+      velocityY: bolt.velocityY,
+      directionX: bolt.directionX,
+      directionY: bolt.directionY,
+      trajectory: bolt.trajectory,
+      arcHeight: bolt.arcHeight,
+      projectileWidth: bolt.projectileWidth,
+      projectileHeight: bolt.projectileHeight,
+      projectileSpeed: bolt.projectileSpeed,
+      damageType: bolt.damageType,
+      vfxKey: bolt.vfxKey,
+      ttl: bolt.ttl,
+      duration: bolt.duration
+    })),
+    areas: [
+      ...passiveVisualEffects.map((gem, index) => ({
+        id: index,
+        kind: "passive-aura" as const,
+        x: player.x,
+        y: player.y,
+        radius: 92 + index * 16,
+        vfxKey: gem.visual_effect || gem.instance_id,
+        ttl: 1,
+        duration: 1
+      })),
+      ...areaNovas.map((nova) => ({
+        id: nova.id,
+        kind: "nova" as const,
+        x: nova.x,
+        y: nova.y,
+        radius: nova.radius,
+        damageType: nova.damageType,
+        vfxKey: nova.vfxKey,
+        ttl: nova.ttl,
+        duration: nova.duration
+      })),
+      ...damageZones.map((zone) => ({
+        id: zone.id,
+        kind: "damage-zone" as const,
+        x: zone.x,
+        y: zone.y,
+        radius: zone.shape === "circle" ? zone.radius : undefined,
+        width: zone.shape === "rectangle" ? zone.length : undefined,
+        height: zone.shape === "rectangle" ? zone.width : undefined,
+        directionX: zone.directionX,
+        directionY: zone.directionY,
+        damageType: zone.damageType,
+        vfxKey: zone.vfxKey,
+        warning: zone.warning,
+        ttl: zone.ttl,
+        duration: zone.duration
+      })),
+      ...meleeArcs.map((arc) => ({
+        id: arc.id,
+        kind: "melee-arc" as const,
+        x: arc.x,
+        y: arc.y,
+        radius: arc.radius,
+        directionX: arc.directionX,
+        directionY: arc.directionY,
+        arcAngle: arc.arcAngle,
+        damageType: arc.damageType,
+        vfxKey: arc.vfxKey,
+        ttl: arc.ttl,
+        duration: arc.duration
+      })),
+      ...chainSegments.map((segment) => ({
+        id: segment.id,
+        kind: "chain" as const,
+        startX: segment.startX,
+        startY: segment.startY,
+        endX: segment.endX,
+        endY: segment.endY,
+        damageType: segment.damageType,
+        vfxKey: segment.vfxKey,
+        ttl: segment.ttl,
+        duration: segment.duration
+      }))
+    ],
+    hits: hitVfxs.map((vfx) => ({
+      id: vfx.id,
+      x: vfx.x,
+      y: vfx.y,
+      radius: Math.max(vfx.impactRadius ?? 0, vfx.projectileWidth ?? 0, vfx.projectileHeight ?? 0) * 0.5,
+      damageType: vfx.damageType,
+      vfxKey: vfx.vfxKey,
+      ttl: vfx.ttl,
+      duration: vfx.duration
+    })),
+    texts: texts.map((text) => ({
+      id: text.id,
+      x: text.x,
+      y: text.y,
+      text: text.text,
+      ttl: text.ttl,
+      duration: text.duration
+    }))
+  };
 
   return (
     <main className="game-screen">
@@ -6393,15 +6562,19 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
             {battleMap && <BakedMapBackground map={battleMap} />}
             {battleMap && <MapDebugOverlay map={battleMap} enabled={mapDebugEnabled} />}
           </div>
-          <div className="battle-ground-decal-layer">
-            <PassiveAuraLayer effects={passiveVisualEffects} x={player.x} y={player.y} />
-            <DamageZoneLayer zones={damageZones} />
-            <AreaNovaLayer novas={areaNovas} />
-            <MeleeArcLayer arcs={meleeArcs} />
-            <ChainSegmentLayer segments={chainSegments} />
-          </div>
+          {!CANVAS_GEOMETRY_SKILL_EFFECTS && (
+            <div className="battle-ground-decal-layer">
+              <PassiveAuraLayer effects={passiveVisualEffects} x={player.x} y={player.y} />
+              <DamageZoneLayer zones={damageZones} />
+              <AreaNovaLayer novas={areaNovas} />
+              <MeleeArcLayer arcs={meleeArcs} />
+              <ChainSegmentLayer segments={chainSegments} />
+            </div>
+          )}
           <div className="battle-entity-layer">
-            {sortedRenderItems.map((item, index) => renderBattleRenderItem(item, index, battleAnimationContexts))}
+            {sortedRenderItems
+              .filter(shouldRenderLegacyBattleItem)
+              .map((item, index) => renderBattleRenderItem(item, index, battleAnimationContexts))}
           </div>
           <div className="battle-effect-layer">
             {skillEditorMode && (
@@ -6415,11 +6588,12 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
             )}
           </div>
           <div className="battle-text-layer">
-            {texts.map((text) => (
+            {!CANVAS_GEOMETRY_SKILL_EFFECTS && texts.map((text) => (
               <div key={text.id} className="floating-text" style={floatingTextStyle(text)}>{text.text}</div>
             ))}
           </div>
         </div>
+        <BattleGeometryCanvas snapshot={battleGeometrySnapshot} />
       </section>
 
       <header className="top-hud">
@@ -6438,6 +6612,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         <input type="checkbox" checked={mapDebugEnabled} onChange={(event) => setMapDebugEnabled(event.target.checked)} />
         <span>地图调试：{mapDebugEnabled ? "开" : "关"}</span>
       </label>
+      <ProceduralSpawnDebugPanel debug={proceduralSpawnDebug} />
       {spawnPlanWarnings.length > 0 ? (
         <aside className="spawnPlan-warning-panel" aria-label="遭遇点警告">
           {spawnPlanWarnings.slice(0, 3).map((warning) => <span key={warning}>{warning}</span>)}
@@ -6603,6 +6778,41 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
   );
 }
 
+function ProceduralSpawnDebugPanel({ debug }: { debug: ProceduralSpawnDebugSummary | null }) {
+  if (!debug) return null;
+  const accepted = debug.spawn_points.filter((point) => point.accepted).slice(0, 8);
+  const filtered = debug.filtered_points.slice(0, 5);
+  return (
+    <aside className="procedural-spawn-debug-panel" aria-label="程序化生怪调试">
+      <strong>程序化生怪调试</strong>
+      <span>当前地图类型：{debug.map_type}</span>
+      <span>总生怪预算：{debug.spent_pack_budget} / {debug.base_pack_budget}</span>
+      <span>已生成怪物包数量：{debug.generated_pack_count}</span>
+      <span>普通 {debug.normal_monster_count}，魔法 {debug.magic_monster_count}，稀有 {debug.rare_monster_count}</span>
+      {accepted.length > 0 && (
+        <div className="procedural-spawn-debug-list">
+          <span>刷怪点</span>
+          {accepted.map((point) => (
+            <code key={`spawn-${point.gridX}-${point.gridY}`}>
+              {point.zone_type} / {point.monster_pack_id ?? "无"}
+            </code>
+          ))}
+        </div>
+      )}
+      {filtered.length > 0 && (
+        <div className="procedural-spawn-debug-list">
+          <span>过滤原因</span>
+          {filtered.map((point, index) => (
+            <code key={`filtered-${point.gridX}-${point.gridY}-${index}`}>
+              {point.zone_type} / {point.filter_reason ?? "未知原因"}
+            </code>
+          ))}
+        </div>
+      )}
+    </aside>
+  );
+}
+
 function statNumber(stat: PlayerStatView | undefined, fallback: number) {
   return typeof stat?.value === "number" ? stat.value : fallback;
 }
@@ -6698,6 +6908,7 @@ function formatCharacterPanelValue(row: CharacterPanelRowView, player: { hp: num
   const value = Number(rawValue);
   if (!Number.isFinite(value)) return "0";
   if (row.formatter === "integer") return String(Math.round(value));
+  if (row.formatter === "rating") return String(Math.round(value));
   if (row.formatter === "percent") return `${formatPreviewNumber(value)}%`;
   if (row.formatter === "multiplier") return `${formatPreviewNumber(value)} 倍`;
   if (row.formatter === "seconds_from_ms") return `${formatPreviewNumber(value / 1000)} 秒`;
@@ -6757,38 +6968,14 @@ function BakedMapBackground({ map }: { map: BakedBattleMapData }) {
 }
 
 function EditorRuntimeMapBackground({ map }: { map: EditorRuntimeBattleMapData }) {
-  const cells = useMemo(() => {
-    const result: ReactNode[] = [];
-    const cellSize = map.meta.grid_size;
-    for (let y = 0; y < map.editorTiles.length; y += 1) {
-      const row = map.editorTiles[y];
-      for (let x = 0; x < row.length; x += 1) {
-        const tile = row[x];
-        if (tile === "empty") continue;
-        result.push(
-          <span
-            key={`${x}:${y}`}
-            className={`editor-runtime-map-tile map-editor-tile-${tile} ${mapEditorTileConnectionClass(map.editorTiles, x, y, tile)}`}
-            style={{
-              left: x * cellSize,
-              top: y * cellSize,
-              width: cellSize,
-              height: cellSize
-            }}
-          />
-        );
-      }
-    }
-    return result;
-  }, [map]);
   return (
     <div
       className="editor-runtime-map-background"
       aria-hidden="true"
+      data-renderer="canvas"
+      data-visual-system="abstract-geometric-map-tiles"
       style={{ width: map.meta.world_width, height: map.meta.world_height }}
-    >
-      {cells}
-    </div>
+    />
   );
 }
 
@@ -10036,6 +10223,43 @@ function loadRuntimeAuthoredSpawnPlanData(map: BakedBattleMapData | null): MapEd
   return loadMapEditorState().spawnPlans;
 }
 
+function createProceduralSpawnPlanEnemies(map: BakedBattleMapData, startId: number, selectedMapId: string | null) {
+  const result = generateProceduralMonsterSpawns(map, mapSpawnV1Config as MapSpawnV1Config, {
+    startId,
+    seed: `${selectedMapId ?? map.id}:${map.displayName}:v1`
+  });
+  const enemies: Enemy[] = result.enemies.map((monster) => ({
+    id: monster.runtime_id,
+    x: monster.x,
+    y: monster.y,
+    hp: monster.hp,
+    maxHp: monster.max_hp,
+    monsterId: monster.monster_id,
+    authored: true,
+    boss: monster.boss,
+    spawnPlanSourceId: monster.aggro_source_id,
+    proceduralMonsterPackId: monster.monster_pack_id,
+    proceduralZoneType: monster.zone_type,
+    spawnRarity: monster.spawn_rarity,
+    lifeMultiplier: monster.life_multiplier,
+    damageMultiplier: monster.damage_multiplier,
+    runtimeTier: monster.boss ? "active" : "dormant",
+    nextThinkAt: 0
+  }));
+  const aggroSources: RuntimeEncounterAggroSource[] = result.aggroSources.map((source) => ({
+    id: source.id,
+    kind: source.kind,
+    x: source.x,
+    y: source.y,
+    aggroRadius: source.aggroRadius
+  }));
+  return { enemies, aggroSources, nextId: result.nextId, debug: result.debug };
+}
+
+function proceduralSpawnLogLine(debug: ProceduralSpawnDebugSummary) {
+  return `程序化生怪：地图类型 ${debug.map_type}，预算 ${debug.spent_pack_budget}/${debug.base_pack_budget}，怪物包 ${debug.generated_pack_count}，普通 ${debug.normal_monster_count}，魔法 ${debug.magic_monster_count}，稀有 ${debug.rare_monster_count}。`;
+}
+
 function createAuthoredSpawnPlanEnemies(spawnPlans: MapEditorSpawnPlanData, map: BakedBattleMapData, startId: number) {
   const enemies: Enemy[] = [];
   const aggroSources: RuntimeEncounterAggroSource[] = [];
@@ -11320,6 +11544,11 @@ function renderBattleRenderItem(item: BattleRenderItem, depthIndex: number, anim
     return <HitVfxView key={`hit-vfx-${item.id}`} vfx={item.vfx} depthIndex={depthIndex} />;
   }
   return renderBattleEntity(item, depthIndex, animationContexts);
+}
+
+function shouldRenderLegacyBattleItem(item: BattleRenderItem) {
+  if (!CANVAS_GEOMETRY_BATTLE_OBJECTS) return true;
+  return item.kind === "hit-vfx" && !CANVAS_GEOMETRY_SKILL_EFFECTS;
 }
 
 function renderBattleEntity(entity: BattleRenderEntity, depthIndex: number, animationContexts: BattleAnimationContexts) {

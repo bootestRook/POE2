@@ -17,3 +17,8 @@ display_name_key = "damage_type.cold.name"
 id = "lightning"
 name_key = "damage_type.lightning.name"
 display_name_key = "damage_type.lightning.name"
+
+[[damage_types]]
+id = "chaos"
+name_key = "damage_type.chaos.name"
+display_name_key = "damage_type.chaos.name"

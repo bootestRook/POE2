@@ -14,17 +14,20 @@ from .config import (
 )
 from .gem_board import GemRelation, SudokuGemBoard
 from .inventory import AffixRoll, GemInstance
+from .player_stats import aggregate_player_stats
 
 
 BOARD_SOURCE_STATS = {
     "same_row": "source_power_row",
     "same_column": "source_power_column",
     "same_box": "source_power_box",
+    "adjacent": "source_power_adjacent",
 }
 BOARD_TARGET_STATS = {
     "same_row": "target_power_row",
     "same_column": "target_power_column",
     "same_box": "target_power_box",
+    "adjacent": "target_power_adjacent",
 }
 RELATION_PRIORITY = ("adjacent", "same_row", "same_column", "same_box")
 ELEMENTAL_DAMAGE_TYPES = frozenset({"fire", "cold", "lightning"})
@@ -33,6 +36,7 @@ DAMAGE_TYPE_STATS = {
     "fire": ("fire_damage_add_percent", "elemental_damage_add_percent"),
     "cold": ("cold_damage_add_percent", "elemental_damage_add_percent"),
     "lightning": ("lightning_damage_add_percent", "elemental_damage_add_percent"),
+    "chaos": ("chaos_damage_add_percent", "non_physical_damage_add_percent"),
 }
 SOURCE_TAG_DAMAGE_STATS = {
     "attack": "attack_damage_add_percent",
@@ -47,6 +51,11 @@ BEHAVIOR_TAG_DAMAGE_STATS = {
     "pierce": "pierce_damage_add_percent",
 }
 BOOLEAN_SKILL_STATS = frozenset({"cannot_crit"})
+CONDUIT_POWER_STATS = {
+    "same_row": "conduit_power_row",
+    "same_column": "conduit_power_column",
+    "same_box": "conduit_power_box",
+}
 
 
 class SkillEffectError(ValueError):
@@ -225,29 +234,22 @@ class SkillEffectCalculator:
 
     def apply_player_stat_contributions(self, player: object) -> tuple[PlayerStatModifier, ...]:
         modifiers = self.calculate_player_stat_modifiers()
-        modifiers_by_stat: dict[str, float] = {}
-        for modifier in modifiers:
-            modifiers_by_stat[modifier.stat] = modifiers_by_stat.get(modifier.stat, 0.0) + modifier.value
-
-        max_life_add = modifiers_by_stat.pop("max_life", 0.0)
-        if max_life_add:
-            old_max = float(getattr(player, "max_life"))
-            old_current = float(getattr(player, "current_life"))
-            setattr(player, "max_life", old_max + max_life_add)
-            if old_current >= old_max:
-                setattr(player, "current_life", old_current + max_life_add)
-
-        move_speed_add = modifiers_by_stat.pop("move_speed", 0.0)
-        if move_speed_add:
-            base_move_speed = float(getattr(player, "move_speed", 1.0))
-            setattr(player, "move_speed", base_move_speed * (1.0 + move_speed_add / 100.0))
-
-        for stat, value in modifiers_by_stat.items():
-            current = getattr(player, stat, 0)
-            if isinstance(current, bool):
-                setattr(player, stat, bool(current or value))
-            else:
-                setattr(player, stat, float(current) + value)
+        base_stats = dict(self.player_base_stats or {})
+        if not base_stats:
+            base_stats = {
+                key: getattr(player, key)
+                for key in dir(player)
+                if not key.startswith("_") and isinstance(getattr(player, key), (int, float, bool))
+            }
+        old_max_life = float(getattr(player, "max_life", base_stats.get("max_life", 100)))
+        old_current_life = float(getattr(player, "current_life", base_stats.get("current_life", old_max_life)))
+        context = aggregate_player_stats(base_stats, modifiers)
+        for stat, value in context.values.items():
+            setattr(player, stat, value)
+        if old_current_life >= old_max_life:
+            setattr(player, "current_life", context.values.get("max_life", old_current_life))
+        if hasattr(player, "sync_runtime_bounds"):
+            player.sync_runtime_bounds()
         return modifiers
 
     def _support_sources_for(self, target: GemInstance) -> list[tuple[GemInstance, str]]:
@@ -378,7 +380,11 @@ class SkillEffectCalculator:
     ) -> tuple[float, list[AppliedModifier]]:
         relation_coefficient = self.relation_coefficients[relation]
         if relation == "adjacent":
-            return relation_coefficient, []
+            source_power = self._board_power(source, BOARD_SOURCE_STATS[relation])
+            target_power = self._board_power(target, BOARD_TARGET_STATS[relation])
+            adjacent_final = 1.0 + self._player_numeric_stat("adjacent_bonus_final_percent") / 100.0
+            relation_final = 1.0 + self._player_numeric_stat("relation_effect_final_percent") / 100.0
+            return relation_coefficient * source_power * target_power * adjacent_final * relation_final, []
 
         source_power = self._board_power(source, BOARD_SOURCE_STATS[relation])
         target_power = self._board_power(target, BOARD_TARGET_STATS[relation])
@@ -387,10 +393,11 @@ class SkillEffectCalculator:
             relation,
             excluded_instance_id=source.instance_id,
         )
-        return relation_coefficient * source_power * target_power * conduit_multiplier, conduit_modifiers
+        relation_final = 1.0 + self._player_numeric_stat("relation_effect_final_percent") / 100.0
+        return relation_coefficient * source_power * target_power * conduit_multiplier * relation_final, conduit_modifiers
 
     def _board_power(self, instance: GemInstance, stat: str) -> float:
-        value = 0.0
+        value = self._player_numeric_stat(stat)
         for roll in instance.random_affixes + instance.implicit_affixes:
             if roll.stat == stat:
                 value += float(roll.value)
@@ -413,14 +420,16 @@ class SkillEffectCalculator:
             amplifier = self._conduit_amplifier(conduit.base_gem_id, relation)
             if amplifier is None:
                 continue
-            multiplier *= amplifier.multiplier
+            conduit_stat = CONDUIT_POWER_STATS.get(relation, "")
+            player_conduit_multiplier = 1.0 + self._player_numeric_stat(conduit_stat) / 100.0
+            multiplier *= amplifier.multiplier * player_conduit_multiplier
             modifiers.append(
                 AppliedModifier(
                     source_instance_id=conduit.instance_id,
                     source_base_gem_id=conduit.base_gem_id,
                     target_instance_id=target.instance_id,
                     stat="conduit_multiplier",
-                    value=amplifier.multiplier,
+                    value=amplifier.multiplier * player_conduit_multiplier,
                     layer="final",
                     relation=relation,
                     reason_key="modifier.conduit_amplifier",
@@ -620,17 +629,9 @@ class SkillEffectCalculator:
         non_crit_damage = template.base_damage * (1.0 + increase_pool / 100.0) * (1.0 + final_pool / 100.0)
         final_damage = non_crit_damage
         can_crit = bool(template.hit.get("can_crit", False)) and not bool(skill_stats.get("cannot_crit", False))
-        crit_multiplier = 1.5 + self._numeric_stat(skill_stats, "crit_damage_add_percent") / 100.0
+        crit_multiplier = self._numeric_stat(skill_stats, "derived_crit_damage_percent") / 100.0
         if can_crit:
-            crit_chance = _clamp(
-                (
-                    self._numeric_stat(skill_stats, "base_crit_chance_percent")
-                    + self._numeric_stat(skill_stats, "crit_chance_add_percent")
-                )
-                / 100.0,
-                0.0,
-                1.0,
-            )
+            crit_chance = _clamp(self._numeric_stat(skill_stats, "derived_crit_chance_percent") / 100.0, 0.0, 0.95)
         else:
             crit_chance = 0.0
         expected_hit_damage = non_crit_damage * ((1.0 - crit_chance) + crit_chance * crit_multiplier)
@@ -666,7 +667,13 @@ class SkillEffectCalculator:
         if "width" in runtime_params:
             runtime_params["width"] = float(runtime_params["width"]) * area_multiplier
         if isinstance(runtime_params.get("modules"), list):
-            runtime_params["modules"] = _scaled_modules(runtime_params["modules"], area_multiplier, speed_multiplier)
+            runtime_params["modules"] = _scaled_modules(
+                runtime_params["modules"],
+                area_multiplier,
+                speed_multiplier,
+                round(self._numeric_stat(skill_stats, "chain_count_add")),
+                round(self._numeric_stat(skill_stats, "pierce_count_add")),
+            )
         if "status_chance_scale" in runtime_params:
             runtime_params["status_chance_scale"] = float(runtime_params["status_chance_scale"]) * (
                 1.0 + self._numeric_stat(skill_stats, "status_chance_add_percent") / 100.0
@@ -678,6 +685,20 @@ class SkillEffectCalculator:
         )
         if runtime_params.get("max_targets") != "unlimited":
             runtime_params["max_targets"] = max(1, int(runtime_params.get("max_targets", 1)))
+        if "chain_count" in runtime_params:
+            runtime_params["chain_count"] = max(
+                0,
+                int(runtime_params.get("chain_count", 0)) + round(self._numeric_stat(skill_stats, "chain_count_add")),
+            )
+            if runtime_params.get("max_targets") != "unlimited":
+                runtime_params["max_targets"] = max(int(runtime_params.get("max_targets", 1)), int(runtime_params["chain_count"]) + 1)
+        if "pierce_count" in runtime_params:
+            runtime_params["pierce_count"] = max(
+                0,
+                int(runtime_params.get("pierce_count", 0)) + round(self._numeric_stat(skill_stats, "pierce_count_add")),
+            )
+        if runtime_params.get("pierce") is True and "pierce_count" not in runtime_params:
+            runtime_params["pierce_count"] = max(0, round(self._numeric_stat(skill_stats, "pierce_count_add")))
 
         return FinalSkillInstance(
             active_gem_instance_id=active.instance_id,
@@ -731,7 +752,8 @@ class SkillEffectCalculator:
 
     def _build_skill_stat_context(self, applied: list[AppliedModifier]) -> dict[str, Any]:
         result: dict[str, Any] = {}
-        for stat, value in (self.player_base_stats or {}).items():
+        player_context = aggregate_player_stats(self.player_base_stats)
+        for stat, value in player_context.values.items():
             if not self._stat_can_enter_skill_context(stat):
                 continue
             if stat in BOOLEAN_SKILL_STATS:
@@ -781,8 +803,19 @@ class SkillEffectCalculator:
             return float(value)
         return 0.0
 
+    def _player_numeric_stat(self, stat: str) -> float:
+        if not stat:
+            return 0.0
+        return self._numeric_stat(aggregate_player_stats(self.player_base_stats).values, stat)
 
-def _scaled_modules(modules: object, area_multiplier: float, speed_multiplier: float) -> list[dict[str, Any]]:
+
+def _scaled_modules(
+    modules: object,
+    area_multiplier: float,
+    speed_multiplier: float,
+    chain_count_add: int = 0,
+    pierce_count_add: int = 0,
+) -> list[dict[str, Any]]:
     scaled: list[dict[str, Any]] = []
     if not isinstance(modules, list):
         return scaled
@@ -799,6 +832,10 @@ def _scaled_modules(modules: object, area_multiplier: float, speed_multiplier: f
         for area_key in ("radius", "length", "width", "orbit_radius"):
             if area_key in params:
                 params[area_key] = float(params[area_key]) * area_multiplier
+        if "chain_count" in params:
+            params["chain_count"] = max(0, int(params["chain_count"]) + chain_count_add)
+        if "pierce_count" in params:
+            params["pierce_count"] = max(0, int(params["pierce_count"]) + pierce_count_add)
         next_module["params"] = params
         scaled.append(next_module)
     return scaled

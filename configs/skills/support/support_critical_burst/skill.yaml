@@ -10,4 +10,4 @@ tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_crit"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["attack", "projectile", "spell"]
-effect_stats: ["crit_damage_add_percent", "crit_chance_add_percent"]
+effect_stats: ["crit_damage_rating", "crit_rating"]

@@ -217,6 +217,34 @@ class CharacterPanelSection:
 
 
 @dataclass(frozen=True)
+class MonsterDefinition:
+    monster_id: str
+    numeric_id: int
+    tier: str
+    group_numeric_id: int
+    marker_id: str
+    name_key: str
+    geometry_shape: str
+    primary_color: str
+    accent_color: str
+    size_px: int
+    movement_kind: str
+    movement_interval_sec: float
+    movement_distance_px: int
+    fallback_unit_visual: str
+
+
+@dataclass(frozen=True)
+class MonsterGroup:
+    group_id: str
+    numeric_id: int
+    tier: str
+    name_key: str
+    selection_policy: str
+    member_ids: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class BoardRules:
     rows: int
     columns: int
@@ -403,6 +431,46 @@ def load_character_panel_sections(config_root: Path) -> tuple[CharacterPanelSect
             )
         )
     return tuple(sorted(sections, key=lambda section: (section.order, section.section_id)))
+
+
+def load_monster_definitions(config_root: Path) -> dict[str, MonsterDefinition]:
+    data = load_toml(config_root / "monsters" / "monster_defs.toml")
+    definitions: dict[str, MonsterDefinition] = {}
+    for entry in data.get("monsters", []):
+        monster_id = str(entry["id"])
+        definitions[monster_id] = MonsterDefinition(
+            monster_id=monster_id,
+            numeric_id=int(entry["numeric_id"]),
+            tier=str(entry["tier"]),
+            group_numeric_id=int(entry["group_numeric_id"]),
+            marker_id=str(entry["marker_id"]),
+            name_key=str(entry["name_key"]),
+            geometry_shape=str(entry["geometry_shape"]),
+            primary_color=str(entry["primary_color"]),
+            accent_color=str(entry["accent_color"]),
+            size_px=int(entry["size_px"]),
+            movement_kind=str(entry["movement_kind"]),
+            movement_interval_sec=float(entry["movement_interval_sec"]),
+            movement_distance_px=int(entry["movement_distance_px"]),
+            fallback_unit_visual=str(entry["fallback_unit_visual"]),
+        )
+    return definitions
+
+
+def load_monster_groups(config_root: Path) -> dict[str, MonsterGroup]:
+    data = load_toml(config_root / "monsters" / "monster_groups.toml")
+    groups: dict[str, MonsterGroup] = {}
+    for entry in data.get("monster_groups", []):
+        group_id = str(entry["id"])
+        groups[group_id] = MonsterGroup(
+            group_id=group_id,
+            numeric_id=int(entry["numeric_id"]),
+            tier=str(entry["tier"]),
+            name_key=str(entry["name_key"]),
+            selection_policy=str(entry["selection_policy"]),
+            member_ids=tuple(str(member_id) for member_id in entry.get("member_ids", [])),
+        )
+    return groups
 
 
 def load_board_rules(config_root: Path) -> BoardRules:
@@ -646,7 +714,7 @@ def validate_skill_package_data(
     tags = classification["tags"]
     if not isinstance(tags, list) or not tags or not all(isinstance(tag, str) and tag for tag in tags):
         raise ValueError(f"skill package classification.tags must be a non-empty string array: {package_id}")
-    if classification["damage_type"] not in {"physical", "fire", "cold", "lightning"}:
+    if classification["damage_type"] not in {"physical", "fire", "cold", "lightning", "chaos"}:
         raise ValueError(f"skill package has invalid damage_type: {package_id}")
     if classification["damage_form"] not in {"attack", "spell", "secondary", "damage_over_time"}:
         raise ValueError(f"skill package has invalid damage_form: {package_id}")

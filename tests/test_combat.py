@@ -157,10 +157,57 @@ class CombatTest(unittest.TestCase):
         self.assertIn("damage_zone", event_types)
         self.assertIn("damage", event_types)
 
-        damage_events = session.tick(300)
+        damage_events = session.tick(380)
 
         self.assertGreaterEqual(len(damage_events), 1)
         self.assertLess(session.monsters[0].current_life, 30)
+
+    def test_player_resource_and_defense_stats_affect_incoming_damage(self) -> None:
+        player = Player(
+            player_id="player_1",
+            current_life=100,
+            max_life=100,
+            position=Position(0, 0),
+            item_interaction_reach=2,
+            current_mana=10,
+            max_mana=20,
+            mana_regen_flat=5,
+            current_energy_shield=20,
+            max_energy_shield=20,
+            energy_shield_charge_speed_percent=50,
+            energy_shield_charge_delay_ms=500,
+            armor=100,
+            evasion=1000,
+            attack_block_chance_percent=50,
+            block_damage_reduction_percent=50,
+            fire_resistance_percent=50,
+            chaos_resistance_percent=25,
+        )
+
+        player.regenerate(1000)
+        self.assertEqual(player.current_mana, 15)
+
+        life_damage = player.take_hit(40, damage_type="physical", hit_kind="attack")
+        self.assertLess(life_damage, 20)
+        self.assertLess(player.current_energy_shield, 20)
+        shield_after_hit = player.current_energy_shield
+
+        player.regenerate(400)
+        self.assertEqual(player.current_energy_shield, shield_after_hit)
+        player.regenerate(600)
+        self.assertGreater(player.current_energy_shield, shield_after_hit)
+
+        fire_player = Player(
+            player_id="player_2",
+            current_life=100,
+            max_life=100,
+            position=Position(0, 0),
+            item_interaction_reach=2,
+            fire_resistance_percent=50,
+            chaos_resistance_percent=25,
+        )
+        self.assertEqual(fire_player.take_hit(40, damage_type="fire", avoidable=False), 20)
+        self.assertEqual(fire_player.take_hit(40, damage_type="chaos", avoidable=False), 30)
 
     def test_passive_self_stat_applies_before_combat_and_does_not_release(self) -> None:
         self.inventory.add_instance("active", "active_fire_bolt")

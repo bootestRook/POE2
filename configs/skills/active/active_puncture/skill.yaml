@@ -24,14 +24,9 @@ behavior:
     max_targets: 3
     status_chance_scale: 1
     zone_vfx_key: skill_event.ground_spike.vfx
-    length: 260
+    length: 360
     width: 72
     angle_offset_deg: 0
-    hit_at_ms: 180
-    max_targets: 3
-    facing_policy: locked_or_nearest_target
-    status_chance_scale: 1
-    max_targets: 3
 hit:
   base_damage: 15
   can_crit: true

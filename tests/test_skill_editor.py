@@ -58,7 +58,7 @@ class SkillEditorTest(unittest.TestCase):
         self.assertEqual(fire_bolt["detail"]["damage_type"], "fire")
         self.assertEqual(fire_bolt["detail"]["damage_form"], "spell")
         self.assertEqual(fire_bolt["detail"]["tags"], ["spell", "fire", "projectile"])
-        self.assertEqual(fire_bolt["detail"]["cooldown_ms"], 700)
+        self.assertEqual(fire_bolt["detail"]["cooldown_ms"], 850)
         self.assertEqual(fire_bolt["detail"]["base_damage"], 12)
         self.assertGreater(fire_bolt["package_data"]["behavior"]["params"]["projectile_speed"], 0)
 
@@ -202,7 +202,7 @@ class SkillEditorTest(unittest.TestCase):
         self.assertEqual(projectile["params"]["trajectory"], "ballistic")
         self.assertEqual(projectile["params"]["impact_marker_id"], "fungal_impact")
         self.assertEqual(damage_zone["trigger"]["trigger_marker_id"], "fungal_impact")
-        self.assertEqual(damage_zone["trigger"]["trigger_delay_ms"], 420)
+        self.assertEqual(damage_zone["trigger"]["trigger_delay_ms"], 320)
         self.assertEqual(damage_zone["params"]["origin_policy"], "trigger_position")
 
     def test_migrated_skill_packages_are_openable_without_manual_whitelist(self) -> None:
@@ -214,6 +214,7 @@ class SkillEditorTest(unittest.TestCase):
             "active_frost_nova",
             "active_puncture",
             "active_lightning_chain",
+            "active_lava_orb",
             "active_fungal_petards",
         }
 
@@ -235,18 +236,15 @@ class SkillEditorTest(unittest.TestCase):
         self.assertIn({"value": "on_projectile_hit", "text": "投射物命中时"}, options["damage_timings"])
         self.assertIn({"value": "final_damage", "text": "最终伤害"}, options["preview_fields"])
 
-    def test_unmigrated_active_skills_are_locked(self) -> None:
+    def test_all_active_skill_packages_are_migrated_and_openable(self) -> None:
         entries = self.entries_by_id()
         self.assertEqual(tuple(entries), ACTIVE_SKILL_ORDER)
         for skill_id in ACTIVE_SKILL_ORDER:
-            if skill_id in {"active_fire_bolt", "active_ice_shards", "active_penetrating_shot", "active_frost_nova", "active_puncture", "active_lightning_chain", "active_fungal_petards"}:
-                continue
-            self.assertFalse(entries[skill_id]["migrated"])
-            self.assertFalse(entries[skill_id]["openable"])
-            self.assertFalse(entries[skill_id]["editable"])
-            self.assertEqual(entries[skill_id]["status_text"], "未迁移 / 不可编辑")
-            self.assertIsNone(entries[skill_id]["detail"])
-            self.assertIsNone(entries[skill_id]["package_data"])
+            self.assertTrue(entries[skill_id]["migrated"])
+            self.assertTrue(entries[skill_id]["openable"])
+            self.assertTrue(entries[skill_id]["editable"])
+            self.assertIsNotNone(entries[skill_id]["detail"])
+            self.assertIsNotNone(entries[skill_id]["package_data"])
 
     def test_modifier_stack_view_reads_testable_modifiers(self) -> None:
         modifier_stack = self.view["modifier_stack"]
@@ -403,12 +401,10 @@ class SkillEditorTest(unittest.TestCase):
         self.assertTrue(skills["active_frost_nova"]["testable"])
         self.assertTrue(skills["active_puncture"]["testable"])
         self.assertTrue(skills["active_lightning_chain"]["testable"])
+        self.assertTrue(skills["active_lava_orb"]["testable"])
         self.assertTrue(skills["active_fungal_petards"]["testable"])
         for skill_id in ACTIVE_SKILL_ORDER:
-            if skill_id in {"active_fire_bolt", "active_ice_shards", "active_penetrating_shot", "active_frost_nova", "active_puncture", "active_lightning_chain", "active_fungal_petards"}:
-                continue
-            self.assertFalse(skills[skill_id]["testable"])
-            self.assertEqual(skills[skill_id]["status_text"], "未迁移 / 不可测试")
+            self.assertTrue(skills[skill_id]["testable"])
         self.assertIn("single_dummy", scenes)
         self.assertIn("three_horizontal", scenes)
         self.assertIn("vertical_queue", scenes)
@@ -566,6 +562,8 @@ class SkillEditorTest(unittest.TestCase):
             "melee_arc",
             "chain_segment",
             "area_spawn",
+            "orbit_spawn",
+            "orbit_tick",
             "projectile_spawn",
             "projectile_impact",
             "damage_zone_prime",

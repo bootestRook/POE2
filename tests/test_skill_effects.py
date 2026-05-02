@@ -559,9 +559,9 @@ class SkillEffectTest(unittest.TestCase):
 
     def test_v1_critical_expectation_fields_are_exposed(self) -> None:
         self.calculator.player_base_stats = {
-            "base_crit_chance_percent": 95,
-            "crit_chance_add_percent": 20,
-            "crit_damage_add_percent": 50,
+            "base_crit_chance_percent": 5,
+            "crit_rating": 600,
+            "crit_damage_rating": 1000,
         }
         self.inventory.add_instance("active", "active_fire_bolt")
         self.board.mount_gem("active", 0, 0)
@@ -569,9 +569,11 @@ class SkillEffectTest(unittest.TestCase):
         final_skill = self.calculator.calculate_all()[0]
 
         self.assertEqual(final_skill.final_damage, 12)
-        self.assertEqual(final_skill.crit_chance, 1)
-        self.assertEqual(final_skill.crit_multiplier, 2)
-        self.assertEqual(final_skill.expected_hit_damage, 24)
+        self.assertAlmostEqual(final_skill.skill_stats["derived_crit_chance_percent"], 27.5)
+        self.assertAlmostEqual(final_skill.skill_stats["derived_crit_damage_percent"], 250)
+        self.assertAlmostEqual(final_skill.crit_chance, 0.275)
+        self.assertAlmostEqual(final_skill.crit_multiplier, 2.5)
+        self.assertAlmostEqual(final_skill.expected_hit_damage, 16.95)
 
     def test_cannot_crit_forces_expected_damage_to_non_critical_damage(self) -> None:
         self.calculator.player_base_stats = {
@@ -588,6 +590,50 @@ class SkillEffectTest(unittest.TestCase):
         self.assertEqual(final_skill.crit_chance, 0)
         self.assertEqual(final_skill.crit_multiplier, 2)
         self.assertEqual(final_skill.expected_hit_damage, final_skill.final_damage)
+
+    def test_chain_and_pierce_count_player_stats_enter_runtime_params(self) -> None:
+        self.calculator.player_base_stats = {"chain_count_add": 2}
+        self.inventory.add_instance("active", "active_lightning_chain")
+        self.board.mount_gem("active", 0, 0)
+
+        chain_skill = self.calculator.calculate_all()[0]
+
+        self.assertEqual(chain_skill.runtime_params["chain_count"], 6)
+        self.assertEqual(chain_skill.runtime_params["max_targets"], 7)
+
+        inventory, board, calculator = self._fresh_calculator()
+        calculator.player_base_stats = {"pierce_count_add": 3}
+        inventory.add_instance("active", "active_penetrating_shot")
+        board.mount_gem("active", 0, 0)
+
+        pierce_skill = calculator.calculate_all()[0]
+
+        self.assertEqual(pierce_skill.runtime_params["pierce_count"], 6)
+
+    def test_player_global_board_power_and_conduit_stats_scale_routing(self) -> None:
+        self.calculator.player_base_stats = {
+            "source_power_row": 10,
+            "target_power_row": 20,
+            "conduit_power_row": 40,
+            "relation_effect_final_percent": 5,
+        }
+        self.inventory.add_instance("active", "active_fire_bolt")
+        self.inventory.add_instance("support", "support_fire_mastery")
+        self.inventory.add_instance("conduit", "support_row_conduit")
+        self.board.mount_gem("active", 0, 0)
+        self.board.mount_gem("support", 0, 3)
+        self.board.mount_gem("conduit", 0, 6)
+
+        final_skill = self.calculator.calculate_all()[0]
+        fire_modifier = next(
+            modifier for modifier in final_skill.applied_modifiers if modifier.stat == "fire_damage_add_percent"
+        )
+        conduit_modifier = next(
+            modifier for modifier in final_skill.applied_modifiers if modifier.stat == "conduit_multiplier"
+        )
+
+        self.assertAlmostEqual(fire_modifier.value, 43.659)
+        self.assertAlmostEqual(conduit_modifier.value, 1.75)
 
     def test_adjacent_relation_takes_priority_over_row_column_or_box(self) -> None:
         self.inventory.add_instance("active", "active_fire_bolt")

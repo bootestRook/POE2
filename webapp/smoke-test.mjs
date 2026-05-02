@@ -1,10 +1,19 @@
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, mkdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
+import { createRequire } from "node:module";
 
 const root = process.cwd();
+const require = createRequire(import.meta.url);
 const app = readFileSync(join(root, "webapp", "App.tsx"), "utf8");
 const css = readFileSync(join(root, "webapp", "styles.css"), "utf8");
+const mapSpawnRuntime = readFileSync(join(root, "webapp", "mapSpawnRuntime.ts"), "utf8");
+const mapSpawnConfig = JSON.parse(readFileSync(join(root, "configs", "monsters", "map_spawn_v1.json"), "utf8"));
+const battleGeometryRenderer = readFileSync(join(root, "webapp", "battleGeometryRenderer.ts"), "utf8");
+const battleGeometryCanvas = readFileSync(join(root, "webapp", "BattleGeometryCanvas.tsx"), "utf8");
+const abstractGeometryRollback = readFileSync(join(root, "openspec", "changes", "migrate-abstract-geometric-visual-system", "rollback.md"), "utf8");
+const mapTileRenderer = readFileSync(join(root, "webapp", "mapTileRenderer.ts"), "utf8");
+const mapTileVisuals = readFileSync(join(root, "webapp", "mapTileVisuals.ts"), "utf8");
 const bakedMapAssets = readFileSync(join(root, "webapp", "bakedMapAssets.ts"), "utf8");
 const bakedMapLoader = readFileSync(join(root, "webapp", "bakedMapLoader.ts"), "utf8");
 const html = readFileSync(join(root, "index.html"), "utf8");
@@ -235,8 +244,12 @@ const requiredCode = [
   "map-editor-wall-corner",
   "map-editor-wall-corner-nw",
   "map-editor-wall-open-",
-  "map-editor-dungeon-floor-v2.png",
-  "map-editor-dungeon-wall-v2.png",
+  "abstract-geometric-map-tiles",
+  "terrain: runtimeUsesEditorMap",
+  "renderGeometricMapTiles",
+  "stableMapTileSeed",
+  "ground_cracked",
+  "wall_top",
   "map-editor-cell-selected",
   "map-editor-spawn-marker",
   "map-editor-shift-controls",
@@ -305,7 +318,7 @@ const requiredCode = [
 ];
 
 for (const text of requiredCode) {
-  if (!app.includes(text) && !css.includes(text)) {
+  if (![app, css, battleGeometryRenderer, battleGeometryCanvas, mapTileRenderer, mapTileVisuals].some((source) => source.includes(text))) {
     if (isNonAsciiCheck(text)) continue;
     throw new Error(`缂哄皯 WebApp 浜や簰鎴栨牱寮忚兘鍔涳細${text}`);
   }
@@ -820,6 +833,54 @@ for (const text of phase2Text) {
   }
 }
 
+const abstractGeometryPhase2Checks = [
+  [app, "CANVAS_GEOMETRY_BATTLE_OBJECTS = true", "Phase 2 battle objects must default to Canvas geometry rendering."],
+  [app, "shouldRenderLegacyBattleItem", "Phase 2 must keep a narrow legacy fallback boundary."],
+  [app, "CANVAS_GEOMETRY_SKILL_EFFECTS = true", "Phase 3 skill effects must default to Canvas geometry rendering."],
+  [app, "return item.kind === \"hit-vfx\" && !CANVAS_GEOMETRY_SKILL_EFFECTS;", "Player, enemies, projectiles and hit VFX must not be emitted as per-object DOM by default."],
+  [app, "!CANVAS_GEOMETRY_SKILL_EFFECTS && texts.map", "Damage numbers must stay behind the Canvas skill-effects fallback switch."],
+  [app, "hits: hitVfxs.map", "Hit VFX must be forwarded into the Canvas geometry snapshot."],
+  [app, "texts: texts.map", "Floating damage numbers must be forwarded into the Canvas geometry snapshot."],
+  [app, "moving: Math.hypot(playerVisual.current.movementVector.x", "Player geometry snapshot must preserve visual movement state for rotation speed."],
+  [app, "velocityX: bolt.velocityX", "Projectile geometry snapshot must preserve projectile velocity input."],
+  [app, "projectileSpeed: bolt.projectileSpeed", "Projectile geometry snapshot must preserve projectile speed input."],
+  [battleGeometryCanvas, "data-canvas-objects=\"entities-projectiles\"", "Canvas layer must declare that entities and projectiles are canvas-rendered."],
+  [battleGeometryCanvas, "data-geometry-enemies={viewportSnapshot.enemies.length}", "Canvas layer must expose enemy count for pressure validation."],
+  [battleGeometryCanvas, "data-geometry-projectiles={viewportSnapshot.projectiles.length}", "Canvas layer must expose projectile count for pressure validation."],
+  [battleGeometryCanvas, "window.requestAnimationFrame(draw)", "Canvas geometry rendering must run on requestAnimationFrame for smooth player marker rotation."],
+  [battleGeometryCanvas, "renderBattleGeometry(canvas, snapshotRef.current, frameTimeMs)", "Canvas geometry renderer must receive the RAF frame time."],
+  [battleGeometryRenderer, "drawBattleEntityMarkers", "Canvas renderer must draw player and enemies."],
+  [battleGeometryRenderer, "drawProjectileTrail", "Canvas renderer must draw projectile trails."],
+  [battleGeometryRenderer, "drawHitMarkers", "Canvas renderer must draw hit feedback."],
+  [battleGeometryRenderer, "drawFloatingTexts", "Canvas renderer must draw floating damage numbers."],
+  [battleGeometryRenderer, "drawMeleeArc", "Canvas renderer must draw melee arcs."],
+  [battleGeometryRenderer, "drawDamageZoneRect", "Canvas renderer must draw rectangular damage zones."],
+  [battleGeometryRenderer, "drawGroundShadow", "Canvas renderer must draw lightweight geometric shadows without CSS filters."],
+  [battleGeometryRenderer, "PLAYER_IDLE_ROTATION_RADIANS_PER_SECOND = Math.PI / 6", "Player idle triangle rotation must stay at 30 degrees per second."],
+  [battleGeometryRenderer, "PLAYER_MOVING_ROTATION_RADIANS_PER_SECOND = Math.PI * 5 / 6", "Player moving triangle rotation must stay at 150 degrees per second."],
+  [battleGeometryRenderer, "PLAYER_ROTATION_BY_CANVAS", "Player triangle rotation must accumulate per canvas without phase snapping when movement state changes."],
+  [battleGeometryRenderer, "frameTimeMs = performance.now()", "Player triangle rotation must be clocked by render frame time instead of state snapshot time."],
+  [battleGeometryRenderer, "previous.rotation + deltaSeconds * rotationSpeed", "Player triangle rotation must advance continuously when speed changes."],
+  [battleGeometryRenderer, "projectileShapeSides", "Canvas renderer must map projectile families to geometric shapes."]
+];
+
+for (const [source, token, message] of abstractGeometryPhase2Checks) {
+  if (!source.includes(token)) throw new Error(message);
+}
+
+const abstractGeometryHudChecks = [
+  [css, "abstract-geometric HUD skin rollback marker", "Phase 4 HUD skin must keep an explicit rollback marker."],
+  [css, "--geo-ui-bg", "Phase 4 HUD skin must use shared geometric UI variables."],
+  [css, ".combat-feed", "Phase 4 HUD skin must include combat log styling."],
+  [css, ".skill-test-debug-toggles", "Phase 4 HUD skin must include debug text styling."],
+  [abstractGeometryRollback, "These changes are CSS-only skin changes", "HUD rollback record must state that this is CSS-only."],
+  [abstractGeometryRollback, "must not be used to change player movement", "HUD rollback record must protect gameplay and state flow."]
+];
+
+for (const [source, token, message] of abstractGeometryHudChecks) {
+  if (!source.includes(token)) throw new Error(message);
+}
+
 const damageRichTextChecks = [
   "\"鐏劙\": \"damage-fire\"",
   "\"鍐伴湝\": \"damage-cold\"",
@@ -883,8 +944,187 @@ if (!/\.legal-drop-cell\s*{[^}]*inset 0 0 0 1px/s.test(css)) {
   throw new Error("鍚堟硶鏍奸珮浜繀椤讳繚鎸佷负缁嗗唴鎻忚竟锛屼笉鑳藉帇杩囦節瀹牸鍒嗗尯绾匡拷?");
 }
 
+const proceduralSpawnStaticChecks = [
+  [app, "generateProceduralMonsterSpawns", "App must call the procedural monster spawn runtime."],
+  [app, "程序化生怪调试", "App must expose Chinese procedural spawn debug text."],
+  [app, "当前地图类型", "Procedural debug panel must show map type in Chinese."],
+  [app, "总生怪预算", "Procedural debug panel must show budget in Chinese."],
+  [app, "已生成怪物包数量", "Procedural debug panel must show generated pack count in Chinese."],
+  [app, "普通", "Procedural debug panel must show normal monster count."],
+  [app, "魔法", "Procedural debug panel must show magic monster count."],
+  [app, "稀有", "Procedural debug panel must show rare monster count."],
+  [app, "filter_reason", "Procedural debug panel must include filtered spawn reasons."],
+  [css, ".procedural-spawn-debug-panel", "Procedural spawn debug panel must be styled."],
+  [mapSpawnRuntime, "入口区域不刷怪", "Runtime must expose the entrance filter reason in Chinese."],
+  [mapSpawnRuntime, "距离玩家出生点过近", "Runtime must expose the player spawn distance filter reason in Chinese."],
+  [mapSpawnRuntime, "不可行走", "Runtime must expose the unwalkable filter reason in Chinese."],
+  [mapSpawnRuntime, "阻挡格", "Runtime must expose the blocker filter reason in Chinese."],
+  [mapSpawnRuntime, "怪物包距离过近", "Runtime must expose the pack spacing filter reason in Chinese."],
+  [mapSpawnRuntime, "预算不足", "Runtime must expose the budget filter reason in Chinese."],
+  [mapSpawnRuntime, "区域规则不允许", "Runtime must expose the zone rule filter reason in Chinese."],
+  [mapSpawnRuntime, "createSeededRandom", "Runtime must use stable seeded randomness."],
+  [mapSpawnRuntime, "boss_room", "Runtime must support boss_room."],
+  [mapSpawnRuntime, "large_room", "Runtime must support large_room."]
+];
+
+for (const [source, token, message] of proceduralSpawnStaticChecks) {
+  if (!source.includes(token)) throw new Error(message);
+}
+
+if (!Array.isArray(mapSpawnConfig.map_spawn_profiles) || mapSpawnConfig.map_spawn_profiles.length === 0) {
+  throw new Error("map_spawn_v1.json must define map_spawn_profiles.");
+}
+if (!Array.isArray(mapSpawnConfig.monster_packs) || mapSpawnConfig.monster_packs.length === 0) {
+  throw new Error("map_spawn_v1.json must define monster_packs.");
+}
+if (!mapSpawnConfig.monster_rarity_rules) {
+  throw new Error("map_spawn_v1.json must define monster_rarity_rules.");
+}
+for (const packId of ["imp_small", "imp_mixed", "brute_guard", "boss_imp_overseer"]) {
+  if (!mapSpawnConfig.monster_packs.some((pack) => pack.pack_id === packId)) {
+    throw new Error(`map_spawn_v1.json missing monster pack: ${packId}`);
+  }
+}
+for (const zoneType of ["entrance", "corridor", "main_room", "large_room", "dead_end", "boss_room", "exit_area"]) {
+  if (!mapSpawnConfig.map_spawn_profiles[0].zone_rules[zoneType]) {
+    throw new Error(`map_spawn_v1.json missing zone rule: ${zoneType}`);
+  }
+}
+
+runProceduralSpawnRuntimeSmoke();
+
 if (!existsSync(join(root, "dist", "index.html"))) {
   throw new Error("缂哄皯鏋勫缓浜х墿 dist/index.html锛岃鍏堣繍锟?npm run build锟?");
 }
 
 console.log("WebApp smoke test passed.");
+
+function runProceduralSpawnRuntimeSmoke() {
+  const outDir = join(root, ".vite", "map-spawn-smoke");
+  rmSync(outDir, { recursive: true, force: true });
+  mkdirSync(outDir, { recursive: true });
+  execFileSync(process.execPath, [
+    join(root, "node_modules", "typescript", "bin", "tsc"),
+    "webapp/mapSpawnRuntime.ts",
+    "--target", "ES2020",
+    "--module", "CommonJS",
+    "--moduleResolution", "Node",
+    "--skipLibCheck",
+    "--esModuleInterop",
+    "--resolveJsonModule",
+    "--outDir", outDir,
+    "--noEmitOnError", "true"
+  ], { cwd: root, encoding: "utf8" });
+
+  const { generateProceduralMonsterSpawns } = require(join(outDir, "mapSpawnRuntime.js"));
+  const map = createProceduralSmokeMap();
+  const config = {
+    ...mapSpawnConfig,
+    map_spawn_profiles: [{
+      ...mapSpawnConfig.map_spawn_profiles[0],
+      base_pack_budget: 14,
+      min_distance_from_player_spawn: 160,
+      min_distance_between_packs: 150,
+      max_active_packs: 6
+    }],
+    monster_rarity_rules: {
+      ...mapSpawnConfig.monster_rarity_rules,
+      normal_weight: 0,
+      magic_weight: 100,
+      rare_weight: 100,
+      max_rare_per_map: 2,
+      max_magic_packs_per_map: 6,
+      magic_allowed_zone_types: ["large_room", "boss_room"],
+      rare_allowed_zone_types: ["boss_room"]
+    }
+  };
+  const result = generateProceduralMonsterSpawns(map, config, {
+    seed: "smoke-procedural-spawn",
+    startId: 100,
+    maxCandidatePoints: 90
+  });
+  if (!result.enemies.length) throw new Error("procedural spawn smoke must create enemies.");
+  if (result.debug.spawn_points.some((point) => point.accepted && point.zone_type === "entrance")) {
+    throw new Error("entrance zone must not spawn monsters.");
+  }
+  if (result.enemies.some((enemy) => enemy.x === 5 * 64 + 32 && enemy.y === 5 * 64 + 32)) {
+    throw new Error("blocked grid cell must not spawn monsters.");
+  }
+  const accepted = result.debug.spawn_points.filter((point) => point.accepted);
+  for (let a = 0; a < accepted.length; a += 1) {
+    for (let b = a + 1; b < accepted.length; b += 1) {
+      const distance = Math.hypot(accepted[a].x - accepted[b].x, accepted[a].y - accepted[b].y);
+      if (distance < config.map_spawn_profiles[0].min_distance_between_packs) {
+        throw new Error("procedural monster packs are too close together.");
+      }
+    }
+  }
+  if (result.debug.spent_pack_budget > config.map_spawn_profiles[0].base_pack_budget) {
+    throw new Error("procedural spawn budget exceeded base_pack_budget.");
+  }
+  if (!result.enemies.some((enemy) => enemy.zone_type === "large_room" && enemy.spawn_rarity === "magic")) {
+    throw new Error("large_room must be able to generate magic monsters.");
+  }
+  if (result.debug.rare_monster_count > config.monster_rarity_rules.max_rare_per_map) {
+    throw new Error("rare monster count exceeded max_rare_per_map.");
+  }
+  if (!result.enemies.some((enemy) => enemy.boss && enemy.zone_type === "boss_room")) {
+    throw new Error("boss_room must generate a Boss.");
+  }
+  const reasons = new Set(result.debug.filtered_points.map((point) => point.filter_reason));
+  for (const reason of ["入口区域不刷怪", "阻挡格", "怪物包距离过近"]) {
+    if (!reasons.has(reason)) throw new Error(`procedural spawn smoke missing filter reason: ${reason}`);
+  }
+}
+
+function createProceduralSmokeMap() {
+  const gridWidth = 12;
+  const gridHeight = 12;
+  const gridSize = 64;
+  const walkableGrid = Array.from({ length: gridHeight }, () => Array.from({ length: gridWidth }, () => true));
+  const blockerGrid = Array.from({ length: gridHeight }, () => Array.from({ length: gridWidth }, () => false));
+  blockerGrid[5][5] = true;
+  const point = (gridX, gridY) => ({ x: gridX * gridSize + gridSize / 2, y: gridY * gridSize + gridSize / 2, gridX, gridY });
+  const walkablePoints = [];
+  for (let y = 0; y < gridHeight; y += 1) {
+    for (let x = 0; x < gridWidth; x += 1) walkablePoints.push(point(x, y));
+  }
+  return {
+    id: "smoke_map",
+    displayName: "生怪测试地图",
+    backgroundUrl: "",
+    meta: {
+      id: "smoke_map",
+      biome: "test",
+      display_name: "生怪测试地图",
+      background: "",
+      walkable_mask: "",
+      blocker_mask: "",
+      spawn_mask: "",
+      pixel_width: gridWidth * gridSize,
+      pixel_height: gridHeight * gridSize,
+      world_width: gridWidth * gridSize,
+      world_height: gridHeight * gridSize,
+      grid_size: gridSize,
+      player_spawn_policy: "test",
+      enemy_spawn_policy: "test",
+      elite_spawn_policy: "test",
+      boss_spawn_policy: "test",
+      exit_policy: "test",
+      collision_source: "test",
+      navigation_source: "test"
+    },
+    gridWidth,
+    gridHeight,
+    walkableGrid,
+    blockerGrid,
+    walkablePoints,
+    playerSpawn: point(1, 1),
+    enemySpawnPoints: [point(5, 5), point(5, 6), point(6, 6)],
+    eliteSpawnPoints: [point(8, 3)],
+    bossPoints: [point(10, 10)],
+    exitPoints: [],
+    interactionPoints: [],
+    debugWarnings: []
+  };
+}

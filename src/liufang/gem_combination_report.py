@@ -185,7 +185,7 @@ def _self_stat_passive_case(config_root: Path) -> dict[str, Any]:
     )
     player_stats = api.state()["player_stats"]
     checks = {
-        "max_life_increased": player_stats["max_life"]["value"] == 125.0,
+        "max_life_increased": player_stats["max_life"]["value"] == 128.5,
         "move_speed_increased": player_stats["move_speed"]["value"] == 1.1,
     }
     return _case("self_stat_passives", api, checks, player_stats=player_stats)

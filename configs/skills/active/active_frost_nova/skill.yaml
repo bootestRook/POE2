@@ -20,7 +20,7 @@ behavior:
     shape: circle
     origin_policy: caster
     facing_policy: none
-    radius: 340
+    radius: 380
     expand_duration_ms: 520
     hit_at_ms: 260
     max_targets: 8

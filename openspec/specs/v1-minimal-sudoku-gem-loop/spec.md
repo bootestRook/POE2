@@ -28,28 +28,27 @@ V1 SHALL define and preserve module boundaries for Core Foundation, Content Rule
 - **THEN** they SHALL consume validated Content Rule Data rather than embedding static content tables directly in runtime logic
 
 ### Requirement: 配置拆分与校验
-
-V1 SHALL split configuration into focused files under `configs/` and SHALL NOT use `all.xxx.toml` style aggregate configuration files.
+V1 SHALL split configuration into focused files under `configs/` and SHALL NOT use `all.xxx.toml` style aggregate configuration files. V1 第二阶段 SHALL validate `gem_kind` and `sudoku_digit` independently, and SHALL NOT require random affix generation as part of second-phase acceptance.
 
 #### Scenario: 配置目录结构
-- **WHEN** V1 configuration files are created
-- **THEN** they SHALL be split across `configs/core/`, `configs/player/`, `configs/combat/`, `configs/gems/`, `configs/sudoku_board/`, `configs/skills/`, `configs/affixes/`, `configs/loot/`, and `configs/localization/`
+- **WHEN** V1 第二阶段 configuration files are created or migrated
+- **THEN** they SHALL be split across `configs/core/`, `configs/player/`, `configs/combat/`, `configs/gems/`, `configs/sudoku_board/`, `configs/skills/`, `configs/loot/`, and `configs/localization/`
 
 #### Scenario: 必需配置文件
-- **WHEN** V1 configuration completeness is validated
-- **THEN** the system SHALL require the planned files `id_rules.toml`, `random_rules.toml`, `player_base_stats.toml`, `player_stat_defs.toml`, a left character panel display configuration under `configs/player/`, `damage_types.toml`, `hit_rules.toml`, `status_effects.toml`, `gem_type_defs.toml`, `gem_tag_defs.toml`, `gem_instance_schema.toml`, active/passive/support Skill Package files under `configs/skills/`, `board_layout.toml`, `placement_rules.toml`, `relation_rules.toml`, `effect_routing_rules.toml`, `skill_scaling_rules.toml`, `affix_defs.toml`, `affix_spawn_rules.toml`, `affix_groups.toml`, `affix_tiers.toml`, `gem_drop_pools.toml`, `drop_weight_rules.toml`, and `zh_cn.toml`
+- **WHEN** V1 第二阶段 configuration completeness is validated
+- **THEN** the system SHALL require the planned files `id_rules.toml`, `random_rules.toml`, `player_base_stats.toml`, `player_stat_defs.toml`, `damage_types.toml`, `hit_rules.toml`, `status_effects.toml`, `gem_type_defs.toml`, `active_skill_gems.toml`, `passive_skill_gems.toml`, `support_gems.toml`, `gem_tag_defs.toml`, `gem_instance_schema.toml`, `board_layout.toml`, `placement_rules.toml`, `relation_rules.toml`, `effect_routing_rules.toml`, `skill_templates.toml`, `skill_scaling_rules.toml`, `gem_drop_pools.toml`, `drop_weight_rules.toml`, and `zh_cn.toml`
+
+#### Scenario: affix 残留文件不作为第二阶段必需能力
+- **WHEN** `configs/affixes/` 中的既有 residual files 仍存在
+- **THEN** validation MAY keep them readable for legacy compatibility but SHALL NOT require random affix spawning, random affix UI, or random affix generation behavior for this change
 
 #### Scenario: 配置引用校验
-- **WHEN** V1 configuration validation runs
-- **THEN** it SHALL validate unique IDs, existing references, legal tags, legal stats, legal `gem_type`, legal affix groups, legal value ranges, required Chinese localization keys, player stat V1 status metadata, player base stat coverage, and left character panel stat bindings
-
-#### Scenario: 多余属性引用校验失败
-- **WHEN** V1 configuration validation finds `pickup_radius`, `active_skill_slots`, `passive_skill_slots`, or `skill_slots_active` referenced as a player stat
-- **THEN** validation SHALL fail instead of treating the reference as an alias or ignored field
+- **WHEN** V1 第二阶段 configuration validation runs
+- **THEN** it SHALL validate unique IDs, existing references, legal tags, legal stats, legal `gem_kind`, legal `sudoku_digit`, legal relation IDs, legal routing rules, and required Chinese localization keys
 
 ### Requirement: 玩家属性定义
 
-V1 SHALL define the player stats required for character display, combat, skill calculation, gem affixes, and sudoku-board stat routing, with explicit V1 status metadata that prevents non-effective stats from affecting runtime.
+V1 SHALL define the player stats required for character display, combat, skill calculation, gem affixes, loot, resource/defense runtime, and sudoku-board stat routing, with explicit metadata that separates backend-only, runtime-effective, and panel-visible stats.
 
 #### Scenario: 属性定义包含状态元数据
 - **WHEN** `player_stat_defs.toml` is validated
@@ -57,7 +56,11 @@ V1 SHALL define the player stats required for character display, combat, skill c
 
 #### Scenario: V1 生效属性集合完整
 - **WHEN** `player_stat_defs.toml` is validated for V1 runtime-effective stats
-- **THEN** it SHALL include `max_life`, `current_life`, `move_speed`, `support_link_limit`, `damage_add_percent`, `damage_final_percent`, `hit_damage_add_percent`, `hit_damage_final_percent`, `physical_damage_add_percent`, `fire_damage_add_percent`, `cold_damage_add_percent`, `lightning_damage_add_percent`, `elemental_damage_add_percent`, `attack_damage_add_percent`, `spell_damage_add_percent`, `melee_damage_add_percent`, `ranged_damage_add_percent`, `projectile_damage_add_percent`, `area_damage_add_percent`, `attack_speed_add_percent`, `cast_speed_add_percent`, `skill_speed_final_percent`, `cooldown_reduction_percent`, `added_cooldown_ms`, `projectile_speed_add_percent`, `base_crit_chance_percent`, `crit_chance_add_percent`, `crit_damage_add_percent`, `cannot_crit`, `area_add_percent`, `projectile_count_add`, `chain_count_add`, `pierce_count_add`, `status_chance_add_percent`, `active_gem_level_add`, `gem_level`, `source_power_row`, `source_power_column`, `source_power_box`, `target_power_row`, `target_power_column`, `target_power_box`, `conduit_power_row`, `conduit_power_column`, and `conduit_power_box`
+- **THEN** it SHALL include primary attributes, life, mana, energy shield, defense, block, resistance, mobility, damage overview, backend damage-type, skill type, speed/cooldown, rating-based crit, skill shape, status, effect, conversion, drop, and board-power stats that are not explicitly excluded by this change
+
+#### Scenario: 明确排除的属性不作为 V1 玩家面板属性
+- **WHEN** player stat definitions and panel config are validated
+- **THEN** `support_link_limit`, `mana_cost_multiplier_percent`, `mana_seal_percent`, `projectile_spread_angle_add`, `active_gem_level_add`, `passive_gem_level_add`, `support_gem_level_add`, and `gem_level` SHALL NOT be required player panel rows
 
 #### Scenario: 多余玩家属性被清理
 - **WHEN** player stat definitions, base stats, API state, UI type contracts, tests, or validation rules are inspected
@@ -65,7 +68,7 @@ V1 SHALL define the player stats required for character display, combat, skill c
 
 #### Scenario: V1 外属性可定义但不可误生效
 - **WHEN** a stat has `v1_status` equal to `V1_DISPLAY_ONLY`, `V1_RESERVED`, or `V2_PLUS`
-- **THEN** runtime calculation SHALL NOT apply it to combat, skill results, movement, drops, or board routing unless a later spec changes that status
+- **THEN** runtime calculation SHALL NOT apply it to combat, skill results, movement, drops, or board routing unless this or a later spec explicitly gives that stat a V1 runtime consumer
 
 #### Scenario: 基础值与属性定义一致
 - **WHEN** `player_base_stats.toml` is validated
@@ -75,36 +78,50 @@ V1 SHALL define the player stats required for character display, combat, skill c
 - **WHEN** player stat definitions are validated
 - **THEN** any stat whose `v1_status` is not `V1_ACTIVE` SHALL have `affix_spawn_enabled_v1 = false`
 
-### Requirement: 宝石定义与宝石实例
+#### Scenario: 混沌命名替代腐蚀命名
+- **WHEN** damage type, resistance, localization, or player stat ids are validated
+- **THEN** first-party V1 configs SHALL use chaos naming for the former erosion damage/resistance concept
 
-V1 SHALL separate base gem definitions from player-owned gem instances.
+### Requirement: 宝石定义与宝石实例
+V1 SHALL separate base gem definitions from player-owned gem instances, and V1 第二阶段 SHALL classify gems by `gem_kind` while representing sudoku legality by `sudoku_digit`.
 
 #### Scenario: 宝石实例引用基础定义
 - **WHEN** a gem drops and is saved to inventory
-- **THEN** the saved instance SHALL include an `instance_id`, `base_gem_id`, `gem_type`, `rarity`, `level`, affix lists, and lock state while referencing the base definition by ID
+- **THEN** the saved instance SHALL include an `instance_id`, `base_gem_id`, `gem_kind`, `sudoku_digit`, `rarity`, `level`, lock state, and board state while referencing the base definition by ID
 
 #### Scenario: 主动技能宝石清单
 - **WHEN** active skill gem content is validated
-- **THEN** it SHALL include exactly the V1 active skill IDs `active_fire_bolt`, `active_ice_shards`, `active_lightning_chain`, `active_frost_nova`, `active_puncture`, `active_penetrating_shot`, `active_lava_orb`, and `active_fungal_petards`
+- **THEN** it SHALL include the existing V1 active skill IDs `active_fire_bolt`, `active_ice_shards`, `active_lightning_chain`, `active_frost_nova`, `active_puncture`, `active_penetrating_shot`, `active_lava_orb`, and `active_fungal_petards`, each using `gem_kind = active_skill`
+
+#### Scenario: 被动技能宝石结构
+- **WHEN** passive skill gem content is validated
+- **THEN** it SHALL be loaded from passive skill gem definitions, use `gem_kind = passive_skill`, declare `sudoku_digit`, use Chinese localization keys, and declare non-release passive effects or self-stat contributions
 
 #### Scenario: 辅助宝石结构
 - **WHEN** support gem content is validated
-- **THEN** it SHALL include 24 support gem structures split into 8 general skill modifiers, 4 damage type enhancers, 4 projectile / area specialists, 3 high-risk high-reward supports, 2 skill level supports, and 3 row / column / box conduits
+- **THEN** existing support gem structures SHALL remain loadable with `gem_kind = support`, explicit `sudoku_digit`, explicit apply filters, and no random affix fields added by this change
 
 #### Scenario: 辅助宝石适用条件
 - **WHEN** a support gem definition is validated
-- **THEN** it SHALL declare explicit apply filters using tags and SHALL NOT rely only on stat field names to imply affected targets
+- **THEN** it SHALL declare explicit apply filters using tags or target kind rules and SHALL NOT rely only on stat field names to imply affected targets
 
 ### Requirement: 数独宝石盘
+V1 SHALL provide a 9x9 sudoku gem board with row, column, box, and orthogonal adjacency relationships. V1 第二阶段 sudoku legality SHALL be based only on `sudoku_digit`.
 
-V1 SHALL provide a 9x9 sudoku gem board with row, column, box, and orthogonal adjacency relationships.
-
-#### Scenario: gem_type 合法性检查
+#### Scenario: sudoku_digit 合法性检查
 - **WHEN** a gem is placed on the board
-- **THEN** the board SHALL validate that its `gem_type` is between `gem_type_1` and `gem_type_9`
+- **THEN** the board SHALL validate that its `sudoku_digit` is between 1 and 9
 
 #### Scenario: 同行同列同宫不重复
-- **WHEN** the board contains two placed gems with the same `gem_type` in the same row, column, or 3x3 box
+- **WHEN** the board contains two placed gems with the same `sudoku_digit` in the same row, column, or 3x3 box
+- **THEN** the placement SHALL be invalid regardless of their `gem_kind`
+
+#### Scenario: 同类不同数字不冲突
+- **WHEN** the board contains two placed gems with the same `gem_kind` but different `sudoku_digit` in the same row, column, or 3x3 box
+- **THEN** the placement SHALL remain valid unless another rule is violated
+
+#### Scenario: 异类同数字仍冲突
+- **WHEN** the board contains two placed gems with different `gem_kind` but the same `sudoku_digit` in the same row, column, or 3x3 box
 - **THEN** the placement SHALL be invalid
 
 #### Scenario: 空盘不可进入战斗
@@ -113,43 +130,19 @@ V1 SHALL provide a 9x9 sudoku gem board with row, column, box, and orthogonal ad
 
 #### Scenario: 关系计算
 - **WHEN** two gems are placed on the board
-- **THEN** Gem Board Runtime SHALL calculate whether they are in the same row, same column, same 3x3 box, or orthogonally adjacent
-
-### Requirement: 随机词缀
-
-V1 SHALL include random gem affixes as a required part of the loop rather than a deferred feature, and SHALL only generate affixes whose stats are explicitly V1 affix-spawn enabled.
-
-#### Scenario: 稀有度决定词缀数量
-- **WHEN** a gem instance is generated
-- **THEN** `normal` / 普通 SHALL have 0 random affixes, `magic` / 魔法 SHALL have 1 random affix, and `rare` / 稀有 SHALL have 2 random affixes
-
-#### Scenario: 词缀类型覆盖
-- **WHEN** affix definitions are validated
-- **THEN** they SHALL cover `prefix`, `suffix`, and `implicit` affixes
-
-#### Scenario: 词缀大类覆盖
-- **WHEN** V1 affix pools are validated
-- **THEN** they SHALL cover skill numeric affixes, tag strengthening affixes, board source affixes, board target affixes, high-risk cost affixes, and affix mutual exclusion groups
-
-#### Scenario: 盘面词缀方向
-- **WHEN** board-related affixes are validated
-- **THEN** they SHALL include `source_power_row`, `source_power_column`, `source_power_box`, `target_power_row`, `target_power_column`, and `target_power_box`
-
-#### Scenario: 禁止非 V1 生效词缀生成
-- **WHEN** affix definitions or affix spawn pools are validated
-- **THEN** every randomly spawnable affix stat SHALL reference a player stat with `v1_status = "V1_ACTIVE"` and `affix_spawn_enabled_v1 = true`
-
-#### Scenario: 词缀生成流程
-- **WHEN** Loot Runtime generates a gem instance
-- **THEN** it SHALL select base gem type, select rarity, determine affix count, filter affixes by gem tags, filter affixes by V1 stat spawn eligibility, apply affix weights, enforce mutual exclusion groups, roll value ranges, and save the result as a gem instance
+- **THEN** Gem Board Runtime SHALL calculate whether they are in the same row, same column, same 3x3 box, or orthogonally adjacent without checking `gem_kind`
 
 ### Requirement: 掉落与库存
 
-V1 SHALL support gem drops, pickup, inventory storage, and board mount / unmount state.
+V1 SHALL support gem drops, pickup, inventory storage, drop quantity scaling, drop rarity scaling, and board mount / unmount state.
 
 #### Scenario: 只掉落宝石
 - **WHEN** a combat reward drop is generated
 - **THEN** Loot Runtime SHALL generate only active skill gems or support gems and SHALL NOT generate equipment, currency, maps, fragments, or materials
+
+#### Scenario: 玩家掉落属性影响宝石掉落
+- **WHEN** `gem_drop_quantity_add_percent` or `gem_drop_rarity_add_percent` is present in the player runtime stat context
+- **THEN** Loot Runtime SHALL apply those values to gem drop count and gem rarity selection
 
 #### Scenario: 拾取入库
 - **WHEN** the player picks up a dropped gem within pickup range
@@ -160,8 +153,7 @@ V1 SHALL support gem drops, pickup, inventory storage, and board mount / unmount
 - **THEN** Inventory / Storage SHALL update the gem's board occupancy state and Gem Board Runtime SHALL recalculate legality and relationships
 
 ### Requirement: 数独盘效果路由
-
-V1 SHALL route gem effects through Source, Target, Relation, and Power using fixed enumerated rules.
+V1 SHALL route gem effects through Source, Target, Relation, and Power using fixed enumerated rules. V1 第二阶段 SHALL support `support -> active_skill`, `support -> passive_skill`, and `passive_skill -> active_skill` while preventing recursive propagation.
 
 #### Scenario: 基础路由公式
 - **WHEN** a source gem effect is routed to a target gem
@@ -175,44 +167,74 @@ V1 SHALL route gem effects through Source, Target, Relation, and Power using fix
 - **WHEN** two gems are both orthogonally adjacent and in the same row or column
 - **THEN** the system SHALL calculate the relation once using the adjacent relationship and SHALL NOT add a second row or column calculation
 
+#### Scenario: support 影响主动技能
+- **WHEN** a support gem matches an active skill gem through relation and apply filters
+- **THEN** the support gem SHALL contribute modifiers to the active skill gem
+
+#### Scenario: support 影响被动技能
+- **WHEN** a support gem matches a passive skill gem through relation and apply filters
+- **THEN** the support gem SHALL contribute modifiers to the passive skill gem before passive-to-active aggregation
+
+#### Scenario: passive 影响主动技能
+- **WHEN** a passive skill gem has valid relation or aura rules for an active skill gem
+- **THEN** the passive skill gem SHALL contribute non-release modifiers to the active skill final preview and combat instance
+
+#### Scenario: support 不影响 support
+- **WHEN** source / target routing evaluates a support gem targeting another support gem
+- **THEN** the system SHALL reject that route and SHALL NOT apply modifiers
+
 #### Scenario: 防重复和防递归
 - **WHEN** source / target routing is evaluated
-- **THEN** the same source gem SHALL affect the same target gem for the same stat at most once, the system SHALL NOT perform infinite recursive propagation, and conduit gems SHALL only amplify without creating new secondary propagation chains
+- **THEN** the same source gem SHALL affect the same target gem for the same stat at most once, `passive_skill -> passive_skill -> active_skill` recursive propagation SHALL NOT occur, and conduit gems SHALL only amplify without creating new secondary propagation chains
 
 ### Requirement: 技能最终效果计算
-V1 SHALL calculate final skill effects from active skill definitions, player base stats, active gem modifiers, support effects, passive effects, board routing, conduit amplification, additive modifiers, final modifiers, critical expectation, runtime parameter modifiers, and preview formula outputs.
+V1 SHALL calculate final active skill effects from active skill definitions, support effects, passive contributions, board routing, conduit amplification, additive modifiers, and final modifiers. V1 第二阶段 SHALL NOT use random affixes in final skill calculation.
 
 #### Scenario: 固定计算顺序
 - **WHEN** the final effect of an active skill is calculated
-- **THEN** the system SHALL read the active skill base definition, read V1-active player base stats, apply the active gem's own V1-active modifiers, find support gems that can affect it, apply support base effects, apply routed passive effects, apply support-to-passive amplification, apply row / column / box conduit amplification, aggregate a unified skill stat context, calculate V1 additive hit damage pools, calculate V1 final hit damage pools, calculate V1 critical expectation, calculate speed/cooldown/runtime parameter modifiers, and output the final skill instance
+- **THEN** the system SHALL read the active skill base definition, find support gems that can affect it, apply support base effects, calculate support-to-passive contributions, calculate passive-to-active contributions, apply row / column / box conduit amplification where compatible, aggregate additive modifiers, aggregate final modifiers, and output the final skill instance
+
+#### Scenario: 不使用随机词缀
+- **WHEN** the final effect of an active skill is calculated during V1 第二阶段
+- **THEN** the system SHALL NOT read, generate, display, or apply random affix rolls as part of the final skill instance
+
+#### Scenario: 被动不生成主动技能实例
+- **WHEN** final skill instances are generated for combat
+- **THEN** only gems with `gem_kind = active_skill` SHALL produce `FinalSkillInstance` outputs
 
 #### Scenario: 战斗中使用最终技能实例
 - **WHEN** combat automatically releases an activated skill
-- **THEN** Skill Runtime SHALL use the final skill instance calculated from the current valid board, inventory state, player stat context, and V1 formula state
-
-#### Scenario: 技能预览解释公式来源
-- **WHEN** Presentation UX displays a final skill preview or active skill tooltip
-- **THEN** it SHALL expose final damage, expected hit damage, preview DPS, cooldown or uses per second, projectile count or coverage values, and applied modifier traces from the final skill instance rather than recalculating divergent frontend-only formula values
+- **THEN** Skill Runtime SHALL use the final skill instance calculated from the current valid board and inventory state
 
 ### Requirement: 最小战斗循环
-
 V1 SHALL include a minimal combat loop that supports automatic active skill release, monster kills, gem drops, gem pickup, and returning to board adjustment.
 
-#### Scenario: 自动释放已激活技能
+#### Scenario: 自动释放已激活主动技能
 - **WHEN** combat is running and the board has valid activated active skill gems
-- **THEN** Combat Runtime SHALL trigger Skill Runtime to automatically release those skills according to their final cooldown and speed values
+- **THEN** Combat Runtime SHALL trigger Skill Runtime to automatically release those active skills according to their final cooldown and speed values
+
+#### Scenario: 被动技能不自动释放
+- **WHEN** combat is running and the board contains passive skill gems
+- **THEN** Combat Runtime SHALL NOT automatically release passive skill gems as combat skills
 
 #### Scenario: 击杀触发掉落
 - **WHEN** monsters are killed in combat
 - **THEN** Combat Runtime SHALL trigger Loot Runtime to roll gem drops
 
 ### Requirement: 中文 UI
+V1 SHALL display all player-visible text in Chinese. V1 第二阶段 SHALL include active skill, passive skill, support, sudoku digit, route, preview, error, HUD, debug-visible, and interaction prompt text in Chinese.
 
-V1 SHALL display all player-visible text in Chinese.
+#### Scenario: 主动技能宝石详情展示
+- **WHEN** the player views an active skill gem
+- **THEN** Presentation UX SHALL show Chinese name, active skill category, `sudoku_digit`, tags, base skill effect, affected target rules, current effective targets on the board, and no random affix section
 
-#### Scenario: 宝石详情展示
-- **WHEN** the player views a gem
-- **THEN** Presentation UX SHALL show Chinese name, gem type / number / color identity, active or support category, tags, base skill or support effect, random affixes, affix values, affected target rules, and current effective targets on the board
+#### Scenario: 被动技能宝石详情展示
+- **WHEN** the player views a passive skill gem
+- **THEN** Presentation UX SHALL show Chinese name, passive skill category, `sudoku_digit`, tags, passive or self-stat effect, affected target rules, current effective targets on the board, and no random affix section while reusing active skill gem UI structure
+
+#### Scenario: 辅助宝石详情展示
+- **WHEN** the player views a support gem
+- **THEN** Presentation UX SHALL show Chinese name, support category, `sudoku_digit`, tags, support effect, apply filters for active or passive targets, current effective targets on the board, and no random affix section
 
 #### Scenario: 数独盘展示
 - **WHEN** the player edits the board
@@ -220,11 +242,10 @@ V1 SHALL display all player-visible text in Chinese.
 
 #### Scenario: 战斗与掉落展示
 - **WHEN** combat or loot feedback is displayed
-- **THEN** combat HUD, drop prompts, invalid placement prompts, and skill final effect descriptions SHALL use Chinese player-visible text
+- **THEN** combat HUD, drop prompts, invalid placement prompts, skill final effect descriptions, and passive contribution descriptions SHALL use Chinese player-visible text
 
 ### Requirement: WebApp 可操作入口
-
-V1 SHALL provide a browser-openable WebApp entry for the minimal loop, including a configurable left character panel backed by real player stat data.
+V1 SHALL provide a browser-openable WebApp entry for the minimal loop. V1 第二阶段 WebApp SHALL represent `gem_kind` and `sudoku_digit` consistently with backend rules and SHALL NOT implement a divergent sudoku rule set based on old `gem_type`.
 
 #### Scenario: 浏览器打开 WebApp
 - **WHEN** 玩家启动 V1 WebApp
@@ -232,27 +253,19 @@ V1 SHALL provide a browser-openable WebApp entry for the minimal loop, including
 
 #### Scenario: WebApp 完成最小循环操作
 - **WHEN** 玩家使用 WebApp
-- **THEN** WebApp SHALL allow player to view inventory, inspect gems, mount/unmount gems on the 9x9 board, preview final skill effects, start minimal combat, see drops, and pick up drops
+- **THEN** WebApp SHALL allow player to view inventory, inspect active skill gems, inspect passive skill gems, inspect support gems, mount/unmount gems on the 9x9 board, preview final skill effects, start minimal combat, see drops, and pick up drops
 
 #### Scenario: WebApp 中文玩家可见文本
-- **WHEN** WebApp displays buttons, titles, prompts, errors, HUD, logs, inventory, board, skill preview, combat, drops, pickup feedback, or character panel text
+- **WHEN** WebApp displays buttons, titles, prompts, errors, HUD, logs, inventory, board, skill preview, combat, drops, pickup feedback, passive effects, or debug-visible interaction hints
 - **THEN** WebApp SHALL display all player-visible text in Chinese
 
 #### Scenario: WebApp 复用 V1 规则层
-- **WHEN** WebApp needs sudoku legality, board relationships, skill final effects, combat results, loot drops, inventory updates, or calculated player stats
+- **WHEN** WebApp needs sudoku legality, board relationships, skill final effects, passive contributions, combat results, loot drops, or inventory updates
 - **THEN** WebApp SHALL call or reuse the current V1 rules capability through an API or adapter layer and SHALL NOT reimplement a divergent rule set in frontend code
 
-#### Scenario: 左侧人物面板读取真实属性值
-- **WHEN** the inventory overlay left character panel is rendered
-- **THEN** its stat values SHALL come from backend-provided player stat values and SHALL NOT use hardcoded gameplay-looking placeholder values for configured stat rows
-
-#### Scenario: 左侧人物面板展示可配置
-- **WHEN** left character panel display configuration is changed for a stat row's group, order, icon, label, formatter, or bound stat id
-- **THEN** the WebApp SHALL render the panel according to that configuration without requiring a frontend code change for that row
-
-#### Scenario: 左侧人物面板拒绝无效绑定
-- **WHEN** left character panel display configuration references a missing stat id, missing localization key, or obsolete player stat id
-- **THEN** validation SHALL fail before the WebApp renders an inconsistent character panel
+#### Scenario: WebApp 合法格预判使用 sudoku_digit
+- **WHEN** WebApp previews whether a dragged gem can be placed in a board cell
+- **THEN** WebApp SHALL use `sudoku_digit` as the conflict key and SHALL NOT use old `gem_type` display text or identity text as the conflict key
 
 ### Requirement: 技能定义 Skill Package
 V1 技能系统 SHALL 将主动技能定义从集中式 `skill_templates` 迁移为 Skill Package 结构，每个主动技能 SHALL 拥有独立目录和独立 `skill.yaml`。
@@ -1562,11 +1575,15 @@ V1 WebApp battle runtime SHALL keep authored enemies logically present from batt
 - **THEN** enemy HP, death, drops, skill targeting, damage results, and aggro lock state SHALL remain consistent with the enemies logically present on the map
 
 ### Requirement: V1 简化击中伤害公式
-V1 SHALL calculate active skill hit output from a unified skill stat context that includes player base stats, active skill modifiers, routed passive/support modifiers, and conduit-amplified routed values.
+V1 SHALL calculate active skill hit output from a unified skill stat context that includes player base stats, primary-attribute-derived stats, active skill modifiers, routed passive/support modifiers, and conduit-amplified routed values.
 
 #### Scenario: 玩家基础伤害属性影响技能
 - **WHEN** a V1-active player base stat such as `damage_add_percent`, `fire_damage_add_percent`, `spell_damage_add_percent`, or `projectile_damage_add_percent` has a non-zero value and an active skill matches that stat's formula condition
 - **THEN** the final skill calculation SHALL include that value in the skill's additive increase pool
+
+#### Scenario: 主属性派生伤害影响技能
+- **WHEN** strength derives `melee_damage_add_percent` and the active skill has the melee tag
+- **THEN** the final skill calculation SHALL include the derived melee damage value in the skill's additive increase pool
 
 #### Scenario: 非匹配标签属性不影响技能
 - **WHEN** a V1-active player or routed stat targets a damage type, source tag, or behavior tag that the active skill does not have
@@ -1580,36 +1597,846 @@ V1 SHALL calculate active skill hit output from a unified skill stat context tha
 - **WHEN** `damage_final_percent` or `hit_damage_final_percent` is present in the skill stat context
 - **THEN** V1 SHALL apply those final pools after the additive increase pool when calculating hit damage
 
-### Requirement: V1 暴击期望输出
-V1 SHALL expose critical expectation values for skill preview without requiring random critical strike rolls in the minimal combat loop.
+#### Scenario: 连锁和穿透次数进入运行参数
+- **WHEN** `chain_count_add` or `pierce_count_add` is present and a skill supports chain or pierce behavior
+- **THEN** V1 SHALL add those values to the matching chain or pierce runtime parameter without changing preview DPS by default
 
-#### Scenario: 可暴击技能计算期望伤害
-- **WHEN** an active skill has `hit.can_crit = true` and the skill stat context includes `base_crit_chance_percent`, `crit_chance_add_percent`, or `crit_damage_add_percent`
-- **THEN** the final skill instance SHALL expose clamped `crit_chance`, `crit_multiplier`, and `expected_hit_damage` derived from the V1 critical expectation formula
+### Requirement: V1 暴击期望输出
+V1 SHALL expose critical expectation values for skill preview using rating-based critical chance and critical damage conversion, without requiring random critical strike rolls in the minimal combat loop.
+
+#### Scenario: 暴击值转化为暴击率
+- **WHEN** an active skill has `hit.can_crit = true` and the skill stat context includes `crit_rating`
+- **THEN** the final skill instance SHALL derive crit chance from `base_crit_chance_percent` plus `45 * crit_rating / (crit_rating + 600)`, clamped to the V1 crit chance cap
+
+#### Scenario: 暴击伤害值转化为暴击伤害
+- **WHEN** an active skill has `hit.can_crit = true` and the skill stat context includes `crit_damage_rating`
+- **THEN** the final skill instance SHALL derive crit multiplier from `150% + 200 * crit_damage_rating / (crit_damage_rating + 1000)`
+
+#### Scenario: 直接百分比暴击属性不是主要投放面
+- **WHEN** affix spawn candidates are generated for V1 crit stats
+- **THEN** `crit_rating` and `crit_damage_rating` SHALL be the normal rollable crit stats, while direct crit chance or direct crit damage percent stats SHALL be hidden, derived, or special-case modifiers
 
 #### Scenario: 禁止暴击技能没有暴击收益
 - **WHEN** an active skill cannot crit or the skill stat context has `cannot_crit = true`
 - **THEN** the final skill instance SHALL expose `crit_chance = 0`, `crit_multiplier` for display only, and `expected_hit_damage` equal to non-critical hit damage
 
 ### Requirement: V1 预览 DPS 口径
-V1 SHALL calculate preview DPS from expected hit damage, uses per second, and a hit coverage factor rather than directly multiplying single-target DPS by projectile count.
+V1 SHALL calculate preview DPS from expected hit damage, uses per second, and a hit coverage factor rather than directly multiplying single-target DPS by projectile, chain, or pierce count.
 
 #### Scenario: 投射物数量不默认线性增加单体预览 DPS
 - **WHEN** a projectile skill gains `projectile_count_add` but does not opt into multi-hit overlap for the same target
 - **THEN** preview DPS SHALL use `hit_coverage_factor = 1` and SHALL NOT multiply expected single-target damage by projectile count
 
-#### Scenario: 预览显示覆盖信息
+#### Scenario: 覆盖类属性单独展示
 - **WHEN** projectile count, area size, chain count, or pierce count changes a skill's coverage
 - **THEN** the skill preview SHALL expose coverage-related values separately from preview DPS
 
 ### Requirement: 数独关系强度参与路由公式
-V1 SHALL use source power, target power, relation coefficient, and conduit multiplier when routing support and passive effects across the board.
+V1 SHALL use global player board power, gem source power, gem target power, relation coefficient, relation final modifiers, adjacent bonuses, and conduit multiplier when routing support and passive effects across the board.
 
 #### Scenario: 来源和接受强度改变传播值
-- **WHEN** a source gem has a matching `source_power_row`, `source_power_column`, or `source_power_box` value and a target gem has the matching target power value for the active relation
-- **THEN** the routed modifier value SHALL be multiplied by source power, target power, and relation coefficient before entering the target skill stat context
+- **WHEN** a source gem or the player has a matching `source_power_row`, `source_power_column`, or `source_power_box` value and a target gem or the player has the matching target power value for the active relation
+- **THEN** the routed modifier value SHALL be multiplied by combined source power, combined target power, and relation coefficient before entering the target skill stat context
+
+#### Scenario: 相邻强度参与相邻传播
+- **WHEN** an adjacent relation is routed and `source_power_adjacent`, `target_power_adjacent`, or `adjacent_bonus_final_percent` is present
+- **THEN** V1 SHALL include those player global values in the adjacent relation's routed value
+
+#### Scenario: 导管强度影响导管倍率
+- **WHEN** a row, column, or box conduit applies to a routed relation and matching `conduit_power_row`, `conduit_power_column`, or `conduit_power_box` is present
+- **THEN** the conduit multiplier SHALL include that global conduit power in addition to the support conduit's base multiplier
 
 #### Scenario: 导管只放大关系不递归
 - **WHEN** a row, column, or box conduit applies to a routed relation
 - **THEN** the conduit SHALL multiply that relation's routed value and SHALL NOT create support-to-support, passive-to-passive, or recursive secondary propagation
+
+### Requirement: Gem Combination Effect Report
+V1 SHALL provide a non-destructive report that verifies active, passive, support, and conduit gem combinations through the real board and skill effect calculator.
+
+#### Scenario: Verify active support and passive effects
+- **WHEN** an active skill is mounted with compatible support and passive gems
+- **THEN** the report SHALL show the final skill values and applied modifiers produced by the real `SkillEffectCalculator`
+
+#### Scenario: Verify runtime event propagation
+- **WHEN** a final skill parameter affects runtime-visible event counts
+- **THEN** the report SHALL execute the real `SkillRuntime` and show matching event counts such as `projectile_spawn`
+
+#### Scenario: Verify cooldown support player experience
+- **WHEN** Cooldown Focus is combined with Area Magnify on Frost Nova in the report scenario
+- **THEN** the final cooldown SHALL be faster than the active skill baseline while the area radius still increases
+
+#### Scenario: Verify conduit debug clarity
+- **WHEN** a same-row conduit amplifies another support in the report scenario
+- **THEN** the applied modifier debug output SHALL include one conduit multiplier entry for that amplification, not a duplicate self-application entry
+
+#### Scenario: Keep report non-destructive
+- **WHEN** the report completes
+- **THEN** it SHALL NOT write Skill Package YAML, support scaling TOML, production inventory, board state, runtime code, or WebApp code
+
+### Requirement: Authored encounter runtime initialization
+V1 WebApp battle runtime SHALL initialize enemies from authored map encounter data when that data is present.
+
+#### Scenario: Use authored monster spawns
+- **WHEN** a battle starts on a map with authored monster spawn points
+- **THEN** the runtime SHALL sample monster positions from those spawn points at match start
+
+#### Scenario: Do not use timer spawning for authored encounters
+- **WHEN** authored monster spawn data exists for the current map
+- **THEN** the runtime SHALL NOT rely on the normal timer-based enemy spawning loop for those authored monsters
+
+#### Scenario: Use fallback spawning only without authored encounters
+- **WHEN** a battle starts on a map without authored encounter data
+- **THEN** the runtime MAY preserve the existing fallback spawning behavior
+
+### Requirement: Runtime spatial indexing for authored enemies
+V1 WebApp battle runtime SHALL use spatial indexing for authored enemies so runtime cost does not require scanning every monster every frame.
+
+#### Scenario: Query nearby enemies through spatial index
+- **WHEN** runtime systems need nearby enemies for activation, targeting, movement, or area damage
+- **THEN** they SHALL query a spatial index or chunk structure instead of requiring a full enemy-list scan
+
+#### Scenario: Update index when enemy moves or dies
+- **WHEN** an active enemy changes chunk or is removed
+- **THEN** the runtime SHALL update the spatial index so future queries remain correct
+
+### Requirement: Runtime activation tiers for authored enemies
+V1 WebApp battle runtime SHALL separate authored enemies into simulation and rendering tiers.
+
+#### Scenario: Distant enemies remain lightweight
+- **WHEN** authored enemies are far from the player and irrelevant to active skills
+- **THEN** they SHALL remain dormant or low-frequency records without per-frame AI, movement, animation, or DOM rendering
+
+#### Scenario: Nearby enemies become active
+- **WHEN** authored enemies enter the configured activation range or become relevant to skill targeting
+- **THEN** they SHALL be promoted into an active simulation tier
+
+#### Scenario: Visible enemies render
+- **WHEN** active or nearby enemies are inside or near the viewport
+- **THEN** they SHALL be eligible for visual rendering
+
+#### Scenario: Offscreen enemies avoid rendering cost
+- **WHEN** enemies are outside the visible or near-visible area
+- **THEN** the runtime SHALL avoid rendering individual DOM nodes for those enemies
+
+### Requirement: Authored boss group runtime selection
+V1 WebApp battle runtime SHALL select at most one authored boss group when a map is entered.
+
+#### Scenario: Randomly select one boss group
+- **WHEN** a map contains multiple authored boss groups
+- **THEN** the runtime SHALL randomly select one group for that map entry
+
+#### Scenario: Spawn all bosses in chosen group
+- **WHEN** a boss group is selected
+- **THEN** the runtime SHALL spawn every boss configured in that group inside the group's authored area
+
+#### Scenario: Do not spawn unchosen boss groups
+- **WHEN** one boss group has been selected
+- **THEN** bosses from unchosen boss groups SHALL NOT spawn during that map entry
+
+### Requirement: Authored encounter performance contract
+V1 WebApp battle runtime SHALL support dark ARPG-style high monster counts without imposing an authoring-time hard cap.
+
+#### Scenario: No authoring cap as performance substitute
+- **WHEN** authored encounter data requests many monsters
+- **THEN** runtime performance SHALL be handled through indexing, activation tiers, low-frequency updates, and view-based rendering rather than rejecting the data solely because the count is large
+
+#### Scenario: Preserve gameplay correctness under optimization
+- **WHEN** enemies move between dormant, aware, active, visible, or dead tiers
+- **THEN** enemy HP, death, drops, skill targeting, and damage results SHALL remain consistent with the enemies that are logically present on the map
+
+#### Scenario: Report placement shortfall
+- **WHEN** runtime sampling cannot place every requested monster on valid walkable positions inside a spawn area
+- **THEN** the runtime SHALL surface a debug warning or notice instead of silently pretending every requested monster was placed
+
+### Requirement: Independent Tilemap Map Editor Entry
+V1 WebApp SHALL provide an independent map editor entry for hand-authored tilemap editing.
+
+#### Scenario: Open map editor route
+- **WHEN** the user opens `/map-editor`
+- **THEN** the app SHALL show the map editor instead of the battle scene, skill editor, sprite test scene, or map selection panel
+
+#### Scenario: No monsters in first editor version
+- **WHEN** the map editor is open
+- **THEN** the editor SHALL NOT generate monsters, enemies, elites, boss units, or monster spawn controls
+
+### Requirement: Tilemap Paint Tools
+The map editor SHALL allow Unity Tilemap-style painting with a small tile set.
+
+#### Scenario: Select tile brush
+- **WHEN** the user selects a brush
+- **THEN** the editor SHALL allow choosing ground or wall tiles
+
+#### Scenario: Single-cell fill and clear
+- **WHEN** the user clicks a map cell in fill or clear mode
+- **THEN** the editor SHALL update only that cell to the selected tile or empty state
+
+#### Scenario: Rectangle fill and clear
+- **WHEN** the user drags from one map cell to another in rectangle mode
+- **THEN** the editor SHALL fill or clear every cell inside the selected rectangle
+
+#### Scenario: Adjust cell unit size
+- **WHEN** the user changes the cell size control
+- **THEN** the editor SHALL resize the map cells and use the new value as the map unit size
+
+### Requirement: Derived Walkable And Blocker Layers
+The map editor SHALL derive walkable and blocker behavior from tile semantics in the first version.
+
+#### Scenario: Ground is walkable
+- **WHEN** a cell contains a ground tile
+- **THEN** the editor SHALL treat that cell as walkable
+
+#### Scenario: Wall and empty cells block movement
+- **WHEN** a cell contains a wall tile or is empty
+- **THEN** the editor SHALL treat that cell as blocked for the player reference character
+
+### Requirement: Movable Player Scale Reference
+The map editor SHALL show a movable player character in the editable scene.
+
+#### Scenario: Player appears in editor
+- **WHEN** the map editor opens
+- **THEN** the editor SHALL render the existing player character animation as a scale reference inside the editable grid
+
+#### Scenario: Player movement respects derived walkability
+- **WHEN** the user moves the player reference character with keyboard input
+- **THEN** the character SHALL move through ground cells and stop at wall or empty cells
+
+### Requirement: Current POV Skill Expression Calibration
+V1 SHALL provide a non-destructive calibration report for skill expression parameters under the current battle POV.
+
+#### Scenario: Use current battle POV metrics
+- **WHEN** skill expression calibration runs
+- **THEN** it SHALL evaluate current battle world size, camera zoom, player speed, enemy chase speed, spawn cadence, and normal spawn distance band instead of using fixed dummy scenarios as player-feel evidence
+
+#### Scenario: Recommend only expression parameters
+- **WHEN** calibration evaluates active skills
+- **THEN** it SHALL recommend only expression-facing parameters such as search range, cooldown, projectile count, projectile speed, maximum distance, area radius, line length, line width, chain count, chain radius, chain delay, orbit duration, tick interval, orbit radius, orb count, travel time, and trigger delay
+
+#### Scenario: Do not tune damage in expression pass
+- **WHEN** calibration evaluates skill packages or scaling rules
+- **THEN** it SHALL NOT recommend changes to base damage, damage type modifiers, crit values, enemy HP, or player HP
+
+#### Scenario: Keep calibration non-destructive
+- **WHEN** calibration emits recommendations
+- **THEN** it SHALL NOT write Skill Package YAML, support scaling TOML, inventory data, board data, loot data, or runtime behavior files
+
+#### Scenario: Include support and passive expression pressure
+- **WHEN** calibration evaluates support and passive skills
+- **THEN** it SHALL identify expression-related modifiers such as skill speed, cooldown, area, projectile speed, projectile count, and move speed while ignoring damage-only modifiers
+
+### Requirement: Orbit Emitter Module
+V1 Skill Packages SHALL support a reusable `orbit_emitter` module that generates orbit entity and tick-position SkillEvents without performing hit tests or damage directly.
+
+#### Scenario: Emit orbit spawn event
+- **WHEN** Skill Runtime executes a Skill Package module with `type = orbit_emitter`
+- **THEN** it SHALL emit `orbit_spawn` with orbit center, orbit radius, duration, orb count, orbit speed, and spawn VFX key payload data
+
+#### Scenario: Emit orbit tick events
+- **WHEN** the orbit emitter's tick schedule reaches a tick timestamp
+- **THEN** it SHALL emit `orbit_tick` with `tick_index`, `tick_time_ms`, `orb_position`, `tick_marker_id`, and `tick_vfx_key`
+
+#### Scenario: Orbit emitter does not hit or damage
+- **WHEN** an `orbit_emitter` module emits `orbit_spawn` or `orbit_tick`
+- **THEN** it SHALL NOT perform target hit testing, reduce HP, emit `damage`, or resolve damage directly
+
+#### Scenario: Orbit emitter fields are whitelisted
+- **WHEN** `configs/skills/behavior_templates/orbit_emitter.yaml` is validated
+- **THEN** it SHALL declare only whitelisted fields for `orbit_center_policy`, `duration_ms`, `tick_interval_ms`, `orbit_radius`, `orbit_speed_deg_per_sec`, `orb_count`, `start_angle_deg`, `tick_marker_id`, `spawn_vfx_key`, and `tick_vfx_key`
+
+#### Scenario: Orbit emitter rejects script-like params
+- **WHEN** a Skill Package declares `orbit_emitter` parameters
+- **THEN** validation SHALL reject arbitrary scripts, expression DSL fields, function-call strings, undeclared parameters, and frontend-only fake parameters
+
+### Requirement: Tick Schedule Helper
+V1 SHALL provide reusable tick scheduling logic for duration and interval based modules, and the logic SHALL NOT be specific to Lava Orb.
+
+#### Scenario: Compute tick times
+- **WHEN** tick scheduling receives `duration_ms` and `tick_interval_ms`
+- **THEN** it SHALL compute deterministic `tick_index` and `timestamp_ms` values according to the configured duration and interval
+
+#### Scenario: Validate tick inputs
+- **WHEN** a module declares `duration_ms` and `tick_interval_ms`
+- **THEN** validation SHALL require both values to be positive and SHALL reject `tick_interval_ms` greater than `duration_ms`
+
+#### Scenario: Reusable timing boundary
+- **WHEN** tick scheduling is implemented
+- **THEN** it SHALL be reusable as an `orbit_emitter` helper or a shared timing helper and SHALL NOT contain `active_lava_orb` skill-id branches
+
+#### Scenario: Tick schedule does not resolve combat
+- **WHEN** tick scheduling outputs tick data
+- **THEN** it SHALL NOT perform hit testing, select targets, emit damage, or reduce HP
+
+### Requirement: Triggered Damage Zone Reuse For Orbit Ticks
+V1 SHALL reuse the existing `damage_zone` circle hit test with `origin_policy = trigger_position` for orbit tick damage zones.
+
+#### Scenario: Orbit tick marker triggers damage zone
+- **WHEN** an `orbit_tick` emits a marker using `tick_marker_id`
+- **THEN** a later `damage_zone` module SHALL be able to reference that marker through `trigger_marker_id`
+
+#### Scenario: Damage zone uses tick position
+- **WHEN** a `damage_zone` module declares `origin_policy = trigger_position` and is triggered by an orbit tick marker
+- **THEN** Skill Runtime SHALL use the matching `orbit_tick.orb_position` as the `damage_zone` origin
+
+#### Scenario: Reuse circle hit test
+- **WHEN** the triggered orbit damage zone resolves with `shape = circle`
+- **THEN** Skill Runtime SHALL use the shared `damage_zone` circle hit test and SHALL NOT use a Lava Orb-specific hit test
+
+#### Scenario: Damage zone controls fire hit area
+- **WHEN** Lava Orb's triggered `damage_zone` resolves
+- **THEN** its radius SHALL control each tick's hit range and its `damage_type` SHALL be `fire`
+
+### Requirement: Lava Orb Skill Package
+V1 SHALL migrate `active_lava_orb / 熔岩球` into a Skill Package using an `orbit_emitter + damage_zone` module chain.
+
+#### Scenario: Lava Orb package path
+- **WHEN** `active_lava_orb` is migrated
+- **THEN** its Skill Package SHALL be loaded from `configs/skills/active/active_lava_orb/skill.yaml`
+
+#### Scenario: Lava Orb uses module chain
+- **WHEN** the Lava Orb Skill Package is validated
+- **THEN** it SHALL declare an `orbit_emitter` module followed by a `damage_zone` module linked by `tick_marker_id -> trigger_marker_id`
+
+#### Scenario: Lava Orb does not use monolithic template
+- **WHEN** Lava Orb is migrated
+- **THEN** it SHALL NOT use or create a Lava Orb-specific monolithic behavior template
+
+#### Scenario: Lava Orb package fields are complete
+- **WHEN** the Lava Orb Skill Package is validated
+- **THEN** it SHALL include display, classification, cast, modules, hit, scaling, presentation, and preview fields required by the Skill Package schema
+
+#### Scenario: Lava Orb remains localized
+- **WHEN** Lava Orb name, description, damage reason, VFX feedback, screen feedback, or floating text is shown
+- **THEN** player-visible text SHALL be Chinese and SHALL come from localization keys
+
+#### Scenario: Do not migrate other active skills
+- **WHEN** this change is applied
+- **THEN** it SHALL NOT migrate other active skills or modify formal drops, inventory, or gem board behavior
+
+### Requirement: Lava Orb SkillEvent
+V1 SHALL express Lava Orb through real SkillEvents for cast, orbit spawn, orbit ticks, triggered damage zones, damage, and presentation.
+
+#### Scenario: Full Lava Orb event timeline is emitted
+- **WHEN** Skill Runtime executes `active_lava_orb`
+- **THEN** it SHALL output `cast_start`, `orbit_spawn`, multiple `orbit_tick`, `damage_zone`, `damage`, `hit_vfx`, `floating_text`, and `cooldown_update` when present
+
+#### Scenario: Orbit spawn payload is complete
+- **WHEN** Skill Runtime emits `orbit_spawn`
+- **THEN** the payload SHALL include `orbit_center`, `orbit_radius`, `duration_ms`, `orb_count`, `orbit_speed_deg_per_sec`, and `spawn_vfx_key`
+
+#### Scenario: Orbit tick payload is complete
+- **WHEN** Skill Runtime emits `orbit_tick`
+- **THEN** the payload SHALL include `tick_index`, `tick_time_ms`, `orb_position`, `tick_marker_id`, and `tick_vfx_key`
+
+#### Scenario: Damage zone payload is linked to orbit tick
+- **WHEN** Skill Runtime emits a Lava Orb `damage_zone`
+- **THEN** the payload SHALL include `shape = circle`, `origin` equal to the matching orb position, `radius`, `damage_type = fire`, and `trigger_marker_id`
+
+#### Scenario: Damage is the only HP-changing event
+- **WHEN** targets are hit by Lava Orb
+- **THEN** HP reduction SHALL occur only through `damage` events emitted after the matching `damage_zone`
+
+### Requirement: SkillEditor Orbit Module Support
+SkillEditor SHALL expose `orbit_emitter` and linked `damage_zone` fields for Lava Orb module-chain packages.
+
+#### Scenario: Orbit emitter fields are shown
+- **WHEN** SkillEditor opens a Skill Package with an `orbit_emitter` module
+- **THEN** it SHALL expose `orbit_center_policy`, `duration_ms`, `tick_interval_ms`, `orbit_radius`, `orbit_speed_deg_per_sec`, `orb_count`, `start_angle_deg`, `tick_marker_id`, `spawn_vfx_key`, and `tick_vfx_key`
+
+#### Scenario: Linked damage zone fields are shown
+- **WHEN** SkillEditor opens the linked Lava Orb `damage_zone` module
+- **THEN** it SHALL expose `trigger_marker_id`, `trigger_delay_ms`, `shape`, `origin_policy`, `radius`, `hit_at_ms`, `max_targets`, `damage_type`, and `vfx_key`
+
+#### Scenario: Marker trigger link is shown
+- **WHEN** SkillEditor displays the Lava Orb module chain
+- **THEN** it SHALL show `orbit_emitter.tick_marker_id -> damage_zone.trigger_marker_id`
+
+#### Scenario: Marker trigger consistency is validated
+- **WHEN** SkillEditor saves a package with `orbit_emitter` and linked `damage_zone`
+- **THEN** it SHALL reject missing marker references, unresolved triggers, duplicate marker ids, and invalid marker / trigger links
+
+#### Scenario: Read-only orbit summaries are shown
+- **WHEN** SkillEditor displays Lava Orb orbit modules
+- **THEN** it SHALL show estimated tick count, estimated total duration, orbit radius, per-tick hit radius, and current module-chain connection status
+
+#### Scenario: Test modifiers do not persist
+- **WHEN** SkillEditor runs Lava Orb with a test Modifier Stack
+- **THEN** it SHALL NOT write test modifier values into the real Skill Package YAML and SHALL NOT restore random affix editing
+
+### Requirement: WebApp Orbit Rendering
+WebApp SHALL render Lava Orb orbit and damage-zone behavior from SkillEvent payloads and SHALL NOT infer behavior from skill identity.
+
+#### Scenario: Render orbit from event payload
+- **WHEN** WebApp receives `orbit_spawn`
+- **THEN** it SHALL render the orbit entity using event-provided orbit center, radius, duration, orb count, orbit speed, and VFX key
+
+#### Scenario: Render tick position from event payload
+- **WHEN** WebApp receives `orbit_tick`
+- **THEN** it SHALL update or display the orb position using event-provided `orb_position`, `tick_index`, and timing data
+
+#### Scenario: Render damage zone from event payload
+- **WHEN** WebApp receives a Lava Orb `damage_zone`
+- **THEN** it SHALL render the circular hit area using event-provided origin, radius, damage type, trigger marker id, and VFX key
+
+#### Scenario: Render hit results from real events
+- **WHEN** WebApp receives `damage`, `hit_vfx`, or `floating_text`
+- **THEN** it SHALL render HP changes, hit effects, and floating text from those events
+
+#### Scenario: Do not guess Lava Orb behavior
+- **WHEN** WebApp renders `active_lava_orb`
+- **THEN** it SHALL NOT infer orbit behavior from skill id, old `behavior_type`, `visual_effect`, VFX key, or hardcoded Lava Orb branches
+
+### Requirement: Lava Orb Skill Test Arena Acceptance
+Skill Test Arena SHALL validate Lava Orb using real orbit, tick, triggered damage zone, damage, and presentation events.
+
+#### Scenario: Validate dense small monsters
+- **WHEN** Skill Test Arena runs `active_lava_orb` against dense small monsters
+- **THEN** it SHALL verify `orbit_spawn`, multiple `orbit_tick` events, triggered circular `damage_zone` events, fire `damage`, hit VFX, floating text, and multi-target circle hits
+
+#### Scenario: Validate single dummy timing
+- **WHEN** Skill Test Arena runs `active_lava_orb` against one dummy
+- **THEN** it SHALL verify `cast_start` does not reduce HP, `orbit_tick` does not directly reduce HP, and HP is reduced only after `damage_zone` produces `damage`
+
+#### Scenario: Validate three target row range
+- **WHEN** Skill Test Arena runs `active_lava_orb` against three horizontal targets
+- **THEN** it SHALL verify hit selection changes according to orbit tick position and `damage_zone.radius`
+
+#### Scenario: Validate orbit timing parameter effects
+- **WHEN** Skill Test Arena changes `duration_ms` or `tick_interval_ms`
+- **THEN** tick count or tick frequency SHALL change according to the modified value
+
+#### Scenario: Validate orbit geometry parameter effects
+- **WHEN** Skill Test Arena changes `orbit_radius`, `orb_count`, or `damage_zone.radius`
+- **THEN** orb positions, orbit entity count, or hit coverage SHALL change according to the modified value
+
+#### Scenario: Validate modifier stack effects
+- **WHEN** Skill Test Arena runs Lava Orb with a test Modifier Stack
+- **THEN** the stack SHALL affect final damage, range, or tick parameters used by actual SkillEvents without writing production inventory, gem instances, or Skill Package data
+
+### Requirement: AI Report Orbit Validation
+The AI self-test report SHALL validate Lava Orb orbit, tick, damage-zone, and damage behavior from real Skill Test Arena events.
+
+#### Scenario: Check orbit spawn
+- **WHEN** the AI self-test report evaluates `active_lava_orb`
+- **THEN** it SHALL check whether `orbit_spawn` exists and whether it is centered on the player or caster
+
+#### Scenario: Check orbit ticks
+- **WHEN** the AI self-test report evaluates `active_lava_orb`
+- **THEN** it SHALL check whether multiple `orbit_tick` events exist, whether tick count matches `duration_ms / tick_interval_ms`, and whether each relevant tick includes `orb_position`
+
+#### Scenario: Check triggered damage zone chain
+- **WHEN** the AI self-test report evaluates `active_lava_orb`
+- **THEN** it SHALL check whether `damage_zone` exists, whether its origin equals the matching `orbit_tick` position, and whether it uses `damage_type = fire`
+
+#### Scenario: Check damage timing
+- **WHEN** the AI self-test report evaluates `active_lava_orb`
+- **THEN** it SHALL check that `cast_start` does not reduce HP, `orbit_tick` does not directly reduce HP, and `damage` is produced only after `damage_zone` hit resolution
+
+#### Scenario: Check parameter mutation effects
+- **WHEN** the AI self-test report evaluates changed Lava Orb parameters
+- **THEN** it SHALL check that `duration_ms`, `tick_interval_ms`, `orbit_radius`, and `damage_zone.radius` changes affect real event counts, timing, positions, or hit coverage
+
+#### Scenario: Report Chinese conclusion and fixes
+- **WHEN** the AI self-test report finishes evaluating `active_lava_orb`
+- **THEN** it SHALL output a conclusion of `通过`, `部分通过`, or `不通过`, plus Chinese inconsistency items and suggested fixes
+
+### Requirement: 穿刺 Skill Package
+V1 SHALL migrate `active_puncture` / `穿刺` from the old centralized skill template path into an active Skill Package.
+
+#### Scenario: 从 active Skill Package 加载穿刺
+- **WHEN** `active_puncture` is considered migrated
+- **THEN** the system SHALL load it from `configs/skills/active/active_puncture/skill.yaml`
+
+#### Scenario: 使用 melee_arc 行为模板
+- **WHEN** the migrated `active_puncture` Skill Package is validated
+- **THEN** it SHALL declare `behavior.template = melee_arc`
+
+#### Scenario: 保持物理伤害分类
+- **WHEN** the migrated `active_puncture` Skill Package is validated
+- **THEN** it SHALL declare `classification.damage_type = physical`
+
+#### Scenario: 保持中文玩家可见文本
+- **WHEN** `active_puncture` name, description, damage reason, floating text, VFX feedback, or screen feedback is shown to the player
+- **THEN** the player-visible text SHALL be Chinese and SHALL come from localization keys rather than embedded English text
+
+#### Scenario: 不迁移其他主动技能
+- **WHEN** this migration is applied
+- **THEN** `active_lightning_chain`, `active_lava_orb`, and `active_fungal_petards` SHALL remain on their existing behavior paths unless a later change migrates them explicitly
+
+### Requirement: melee_arc Behavior Template
+V1 SHALL provide a whitelisted `melee_arc` Behavior Template for deterministic short-range directional sector melee skills.
+
+#### Scenario: 从玩家或释放源生成近战扇形 SkillEvent
+- **WHEN** Skill Runtime executes a skill using `melee_arc`
+- **THEN** it SHALL generate a `melee_arc` SkillEvent from the player or cast source position using declared facing policy, arc angle, arc radius, hit shape, windup, hit timing, target cap, status chance scaling, and slash VFX key
+
+#### Scenario: 按朝向角度和半径判断命中
+- **WHEN** Skill Runtime resolves targets for a `melee_arc` skill
+- **THEN** targets inside the sector defined by facing direction, `arc_angle`, and `arc_radius` SHALL be eligible for hit, while targets outside the sector or outside `arc_radius` SHALL NOT be hit
+
+#### Scenario: 声明 melee_arc 参数白名单
+- **WHEN** `configs/skills/behavior_templates/melee_arc.yaml` is validated
+- **THEN** it SHALL declare allowed params including `arc_angle`, `arc_radius`, `windup_ms`, `hit_at_ms`, `max_targets`, `facing_policy`, `hit_shape`, `status_chance_scale`, and `slash_vfx_key`
+
+#### Scenario: 校验 melee_arc 参数约束
+- **WHEN** a Skill Package declares `behavior.template = melee_arc`
+- **THEN** validation SHALL require legal `arc_angle`, positive `arc_radius`, non-negative `windup_ms`, non-negative `hit_at_ms`, legal timing relation between `hit_at_ms` and `windup_ms`, positive integer or explicitly declared unlimited `max_targets`, legal `facing_policy`, legal `hit_shape`, ranged `status_chance_scale`, and key-only `slash_vfx_key`
+
+#### Scenario: 禁止脚本表达式和未声明参数
+- **WHEN** a Skill Package declares `behavior.template = melee_arc`
+- **THEN** validation SHALL reject scripts, expression DSL fields, complex expression interpreter fields, function-call strings, frontend-only fake params, and any params not declared by the `melee_arc` template
+
+### Requirement: SkillEditor melee_arc 字段支持
+SkillEditor SHALL expose and validate every editable `melee_arc` field before `active_puncture` is considered migrated.
+
+#### Scenario: 暴露 melee_arc 近战扇形模块字段
+- **WHEN** SkillEditor opens a Skill Package whose `behavior.template` is `melee_arc`
+- **THEN** it SHALL expose editable fields for `arc_angle`, `arc_radius`, `windup_ms`, `hit_at_ms`, `max_targets`, `facing_policy`, `hit_shape`, `status_chance_scale`, and `slash_vfx_key`, plus read-only sector range summary and hit timing summary
+
+#### Scenario: 使用枚举整数和范围校验
+- **WHEN** SkillEditor edits or saves a `melee_arc` Skill Package
+- **THEN** `facing_policy` and `hit_shape` SHALL use declared enums, `arc_angle`, `arc_radius`, `windup_ms`, `hit_at_ms`, and `status_chance_scale` SHALL use declared range validation, `max_targets` SHALL use integer validation or an explicitly declared unlimited enum, and `slash_vfx_key` SHALL accept only a key
+
+#### Scenario: 使用 schema 和模板白名单校验
+- **WHEN** SkillEditor saves a `melee_arc` Skill Package
+- **THEN** it SHALL validate through both the skill schema and behavior template whitelist and SHALL NOT write undeclared fields or frontend-only fake params
+
+#### Scenario: 不写入模板未声明字段
+- **WHEN** SkillEditor persists `melee_arc` params
+- **THEN** it SHALL write only params declared by `configs/skills/behavior_templates/melee_arc.yaml`
+
+#### Scenario: 输出中文校验错误
+- **WHEN** SkillEditor rejects invalid `melee_arc` values such as illegal angles, invalid enum values, invalid numeric ranges, invalid timing, or unknown fields
+- **THEN** it SHALL display Chinese error text and SHALL NOT write invalid skill data
+
+### Requirement: 穿刺 SkillEvent
+`active_puncture` SHALL express melee slash generation, hit timing, damage, and presentation through real SkillEvents.
+
+#### Scenario: 输出 melee_arc
+- **WHEN** migrated `active_puncture` is cast
+- **THEN** Skill Runtime SHALL output a `melee_arc` event from the player or cast source position with facing direction, arc angle, arc radius, hit shape, windup, hit timing, target cap, damage type, VFX key, and payload data
+
+#### Scenario: 朝最近目标方向释放
+- **WHEN** migrated `active_puncture` uses `facing_policy = nearest_target`
+- **THEN** Skill Runtime SHALL orient the `melee_arc` event toward the nearest valid enemy target
+
+#### Scenario: 由扇形范围判断命中
+- **WHEN** `active_puncture` resolves targets
+- **THEN** targets inside the configured melee sector SHALL be eligible for hit, while far targets or outside-sector targets SHALL NOT be hit
+
+#### Scenario: damage 事件负责扣血
+- **WHEN** `active_puncture` is cast
+- **THEN** target life SHALL NOT be reduced at release time or before `hit_at_ms`, and life reduction SHALL be caused by `damage` events at or after `hit_at_ms`
+
+#### Scenario: 输出伤害和表现事件
+- **WHEN** an in-sector target is hit by `active_puncture`
+- **THEN** Skill Runtime SHALL output `damage`, `hit_vfx`, and `floating_text` events for that target after or with the hit timing
+
+#### Scenario: 物理伤害类型
+- **WHEN** `active_puncture` emits a `damage` event
+- **THEN** the event SHALL declare `damage_type = physical`
+
+#### Scenario: 禁止远程锁敌即时扣血和静态假事件
+- **WHEN** Skill Runtime executes `active_puncture`
+- **THEN** it SHALL NOT use remote lock-on immediate damage, release-time direct HP removal, static fake events, or a Combat Runtime branch specific to `active_puncture`
+
+### Requirement: 穿刺测试场验收
+Skill Test Arena SHALL validate migrated `active_puncture` through controlled scenarios that prove melee range, facing, sector hit rules, timing, and modifier effects.
+
+#### Scenario: 单体木桩验证基础近战命中
+- **WHEN** Skill Test Arena runs migrated `active_puncture` against a single dummy placed inside the melee sector
+- **THEN** it SHALL verify puncture releases from the player or cast source position, faces the target, emits `melee_arc`, and hits through `damage` at or after `hit_at_ms`
+
+#### Scenario: 密集小怪验证扇形多目标命中
+- **WHEN** Skill Test Arena runs migrated `active_puncture` in the dense small monster scenario
+- **THEN** it SHALL verify close enemies inside the melee sector can be hit and that `max_targets` is respected
+
+#### Scenario: 三目标横排验证扇形边界
+- **WHEN** Skill Test Arena runs migrated `active_puncture` in the three-target horizontal row scenario
+- **THEN** it SHALL verify sector-inside targets are hit, sector-outside targets are not hit, and targets outside `arc_radius` are not hit
+
+#### Scenario: 验证 hit_at_ms 前不扣血
+- **WHEN** Skill Test Arena observes target life before `hit_at_ms`
+- **THEN** it SHALL verify target life is unchanged until a `damage` event occurs at or after `hit_at_ms`
+
+#### Scenario: 参数修改影响真实测试结果
+- **WHEN** SkillEditor or the arena test stack changes `arc_radius`, `arc_angle`, or `hit_at_ms`
+- **THEN** Skill Test Arena SHALL show changed hit coverage, changed angular coverage, or changed damage timing respectively
+
+#### Scenario: Modifier 测试栈影响结果
+- **WHEN** Skill Test Arena runs `active_puncture` with a test Modifier Stack
+- **THEN** the stack SHALL affect final damage, range, or status probability runtime parameters used by actual SkillEvents without writing real inventory, gem instance, or Skill Package data
+
+### Requirement: 穿刺 AI 自测报告
+The AI self-test report SHALL evaluate migrated `active_puncture` against real Skill Test Arena results and the expected Chinese player-facing behavior.
+
+#### Scenario: 基于真实结果判断玩家侧描述
+- **WHEN** an AI self-test report is generated for migrated `active_puncture`
+- **THEN** it SHALL compare actual SkillEvent sequences, damage results, hit targets, and presentation events against the expected description "自动朝最近敌人方向释放一次短距离扇形穿刺斩击，命中近战扇形范围内敌人后造成物理伤害，并显示物理斩击命中特效与伤害浮字。"
+
+#### Scenario: 检查 melee_arc 和朝向
+- **WHEN** the report evaluates `active_puncture`
+- **THEN** it SHALL check whether `melee_arc` exists, whether it starts from the player or cast source position, and whether it faces the nearest target
+
+#### Scenario: 检查关键事件和时序
+- **WHEN** the report evaluates `active_puncture`
+- **THEN** it SHALL check whether `damage`, `hit_vfx`, and `floating_text` exist, whether `damage` is not earlier than `hit_at_ms`, whether no life is reduced before `hit_at_ms`, and whether `damage_type` is `physical`
+
+#### Scenario: 检查近战扇形命中规则
+- **WHEN** the report evaluates `active_puncture`
+- **THEN** it SHALL check whether melee sector targets are hit, far targets are not hit, outside-sector targets are not hit, changing `arc_radius` changes hit target coverage, and changing `arc_angle` changes hit target coverage
+
+#### Scenario: 输出中文结论和修复建议
+- **WHEN** the report finishes evaluation
+- **THEN** it SHALL output a conclusion of `通过`, `部分通过`, or `不通过`, plus Chinese inconsistency items and suggested fixes
+
+### Requirement: 技能编辑器投射物事件面板结构
+V1 SkillEditor SHALL provide a left / middle / right / bottom editor layout for projectile skill debugging without changing non-editor gameplay systems.
+
+#### Scenario: 打开技能编辑器显示左侧技能列表
+- **WHEN** 用户打开技能编辑器
+- **THEN** 界面 SHALL 显示左侧技能列表
+
+#### Scenario: 选择投射物技能
+- **WHEN** 用户在技能列表中选择火焰弹或其他已迁移投射物技能
+- **THEN** 技能编辑器 SHALL 打开该技能的编辑上下文，并 SHALL NOT 进入 XML 导入流程
+
+#### Scenario: 中间显示事件列表或时间轴
+- **WHEN** 技能编辑器打开一个技能
+- **THEN** 中间区域 SHALL 显示当前技能的技能事件列表或时间轴
+
+#### Scenario: 测试场运行后显示真实事件时间线
+- **WHEN** 用户运行预览并生成测试场结果
+- **THEN** 中间区域 SHALL 显示本次运行产生的真实 SkillEvent 时间线
+
+#### Scenario: 右侧显示选中事件参数
+- **WHEN** 用户选择技能事件或时间线事件
+- **THEN** 右侧区域 SHALL 显示当前选中事件的参数面板
+
+#### Scenario: 底部显示操作和反馈
+- **WHEN** 技能编辑器处于可操作状态
+- **THEN** 底部区域 SHALL 显示运行、暂停 / 重置、保存、校验结果和运行日志
+
+### Requirement: 投射物参数按调试分组展示
+SkillEditor SHALL organize current existing projectile parameters by projectile-debugging groups when a projectile event is selected.
+
+#### Scenario: 选中投射物事件显示分组参数
+- **WHEN** 用户选中投射物事件
+- **THEN** 右侧参数面板 SHALL 按基础、发射位置、发射方向、目标搜索、发射组、运动、碰撞、伤害、表现、调试分组显示当前已有投射物参数
+
+#### Scenario: 基础分组显示已有基础字段
+- **WHEN** 投射物参数面板显示基础分组
+- **THEN** 基础分组 SHALL 显示技能 ID、技能标签、行为模板、伤害类型、伤害形式和目标选择方式
+
+#### Scenario: 发射位置分组显示已有发射字段
+- **WHEN** 投射物参数面板显示发射位置分组
+- **THEN** 发射位置分组 SHALL 显示只读发射来源、`spawn_offset.x`、`spawn_offset.y`、只读逻辑发射点和只读特效发射点
+
+#### Scenario: 发射方向分组显示已有方向字段
+- **WHEN** 投射物参数面板显示发射方向分组
+- **THEN** 发射方向分组 SHALL 显示只读当前方向模式、`spread_angle_deg` 或 `spread_angle`、`angle_step`、只读 `direction_world` 和只读 `vfx_direction_world`
+
+#### Scenario: 目标搜索分组显示已有目标字段
+- **WHEN** 投射物参数面板显示目标搜索分组
+- **THEN** 目标搜索分组 SHALL 显示 `cast.target_selector`、`cast.search_range`、`hit.target_policy` 和 `max_targets`
+
+#### Scenario: 发射组分组显示已有发射组字段
+- **WHEN** 投射物参数面板显示发射组分组
+- **THEN** 发射组分组 SHALL 显示 `projectile_count`、`burst_interval_ms`、`spread_angle_deg` 或 `spread_angle`、`angle_step` 和 `spawn_pattern`
+
+#### Scenario: 运动分组显示已有运动字段
+- **WHEN** 投射物参数面板显示运动分组
+- **THEN** 运动分组 SHALL 显示 `projectile_speed`、`max_distance`、`min_duration_ms` 和 `max_duration_ms`
+
+#### Scenario: 碰撞分组显示已有碰撞字段
+- **WHEN** 投射物参数面板显示碰撞分组
+- **THEN** 碰撞分组 SHALL 显示 `projectile_width`、`projectile_height`、`collision_radius`、`projectile_radius`、`impact_radius`、`hit_policy` 和 `pierce_count`
+
+#### Scenario: 伤害分组显示已有伤害字段
+- **WHEN** 投射物参数面板显示伤害分组
+- **THEN** 伤害分组 SHALL 显示 `hit.base_damage`、`per_projectile_damage_scale`、`damage_timing`、`hit_delay_ms`、`hit_radius`、`can_crit` 和 `can_apply_status`
+
+#### Scenario: 表现分组显示已有表现字段
+- **WHEN** 投射物参数面板显示表现分组
+- **THEN** 表现分组 SHALL 显示 `cast_vfx_key`、`projectile_vfx_key`、`hit_vfx_key`、`vfx`、`sfx`、`floating_text`、`floating_text_style`、`screen_feedback`、`hit_stop_ms` 和 `camera_shake`
+
+#### Scenario: 当前项目没有的 XML 字段不作为可编辑参数出现
+- **WHEN** 投射物参数面板显示可编辑字段
+- **THEN** 当前项目没有运行时能力的 XML 字段 SHALL NOT 出现在可编辑参数中
+
+### Requirement: 投射物预览调试显示
+SkillEditor SHALL provide UI-only projectile debug visualization for launch, target, direction, collision, and search range.
+
+#### Scenario: 运行预览显示调试元素
+- **WHEN** 用户运行投射物技能预览
+- **THEN** 预览 SHALL 能显示发射点、目标点、飞行方向线、碰撞半径和搜索范围
+
+#### Scenario: 区分逻辑发射点和特效发射点
+- **WHEN** 调试显示开启发射点
+- **THEN** 预览 SHALL 区分逻辑发射点和特效发射点
+
+#### Scenario: 修改已有参数后运行预览验证效果
+- **WHEN** 用户修改当前已有投射物参数后运行预览
+- **THEN** 预览 SHALL 使用当前 draft 验证效果，并 SHALL NOT 要求保存后才能运行
+
+#### Scenario: 调试开关不写入正式配置
+- **WHEN** 用户切换显示发射点、显示目标点、显示飞行方向线、显示碰撞半径或显示搜索范围
+- **THEN** 这些 UI-only 调试开关 SHALL NOT 写入正式 `skill.yaml`
+
+### Requirement: 技能编辑器保存前中文校验
+SkillEditor SHALL validate basic projectile editor input before save and display validation failures in Chinese.
+
+#### Scenario: 保存前执行基础校验
+- **WHEN** 用户点击保存技能包
+- **THEN** 技能编辑器 SHALL 在写入配置前执行基础校验
+
+#### Scenario: 校验错误中文显示
+- **WHEN** 保存前校验失败
+- **THEN** 技能编辑器 SHALL 在参数面板内用中文显示错误
+
+#### Scenario: 保存失败不写入配置
+- **WHEN** 保存前校验或后端 schema 校验失败
+- **THEN** 技能编辑器 SHALL NOT 写入配置文件
+
+#### Scenario: UI 状态不进入正式 skill.yaml
+- **WHEN** 技能编辑器保存技能包
+- **THEN** UI-only 调试开关、选中事件、面板展开状态、运行日志和暂停状态 SHALL NOT 写入正式 `skill.yaml`
+
+### Requirement: 投射物面板重组不影响非目标模块
+The projectile editor panel refactor SHALL NOT affect formal combat, gem board, loot, affixes, sudoku routing, or formal damage formula.
+
+#### Scenario: 不影响正式战斗和正式伤害公式
+- **WHEN** 本变更应用后运行正式战斗逻辑
+- **THEN** 正式战斗和正式伤害公式 SHALL 保持既有行为
+
+#### Scenario: 不影响宝石盘和数独规则
+- **WHEN** 本变更应用后使用宝石盘和数独合法性检查
+- **THEN** 宝石盘、数独合法性和数独路由 SHALL 保持既有行为
+
+#### Scenario: 不影响掉落词缀和宝石规则
+- **WHEN** 本变更应用后运行掉落、词缀、被动宝石、辅助宝石或导管相关流程
+- **THEN** 这些流程 SHALL 保持既有行为
+
+#### Scenario: 构建和测试通过
+- **WHEN** 本变更完成
+- **THEN** WebApp 构建、最小 smoke 测试和现有相关测试 SHALL 通过
+
+### Requirement: V1 第二阶段三类宝石字段模型
+V1 第二阶段 SHALL 使用 `gem_kind` 表示宝石大类，并使用 `sudoku_digit` 表示数独数字。
+
+#### Scenario: gem_kind 合法值
+- **WHEN** 宝石基础定义或宝石实例被校验
+- **THEN** `gem_kind` SHALL 只能是 `active_skill`、`passive_skill` 或 `support`
+
+#### Scenario: sudoku_digit 合法值
+- **WHEN** 宝石基础定义或宝石实例被校验
+- **THEN** `sudoku_digit` SHALL 只能是 1 到 9 的整数
+
+#### Scenario: 字段职责分离
+- **WHEN** 系统判断宝石大类、UI 分类、效果路由或数独合法性
+- **THEN** 系统 MUST 使用 `gem_kind` 判断宝石大类，并 MUST 使用 `sudoku_digit` 判断数独数字
+
+#### Scenario: gem_kind 不参与数独冲突
+- **WHEN** 两颗宝石位于同一行、同一列或同一 3x3 宫
+- **THEN** 行 / 列 / 宫冲突判断 SHALL NOT 检查 `gem_kind`
+
+### Requirement: 被动技能宝石玩家属性贡献
+V1 第二阶段 SHALL allow passive skill gems to provide non-release persistent player contributions without becoming active combat skills.
+
+#### Scenario: self_stat 被动影响玩家属性
+- **WHEN** 有效盘面中的被动技能宝石提供 `max_life`、`move_speed` 或 `pickup_radius` 类型贡献
+- **THEN** 系统 SHALL 在进入战斗或刷新预览前把这些贡献汇总到玩家属性结果中
+
+#### Scenario: 被动技能宝石不主动释放
+- **WHEN** Combat Runtime 创建自动释放队列
+- **THEN** 系统 SHALL only enqueue gems whose `gem_kind` is `active_skill`
+
+### Requirement: 随机词缀防回归
+V1 第二阶段 SHALL keep random affix systems inactive for real gem data and player-visible UI.
+
+#### Scenario: 真实宝石数据不新增随机词缀
+- **WHEN** 第二阶段新增或迁移真实宝石基础定义、宝石实例或掉落数据
+- **THEN** 系统 SHALL NOT add random affix fields, random affix rolls, or random affix generated values to those real gem data paths
+
+#### Scenario: UI 不恢复随机词缀
+- **WHEN** 玩家查看主动技能宝石、被动技能宝石或辅助宝石详情
+- **THEN** Presentation UX and WebApp SHALL NOT display a random affix section
+
+#### Scenario: affix 残留只保留不启用
+- **WHEN** 现有 affix 文件、字段、测试辅助对象或渲染逻辑仍存在
+- **THEN** 系统 SHALL treat them as residual inactive code paths and SHALL NOT use them as second-phase gameplay, UI, or generation behavior
+
+### Requirement: 玩家属性面板分组
+V1 SHALL render a config-driven player attribute panel that displays player-facing stats grouped by gameplay meaning rather than raw config category.
+
+#### Scenario: 面板显示玩家需要关注的属性组
+- **WHEN** the player attribute panel is rendered
+- **THEN** it SHALL include groups for base attributes, life, mana, energy shield, defense, block, resistances, mobility, damage overview, skill type, speed/cooldown, crit, skill shape, status, effects, conversion, drops, and board power
+
+#### Scenario: 面板排除不需要的属性
+- **WHEN** the character panel configuration is validated
+- **THEN** it SHALL NOT include `support_link_limit`, `mana_cost_multiplier_percent`, `mana_seal_percent`, `projectile_spread_angle_add`, `active_gem_level_add`, `passive_gem_level_add`, `support_gem_level_add`, or `gem_level`
+
+#### Scenario: 面板不显示伤害类型组
+- **WHEN** the player attribute panel is rendered
+- **THEN** it SHALL NOT expose a damage-type group for physical, fire, cold, lightning, elemental, or all-damage-type increase stats, even if those stats remain valid backend formula stats
+
+#### Scenario: 混沌抗性显示
+- **WHEN** resistance stats are displayed
+- **THEN** the former erosion resistance concept SHALL be displayed as chaos resistance
+
+### Requirement: 主属性派生
+V1 SHALL derive downstream player stats from strength, dexterity, and intelligence before combat, skill, board, loot, and panel values are exposed.
+
+#### Scenario: 力量派生
+- **WHEN** the player has strength
+- **THEN** each 1 strength SHALL grant +0.5 max life and +0.2% melee damage
+
+#### Scenario: 敏捷派生
+- **WHEN** the player has dexterity
+- **THEN** each 1 dexterity SHALL grant +0.2% attack speed, +0.2% cast speed, and +0.2% evasion
+
+#### Scenario: 智慧派生
+- **WHEN** the player has intelligence
+- **THEN** each 1 intelligence SHALL grant +0.5 max mana and +0.2% max energy shield
+
+#### Scenario: 派生值进入最终展示
+- **WHEN** the API exposes `player_stats` or `character_panel`
+- **THEN** downstream values SHALL include primary-attribute-derived contributions and SHALL remain distinguishable from base values in tests or traces
+
+### Requirement: 资源与防御运行时
+V1 SHALL make player-facing resource and defense stats affect combat state through deterministic V1 formulas.
+
+#### Scenario: 魔力属性生效
+- **WHEN** max mana, current mana, or mana regeneration stats are present
+- **THEN** the player runtime and panel SHALL expose those values, and mana regeneration SHALL restore current mana up to max mana during combat ticks
+
+#### Scenario: 能量护盾属性生效
+- **WHEN** max energy shield, current energy shield, energy shield charge speed, or energy shield charge delay is present
+- **THEN** incoming player damage SHALL deplete energy shield before life and shield recharge SHALL begin only after the configured delay
+
+#### Scenario: 护甲减伤
+- **WHEN** the player takes physical hit damage and armor or armor percent increases are present
+- **THEN** V1 SHALL apply a deterministic armor mitigation formula before life damage is committed
+
+#### Scenario: 闪避避免命中
+- **WHEN** the player is targeted by an avoidable hit and evasion or evasion percent increases are present
+- **THEN** V1 SHALL use a deterministic, testable evasion chance formula to determine whether the hit is avoided
+
+#### Scenario: 格挡减伤
+- **WHEN** attack block, spell block, or block damage reduction stats are present
+- **THEN** V1 SHALL apply the matching block chance and block damage reduction to eligible incoming hits
+
+#### Scenario: 抗性减伤
+- **WHEN** incoming damage has fire, cold, lightning, or chaos type and matching resistance stats are present
+- **THEN** V1 SHALL reduce that incoming damage according to the matching resistance before final life damage is applied
+
+### Requirement: 掉落属性运行时
+V1 SHALL make player-facing drop quantity and drop rarity stats affect gem drop generation.
+
+#### Scenario: 掉落数量提高
+- **WHEN** `gem_drop_quantity_add_percent` is present during combat reward generation
+- **THEN** Loot Runtime SHALL increase the expected number of generated gem drops according to that value
+
+#### Scenario: 掉落稀有度提高
+- **WHEN** `gem_drop_rarity_add_percent` is present during gem rarity selection
+- **THEN** Loot Runtime SHALL bias rarity weights toward higher rarities according to that value
 

@@ -3,8 +3,8 @@ id = "strength"
 name_key = "stat.strength.name"
 category = "base_attribute"
 value_type = "number"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -12,8 +12,8 @@ id = "dexterity"
 name_key = "stat.dexterity.name"
 category = "base_attribute"
 value_type = "number"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -21,8 +21,8 @@ id = "intelligence"
 name_key = "stat.intelligence.name"
 category = "base_attribute"
 value_type = "number"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -48,8 +48,8 @@ id = "life_regen_flat"
 name_key = "stat.life_regen_flat.name"
 category = "recovery"
 value_type = "number"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -57,8 +57,8 @@ id = "max_mana"
 name_key = "stat.max_mana.name"
 category = "resource"
 value_type = "number"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -66,8 +66,8 @@ id = "current_mana"
 name_key = "stat.current_mana.name"
 category = "resource"
 value_type = "number"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -75,8 +75,8 @@ id = "mana_regen_flat"
 name_key = "stat.mana_regen_flat.name"
 category = "resource"
 value_type = "number"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -102,8 +102,8 @@ id = "max_energy_shield"
 name_key = "stat.max_energy_shield.name"
 category = "energy_shield"
 value_type = "number"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -111,8 +111,8 @@ id = "current_energy_shield"
 name_key = "stat.current_energy_shield.name"
 category = "energy_shield"
 value_type = "number"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -120,8 +120,8 @@ id = "energy_shield_charge_speed_percent"
 name_key = "stat.energy_shield_charge_speed_percent.name"
 category = "energy_shield"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -129,8 +129,8 @@ id = "energy_shield_charge_delay_ms"
 name_key = "stat.energy_shield_charge_delay_ms.name"
 category = "energy_shield"
 value_type = "integer"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -147,8 +147,8 @@ id = "support_link_limit"
 name_key = "stat.support_link_limit.name"
 category = "board_rule"
 value_type = "integer"
-v1_status = "V1_ACTIVE"
-runtime_effective = true
+v1_status = "V1_RESERVED"
+runtime_effective = false
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -188,12 +188,12 @@ runtime_effective = true
 affix_spawn_enabled_v1 = true
 
 [[stats]]
-id = "erosion_damage_add_percent"
-name_key = "stat.erosion_damage_add_percent.name"
+id = "chaos_damage_add_percent"
+name_key = "stat.chaos_damage_add_percent.name"
 category = "damage_type"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -210,8 +210,8 @@ id = "non_physical_damage_add_percent"
 name_key = "stat.non_physical_damage_add_percent.name"
 category = "damage_type"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -237,8 +237,8 @@ id = "dot_damage_add_percent"
 name_key = "stat.dot_damage_add_percent.name"
 category = "damage_form"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -246,8 +246,8 @@ id = "secondary_damage_add_percent"
 name_key = "stat.secondary_damage_add_percent.name"
 category = "damage_form"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -255,8 +255,8 @@ id = "ailment_damage_add_percent"
 name_key = "stat.ailment_damage_add_percent.name"
 category = "damage_form"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -264,8 +264,8 @@ id = "minion_damage_add_percent"
 name_key = "stat.minion_damage_add_percent.name"
 category = "damage_form"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -327,8 +327,8 @@ id = "chain_damage_add_percent"
 name_key = "stat.chain_damage_add_percent.name"
 category = "skill_tag"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -336,8 +336,8 @@ id = "pierce_damage_add_percent"
 name_key = "stat.pierce_damage_add_percent.name"
 category = "skill_tag"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -345,8 +345,8 @@ id = "orbit_damage_add_percent"
 name_key = "stat.orbit_damage_add_percent.name"
 category = "skill_tag"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -354,8 +354,8 @@ id = "trap_mine_damage_add_percent"
 name_key = "stat.trap_mine_damage_add_percent.name"
 category = "skill_tag"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -363,8 +363,8 @@ id = "aura_effect_add_percent"
 name_key = "stat.aura_effect_add_percent.name"
 category = "effect"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -372,8 +372,8 @@ id = "buff_effect_add_percent"
 name_key = "stat.buff_effect_add_percent.name"
 category = "effect"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -399,8 +399,8 @@ id = "damage_taken_final_percent"
 name_key = "stat.damage_taken_final_percent.name"
 category = "combat"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -417,8 +417,8 @@ id = "dot_damage_final_percent"
 name_key = "stat.dot_damage_final_percent.name"
 category = "combat"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -426,8 +426,8 @@ id = "skill_damage_effectiveness_percent"
 name_key = "stat.skill_damage_effectiveness_percent.name"
 category = "combat"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -435,8 +435,8 @@ id = "double_damage_chance_percent"
 name_key = "stat.double_damage_chance_percent.name"
 category = "combat"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -444,8 +444,8 @@ id = "resistance_penetration_percent"
 name_key = "stat.resistance_penetration_percent.name"
 category = "combat"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -453,8 +453,8 @@ id = "conversion_physical_to_fire_percent"
 name_key = "stat.conversion_physical_to_fire_percent.name"
 category = "conversion"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -462,8 +462,8 @@ id = "conversion_physical_to_cold_percent"
 name_key = "stat.conversion_physical_to_cold_percent.name"
 category = "conversion"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -471,8 +471,8 @@ id = "conversion_physical_to_lightning_percent"
 name_key = "stat.conversion_physical_to_lightning_percent.name"
 category = "conversion"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -525,8 +525,8 @@ id = "cooldown_recovery_final_percent"
 name_key = "stat.cooldown_recovery_final_percent.name"
 category = "speed"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -545,7 +545,7 @@ category = "crit"
 value_type = "percent"
 v1_status = "V1_ACTIVE"
 runtime_effective = true
-affix_spawn_enabled_v1 = true
+affix_spawn_enabled_v1 = false
 
 [[stats]]
 id = "crit_chance_add_percent"
@@ -554,16 +554,25 @@ category = "crit"
 value_type = "percent"
 v1_status = "V1_ACTIVE"
 runtime_effective = true
-affix_spawn_enabled_v1 = true
+affix_spawn_enabled_v1 = false
 
 [[stats]]
 id = "crit_rating"
 name_key = "stat.crit_rating.name"
 category = "crit"
 value_type = "number"
-v1_status = "V1_RESERVED"
-runtime_effective = false
-affix_spawn_enabled_v1 = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = true
+
+[[stats]]
+id = "crit_damage_rating"
+name_key = "stat.crit_damage_rating.name"
+category = "crit"
+value_type = "number"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = true
 
 [[stats]]
 id = "crit_damage_add_percent"
@@ -572,15 +581,33 @@ category = "crit"
 value_type = "percent"
 v1_status = "V1_ACTIVE"
 runtime_effective = true
-affix_spawn_enabled_v1 = true
+affix_spawn_enabled_v1 = false
 
 [[stats]]
 id = "crit_damage_final_percent"
 name_key = "stat.crit_damage_final_percent.name"
 category = "crit"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "derived_crit_chance_percent"
+name_key = "stat.derived_crit_chance_percent.name"
+category = "crit"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "derived_crit_damage_percent"
+name_key = "stat.derived_crit_damage_percent.name"
+category = "crit"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -606,8 +633,8 @@ id = "area_final_percent"
 name_key = "stat.area_final_percent.name"
 category = "behavior"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -651,8 +678,8 @@ id = "duration_add_percent"
 name_key = "stat.duration_add_percent.name"
 category = "behavior"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -660,8 +687,8 @@ id = "skill_effect_frequency_add_percent"
 name_key = "stat.skill_effect_frequency_add_percent.name"
 category = "behavior"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -669,8 +696,8 @@ id = "explosion_radius_add_percent"
 name_key = "stat.explosion_radius_add_percent.name"
 category = "behavior"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -687,8 +714,8 @@ id = "ignite_chance_add_percent"
 name_key = "stat.ignite_chance_add_percent.name"
 category = "status"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -696,8 +723,8 @@ id = "frostbite_chance_add_percent"
 name_key = "stat.frostbite_chance_add_percent.name"
 category = "status"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -705,8 +732,8 @@ id = "shock_chance_add_percent"
 name_key = "stat.shock_chance_add_percent.name"
 category = "status"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -714,8 +741,8 @@ id = "trauma_chance_add_percent"
 name_key = "stat.trauma_chance_add_percent.name"
 category = "status"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -723,8 +750,8 @@ id = "armor"
 name_key = "stat.armor.name"
 category = "defense"
 value_type = "number"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -732,8 +759,8 @@ id = "armor_add_percent"
 name_key = "stat.armor_add_percent.name"
 category = "defense"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -741,8 +768,8 @@ id = "evasion"
 name_key = "stat.evasion.name"
 category = "defense"
 value_type = "number"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -750,8 +777,8 @@ id = "evasion_add_percent"
 name_key = "stat.evasion_add_percent.name"
 category = "defense"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -759,8 +786,8 @@ id = "attack_block_chance_percent"
 name_key = "stat.attack_block_chance_percent.name"
 category = "defense"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -768,8 +795,8 @@ id = "spell_block_chance_percent"
 name_key = "stat.spell_block_chance_percent.name"
 category = "defense"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -777,8 +804,8 @@ id = "block_damage_reduction_percent"
 name_key = "stat.block_damage_reduction_percent.name"
 category = "defense"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -786,8 +813,8 @@ id = "damage_mitigation_final_percent"
 name_key = "stat.damage_mitigation_final_percent.name"
 category = "defense"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -795,8 +822,8 @@ id = "physical_damage_reduction_percent"
 name_key = "stat.physical_damage_reduction_percent.name"
 category = "defense"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -804,8 +831,8 @@ id = "fire_resistance_percent"
 name_key = "stat.fire_resistance_percent.name"
 category = "resistance"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -813,8 +840,8 @@ id = "cold_resistance_percent"
 name_key = "stat.cold_resistance_percent.name"
 category = "resistance"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -822,17 +849,17 @@ id = "lightning_resistance_percent"
 name_key = "stat.lightning_resistance_percent.name"
 category = "resistance"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
-id = "erosion_resistance_percent"
-name_key = "stat.erosion_resistance_percent.name"
+id = "chaos_resistance_percent"
+name_key = "stat.chaos_resistance_percent.name"
 category = "resistance"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -840,8 +867,8 @@ id = "elemental_resistance_percent"
 name_key = "stat.elemental_resistance_percent.name"
 category = "resistance"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -849,8 +876,8 @@ id = "gem_drop_quantity_add_percent"
 name_key = "stat.gem_drop_quantity_add_percent.name"
 category = "loot_growth"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -858,8 +885,8 @@ id = "gem_drop_rarity_add_percent"
 name_key = "stat.gem_drop_rarity_add_percent.name"
 category = "loot_growth"
 value_type = "percent"
-v1_status = "V1_DISPLAY_ONLY"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -867,9 +894,9 @@ id = "active_gem_level_add"
 name_key = "stat.active_gem_level_add.name"
 category = "loot_growth"
 value_type = "integer"
-v1_status = "V1_ACTIVE"
-runtime_effective = true
-affix_spawn_enabled_v1 = true
+v1_status = "V1_RESERVED"
+runtime_effective = false
+affix_spawn_enabled_v1 = false
 
 [[stats]]
 id = "passive_gem_level_add"
@@ -903,9 +930,9 @@ id = "gem_level"
 name_key = "stat.gem_level.name"
 category = "loot_growth"
 value_type = "integer"
-v1_status = "V1_ACTIVE"
-runtime_effective = true
-affix_spawn_enabled_v1 = true
+v1_status = "V1_RESERVED"
+runtime_effective = false
+affix_spawn_enabled_v1 = false
 
 [[stats]]
 id = "source_power_row"
@@ -939,8 +966,8 @@ id = "source_power_adjacent"
 name_key = "stat.source_power_adjacent.name"
 category = "sudoku_relation"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -975,8 +1002,8 @@ id = "target_power_adjacent"
 name_key = "stat.target_power_adjacent.name"
 category = "sudoku_relation"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -1011,8 +1038,8 @@ id = "relation_effect_final_percent"
 name_key = "stat.relation_effect_final_percent.name"
 category = "sudoku_relation"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
@@ -1020,6 +1047,6 @@ id = "adjacent_bonus_final_percent"
 name_key = "stat.adjacent_bonus_final_percent.name"
 category = "sudoku_relation"
 value_type = "percent"
-v1_status = "V1_RESERVED"
-runtime_effective = false
+v1_status = "V1_ACTIVE"
+runtime_effective = true
 affix_spawn_enabled_v1 = false

@@ -2160,5 +2160,6 @@ def _damage_text(amount: float, damage_type: str) -> str:
         "cold": "冰霜",
         "lightning": "闪电",
         "physical": "物理",
+        "chaos": "混沌",
     }.get(damage_type, "技能")
     return f"{round(amount)}点{damage_type_text}伤害"

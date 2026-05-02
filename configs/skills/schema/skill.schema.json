@@ -34,7 +34,7 @@
       "required": ["tags", "damage_type", "damage_form"],
       "properties": {
         "tags": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
-        "damage_type": { "enum": ["physical", "fire", "cold", "lightning"] },
+        "damage_type": { "enum": ["physical", "fire", "cold", "lightning", "chaos"] },
         "damage_form": { "enum": ["attack", "spell", "secondary", "damage_over_time"] }
       }
     },

@@ -10,4 +10,4 @@ tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_crit"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["attack", "projectile"]
-effect_stats: ["crit_chance_add_percent", "projectile_speed_add_percent"]
+effect_stats: ["crit_rating", "projectile_speed_add_percent"]

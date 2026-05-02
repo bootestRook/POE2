@@ -143,6 +143,12 @@ display_name_key = "tag.lightning.name"
 category = "damage_type"
 
 [[tags]]
+id = "chaos"
+name_key = "tag.chaos.name"
+display_name_key = "tag.chaos.name"
+category = "damage_type"
+
+[[tags]]
 id = "projectile"
 name_key = "tag.projectile.name"
 display_name_key = "tag.projectile.name"

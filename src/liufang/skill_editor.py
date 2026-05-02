@@ -1147,6 +1147,7 @@ def skill_editor_options() -> dict[str, Any]:
             {"value": "fire", "text": "火焰"},
             {"value": "cold", "text": "冰霜"},
             {"value": "lightning", "text": "闪电"},
+            {"value": "chaos", "text": "\u6df7\u6c8c"},
         ],
         "damage_forms": [
             {"value": "attack", "text": "攻击"},

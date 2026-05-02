@@ -10,4 +10,4 @@ tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_damage", "suppor
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["attack", "spell", "summon"]
-effect_stats: ["damage_final_percent", "crit_chance_add_percent"]
+effect_stats: ["damage_final_percent", "cannot_crit"]

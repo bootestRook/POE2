@@ -17,8 +17,6 @@ cast:
 behavior:
   template: projectile
   params:
-    max_targets: 1
-    max_targets: 1
     projectile_count: 1
     spread_angle_deg: 0
     projectile_speed: 620

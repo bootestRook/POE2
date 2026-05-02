@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import shutil
 import sys
@@ -47,10 +47,15 @@ class PlayerStatsPanelTest(unittest.TestCase):
             "max_life",
             "current_life",
             "move_speed",
-            "support_link_limit",
+            "max_mana",
+            "max_energy_shield",
+            "armor",
+            "evasion",
             "hit_damage_add_percent",
             "elemental_damage_add_percent",
             "base_crit_chance_percent",
+            "crit_rating",
+            "crit_damage_rating",
             "cannot_crit",
             "chain_count_add",
             "pierce_count_add",
@@ -60,6 +65,20 @@ class PlayerStatsPanelTest(unittest.TestCase):
         ]:
             self.assertIn(required, definitions)
             self.assertTrue(definitions[required].runtime_effective)
+
+        for excluded in [
+            "support_link_limit",
+            "mana_cost_multiplier_percent",
+            "mana_seal_percent",
+            "projectile_spread_angle_add",
+            "active_gem_level_add",
+            "passive_gem_level_add",
+            "support_gem_level_add",
+            "gem_level",
+        ]:
+            self.assertIn(excluded, definitions)
+            self.assertFalse(definitions[excluded].runtime_effective)
+            self.assertFalse(definitions[excluded].affix_spawn_enabled_v1)
 
         for definition in definitions.values():
             if definition.v1_status != "V1_ACTIVE":
@@ -96,9 +115,13 @@ class PlayerStatsPanelTest(unittest.TestCase):
 
         self.assertIn("character_panel", state)
         self.assertIn("strength", state["player_stats"])
-        self.assertEqual(state["player_stats"]["max_life"]["value"], 100)
+        self.assertEqual(state["player_stats"]["max_life"]["value"], 103.5)
+        self.assertEqual(state["player_stats"]["max_life"]["trace"]["primary_attribute"], 3.5)
+        self.assertEqual(state["player_stats"]["max_mana"]["value"], 176.5)
+        self.assertEqual(state["player_stats"]["derived_crit_chance_percent"]["value"], 5)
+        self.assertEqual(state["player_stats"]["derived_crit_damage_percent"]["value"], 150)
         self.assertEqual(state["player_stats"]["move_speed"]["value"], 1.0)
-        self.assertEqual(state["player_stats"]["strength"]["v1_status"], "V1_RESERVED")
+        self.assertEqual(state["player_stats"]["strength"]["v1_status"], "V1_ACTIVE")
 
         panel_rows = [
             row
@@ -107,6 +130,9 @@ class PlayerStatsPanelTest(unittest.TestCase):
         ]
         self.assertTrue(any(row["stat_id"] == "strength" and row["label_text"] == "力量" for row in panel_rows))
         self.assertTrue(any(row["stat_id"] == "current_life" for row in panel_rows))
+        self.assertTrue(any(row["stat_id"] == "crit_damage_rating" and row["formatter"] == "rating" for row in panel_rows))
+        self.assertFalse(any(row["stat_id"] == "support_link_limit" for row in panel_rows))
+        self.assertFalse(any(row["stat_id"] == "gem_level" for row in panel_rows))
 
     def test_validation_rejects_obsolete_player_stat_references(self) -> None:
         config_root = self.temp_config_root()
