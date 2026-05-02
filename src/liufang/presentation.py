@@ -143,6 +143,8 @@ class PresentationService:
             "labels": {
                 "base_damage": self.localizer.text("ui.skill.base_damage"),
                 "final_damage": self.localizer.text("ui.skill.final_damage"),
+                "expected_hit_damage": self.localizer.text("ui.skill.expected_hit_damage"),
+                "preview_dps": self.localizer.text("ui.skill.preview_dps"),
                 "base_cooldown_ms": self.localizer.text("ui.skill.base_cooldown_ms"),
                 "final_cooldown_ms": self.localizer.text("ui.skill.final_cooldown_ms"),
                 "projectile_count": self.localizer.text("ui.skill.projectile_count"),
@@ -151,6 +153,15 @@ class PresentationService:
             },
             "base_damage": skill.base_damage,
             "final_damage": skill.final_damage,
+            "non_crit_damage": skill.non_crit_damage,
+            "increase_pool": skill.increase_pool,
+            "final_pool": skill.final_pool,
+            "crit_chance": skill.crit_chance,
+            "crit_multiplier": skill.crit_multiplier,
+            "expected_hit_damage": skill.expected_hit_damage,
+            "uses_per_second": skill.uses_per_second,
+            "hit_coverage_factor": skill.hit_coverage_factor,
+            "preview_dps": skill.preview_dps,
             "base_cooldown_ms": skill.base_cooldown_ms,
             "final_cooldown_ms": skill.final_cooldown_ms,
             "projectile_count": skill.projectile_count,
@@ -160,6 +171,7 @@ class PresentationService:
             "applied_modifiers": [
                 self._modifier_view(modifier) for modifier in skill.applied_modifiers
             ],
+            "skill_stats": dict(skill.skill_stats or {}),
         }
 
     def combat_hud(self, session: CombatSession) -> dict[str, Any]:
@@ -781,11 +793,10 @@ class PresentationService:
     def _active_tooltip_dps_lines(self, final_skill: FinalSkillInstance | None) -> list[dict[str, str]]:
         if final_skill is None or final_skill.final_cooldown_ms <= 0:
             return []
-        dps = final_skill.final_damage * final_skill.projectile_count / (final_skill.final_cooldown_ms / 1000)
         return [
             {
                 "label_text": self.localizer.text("ui.tooltip.recent_dps"),
-                "value_text": self._format_number(dps),
+                "value_text": self._format_number(final_skill.preview_dps),
             }
         ]
 

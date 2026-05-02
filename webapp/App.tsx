@@ -107,8 +107,18 @@ type SkillPreview = {
   runtime_params?: Record<string, unknown>;
   presentation_keys?: Record<string, unknown>;
   source_context?: Record<string, number | string>;
+  skill_stats?: Record<string, number | boolean>;
   shape_effects: { id: string; text: string }[];
   final_damage: number;
+  non_crit_damage?: number;
+  increase_pool?: number;
+  final_pool?: number;
+  crit_chance?: number;
+  crit_multiplier?: number;
+  expected_hit_damage?: number;
+  uses_per_second?: number;
+  hit_coverage_factor?: number;
+  preview_dps?: number;
   final_cooldown_ms: number;
   projectile_count: number;
   area_multiplier: number;

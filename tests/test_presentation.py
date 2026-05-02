@@ -181,6 +181,26 @@ class PresentationTest(unittest.TestCase):
             self.presenter.localizer.text("gem.active_fire_bolt.name"),
         )
 
+    def test_skill_preview_dps_uses_formula_coverage_not_projectile_multiplier(self) -> None:
+        active = self.inventory.add_instance("active", "active_fire_bolt")
+        support = self.inventory.add_instance("support", "support_extra_projectile")
+        self.board.mount_gem(active.instance_id, 0, 0)
+        self.board.mount_gem(support.instance_id, 0, 3)
+
+        final_skill = self.calculator().calculate_all()[0]
+        preview = self.presenter.skill_preview(final_skill)
+        active_detail = self.presenter.gem_detail(active, board=self.board, final_skills=(final_skill,))
+        dps_line = active_detail["tooltip_view"]["sections"]["recent_dps"]["lines"][0]
+
+        self.assertEqual(final_skill.projectile_count, 2)
+        self.assertEqual(preview["hit_coverage_factor"], 1)
+        self.assertAlmostEqual(preview["preview_dps"], final_skill.expected_hit_damage * final_skill.uses_per_second)
+        self.assertNotAlmostEqual(
+            preview["preview_dps"],
+            final_skill.expected_hit_damage * final_skill.projectile_count * final_skill.uses_per_second,
+        )
+        self.assertEqual(dps_line["value_text"], self.presenter._format_number(final_skill.preview_dps))
+
     def test_board_view_shows_localized_invalid_prompt(self) -> None:
         self.inventory.add_instance("support", "support_fast_attack")
         self.board.mount_gem("support", 0, 0)

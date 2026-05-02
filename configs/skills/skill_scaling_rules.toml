@@ -2,7 +2,19 @@
 layers = ["base", "additive", "final"]
 allowed_scaling_stats = [
   "damage_add_percent",
+  "hit_damage_add_percent",
+  "all_damage_type_add_percent",
+  "elemental_damage_add_percent",
+  "attack_damage_add_percent",
+  "spell_damage_add_percent",
+  "melee_damage_add_percent",
+  "ranged_damage_add_percent",
+  "projectile_damage_add_percent",
+  "area_damage_add_percent",
+  "chain_damage_add_percent",
+  "pierce_damage_add_percent",
   "damage_final_percent",
+  "hit_damage_final_percent",
   "attack_speed_add_percent",
   "cast_speed_add_percent",
   "skill_speed_final_percent",
@@ -11,8 +23,10 @@ allowed_scaling_stats = [
   "area_add_percent",
   "projectile_count_add",
   "projectile_speed_add_percent",
+  "base_crit_chance_percent",
   "crit_chance_add_percent",
   "crit_damage_add_percent",
+  "cannot_crit",
   "status_chance_add_percent",
   "physical_damage_add_percent",
   "fire_damage_add_percent",
@@ -28,10 +42,21 @@ allowed_scaling_stats = [
 
 [stat_layers]
 damage_add_percent = "additive"
+hit_damage_add_percent = "additive"
+all_damage_type_add_percent = "additive"
+elemental_damage_add_percent = "additive"
 physical_damage_add_percent = "additive"
 fire_damage_add_percent = "additive"
 cold_damage_add_percent = "additive"
 lightning_damage_add_percent = "additive"
+attack_damage_add_percent = "additive"
+spell_damage_add_percent = "additive"
+melee_damage_add_percent = "additive"
+ranged_damage_add_percent = "additive"
+projectile_damage_add_percent = "additive"
+area_damage_add_percent = "additive"
+chain_damage_add_percent = "additive"
+pierce_damage_add_percent = "additive"
 attack_speed_add_percent = "additive"
 cast_speed_add_percent = "additive"
 cooldown_reduction_percent = "additive"
@@ -39,10 +64,13 @@ added_cooldown_ms = "additive"
 area_add_percent = "additive"
 projectile_count_add = "additive"
 projectile_speed_add_percent = "additive"
+base_crit_chance_percent = "additive"
 crit_chance_add_percent = "additive"
 crit_damage_add_percent = "additive"
+cannot_crit = "additive"
 status_chance_add_percent = "additive"
 damage_final_percent = "final"
+hit_damage_final_percent = "final"
 skill_speed_final_percent = "final"
 
 [[support_base_modifiers]]

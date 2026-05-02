@@ -478,6 +478,117 @@ class SkillEffectTest(unittest.TestCase):
             any(modifier.source_base_gem_id == "support_fast_attack" for modifier in final_skill.applied_modifiers)
         )
 
+    def test_player_base_stats_enter_v1_hit_formula_by_matching_tags(self) -> None:
+        self.calculator.player_base_stats = {
+            "damage_add_percent": 10,
+            "hit_damage_add_percent": 5,
+            "fire_damage_add_percent": 20,
+            "cold_damage_add_percent": 900,
+            "elemental_damage_add_percent": 15,
+            "all_damage_type_add_percent": 3,
+            "spell_damage_add_percent": 8,
+            "attack_damage_add_percent": 900,
+            "projectile_damage_add_percent": 7,
+            "area_damage_add_percent": 900,
+            "damage_final_percent": 10,
+            "hit_damage_final_percent": 5,
+        }
+        self.inventory.add_instance("active", "active_fire_bolt")
+        self.board.mount_gem("active", 0, 0)
+
+        final_skill = self.calculator.calculate_all()[0]
+
+        self.assertAlmostEqual(final_skill.increase_pool, 68)
+        self.assertAlmostEqual(final_skill.final_pool, 15)
+        self.assertAlmostEqual(final_skill.final_damage, 12 * 1.68 * 1.15)
+        self.assertEqual(final_skill.skill_stats["cold_damage_add_percent"], 900.0)
+
+    def test_player_base_stats_do_not_apply_to_unmatched_damage_type_or_tags(self) -> None:
+        self.calculator.player_base_stats = {
+            "cold_damage_add_percent": 900,
+            "attack_damage_add_percent": 900,
+            "area_damage_add_percent": 900,
+        }
+        self.inventory.add_instance("active", "active_fire_bolt")
+        self.board.mount_gem("active", 0, 0)
+
+        final_skill = self.calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.increase_pool, 0)
+        self.assertEqual(final_skill.final_damage, 12)
+
+    def test_row_column_and_box_power_stats_scale_routed_values_with_conduit(self) -> None:
+        cases = [
+            ("same_row", "source_power_row", "target_power_row", "support_row_conduit", (0, 0), (0, 3), (0, 6)),
+            ("same_column", "source_power_column", "target_power_column", "support_column_conduit", (0, 0), (3, 0), (6, 0)),
+            ("same_box", "source_power_box", "target_power_box", "support_box_conduit", (0, 0), (1, 1), (2, 2)),
+        ]
+        for relation, source_stat, target_stat, conduit_id, active_pos, support_pos, conduit_pos in cases:
+            with self.subTest(relation=relation):
+                inventory, board, calculator = self._fresh_calculator()
+                inventory.add_instance(
+                    "active",
+                    "active_fire_bolt",
+                    suffix_affixes=(AffixRoll(f"target_{relation}", target_stat, 20, "suffix", "relation_target"),),
+                )
+                inventory.add_instance(
+                    "support",
+                    "support_fire_mastery",
+                    suffix_affixes=(AffixRoll(f"source_{relation}", source_stat, 10, "suffix", "relation_source"),),
+                )
+                inventory.add_instance("conduit", conduit_id)
+                board.mount_gem("active", *active_pos)
+                board.mount_gem("support", *support_pos)
+                board.mount_gem("conduit", *conduit_pos)
+
+                final_skill = calculator.calculate_all()[0]
+                fire_modifier = next(
+                    modifier
+                    for modifier in final_skill.applied_modifiers
+                    if modifier.source_instance_id == "support" and modifier.stat == "fire_damage_add_percent"
+                )
+                conduit_modifiers = [
+                    modifier
+                    for modifier in final_skill.applied_modifiers
+                    if modifier.stat == "conduit_multiplier" and modifier.applied
+                ]
+
+                self.assertEqual(fire_modifier.relation, relation)
+                self.assertAlmostEqual(fire_modifier.value, 18 * 1.1 * 1.2 * 1.25)
+                self.assertEqual(len(conduit_modifiers), 1)
+
+    def test_v1_critical_expectation_fields_are_exposed(self) -> None:
+        self.calculator.player_base_stats = {
+            "base_crit_chance_percent": 95,
+            "crit_chance_add_percent": 20,
+            "crit_damage_add_percent": 50,
+        }
+        self.inventory.add_instance("active", "active_fire_bolt")
+        self.board.mount_gem("active", 0, 0)
+
+        final_skill = self.calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.final_damage, 12)
+        self.assertEqual(final_skill.crit_chance, 1)
+        self.assertEqual(final_skill.crit_multiplier, 2)
+        self.assertEqual(final_skill.expected_hit_damage, 24)
+
+    def test_cannot_crit_forces_expected_damage_to_non_critical_damage(self) -> None:
+        self.calculator.player_base_stats = {
+            "base_crit_chance_percent": 95,
+            "crit_chance_add_percent": 20,
+            "crit_damage_add_percent": 50,
+            "cannot_crit": True,
+        }
+        self.inventory.add_instance("active", "active_fire_bolt")
+        self.board.mount_gem("active", 0, 0)
+
+        final_skill = self.calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.crit_chance, 0)
+        self.assertEqual(final_skill.crit_multiplier, 2)
+        self.assertEqual(final_skill.expected_hit_damage, final_skill.final_damage)
+
     def test_adjacent_relation_takes_priority_over_row_column_or_box(self) -> None:
         self.inventory.add_instance("active", "active_fire_bolt")
         self.inventory.add_instance(
@@ -536,6 +647,9 @@ class SkillEffectTest(unittest.TestCase):
         self.assertEqual(final_skill.runtime_params["spread_angle_deg"], expected_spread_angle)
         self.assertGreater(final_skill.final_cooldown_ms, 0)
         self.assertGreater(final_skill.area_multiplier, 0)
+        self.assertGreater(final_skill.uses_per_second, 0)
+        self.assertEqual(final_skill.hit_coverage_factor, 1)
+        self.assertAlmostEqual(final_skill.preview_dps, final_skill.expected_hit_damage * final_skill.uses_per_second)
         self.assertIsInstance(final_skill.applied_modifiers, tuple)
 
     def test_passive_to_active_and_support_to_passive_are_applied_in_order(self) -> None:

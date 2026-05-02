@@ -774,6 +774,13 @@ class SkillEditorService:
         zone_trigger = _module_trigger(runtime_params, "damage_zone")
         return {
             "final_damage": final_skill.final_damage,
+            "non_crit_damage": final_skill.non_crit_damage,
+            "expected_hit_damage": final_skill.expected_hit_damage,
+            "preview_dps": final_skill.preview_dps,
+            "uses_per_second": final_skill.uses_per_second,
+            "hit_coverage_factor": final_skill.hit_coverage_factor,
+            "crit_chance": final_skill.crit_chance,
+            "crit_multiplier": final_skill.crit_multiplier,
             "final_cooldown_ms": final_skill.final_cooldown_ms,
             "projectile_count": final_skill.projectile_count,
             "projectile_speed": runtime_params.get("projectile_speed", projectile_params.get("projectile_speed", 0)),

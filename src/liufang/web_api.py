@@ -268,6 +268,7 @@ class V1WebAppApi:
             scaling_rules=load_skill_scaling_rules(self.config_root),
             affix_definitions={definition.affix_id: definition for definition in affixes},
             player_runtime_stat_ids=self._player_runtime_stat_ids(),
+            player_base_stats=load_player_base_stats(self.config_root),
         )
 
     def _create_loot_runtime(self) -> LootRuntime:

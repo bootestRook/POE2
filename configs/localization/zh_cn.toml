@@ -548,6 +548,8 @@
 "ui.effect.none" = "当前盘面暂无实际生效对象"
 "ui.skill.base_damage" = "基础伤害"
 "ui.skill.final_damage" = "最终伤害"
+"ui.skill.expected_hit_damage" = "期望击中伤害"
+"ui.skill.preview_dps" = "预览 DPS"
 "ui.skill.base_cooldown_ms" = "基础冷却"
 "ui.skill.final_cooldown_ms" = "最终冷却"
 "ui.skill.projectile_count" = "投射物数量"
