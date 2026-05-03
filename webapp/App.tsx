@@ -91,6 +91,8 @@ type TooltipTextSegment = {
 
 type TooltipRichLine = TooltipTextSegment[];
 
+type ShapeEffectPreview = { id: string; text: string };
+
 type Cell = {
   row: number;
   column: number;
@@ -115,7 +117,7 @@ type SkillPreview = {
   presentation_keys?: Record<string, unknown>;
   source_context?: Record<string, number | string>;
   skill_stats?: Record<string, number | boolean>;
-  shape_effects: { id: string; text: string }[];
+  shape_effects: ShapeEffectPreview[];
   final_damage: number;
   non_crit_damage?: number;
   increase_pool?: number;
@@ -819,7 +821,7 @@ type FireBolt = {
   damageType: string;
   visualEffect: string;
   vfxKey: string;
-  shapeEffects: { id: string; text: string }[];
+  shapeEffects: ShapeEffectPreview[];
   areaScale: number;
   vfxScale?: number;
 };
@@ -842,6 +844,7 @@ type HitVfx = {
   damageType: string;
   vfxKey: string;
   skillTemplateId?: string;
+  shapeEffects: ShapeEffectPreview[];
   vfxScale?: number;
 };
 
@@ -905,6 +908,7 @@ type DamageZoneVfx = {
   directionY: number;
   ttl: number;
   duration: number;
+  hitAtMs?: number;
   damageType: string;
   vfxKey: string;
   zoneId?: string;
@@ -1059,7 +1063,7 @@ type EnemyVisualRuntime = UnitVisualRuntime & {
 };
 
 type BattleRenderEntity =
-  | { kind: "enemy"; id: number; x: number; y: number; hp: number; maxHp: number; lastDamagedAt?: number; monsterId?: string; runtimeTier?: EnemyRuntimeTier; playerDistance: number; renderScale: number }
+  | { kind: "enemy"; id: number; x: number; y: number; hp: number; maxHp: number; lastDamagedAt?: number; monsterId?: string; spawnRarity?: ProceduralSpawnRarity; runtimeTier?: EnemyRuntimeTier; playerDistance: number; renderScale: number }
   | { kind: "player"; id: "player"; x: number; y: number; hp: number; maxHp: number; renderScale: number };
 
 type BattleRenderItem =
@@ -1121,6 +1125,7 @@ const ENEMY_AWARE_RANGE = 900;
 const ENEMY_ACTIVE_RANGE = 560;
 const ENEMY_VISIBLE_RANGE = 760;
 const ENEMY_CAMERA_VISIBLE_RANGE = 1180;
+const ENEMY_INDIVIDUAL_AGGRO_RADIUS = 320;
 const ENEMY_LOW_FREQUENCY_THINK_INTERVAL = 0.18;
 const MAX_VISIBLE_ENEMY_DOM_NODES = 180;
 const MONSTER_CHASE_SPEED_MULTIPLIER = 2;
@@ -1145,6 +1150,7 @@ const ENEMY_SWARM_RING_COUNT = 4;
 const ENEMY_SWARM_SEPARATION_RATIO = 1.04;
 const ENEMY_SWARM_SEPARATION_FORCE = 1.2;
 const ENEMY_SWARM_TANGENT_FORCE = 0;
+const ENEMY_DIRECT_CHARGE_TANGENT_FORCE = 0.85;
 const ENEMY_SWARM_MAX_REPEL = 1.35;
 const ENEMY_SWARM_MIN_CHASE_WEIGHT = 0.58;
 const ENEMY_SWARM_VELOCITY_LERP = 0.24;
@@ -4698,6 +4704,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
             projectileWidth: Number(skill.runtime_params?.projectile_width ?? 38),
             projectileHeight: Number(skill.runtime_params?.projectile_height ?? 24),
             impactRadius: Number(skill.runtime_params?.impact_radius ?? skill.hit?.hit_radius ?? 18),
+            shapeEffects: skill.shape_effects ?? [],
             vfxScale
           }))
         ]);
@@ -4835,7 +4842,9 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     const vfxScale = skillPreviewVfxScale(skill);
     const projectileId = `${skill.active_gem_instance_id}.${timestampMs}.projectile.1`;
     const zoneId = `${skill.active_gem_instance_id}.${timestampMs}.damage_zone.1`;
-    const damageDelayMs = travelTimeMs + triggerDelayMs;
+    const hitAtMs = Math.max(0, Math.round(Number(zoneParams.hit_at_ms ?? triggerDelayMs)));
+    const zoneDelayMs = travelTimeMs + triggerDelayMs;
+    const damageDelayMs = zoneDelayMs + hitAtMs;
     const projectilePayload = {
       projectile_id: projectileId,
       projectile_index: 1,
@@ -4872,7 +4881,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       delay_ms: triggerDelayMs,
       radius,
       ring_width: Number(zoneParams.ring_width ?? 48),
-      hit_at_ms: Math.max(0, Math.round(Number(zoneParams.hit_at_ms ?? triggerDelayMs))),
+      hit_at_ms: hitAtMs,
       max_targets: maxTargets,
       damage_type: skill.damage_type,
       vfx_key: zoneVfxKey,
@@ -4895,7 +4904,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       { ...base, event_id: `${skill.active_gem_instance_id}.projectile_spawn.${timestampMs}`, type: "projectile_spawn" as const, position: spawnWorldPosition, delay_ms: 0, duration_ms: travelTimeMs, amount: null, vfx_key: projectileVfxKey, reason_key: "", payload: projectilePayload },
       { ...base, event_id: `${skill.active_gem_instance_id}.projectile_impact.${timestampMs}`, type: "projectile_impact" as const, timestamp_ms: timestampMs + travelTimeMs, position: targetPosition, delay_ms: travelTimeMs, duration_ms: 0, amount: null, vfx_key: projectileVfxKey, reason_key: "", payload: { ...projectilePayload, marker_id: impactMarkerId, impact_position: targetPosition } },
       { ...base, event_id: `${skill.active_gem_instance_id}.damage_zone_prime.${timestampMs}`, type: "damage_zone_prime" as const, timestamp_ms: timestampMs + travelTimeMs, position: targetPosition, delay_ms: travelTimeMs, duration_ms: triggerDelayMs, amount: null, vfx_key: zoneVfxKey, reason_key: "", payload: zonePayload },
-      { ...base, event_id: `${skill.active_gem_instance_id}.damage_zone.${timestampMs}`, type: "damage_zone" as const, timestamp_ms: timestampMs + damageDelayMs, position: targetPosition, delay_ms: damageDelayMs, duration_ms: Math.max(180, triggerDelayMs), amount: null, vfx_key: zoneVfxKey, reason_key: "", payload: zonePayload },
+      { ...base, event_id: `${skill.active_gem_instance_id}.damage_zone.${timestampMs}`, type: "damage_zone" as const, timestamp_ms: timestampMs + zoneDelayMs, position: targetPosition, delay_ms: zoneDelayMs, duration_ms: Math.max(180, hitAtMs), amount: null, vfx_key: zoneVfxKey, reason_key: "", payload: zonePayload },
       ...(hitTargets.length > 0 ? [{ ...base, event_id: `${skill.active_gem_instance_id}.hit_vfx.${timestampMs}`, type: "hit_vfx" as const, timestamp_ms: timestampMs + damageDelayMs, position: targetPosition, delay_ms: damageDelayMs, duration_ms: FIRE_BOLT_IMPACT_DURATION_MS, amount: null, vfx_key: hitVfxKey, reason_key: reasonKey, payload: { ...zonePayload, hit_world_position: targetPosition } }] : []),
       ...hitTargets.flatMap((item, index) => {
         const targetPosition = { x: item.enemy.x, y: item.enemy.y };
@@ -5645,6 +5654,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           impact_kind: pierceRemaining > 0 ? "projectile_hit_continue" : "projectile_final_impact",
           hit_policy: hitPolicy,
           pierce_count: pierceCount,
+          shape_effects: skill.shape_effects ?? [],
           vfx_scale: vfxScale
         };
         return [
@@ -5798,6 +5808,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           endY: Number(end.y ?? event.position.y),
           ttl: duration,
           duration,
+          hitAtMs: Math.max(0, Math.round(Number(payload.hit_at_ms ?? 0))),
           damageType: event.damage_type,
           vfxKey: event.vfx_key,
           segmentIndex: Number(payload.segment_index ?? 0),
@@ -5887,6 +5898,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
               damageType: event.damage_type,
               vfxKey: hitVfxKey,
               skillTemplateId: event.skill_instance_id,
+              shapeEffects: shapeEffectsFromUnknown(hitPayload.shape_effects),
               vfxScale: normalizedVfxScale(payload.vfx_scale)
             });
             nextTexts.push({
@@ -5923,6 +5935,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           damageType: event.damage_type,
           vfxKey: event.vfx_key,
           skillTemplateId: event.skill_instance_id,
+          shapeEffects: shapeEffectsFromUnknown(payload.shape_effects),
           vfxScale: normalizedVfxScale(payload.vfx_scale)
         });
         continue;
@@ -5940,6 +5953,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           damageType: event.damage_type,
           vfxKey: event.vfx_key,
           skillTemplateId: event.skill_instance_id,
+          shapeEffects: shapeEffectsFromUnknown(payload.shape_effects),
           vfxScale: normalizedVfxScale(payload.vfx_scale)
         });
         continue;
@@ -6058,6 +6072,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           damageType: event.damage_type,
           vfxKey: event.vfx_key,
           skillTemplateId: event.skill_instance_id,
+          shapeEffects: shapeEffectsFromUnknown(event.payload?.shape_effects),
           vfxScale: normalizedVfxScale(event.payload?.vfx_scale)
         });
         continue;
@@ -6181,6 +6196,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         directionY: Number(direction.y ?? event.direction.y),
         ttl: duration,
         duration,
+        hitAtMs: Math.max(0, Math.round(Number(payload.hit_at_ms ?? 0))),
         damageType: event.damage_type,
         vfxKey: event.vfx_key,
         zoneId,
@@ -6209,6 +6225,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           damageType: event.damage_type,
           vfxKey: event.vfx_key,
           skillTemplateId: event.skill_instance_id,
+          shapeEffects: shapeEffectsFromUnknown(payload.shape_effects),
           vfxScale: normalizedVfxScale(payload.vfx_scale)
         }
       ]);
@@ -6356,6 +6373,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           damageType: event.damage_type,
           vfxKey: event.vfx_key,
           skillTemplateId: event.skill_instance_id,
+          shapeEffects: shapeEffectsFromUnknown(event.payload?.shape_effects),
           vfxScale: normalizedVfxScale(event.payload?.vfx_scale)
         }
       ]);
@@ -6697,6 +6715,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       hp: enemy.hp,
       maxHp: enemy.maxHp,
       monsterId: enemy.monsterId,
+      spawnRarity: enemy.spawnRarity,
       visualPrimaryColor: enemy.visualPrimaryColor,
       boss: enemy.boss,
       runtimeTier: enemy.runtimeTier
@@ -6756,6 +6775,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         damageType: zone.damageType,
         vfxKey: zone.vfxKey,
         warning: zone.warning,
+        hitAtMs: zone.hitAtMs,
         ttl: zone.ttl,
         duration: zone.duration
       })),
@@ -6810,6 +6830,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       radius: Math.max(vfx.impactRadius ?? 0, vfx.projectileWidth ?? 0, vfx.projectileHeight ?? 0) * 0.5,
       damageType: vfx.damageType,
       vfxKey: vfx.vfxKey,
+      shapeEffects: vfx.shapeEffects.map((effect) => effect.id),
       ttl: vfx.ttl,
       duration: vfx.duration
     })),
@@ -10654,6 +10675,21 @@ function createProceduralSpawnPlanEnemies(map: BakedBattleMapData, startId: numb
   return { enemies, aggroSources, nextId: result.nextId, debug: result.debug };
 }
 
+function shapeEffectsFromUnknown(value: unknown): ShapeEffectPreview[] {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((item) => {
+    if (typeof item === "string") return [{ id: item, text: item }];
+    if (!item || typeof item !== "object") return [];
+    const effect = item as { id?: unknown; text?: unknown };
+    if (typeof effect.id !== "string" || effect.id.length === 0) return [];
+    return [{ id: effect.id, text: typeof effect.text === "string" ? effect.text : effect.id }];
+  });
+}
+
+function hasShapeEffect(effects: ShapeEffectPreview[] | undefined, id: string) {
+  return (effects ?? []).some((effect) => effect.id === id);
+}
+
 function proceduralSpawnLogLine(debug: ProceduralSpawnDebugSummary) {
   return `程序化生怪：地图类型 ${debug.map_type}，预算 ${debug.spent_pack_budget}/${debug.base_pack_budget}，怪物包 ${debug.generated_pack_count}，普通 ${debug.normal_monster_count}，魔法 ${debug.magic_monster_count}，稀有 ${debug.rare_monster_count}，传奇 ${debug.boss_monster_count}。`;
 }
@@ -10886,15 +10922,20 @@ function updateRuntimeEnemies(
           : moveEnemyTowardPlayer(enemy, player, map, dt, "active", spatialIndex, navigation)
       )),
       map,
-      attackLockedEnemyIds
+      attackLockedEnemyIds,
+      player
     );
   }
+  const spatialIndex = createEnemySpatialIndex(movingCurrent);
+  const nearbyEnemyAggroSourceIds = new Set(
+    queryEnemySpatialIndex(spatialIndex, player, ENEMY_INDIVIDUAL_AGGRO_RADIUS)
+      .flatMap((enemy) => enemy.spawnPlanSourceId ? [enemy.spawnPlanSourceId] : [])
+  );
   for (const source of aggroSources) {
-    if (!triggeredSourceIds.has(source.id) && distance(source, player) <= source.aggroRadius) {
+    if (!triggeredSourceIds.has(source.id) && (distance(source, player) <= source.aggroRadius || nearbyEnemyAggroSourceIds.has(source.id))) {
       triggeredSourceIds.add(source.id);
     }
   }
-  const spatialIndex = createEnemySpatialIndex(movingCurrent);
   const navigation = createEnemyNavigationContext(movingCurrent, player, map);
   const visibleIds = new Set(queryEnemySpatialIndex(spatialIndex, player, ENEMY_CAMERA_VISIBLE_RANGE).map((enemy) => enemy.id));
   const activeIds = new Set(queryEnemySpatialIndex(spatialIndex, player, ENEMY_ACTIVE_RANGE).map((enemy) => enemy.id));
@@ -10925,7 +10966,7 @@ function updateRuntimeEnemies(
       nextThinkAt: tier === "aware" ? elapsedSeconds + ENEMY_LOW_FREQUENCY_THINK_INTERVAL : elapsedSeconds
     };
   }).filter((enemy) => enemy.runtimeTier !== "dead");
-  return separateOverlappingEnemies(movedEnemies, map, attackLockedEnemyIds);
+  return separateOverlappingEnemies(movedEnemies, map, attackLockedEnemyIds, player);
 }
 
 function resetEnemyEngagement(enemy: Enemy): Enemy {
@@ -11089,7 +11130,7 @@ function moveEnemyTowardPlayer(
     ? { x: dx / length, y: dy / length }
     : { x: Math.cos(fallbackAngle), y: Math.sin(fallbackAngle) };
   const steering = directCharge
-    ? { x: 0, y: 0, speedScale: 1, active: false }
+    ? steerEnemyDirectChargeCrowd(enemy, desired, spatialIndex)
     : steerEnemySwarm(enemy, desired, spatialIndex);
   const playerRepelPressure = !directCharge && playerDistance < ENEMY_PLAYER_BODY_SOFT_RADIUS
     ? (ENEMY_PLAYER_BODY_SOFT_RADIUS - playerDistance) / ENEMY_PLAYER_BODY_SOFT_RADIUS
@@ -11125,7 +11166,7 @@ function moveEnemyTowardPlayer(
     }
     : approachTarget;
   const nextPosition = directCharge
-    ? resolveEnemyDirectChargeMove(map, enemy, direction, stepDistance)
+    ? resolveEnemyDirectChargeMove(map, enemy, movementTarget, direction, stepDistance, spatialIndex)
     : resolveEnemySteeredMove(map, enemy, movementTarget, direction, stepDistance, steering.active, spatialIndex);
   return {
     ...enemy,
@@ -11142,15 +11183,52 @@ function moveEnemyTowardPlayer(
 function resolveEnemyDirectChargeMove(
   map: BakedBattleMapData | null,
   enemy: Enemy,
+  target: { x: number; y: number },
   direction: { x: number; y: number },
-  stepDistance: number
+  stepDistance: number,
+  spatialIndex?: EnemySpatialIndex
 ) {
   if (stepDistance <= 0.001) return enemy;
   const directNext = {
     x: enemy.x + direction.x * stepDistance,
     y: enemy.y + direction.y * stepDistance
   };
-  return map ? resolveWalkableMove(map, enemy, directNext) : directNext;
+  if (!map) return directNext;
+  const directResolved = resolveWalkableMove(map, enemy, directNext);
+  const directMovedDistance = distance(enemy, directResolved);
+  const directCrowdPenalty = enemyCrowdMovePenalty(enemy, directResolved, spatialIndex);
+  if (directMovedDistance > stepDistance * 0.75 && directCrowdPenalty <= 0.001 && isMapPointWalkable(map, directNext.x, directNext.y)) {
+    return directResolved;
+  }
+
+  const currentDistance = distance(enemy, target);
+  const baseAngle = Math.atan2(direction.y, direction.x);
+  const laneSign = enemyLaneSign(enemy);
+  let bestPosition = directResolved;
+  let bestScore = directMovedDistance - directCrowdPenalty;
+
+  for (const offset of ENEMY_STEERING_ANGLE_OFFSETS) {
+    const angle = baseAngle + offset * laneSign;
+    const candidateDirection = { x: Math.cos(angle), y: Math.sin(angle) };
+    const rawNext = {
+      x: enemy.x + candidateDirection.x * stepDistance,
+      y: enemy.y + candidateDirection.y * stepDistance
+    };
+    const resolved = resolveWalkableMove(map, enemy, rawNext);
+    const movedDistance = distance(enemy, resolved);
+    if (movedDistance <= 0.001) continue;
+    const progress = currentDistance - distance(resolved, target);
+    const crowdPenalty = enemyCrowdMovePenalty(enemy, resolved, spatialIndex);
+    const wallScore = enemyWallMoveScore(map, rawNext, resolved, stepDistance);
+    const turnPenalty = Math.abs(offset) * stepDistance * 0.12;
+    const score = progress * 3.2 + movedDistance * 0.5 + wallScore - turnPenalty - crowdPenalty;
+    if (score > bestScore) {
+      bestScore = score;
+      bestPosition = resolved;
+    }
+  }
+
+  return bestPosition;
 }
 
 function enemyNavigationMoveTarget(
@@ -11161,11 +11239,20 @@ function enemyNavigationMoveTarget(
 ) {
   const approachTarget = enemyApproachTarget(enemy, player, map);
   if (!map || !navigation) return approachTarget;
-  if (distance(enemy, player) <= ENEMY_APPROACH_RING_RADIUS * 1.8) return approachTarget;
+  const playerDistance = distance(enemy, player);
+  const directAttackDistance = monsterAttackRange(enemy) + map.meta.grid_size * 0.35;
+  if (!enemy.aggroLocked && playerDistance <= ENEMY_APPROACH_RING_RADIUS * 1.8) {
+    return approachTarget;
+  }
+  if (enemy.aggroLocked && playerDistance <= directAttackDistance && enemyHasWalkableLine(map, enemy, approachTarget)) {
+    return approachTarget;
+  }
 
   const cell = enemyWorldToGrid(map, enemy);
   const currentIndex = enemyGridIndex(navigation, cell.gridX, cell.gridY);
-  if (navigation.field[currentIndex] >= ENEMY_NAVIGATION_INF) return approachTarget;
+  if (navigation.field[currentIndex] >= ENEMY_NAVIGATION_INF) {
+    return enemyUnreachableApproachTarget(map, enemy, cell, approachTarget);
+  }
 
   let best = { gridX: cell.gridX, gridY: cell.gridY, score: navigation.field[currentIndex] };
   const laneSign = enemyLaneSign(enemy);
@@ -11192,13 +11279,52 @@ function enemyNavigationMoveTarget(
   const center = enemyGridCenter(map, best.gridX, best.gridY);
   const fromPlayer = guideDirection(player, center);
   const perpendicular = { x: -fromPlayer.y, y: fromPlayer.x };
-  const sideOffset = enemyLaneSign(enemy) * Math.min(map.meta.grid_size * 0.28, 10);
+  const sideOffset = enemy.aggroLocked ? 0 : enemyLaneSign(enemy) * Math.min(map.meta.grid_size * 0.28, 10);
   return {
     x: center.x + perpendicular.x * sideOffset,
     y: center.y + perpendicular.y * sideOffset,
     gridX: best.gridX,
     gridY: best.gridY
   };
+}
+
+function enemyUnreachableApproachTarget(
+  map: BakedBattleMapData,
+  enemy: Enemy,
+  cell: { gridX: number; gridY: number },
+  approachTarget: { x: number; y: number }
+) {
+  let best: { gridX: number; gridY: number; score: number } | null = null;
+  for (const direction of ENEMY_NAVIGATION_DIRECTIONS) {
+    const gridX = cell.gridX + direction.x;
+    const gridY = cell.gridY + direction.y;
+    if (!enemyCanStepGrid(map, cell.gridX, cell.gridY, gridX, gridY)) continue;
+    const center = enemyGridCenter(map, gridX, gridY);
+    const score = distance(center, approachTarget) + enemyGridWallCost(map, gridX, gridY) * map.meta.grid_size;
+    if (!best || score < best.score) best = { gridX, gridY, score };
+  }
+  if (!best) return approachTarget;
+  const currentScore = distance(enemyGridCenter(map, cell.gridX, cell.gridY), approachTarget);
+  if (best.score >= currentScore) return approachTarget;
+  return {
+    ...enemyGridCenter(map, best.gridX, best.gridY),
+    gridX: best.gridX,
+    gridY: best.gridY
+  };
+}
+
+function enemyHasWalkableLine(map: BakedBattleMapData, from: { x: number; y: number }, to: { x: number; y: number }) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const length = Math.hypot(dx, dy);
+  if (length <= 0.001) return isMapPointWalkable(map, from.x, from.y);
+  const step = Math.max(4, map.meta.grid_size * 0.35);
+  const samples = Math.max(1, Math.ceil(length / step));
+  for (let index = 1; index <= samples; index += 1) {
+    const ratio = index / samples;
+    if (!isMapPointWalkable(map, from.x + dx * ratio, from.y + dy * ratio)) return false;
+  }
+  return true;
 }
 
 function enemyNavigationCandidateScore(navigation: EnemyNavigationContext, gridX: number, gridY: number, laneSign: number, directionX: number, directionY: number) {
@@ -11303,6 +11429,41 @@ function steerEnemySwarm(enemy: Enemy, desired: { x: number; y: number }, spatia
       + perpendicular.x * clamp(tangentPressure, -1, 1) * ENEMY_SWARM_TANGENT_FORCE,
     y: clamp(chaseSafeRepel.y * ENEMY_SWARM_SEPARATION_FORCE, -ENEMY_SWARM_MAX_REPEL, ENEMY_SWARM_MAX_REPEL)
       + perpendicular.y * clamp(tangentPressure, -1, 1) * ENEMY_SWARM_TANGENT_FORCE,
+    speedScale,
+    active
+  };
+}
+
+function steerEnemyDirectChargeCrowd(enemy: Enemy, desired: { x: number; y: number }, spatialIndex?: EnemySpatialIndex) {
+  if (!spatialIndex) return { x: 0, y: 0, speedScale: 1, active: false };
+  const neighbors = queryEnemySpatialIndex(spatialIndex, enemy, ENEMY_STEERING_NEIGHBOR_RADIUS);
+  const perpendicular = { x: -desired.y, y: desired.x };
+  const laneSign = enemyLaneSign(enemy);
+  let tangentPressure = 0;
+  let densityPressure = 0;
+
+  for (const neighbor of neighbors) {
+    if (neighbor.id === enemy.id || neighbor.hp <= 0 || neighbor.runtimeTier === "dead") continue;
+    const toNeighborX = neighbor.x - enemy.x;
+    const toNeighborY = neighbor.y - enemy.y;
+    const forward = toNeighborX * desired.x + toNeighborY * desired.y;
+    if (forward <= 0 || forward > ENEMY_STEERING_LOOKAHEAD) continue;
+    const combinedRadius = enemyCollisionRadius(enemy) + enemyCollisionRadius(neighbor);
+    const lateral = toNeighborX * perpendicular.x + toNeighborY * perpendicular.y;
+    const laneWidth = combinedRadius * ENEMY_SWARM_SEPARATION_RATIO + ENEMY_STEERING_COMFORT_GAP;
+    if (Math.abs(lateral) > laneWidth) continue;
+    const forwardPressure = (ENEMY_STEERING_LOOKAHEAD - forward) / ENEMY_STEERING_LOOKAHEAD;
+    const lateralPressure = (laneWidth - Math.abs(lateral)) / laneWidth;
+    const escapeSign = Math.abs(lateral) < 0.001 ? laneSign : -Math.sign(lateral);
+    tangentPressure += escapeSign * forwardPressure * lateralPressure;
+    densityPressure += forwardPressure * lateralPressure * 0.32;
+  }
+
+  const active = Math.abs(tangentPressure) > 0.001;
+  const speedScale = clamp(1 - densityPressure * ENEMY_SWARM_DENSE_SLOWDOWN, ENEMY_STEERING_MIN_SPEED_SCALE, 1);
+  return {
+    x: perpendicular.x * clamp(tangentPressure, -1, 1) * ENEMY_DIRECT_CHARGE_TANGENT_FORCE,
+    y: perpendicular.y * clamp(tangentPressure, -1, 1) * ENEMY_DIRECT_CHARGE_TANGENT_FORCE,
     speedScale,
     active
   };
@@ -11468,7 +11629,12 @@ function enemyLaneSign(enemy: Enemy) {
   return enemy.id % 2 === 0 ? 1 : -1;
 }
 
-function separateOverlappingEnemies(enemies: Enemy[], map: BakedBattleMapData | null, lockedEnemyIds: Set<number> = new Set()): Enemy[] {
+function separateOverlappingEnemies(
+  enemies: Enemy[],
+  map: BakedBattleMapData | null,
+  lockedEnemyIds: Set<number> = new Set(),
+  chaseTarget?: { x: number; y: number }
+): Enemy[] {
   if (enemies.length <= 1) return enemies;
   const spatialIndex = createEnemySpatialIndex(enemies, ENEMY_SPATIAL_CHUNK_SIZE);
   return enemies.map((enemy) => {
@@ -11495,7 +11661,17 @@ function separateOverlappingEnemies(enemies: Enemy[], map: BakedBattleMapData | 
     }
     const pushLength = Math.hypot(pushX, pushY);
     if (pushLength <= 0.001) return enemy;
-    const scale = Math.min(ENEMY_COLLISION_MAX_PUSH, pushLength) / pushLength;
+    if (enemy.aggroLocked && chaseTarget) {
+      const toTarget = guideDirection(enemy, chaseTarget);
+      const awayFromTarget = pushX * toTarget.x + pushY * toTarget.y;
+      if (awayFromTarget < 0) {
+        pushX -= toTarget.x * awayFromTarget;
+        pushY -= toTarget.y * awayFromTarget;
+      }
+    }
+    const adjustedPushLength = Math.hypot(pushX, pushY);
+    if (adjustedPushLength <= 0.001) return enemy;
+    const scale = Math.min(ENEMY_COLLISION_MAX_PUSH, adjustedPushLength) / adjustedPushLength;
     const nextPosition = resolveWalkableMove(map, enemy, {
       x: enemy.x + pushX * scale,
       y: enemy.y + pushY * scale
@@ -11969,7 +12145,7 @@ function battleRenderEntityRarityRank(entity: BattleRenderEntity) {
 
 function enemyBattleRenderRarityRank(enemy: Extract<BattleRenderEntity, { kind: "enemy" }>) {
   const visual = resolveMonsterGeometryVisual(enemy.monsterId);
-  const tier = visual?.tier ?? (enemy.monsterId === "enemy_brute" ? "rare" : "normal");
+  const tier = enemy.spawnRarity ?? visual?.tier ?? (enemy.monsterId === "enemy_brute" ? "rare" : "normal");
   if (tier === "boss") return 4;
   if (tier === "rare") return 3;
   if (tier === "magic") return 1;
@@ -12844,14 +13020,6 @@ function LegacyFireBoltView({ bolt, depthIndex }: { bolt: FireBolt; depthIndex: 
         data-shape-effects={bolt.shapeEffects.map((effect) => effect.id).join(",")}
       >
         <span className="skill-vfx-core" />
-        {bolt.shapeEffects.slice(0, 5).map((effect, index) => (
-          <span
-            key={`${effect.id}-${index}`}
-            className={`skill-shape skill-shape-${shapeClass(effect.id)} skill-shape-${visualTone(effect.id)}`}
-            style={{ "--shape-index": index } as CSSProperties}
-            title={effect.text}
-          />
-        ))}
       </div>
     </>
   );
@@ -12881,6 +13049,17 @@ function HitVfxView({ vfx, depthIndex }: { vfx: HitVfx; depthIndex: number }) {
     : 1 + (1 - opacity) * 0.08;
   const impactStyle = fireBoltVfxLayerStyle(impactPoint, impactSheet, depthIndex, opacity, ` scale(${impactScale})`, fakeZ, vfxScale);
   const sparksStyle = sparksSheet ? fireBoltVfxLayerStyle(sparksPoint, sparksSheet, depthIndex, opacity * 0.86, ` scale(${1 + (1 - opacity) * 0.18})`, fakeZ, vfxScale) : null;
+  const showFireBoltNova = hasShapeEffect(vfx.shapeEffects, "fire_bolt_nova");
+  const showFireBoltRain = hasShapeEffect(vfx.shapeEffects, "fire_bolt_rain");
+  const showFireBoltFork = hasShapeEffect(vfx.shapeEffects, "fire_bolt_fork");
+  const shapePoint = projectBattleWorldToScreen(vfx.x, vfx.y);
+  const shapeStyle: CSSProperties = {
+    left: shapePoint.x,
+    top: shapePoint.y - (vfxKind === "penetrating_shot" ? fakeZ : fakeZ * 0.55),
+    opacity,
+    zIndex: BATTLE_ENTITY_Z_INDEX_BASE + depthIndex + 1,
+    transform: `translate(-50%, -50%) scale(${vfxScale})`
+  };
   if (vfxKind !== "penetrating_shot") {
     impactStyle.top = Number(impactStyle.top) + fakeZ * 0.45;
     if (sparksStyle) sparksStyle.top = Number(sparksStyle.top) + fakeZ * 0.35;
@@ -12900,6 +13079,7 @@ function HitVfxView({ vfx, depthIndex }: { vfx: HitVfx; depthIndex: number }) {
         data-impact-kind={vfx.impactKind}
         data-impact-world-x={vfx.x}
         data-impact-world-y={vfx.y}
+        data-shape-effects={vfx.shapeEffects.map((effect) => effect.id).join(",")}
         aria-hidden="true"
       >
         <span className="vfx-sprite" style={vfxSpriteStyle(impactSheet, impactFrame)} />
@@ -12921,6 +13101,40 @@ function HitVfxView({ vfx, depthIndex }: { vfx: HitVfx; depthIndex: number }) {
           <span className="vfx-sprite" style={vfxSpriteStyle(sparksSheet, sparksFrame)} />
         </span>
       )}
+      {showFireBoltFork && (
+        <span
+          className="hit-fork-sparks-vfx"
+          style={shapeStyle}
+          data-skill-event="hit_vfx"
+          data-vfx-key={`${vfx.vfxKey}.fire_bolt_fork`}
+          data-shape-effects={vfx.shapeEffects.map((effect) => effect.id).join(",")}
+          aria-hidden="true"
+        >
+          {Array.from({ length: 7 }, (_, index) => <span key={index} className={`hit-fork-spark hit-fork-spark-${index + 1}`} />)}
+        </span>
+      )}
+      {showFireBoltNova && (
+        <span
+          className="hit-nova-ring-vfx"
+          style={shapeStyle}
+          data-skill-event="hit_vfx"
+          data-vfx-key={`${vfx.vfxKey}.fire_bolt_nova`}
+          data-shape-effects={vfx.shapeEffects.map((effect) => effect.id).join(",")}
+          aria-hidden="true"
+        />
+      )}
+      {showFireBoltRain && (
+        <span
+          className="hit-meteor-rain-vfx"
+          style={shapeStyle}
+          data-skill-event="hit_vfx"
+          data-vfx-key={`${vfx.vfxKey}.fire_bolt_rain`}
+          data-shape-effects={vfx.shapeEffects.map((effect) => effect.id).join(",")}
+          aria-hidden="true"
+        >
+          {Array.from({ length: 6 }, (_, index) => <span key={index} className={`hit-meteor-streak hit-meteor-streak-${index + 1}`} />)}
+        </span>
+      )}
     </>
   );
 }
@@ -12930,14 +13144,61 @@ function LegacyHitVfxView({ vfx, depthIndex }: { vfx: HitVfx; depthIndex: number
   const opacity = Math.max(0, vfx.ttl / duration);
   const scale = (1 + (1 - opacity) * 0.55) * normalizedVfxScale(vfx.vfxScale);
   const visualPoint = projectBattleWorldToScreen(vfx.x, vfx.y);
+  const showFireBoltNova = hasShapeEffect(vfx.shapeEffects, "fire_bolt_nova");
+  const showFireBoltRain = hasShapeEffect(vfx.shapeEffects, "fire_bolt_rain");
+  const showFireBoltFork = hasShapeEffect(vfx.shapeEffects, "fire_bolt_fork");
+  const shapeStyle = {
+    left: visualPoint.x,
+    top: visualPoint.y,
+    opacity,
+    zIndex: BATTLE_ENTITY_Z_INDEX_BASE + depthIndex + 1,
+    transform: `translate(-50%, -50%) scale(${normalizedVfxScale(vfx.vfxScale)})`
+  };
   return (
-    <div
-      className={`skill-hit-vfx skill-vfx skill-vfx-${visualTone(vfx.vfxKey || vfx.damageType)} skill-vfx-${cssToken(vfx.vfxKey)}`}
-      style={{ left: visualPoint.x, top: visualPoint.y, opacity, zIndex: BATTLE_ENTITY_Z_INDEX_BASE + depthIndex, transform: `translate(-50%, -50%) scale(${scale})` }}
-      data-skill-event="hit_vfx"
-      data-vfx-key={vfx.vfxKey}
-      data-target-id={vfx.targetId}
-    />
+    <>
+      <div
+        className={`skill-hit-vfx skill-vfx skill-vfx-${visualTone(vfx.vfxKey || vfx.damageType)} skill-vfx-${cssToken(vfx.vfxKey)}`}
+        style={{ left: visualPoint.x, top: visualPoint.y, opacity, zIndex: BATTLE_ENTITY_Z_INDEX_BASE + depthIndex, transform: `translate(-50%, -50%) scale(${scale})` }}
+        data-skill-event="hit_vfx"
+        data-vfx-key={vfx.vfxKey}
+        data-target-id={vfx.targetId}
+        data-shape-effects={vfx.shapeEffects.map((effect) => effect.id).join(",")}
+      />
+      {showFireBoltFork && (
+        <span
+          className="hit-fork-sparks-vfx"
+          style={shapeStyle}
+          data-skill-event="hit_vfx"
+          data-vfx-key={`${vfx.vfxKey}.fire_bolt_fork`}
+          data-shape-effects={vfx.shapeEffects.map((effect) => effect.id).join(",")}
+          aria-hidden="true"
+        >
+          {Array.from({ length: 7 }, (_, index) => <span key={index} className={`hit-fork-spark hit-fork-spark-${index + 1}`} />)}
+        </span>
+      )}
+      {showFireBoltNova && (
+        <span
+          className="hit-nova-ring-vfx"
+          style={shapeStyle}
+          data-skill-event="hit_vfx"
+          data-vfx-key={`${vfx.vfxKey}.fire_bolt_nova`}
+          data-shape-effects={vfx.shapeEffects.map((effect) => effect.id).join(",")}
+          aria-hidden="true"
+        />
+      )}
+      {showFireBoltRain && (
+        <span
+          className="hit-meteor-rain-vfx"
+          style={shapeStyle}
+          data-skill-event="hit_vfx"
+          data-vfx-key={`${vfx.vfxKey}.fire_bolt_rain`}
+          data-shape-effects={vfx.shapeEffects.map((effect) => effect.id).join(",")}
+          aria-hidden="true"
+        >
+          {Array.from({ length: 6 }, (_, index) => <span key={index} className={`hit-meteor-streak hit-meteor-streak-${index + 1}`} />)}
+        </span>
+      )}
+    </>
   );
 }
 
@@ -13318,6 +13579,12 @@ function DamageZoneLayer({ zones }: { zones: DamageZoneVfx[] }) {
       {zones.map((zone) => {
         const position = projectBattleWorldToScreen(zone.x, zone.y);
         const progress = clamp(1 - zone.ttl / zone.duration, 0, 1);
+        const elapsedMs = Math.max(0, (zone.duration - zone.ttl) * 1000);
+        const fillProgress = zone.warning
+          ? progress
+          : zone.hitAtMs && zone.hitAtMs > 0
+            ? clamp(elapsedMs / zone.hitAtMs, 0, 1)
+            : 1;
         const angle = zone.shape === "rectangle"
           ? worldDirectionToBattleScreenAngle({ x: zone.directionX || 1, y: zone.directionY || 0 }, { x: zone.x, y: zone.y })
           : 0;
@@ -13336,6 +13603,7 @@ function DamageZoneLayer({ zones }: { zones: DamageZoneVfx[] }) {
                 : "translate(-50%, -50%)",
               opacity: zone.warning ? Math.max(0.2, 0.65 - progress * 0.35) : Math.max(0, 1 - progress * 0.75),
               zIndex: BATTLE_ENTITY_Z_INDEX_BASE - 2,
+              ["--damage-zone-fill-scale" as string]: fillProgress,
             }}
             data-skill-event={zone.warning ? "damage_zone_prime" : "damage_zone"}
             data-vfx-key={zone.vfxKey}
@@ -13489,17 +13757,6 @@ function visualTone(value: string | undefined) {
   if (token.includes("vitality")) return "vitality";
   if (token.includes("swift")) return "swift";
   return "fire";
-}
-
-function shapeClass(value: string) {
-  const token = cssToken(value);
-  if (token.includes("nova") || token.includes("burst") || token.includes("blast")) return "burst";
-  if (token.includes("fork") || token.includes("fan") || token.includes("multi")) return "split";
-  if (token.includes("rain") || token.includes("storm") || token.includes("cloud")) return "rain";
-  if (token.includes("chain") || token.includes("beam") || token.includes("ricochet")) return "chain";
-  if (token.includes("orbit") || token.includes("double") || token.includes("gravity")) return "orbit";
-  if (token.includes("dash") || token.includes("arc") || token.includes("spin")) return "slash";
-  return "glyph";
 }
 
 function createEnemy(

@@ -48,6 +48,13 @@ allowed_scaling_stats = [
 ]
 
 [stat_layers]
+life_regen_flat = "additive"
+max_energy_shield = "additive"
+max_mana = "additive"
+dot_damage_add_percent = "additive"
+duration_add_percent = "additive"
+ignite_chance_add_percent = "additive"
+conversion_physical_to_fire_percent = "additive"
 damage_add_percent = "additive"
 hit_damage_add_percent = "additive"
 all_damage_type_add_percent = "additive"
@@ -539,3 +546,255 @@ multiplier = 1.25
 support_id = "support_box_conduit"
 relation = "same_box"
 multiplier = 1.25
+
+[[support_base_modifiers]]
+support_id = "support_multistrike"
+stat = "damage_final_percent"
+value = 27
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_quick_decision"
+stat = "attack_speed_add_percent"
+value = 15
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_quick_decision"
+stat = "cast_speed_add_percent"
+value = 15
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_cooldown_reduction"
+stat = "cooldown_recovery_add_percent"
+value = 13
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_critical_strike_rating_increase"
+stat = "crit_rating"
+value = 135
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_critical_strike_damage_increase"
+stat = "crit_damage_add_percent"
+value = 26
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_channel_preparation"
+stat = "damage_final_percent"
+value = 4
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_control_spell"
+stat = "crit_rating"
+value = -100
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_control_spell"
+stat = "damage_final_percent"
+value = 28
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_overload"
+stat = "damage_final_percent"
+value = 24.4
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_melee_knockback"
+stat = "damage_final_percent"
+value = 15.5
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_high_voltage"
+stat = "lightning_damage_add_percent"
+value = 10.3
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_glacial_freeze"
+stat = "cold_damage_add_percent"
+value = 10.3
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_additional_ignite"
+stat = "ignite_chance_add_percent"
+value = 15
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_additional_ignite"
+stat = "fire_damage_add_percent"
+value = 10.8
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_physical_to_fire"
+stat = "conversion_physical_to_fire_percent"
+value = 100
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_physical_to_fire"
+stat = "fire_damage_add_percent"
+value = 15.5
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_lightning_to_cold"
+stat = "cold_damage_add_percent"
+value = 5.5
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_added_fire_damage"
+stat = "fire_damage_add_percent"
+value = 104
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_added_cold_damage"
+stat = "cold_damage_add_percent"
+value = 104
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_added_lightning_damage"
+stat = "lightning_damage_add_percent"
+value = 104
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_added_erosion_damage"
+stat = "chaos_damage_add_percent"
+value = 104
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_elemental_fusion"
+stat = "elemental_damage_add_percent"
+value = 25.5
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_elemental_fusion"
+stat = "cannot_crit"
+value = 1
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_tendonslicer"
+stat = "physical_damage_add_percent"
+value = 7.5
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_improved_corrosion"
+stat = "chaos_damage_add_percent"
+value = 15
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_multiple_projectiles"
+stat = "projectile_count_add"
+value = 2
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_multiple_projectiles"
+stat = "damage_final_percent"
+value = 7.4
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_projectile_split"
+stat = "projectile_count_add"
+value = 2
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_projectile_split"
+stat = "damage_final_percent"
+value = 8.2
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_increased_area"
+stat = "area_add_percent"
+value = 20
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_increased_area"
+stat = "damage_final_percent"
+value = 16
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_jump"
+stat = "chain_count_add"
+value = 2
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_jump"
+stat = "damage_final_percent"
+value = 4
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_spell_concentration"
+stat = "area_add_percent"
+value = -30
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_spell_concentration"
+stat = "damage_final_percent"
+value = 22.5
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_shortened_duration"
+stat = "duration_add_percent"
+value = -10
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_shortened_duration"
+stat = "dot_damage_add_percent"
+value = 20
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_guard"
+stat = "damage_final_percent"
+value = 15.5
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_slow_projectile"
+stat = "projectile_speed_add_percent"
+value = -30
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_slow_projectile"
+stat = "damage_final_percent"
+value = 19.5
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_raging_slash"
+stat = "status_chance_add_percent"
+value = 21
+layer = "additive"

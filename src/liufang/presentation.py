@@ -77,13 +77,14 @@ class PresentationService:
             "locked": instance.locked,
             "board_position": self._position_view(instance.board_position),
             "tags": [self._tag_view(tag) for tag in sorted(instance.tags)],
-            "base_effect": self._base_effect_view(definition),
+            "base_effect": self._base_effect_view(definition, instance.level),
             "can_affect": self._apply_filter_view(definition),
             "current_effective_targets": self._current_effective_targets(instance, final_skills),
             "board_relations": self._relations_for_instance(instance, board) if board is not None else [],
             "visual_effect": definition.visual_effect,
             "shape_effect": definition.shape_effect,
             "shape_effect_text": self._shape_effect_text(definition.shape_effect),
+            "tlidb": self._tlidb_gem_view(definition, instance.level),
         }
         detail["tooltip_view"] = self._gem_tooltip_view(instance, detail, final_skills)
         return detail
@@ -136,6 +137,7 @@ class PresentationService:
             "runtime_params": dict(skill.runtime_params or {}),
             "presentation_keys": dict(skill.presentation_keys or {}),
             "source_context": dict(skill.source_context or {}),
+            "tlidb": self._tlidb_skill_view(skill),
             "shape_effects": [
                 {"id": effect, "text": self._shape_effect_text(effect)}
                 for effect in skill.shape_effects
@@ -262,18 +264,19 @@ class PresentationService:
     def _tag_view(self, tag: str) -> dict[str, str]:
         return {"id": tag, "text": self.localizer.text(f"tag.{tag}.name")}
 
-    def _base_effect_view(self, definition: GemDefinition) -> dict[str, Any]:
+    def _base_effect_view(self, definition: GemDefinition, level: int) -> dict[str, Any]:
         if definition.skill_template_id:
             template = self.skill_templates[definition.skill_template_id]
+            level_values = self._level_values(definition.level_table or template.level_table, level)
             return {
                 "title_text": self.localizer.text("ui.gem.base_skill_effect"),
                 "template_text": self.localizer.text(template.name_key),
                 "damage_type_text": self.localizer.text(f"damage_type.{template.damage_type}.name"),
-                "base_damage": template.base_damage,
-                "base_release_interval_ms": template.base_release_interval_ms,
-                "base_cooldown_ms": template.base_cooldown_ms,
-                "trigger_interval_ms": template.trigger_interval_ms,
-                "mana_cost": template.mana_cost,
+                "base_damage": self._level_number(level_values, "base_damage", template.base_damage),
+                "base_release_interval_ms": self._level_number(level_values, "release_interval_ms", template.base_release_interval_ms),
+                "base_cooldown_ms": self._level_number(level_values, "base_cooldown_ms", template.base_cooldown_ms),
+                "trigger_interval_ms": self._level_number(level_values, "trigger_interval_ms", template.trigger_interval_ms),
+                "mana_cost": self._level_number(level_values, "mana_cost", template.mana_cost),
                 "scaling_stats": [self._stat_view(stat) for stat in template.scaling_stats],
             }
 
@@ -283,7 +286,11 @@ class PresentationService:
                 "modifiers": [
                     {
                         "stat": self._stat_view(effect.stat),
-                        "value": effect.value,
+                        "value": self._level_number(
+                            self._level_values(definition.level_table, level),
+                            effect.stat,
+                            effect.value,
+                        ),
                         "layer_text": self.localizer.text(f"ui.modifier.layer.{effect.layer}"),
                         "target_text": self.localizer.text(
                             "ui.gem.self_stat_target"
@@ -305,7 +312,11 @@ class PresentationService:
             "modifiers": [
                 {
                     "stat": self._stat_view(modifier.stat),
-                    "value": modifier.value,
+                    "value": self._level_number(
+                        self._level_values(definition.level_table, level),
+                        modifier.stat,
+                        modifier.value,
+                    ),
                     "layer_text": self.localizer.text(f"ui.modifier.layer.{modifier.layer}"),
                 }
                 for modifier in modifiers
@@ -331,6 +342,50 @@ class PresentationService:
     def _stat_view(self, stat: str) -> dict[str, str]:
         prefix = "routing_stat" if stat.startswith(("source_power_", "target_power_")) else "stat"
         return {"id": stat, "text": self.localizer.text(f"{prefix}.{stat}.name")}
+
+    def _tlidb_gem_view(self, definition: GemDefinition, level: int) -> dict[str, Any]:
+        level_values = self._level_values(definition.level_table, level)
+        return {
+            "source_values": dict(definition.source_values),
+            "level_values": dict(level_values),
+            "auto_release": dict(definition.auto_release),
+        }
+
+    def _tlidb_skill_view(self, skill: FinalSkillInstance) -> dict[str, Any]:
+        source_context = dict(skill.source_context or {})
+        return {
+            "source_values": dict(source_context.get("tlidb_source_values", {})),
+            "level_values": dict(source_context.get("level_values", {})),
+            "auto_release": dict(source_context.get("auto_release", {})),
+            "routed_modifiers": [
+                self._modifier_view(modifier)
+                for modifier in skill.applied_modifiers
+                if modifier.applied and modifier.value != 0
+            ],
+            "final_values": {
+                "base_damage": skill.base_damage,
+                "final_damage": skill.final_damage,
+                "actual_interval_ms": skill.actual_interval_ms,
+                "mana_cost": skill.mana_cost,
+                "projectile_count": skill.projectile_count,
+                "area_multiplier": skill.area_multiplier,
+                "speed_multiplier": skill.speed_multiplier,
+            },
+        }
+
+    def _level_values(self, level_table: dict[str, Any], level: int) -> dict[str, Any]:
+        levels = level_table.get("levels") if isinstance(level_table, dict) else None
+        if not isinstance(levels, dict):
+            return {}
+        clamped_level = max(1, min(40, int(level)))
+        values = levels.get(str(clamped_level), levels.get(clamped_level))
+        return dict(values) if isinstance(values, dict) else {}
+
+    def _level_number(self, level_values: dict[str, Any], key: str, fallback: int | float) -> int | float:
+        value = level_values.get(key)
+        if isinstance(value, (int, float)) and not isinstance(value, bool):
+            return value
+        return fallback
 
     def _shape_effect_text(self, shape_effect: str) -> str:
         if not shape_effect:
@@ -512,6 +567,12 @@ class PresentationService:
                 "base_bonuses": {
                     "rich_lines": self._support_bonus_lines(detail["base_effect"]),
                 },
+                "tlidb_source": {
+                    "rich_lines": self._rich_text_lines(self._tlidb_source_lines(detail["tlidb"])),
+                },
+                "tlidb_level": {
+                    "rich_lines": self._rich_text_lines(self._tlidb_level_lines(detail["tlidb"])),
+                },
             },
         }
 
@@ -529,6 +590,14 @@ class PresentationService:
             "stats": {
                 "title_text": self.localizer.text("ui.tooltip.section.stats"),
                 "lines": self._tooltip_stat_lines(instance, detail, None),
+            },
+            "tlidb_source": {
+                "title_text": self.localizer.text("ui.tlidb.source_values"),
+                "lines": self._tlidb_source_lines(detail["tlidb"]),
+            },
+            "tlidb_level": {
+                "title_text": self.localizer.text("ui.tlidb.level_table"),
+                "lines": self._tlidb_level_lines(detail["tlidb"]),
             },
         }
         bonus_lines = [
@@ -582,6 +651,18 @@ class PresentationService:
                         level=instance.level,
                     )
                 ],
+            },
+            "tlidb_source": {
+                "title_text": self.localizer.text("ui.tlidb.source_values"),
+                "lines": self._tlidb_source_lines(detail["tlidb"]),
+            },
+            "tlidb_level": {
+                "title_text": self.localizer.text("ui.tlidb.level_table"),
+                "lines": self._tlidb_level_lines(detail["tlidb"]),
+            },
+            "auto_release": {
+                "title_text": self.localizer.text("ui.tlidb.auto_release"),
+                "lines": self._tlidb_auto_release_lines(detail["tlidb"]),
             },
         }
         bonus_lines = self._active_tooltip_bonus_lines(final_skill)
@@ -684,6 +765,54 @@ class PresentationService:
                 ]
             )
         return lines
+
+    def _tlidb_source_lines(self, tlidb: dict[str, Any]) -> list[str]:
+        source_values = tlidb.get("source_values", {})
+        if not isinstance(source_values, dict) or not source_values:
+            return []
+        lines = []
+        tlidb_id = source_values.get("tlidb_id")
+        if tlidb_id:
+            lines.append(f"TLIDB ID: {tlidb_id}")
+        display_level = source_values.get("display_level")
+        if display_level:
+            lines.append(f"Lv{display_level} source card")
+        parsed_values = source_values.get("parsed_values", {})
+        if isinstance(parsed_values, dict) and parsed_values:
+            lines.append("Source: " + self._compact_value_pairs(parsed_values))
+        return lines
+
+    def _tlidb_level_lines(self, tlidb: dict[str, Any]) -> list[str]:
+        level_values = tlidb.get("level_values", {})
+        if not isinstance(level_values, dict) or not level_values:
+            return []
+        return [self._compact_value_pairs(level_values)]
+
+    def _tlidb_auto_release_lines(self, tlidb: dict[str, Any]) -> list[str]:
+        auto_release = tlidb.get("auto_release", {})
+        if not isinstance(auto_release, dict) or not auto_release:
+            return []
+        lines = []
+        policy = auto_release.get("policy")
+        if policy:
+            lines.append(f"policy: {policy}")
+        notes = auto_release.get("notes", [])
+        if isinstance(notes, list):
+            lines.extend(str(note) for note in notes if note)
+        return lines
+
+    def _rich_text_lines(self, lines: list[str]) -> list[list[dict[str, str]]]:
+        return [[{"text": line, "tone": "muted"}] for line in lines]
+
+    def _compact_value_pairs(self, values: dict[str, Any]) -> str:
+        parts = []
+        for key in sorted(values):
+            value = values[key]
+            if isinstance(value, (int, float)) and not isinstance(value, bool):
+                parts.append(f"{key}={self._format_number(value)}")
+            else:
+                parts.append(f"{key}={value}")
+        return ", ".join(parts)
 
     def _format_support_bonus_value(self, stat: str, value: float) -> str:
         if stat == "conduit_multiplier":

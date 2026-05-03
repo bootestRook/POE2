@@ -20,6 +20,7 @@ export type BattleGeometryEnemy = {
   hp: number;
   maxHp: number;
   monsterId?: string;
+  spawnRarity?: MonsterGeometryTier;
   visualPrimaryColor?: string;
   boss?: boolean;
   runtimeTier?: string;
@@ -70,6 +71,7 @@ export type BattleGeometryArea = {
   damageType?: string;
   vfxKey?: string;
   warning?: boolean;
+  hitAtMs?: number;
   ttl: number;
   duration: number;
 };
@@ -81,6 +83,7 @@ export type BattleGeometryHit = {
   radius?: number;
   damageType?: string;
   vfxKey?: string;
+  shapeEffects?: ReadonlyArray<string>;
   ttl: number;
   duration: number;
 };
@@ -206,15 +209,16 @@ function drawEnemyMarker(context: CanvasRenderingContext2D, enemy: BattleGeometr
   const tokens = GEOMETRIC_VISUAL_TOKENS;
   const scale = screenStableScale(snapshot);
   const visual = resolveMonsterGeometryVisual(enemy.monsterId);
-  const elite = visual?.tier === "rare" || enemy.monsterId === "enemy_brute" || enemy.boss;
-  const tier = visual?.tier ?? (enemy.boss ? "boss" : elite ? "rare" : "normal");
+  const tier = resolveEnemyGeometryTier(enemy);
+  const elite = tier === "rare" || enemy.monsterId === "enemy_brute" || enemy.boss;
   const radius = visual ? visual.sizePx * 0.5 * scale : (enemy.boss ? tokens.geometry.bossRadius : elite ? tokens.geometry.eliteRadius : tokens.geometry.enemyRadius) * scale;
   const fill = enemy.visualPrimaryColor ?? visual?.primaryColor ?? (elite ? tokens.color.orange : tokens.color.gray);
+  const rarityColor = monsterRarityColor(tier);
   const accent = "#05070B";
   const alpha = enemy.runtimeTier === "dormant" ? 0.34 : 0.88;
   const facingRotation = enemyFacingRotation(enemy, snapshot);
 
-  drawMonsterRarityPedestal(context, enemy.x, enemy.y, radius, tier, fill, scale, alpha);
+  drawMonsterRarityPedestal(context, enemy.x, enemy.y, radius, tier, rarityColor, scale, alpha);
   drawGroundShadow(context, enemy.x, enemy.y, radius * 1.65, radius * 0.46, alpha * 0.34);
   context.save();
   context.translate(enemy.x, enemy.y);
@@ -234,8 +238,22 @@ function drawEnemyMarker(context: CanvasRenderingContext2D, enemy: BattleGeometr
   context.restore();
 
   if (tier !== "boss") {
-    drawHealthArc(context, enemy.x, enemy.y, radius + 6 * scale, enemy.hp, enemy.maxHp, tier, fill, 0.92, scale);
+    drawHealthArc(context, enemy.x, enemy.y, radius + 6 * scale, enemy.hp, enemy.maxHp, tier, rarityColor, 0.92, scale);
   }
+}
+
+function resolveEnemyGeometryTier(enemy: BattleGeometryEnemy): MonsterGeometryTier {
+  if (enemy.spawnRarity) return enemy.spawnRarity;
+  const visual = resolveMonsterGeometryVisual(enemy.monsterId);
+  return visual?.tier ?? (enemy.boss ? "boss" : enemy.monsterId === "enemy_brute" ? "rare" : "normal");
+}
+
+function monsterRarityColor(tier: MonsterGeometryTier) {
+  const tokens = GEOMETRIC_VISUAL_TOKENS;
+  if (tier === "boss") return tokens.color.danger;
+  if (tier === "rare") return tokens.color.orange;
+  if (tier === "magic") return tokens.color.blue;
+  return tokens.color.gray;
 }
 
 function drawMonsterGeometryShape(
@@ -630,8 +648,8 @@ function drawAreaMarkers(context: CanvasRenderingContext2D, snapshot: BattleGeom
         drawLavaOrbitBody(context, area, radius, color);
       } else if (area.kind === "damage-zone" && area.width !== undefined && area.height !== undefined) {
         drawDamageZoneRect(context, area, color);
-      } else if (area.kind === "damage-zone" && skillEffectFamily(area.vfxKey || area.damageType) === "lava_orb") {
-        drawLavaOrbZone(context, area, radius, color, progress);
+      } else if (area.kind === "damage-zone") {
+        drawDamageZoneCircle(context, area, radius, color, progress);
       } else if (area.kind === "melee-arc") {
         drawMeleeArc(context, area, radius, color, progress);
       } else if (area.kind === "passive-aura") {
@@ -675,6 +693,7 @@ function drawHitMarkers(context: CanvasRenderingContext2D, snapshot: BattleGeome
     } else {
       drawFireHitMarker(context, radius, color, progress, stableScale);
     }
+    drawHitShapeEffects(context, hit.shapeEffects, radius, color, progress, stableScale);
     context.restore();
   }
   context.globalAlpha = 1;
@@ -713,6 +732,89 @@ function drawFireHitMarker(context: CanvasRenderingContext2D, radius: number, co
     const outer = burstRadius * (0.82 + (index % 2) * 0.18);
     line(context, Math.cos(angle) * inner, Math.sin(angle) * inner * 0.55, Math.cos(angle) * outer, Math.sin(angle) * outer * 0.55);
   }
+}
+
+function drawHitShapeEffects(
+  context: CanvasRenderingContext2D,
+  shapeEffects: ReadonlyArray<string> | undefined,
+  radius: number,
+  color: string,
+  progress: number,
+  scale: number
+) {
+  if (!shapeEffects?.length) return;
+  if (shapeEffects.includes("fire_bolt_fork")) drawFireBoltForkShapeMarker(context, radius, color, progress, scale);
+  if (shapeEffects.includes("fire_bolt_nova")) drawFireBoltNovaShapeMarker(context, radius, color, progress, scale);
+  if (shapeEffects.includes("fire_bolt_rain")) drawFireBoltRainShapeMarker(context, radius, color, progress, scale);
+}
+
+function drawFireBoltForkShapeMarker(context: CanvasRenderingContext2D, radius: number, color: string, progress: number, scale: number) {
+  const length = radius * (2.4 + progress * 2.6);
+  context.save();
+  context.strokeStyle = color;
+  context.fillStyle = color;
+  context.shadowColor = color;
+  context.shadowBlur = 18 * scale;
+  context.lineWidth = Math.max(3, radius * 0.16);
+  context.globalAlpha = Math.max(0, 0.96 - progress * 0.72);
+  for (let index = 0; index < 7; index += 1) {
+    const angle = (-58 + index * 19 + (index % 2) * 5) * Math.PI / 180;
+    const inner = radius * 0.2;
+    const outer = length * (0.72 + (index % 3) * 0.12);
+    line(context, Math.cos(angle) * inner, Math.sin(angle) * inner, Math.cos(angle) * outer, Math.sin(angle) * outer);
+    circlePath(context, Math.cos(angle) * outer, Math.sin(angle) * outer, Math.max(2, radius * 0.13));
+    context.fill();
+  }
+  context.restore();
+}
+
+function drawFireBoltNovaShapeMarker(context: CanvasRenderingContext2D, radius: number, color: string, progress: number, scale: number) {
+  const ringRadius = radius * (1.5 + progress * 3.4);
+  context.save();
+  context.strokeStyle = color;
+  context.fillStyle = color;
+  context.shadowColor = color;
+  context.shadowBlur = 24 * scale;
+  context.lineWidth = Math.max(5, radius * 0.22);
+  context.globalAlpha = Math.max(0, 0.95 - progress * 0.68);
+  circlePath(context, 0, 0, ringRadius);
+  context.stroke();
+  context.globalAlpha = Math.max(0, 0.48 - progress * 0.34);
+  circlePath(context, 0, 0, ringRadius * 0.62);
+  context.stroke();
+  context.lineWidth = Math.max(2.5, radius * 0.1);
+  context.globalAlpha = Math.max(0, 0.86 - progress * 0.7);
+  for (let index = 0; index < 12; index += 1) {
+    const angle = index * Math.PI / 6 + progress * 0.7;
+    const inner = ringRadius * 0.72;
+    const outer = ringRadius * 1.12;
+    line(context, Math.cos(angle) * inner, Math.sin(angle) * inner, Math.cos(angle) * outer, Math.sin(angle) * outer);
+  }
+  context.restore();
+}
+
+function drawFireBoltRainShapeMarker(context: CanvasRenderingContext2D, radius: number, color: string, progress: number, scale: number) {
+  context.save();
+  context.strokeStyle = color;
+  context.fillStyle = color;
+  context.shadowColor = color;
+  context.shadowBlur = 20 * scale;
+  context.lineWidth = Math.max(4, radius * 0.18);
+  context.globalAlpha = Math.max(0, 0.95 - progress * 0.64);
+  for (let index = 0; index < 6; index += 1) {
+    const lane = (index - 2.5) * radius * 0.58;
+    const delay = index * 0.07;
+    const fall = clamp((progress - delay) / 0.72, 0, 1);
+    const x = lane + fall * radius * 0.42;
+    const y = -radius * 3.1 + fall * radius * 4.2;
+    line(context, x - radius * 0.48, y - radius * 0.72, x + radius * 0.12, y + radius * 0.26);
+    circlePath(context, x + radius * 0.12, y + radius * 0.26, Math.max(2.5, radius * 0.15));
+    context.fill();
+  }
+  context.globalAlpha = Math.max(0, 0.42 - progress * 0.3);
+  ellipse(context, 0, radius * 0.7, radius * 2.15, radius * 0.45);
+  context.fill();
+  context.restore();
 }
 
 function drawIceHitMarker(context: CanvasRenderingContext2D, radius: number, color: string, progress: number, scale: number) {
@@ -953,6 +1055,78 @@ function drawDamageZoneRect(context: CanvasRenderingContext2D, area: BattleGeome
   context.restore();
 }
 
+function drawDamageZoneCircle(context: CanvasRenderingContext2D, area: BattleGeometryArea, radius: number, color: string, progress: number) {
+  if (area.x === undefined || area.y === undefined) return;
+  const family = skillEffectFamily(area.vfxKey || area.damageType);
+  if (family === "lava_orb") {
+    drawLavaOrbZone(context, area, radius, color, progress);
+    return;
+  }
+
+  context.save();
+  context.translate(area.x, area.y);
+  context.strokeStyle = color;
+  context.fillStyle = color;
+  context.shadowColor = color;
+  context.shadowBlur = area.warning ? 6 : 12;
+  context.lineWidth = area.warning ? 2 : 3;
+  circlePath(context, 0, 0, radius);
+  context.stroke();
+  const elapsedMs = Math.max(0, (area.duration - area.ttl) * 1000);
+  const fillProgress = area.warning
+    ? progress
+    : area.hitAtMs && area.hitAtMs > 0
+      ? clamp(elapsedMs / area.hitAtMs, 0, 1)
+      : 1;
+  context.globalAlpha *= area.warning ? 0.18 : 0.24;
+  circlePath(context, 0, 0, radius * fillProgress);
+  context.fill();
+  if (family === "frost_nova") {
+    drawFrostNovaZonePattern(context, radius, color, fillProgress, area.warning);
+  }
+  context.restore();
+}
+
+function drawFrostNovaZonePattern(context: CanvasRenderingContext2D, radius: number, color: string, fillProgress: number, warning?: boolean) {
+  const patternRadius = radius * (0.32 + fillProgress * 0.5);
+  const alpha = (warning ? 0.22 : 0.5) * clamp(fillProgress, 0.18, 1);
+  context.save();
+  context.strokeStyle = color;
+  context.fillStyle = color;
+  context.shadowColor = color;
+  context.shadowBlur = warning ? 4 : 10;
+  context.lineWidth = Math.max(1.5, radius * 0.012);
+  context.globalAlpha = alpha;
+  for (let index = 0; index < 6; index += 1) {
+    const angle = index * Math.PI / 3 - Math.PI / 2;
+    const inner = patternRadius * 0.1;
+    const outer = patternRadius;
+    const innerX = Math.cos(angle) * inner;
+    const innerY = Math.sin(angle) * inner;
+    const outerX = Math.cos(angle) * outer;
+    const outerY = Math.sin(angle) * outer;
+    line(context, innerX, innerY, outerX, outerY);
+    for (const side of [-1, 1]) {
+      const branchAngle = angle + side * Math.PI / 5;
+      const branchStart = outer * 0.48;
+      const branchEnd = outer * 0.68;
+      const startX = Math.cos(angle) * branchStart;
+      const startY = Math.sin(angle) * branchStart;
+      line(
+        context,
+        startX,
+        startY,
+        startX + Math.cos(branchAngle) * branchEnd * 0.24,
+        startY + Math.sin(branchAngle) * branchEnd * 0.24
+      );
+    }
+  }
+  context.globalAlpha = alpha * 0.72;
+  regularPolygonPath(context, 0, 0, Math.max(6, radius * 0.075), 6, Math.PI / 6);
+  context.stroke();
+  context.restore();
+}
+
 function drawMeleeArc(context: CanvasRenderingContext2D, area: BattleGeometryArea, radius: number, color: string, progress: number) {
   if (area.x === undefined || area.y === undefined) return;
   const direction = normalizedDirection(area.directionX ?? 1, area.directionY ?? 0);
@@ -1144,8 +1318,7 @@ function entityRarityRank(entity: { kind: "enemy"; enemy: BattleGeometryEnemy } 
 }
 
 function enemyRarityRank(enemy: BattleGeometryEnemy) {
-  const visual = resolveMonsterGeometryVisual(enemy.monsterId);
-  const tier = visual?.tier ?? (enemy.boss ? "boss" : "normal");
+  const tier = resolveEnemyGeometryTier(enemy);
   if (tier === "boss") return 4;
   if (tier === "rare") return 3;
   if (tier === "magic") return 1;
@@ -1225,7 +1398,7 @@ function dimetricDepth(x: number, y: number) {
 }
 
 function enemyFacingRotation(enemy: BattleGeometryEnemy, snapshot: BattleGeometrySnapshot) {
-  if (enemy.runtimeTier === "aware" || enemy.runtimeTier === "active" || enemy.boss) {
+  if (enemy.runtimeTier === "aware" || enemy.runtimeTier === "active" || enemy.runtimeTier === "visible" || enemy.boss) {
     const angleToPlayer = Math.atan2(snapshot.player.y - enemy.y, snapshot.player.x - enemy.x);
     return angleToPlayer + Math.PI / 2;
   }

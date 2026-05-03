@@ -1,0 +1,105 @@
+id: "support_added_erosion_damage"
+sort_order: 17
+name_key: "gem.support_added_erosion_damage.name"
+description_key: "gem.support_added_erosion_damage.description"
+category: "damage_type_enhancer"
+gem_type: "gem_type_4"
+gem_kind: "support"
+sudoku_digit: 4
+source_values:
+  source: "tlidb"
+  tlidb_id: "Added_Erosion_Damage"
+  display_level: 20
+  raw_lines: ["辅助击中敌人的技能。", "被辅助技能附加 2 - 2 点腐蚀伤害 (Lv1:2) (Lv2:3) (Lv3:4) (Lv4:5) (Lv5:6) (Lv6:7) (Lv7:8) (Lv8:9) (Lv9:11) (Lv10:13) (Lv11:15) (Lv12:17) (Lv13:20) (Lv14:25) (Lv15:35) (Lv16:50) (Lv17:60) (Lv18:70) (Lv19:85) (Lv20:104) (Lv21:105) (Lv22:106) (Lv23:107) (Lv24:108) (Lv25:109) (Lv26:111) (Lv27:112) (Lv28:113) (Lv29:114) (Lv30:115) (Lv31:116) (Lv32:117) (Lv33:119) (Lv34:120) (Lv35:121) (Lv36:122) (Lv37:123) (Lv38:125) (Lv39:126) (Lv40:127) (Lv1:2) (Lv2:3) (Lv3:4) (Lv4:5) (Lv5:6) (Lv6:7) (Lv7:8) (Lv8:9) (Lv9:11) (Lv10:13) (Lv11:15) (Lv12:17) (Lv13:20) (Lv14:25) (Lv15:35) (Lv16:50) (Lv17:60) (Lv18:70) (Lv19:85) (Lv20:104) (Lv21:105) (Lv22:106) (Lv23:107) (Lv24:108) (Lv25:109) (Lv26:111) (Lv27:112) (Lv28:113) (Lv29:114) (Lv30:115) (Lv31:116) (Lv32:117) (Lv33:119) (Lv34:120) (Lv35:121) (Lv36:122) (Lv37:123) (Lv38:125) (Lv39:126) (Lv40:127)", "被辅助技能附加 2 - 2 点腐蚀伤害 (Lv1:2) (Lv2:3) (Lv3:4) (Lv4:5) (Lv5:6) (Lv6:7) (Lv7:8) (Lv8:9) (Lv9:11) (Lv10:13) (Lv11:15) (Lv12:17) (Lv13:20) (Lv14:25) (Lv15:35) (Lv16:50) (Lv17:60) (Lv18:70) (Lv19:85) (Lv20:104) (Lv21:105) (Lv22:106) (Lv23:107) (Lv24:108) (Lv25:109) (Lv26:111) (Lv27:112) (Lv28:113) (Lv29:114) (Lv30:115) (Lv31:116) (Lv32:117) (Lv33:119) (Lv34:120) (Lv35:121) (Lv36:122) (Lv37:123) (Lv38:125) (Lv39:126) (Lv40:127) (Lv1:2) (Lv2:3) (Lv3:4) (Lv4:5) (Lv5:6) (Lv6:7) (Lv7:8) (Lv8:9) (Lv9:11) (Lv10:13) (Lv11:15) (Lv12:17) (Lv13:20) (Lv14:25) (Lv15:35) (Lv16:50) (Lv17:60) (Lv18:70) (Lv19:85) (Lv20:104) (Lv21:105) (Lv22:106) (Lv23:107) (Lv24:108) (Lv25:109) (Lv26:111) (Lv27:112) (Lv28:113) (Lv29:114) (Lv30:115) (Lv31:116) (Lv32:117) (Lv33:119) (Lv34:120) (Lv35:121) (Lv36:122) (Lv37:123) (Lv38:125) (Lv39:126) (Lv40:127)"]
+  parsed_values:
+    chaos_damage_add_percent: 104
+  anchors:
+    chaos_damage_add_percent:
+      20: 104
+level_table:
+  levels:
+    1:
+      chaos_damage_add_percent: 10.4
+    2:
+      chaos_damage_add_percent: 15.33
+    3:
+      chaos_damage_add_percent: 20.25
+    4:
+      chaos_damage_add_percent: 25.18
+    5:
+      chaos_damage_add_percent: 30.11
+    6:
+      chaos_damage_add_percent: 35.03
+    7:
+      chaos_damage_add_percent: 39.96
+    8:
+      chaos_damage_add_percent: 44.88
+    9:
+      chaos_damage_add_percent: 49.81
+    10:
+      chaos_damage_add_percent: 54.74
+    11:
+      chaos_damage_add_percent: 59.66
+    12:
+      chaos_damage_add_percent: 64.59
+    13:
+      chaos_damage_add_percent: 69.52
+    14:
+      chaos_damage_add_percent: 74.44
+    15:
+      chaos_damage_add_percent: 79.37
+    16:
+      chaos_damage_add_percent: 84.29
+    17:
+      chaos_damage_add_percent: 89.22
+    18:
+      chaos_damage_add_percent: 94.15
+    19:
+      chaos_damage_add_percent: 99.07
+    20:
+      chaos_damage_add_percent: 104.0
+    21:
+      chaos_damage_add_percent: 104.52
+    22:
+      chaos_damage_add_percent: 105.04
+    23:
+      chaos_damage_add_percent: 105.56
+    24:
+      chaos_damage_add_percent: 106.08
+    25:
+      chaos_damage_add_percent: 106.6
+    26:
+      chaos_damage_add_percent: 107.12
+    27:
+      chaos_damage_add_percent: 107.64
+    28:
+      chaos_damage_add_percent: 108.16
+    29:
+      chaos_damage_add_percent: 108.68
+    30:
+      chaos_damage_add_percent: 109.2
+    31:
+      chaos_damage_add_percent: 109.72
+    32:
+      chaos_damage_add_percent: 110.24
+    33:
+      chaos_damage_add_percent: 110.76
+    34:
+      chaos_damage_add_percent: 111.28
+    35:
+      chaos_damage_add_percent: 111.8
+    36:
+      chaos_damage_add_percent: 112.32
+    37:
+      chaos_damage_add_percent: 112.84
+    38:
+      chaos_damage_add_percent: 113.36
+    39:
+      chaos_damage_add_percent: 113.88
+    40:
+      chaos_damage_add_percent: 114.4
+tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["chaos"]
+effect_stats: ["chaos_damage_add_percent"]

@@ -1,0 +1,105 @@
+id: "support_raging_slash"
+sort_order: 29
+name_key: "gem.support_raging_slash.name"
+description_key: "gem.support_raging_slash.description"
+category: "skill_shape_modifier"
+gem_type: "gem_type_7"
+gem_kind: "support"
+sudoku_digit: 7
+source_values:
+  source: "tlidb"
+  tlidb_id: "Raging_Slash"
+  display_level: 20
+  raw_lines: ["辅助近战挥斩技能。", "被辅助技能 +21% 斩击几率 (Lv1:21) (Lv21:41) (Lv41:51)", "被辅助技能 +21% 斩击几率 (Lv1:21) (Lv21:41) (Lv41:51)"]
+  parsed_values:
+    status_chance_add_percent: 21
+  anchors:
+    status_chance_add_percent:
+      20: 21
+level_table:
+  levels:
+    1:
+      status_chance_add_percent: 2.1
+    2:
+      status_chance_add_percent: 3.09
+    3:
+      status_chance_add_percent: 4.09
+    4:
+      status_chance_add_percent: 5.08
+    5:
+      status_chance_add_percent: 6.08
+    6:
+      status_chance_add_percent: 7.07
+    7:
+      status_chance_add_percent: 8.07
+    8:
+      status_chance_add_percent: 9.06
+    9:
+      status_chance_add_percent: 10.06
+    10:
+      status_chance_add_percent: 11.05
+    11:
+      status_chance_add_percent: 12.05
+    12:
+      status_chance_add_percent: 13.04
+    13:
+      status_chance_add_percent: 14.04
+    14:
+      status_chance_add_percent: 15.03
+    15:
+      status_chance_add_percent: 16.03
+    16:
+      status_chance_add_percent: 17.02
+    17:
+      status_chance_add_percent: 18.02
+    18:
+      status_chance_add_percent: 19.01
+    19:
+      status_chance_add_percent: 20.01
+    20:
+      status_chance_add_percent: 21.0
+    21:
+      status_chance_add_percent: 21.1
+    22:
+      status_chance_add_percent: 21.21
+    23:
+      status_chance_add_percent: 21.31
+    24:
+      status_chance_add_percent: 21.42
+    25:
+      status_chance_add_percent: 21.52
+    26:
+      status_chance_add_percent: 21.63
+    27:
+      status_chance_add_percent: 21.73
+    28:
+      status_chance_add_percent: 21.84
+    29:
+      status_chance_add_percent: 21.95
+    30:
+      status_chance_add_percent: 22.05
+    31:
+      status_chance_add_percent: 22.15
+    32:
+      status_chance_add_percent: 22.26
+    33:
+      status_chance_add_percent: 22.36
+    34:
+      status_chance_add_percent: 22.47
+    35:
+      status_chance_add_percent: 22.57
+    36:
+      status_chance_add_percent: 22.68
+    37:
+      status_chance_add_percent: 22.79
+    38:
+      status_chance_add_percent: 22.89
+    39:
+      status_chance_add_percent: 23.0
+    40:
+      status_chance_add_percent: 23.1
+tags: ["gem", "support_gem", "loot_gem", "gem_type_7", "support_shape"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["melee"]
+effect_stats: ["status_chance_add_percent"]

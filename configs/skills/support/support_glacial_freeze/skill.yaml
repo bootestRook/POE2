@@ -1,0 +1,105 @@
+id: "support_glacial_freeze"
+sort_order: 10
+name_key: "gem.support_glacial_freeze.name"
+description_key: "gem.support_glacial_freeze.description"
+category: "damage_type_enhancer"
+gem_type: "gem_type_4"
+gem_kind: "support"
+sudoku_digit: 4
+source_values:
+  source: "tlidb"
+  tlidb_id: "Glacial_Freeze"
+  display_level: 20
+  raw_lines: ["辅助能造成伤害的技能。", "被辅助技能额外 10.3% 冰冷伤害 (Lv1:103/10) (Lv21:163/10) (Lv41:183/10)", "被辅助技能造成击中冰冷伤害时，施加冰结", "被辅助技能额外 10.3% 冰冷伤害 (Lv1:103/10) (Lv21:163/10) (Lv41:183/10)", "被辅助技能造成击中冰冷伤害时，施加冰结"]
+  parsed_values:
+    cold_damage_add_percent: 10.3
+  anchors:
+    cold_damage_add_percent:
+      20: 10.3
+level_table:
+  levels:
+    1:
+      cold_damage_add_percent: 1.03
+    2:
+      cold_damage_add_percent: 1.52
+    3:
+      cold_damage_add_percent: 2.01
+    4:
+      cold_damage_add_percent: 2.49
+    5:
+      cold_damage_add_percent: 2.98
+    6:
+      cold_damage_add_percent: 3.47
+    7:
+      cold_damage_add_percent: 3.96
+    8:
+      cold_damage_add_percent: 4.45
+    9:
+      cold_damage_add_percent: 4.93
+    10:
+      cold_damage_add_percent: 5.42
+    11:
+      cold_damage_add_percent: 5.91
+    12:
+      cold_damage_add_percent: 6.4
+    13:
+      cold_damage_add_percent: 6.88
+    14:
+      cold_damage_add_percent: 7.37
+    15:
+      cold_damage_add_percent: 7.86
+    16:
+      cold_damage_add_percent: 8.35
+    17:
+      cold_damage_add_percent: 8.84
+    18:
+      cold_damage_add_percent: 9.32
+    19:
+      cold_damage_add_percent: 9.81
+    20:
+      cold_damage_add_percent: 10.3
+    21:
+      cold_damage_add_percent: 10.35
+    22:
+      cold_damage_add_percent: 10.4
+    23:
+      cold_damage_add_percent: 10.45
+    24:
+      cold_damage_add_percent: 10.51
+    25:
+      cold_damage_add_percent: 10.56
+    26:
+      cold_damage_add_percent: 10.61
+    27:
+      cold_damage_add_percent: 10.66
+    28:
+      cold_damage_add_percent: 10.71
+    29:
+      cold_damage_add_percent: 10.76
+    30:
+      cold_damage_add_percent: 10.82
+    31:
+      cold_damage_add_percent: 10.87
+    32:
+      cold_damage_add_percent: 10.92
+    33:
+      cold_damage_add_percent: 10.97
+    34:
+      cold_damage_add_percent: 11.02
+    35:
+      cold_damage_add_percent: 11.07
+    36:
+      cold_damage_add_percent: 11.12
+    37:
+      cold_damage_add_percent: 11.18
+    38:
+      cold_damage_add_percent: 11.23
+    39:
+      cold_damage_add_percent: 11.28
+    40:
+      cold_damage_add_percent: 11.33
+tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage", "support_status"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["cold"]
+effect_stats: ["cold_damage_add_percent"]

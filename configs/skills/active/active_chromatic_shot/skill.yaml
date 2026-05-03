@@ -1,0 +1,243 @@
+id: "active_chromatic_shot"
+version: "1.0.0"
+product_status: "product"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Chromatic_Shot"
+  display_level: 20
+  raw_lines: ["释放该技能向前发射 3 个自动追踪敌人的魔矢，造成 592-1100 法术伤害。", "该技能击败敌人时，有 10% 几率产生一次爆炸，造成被击败敌人最大生命 25% 的真实伤害。", "每次释放该技能会随机选择一种元素伤害，使下次技能的所有伤害都强制转化为该类型", "该技能发射的魔矢可以命中同一个敌人。", "五彩魔矢：", "造成 592-1100 法术伤害", "基础发射 1 个投射物", "该技能 +2 投射物数量", "该技能释放时，随机选择一种元素类型，使下次该技能的伤害强制转化为该类型", "该技能击败敌人时 10% 几率爆炸，对半径 5 米内的敌人造成被击败的敌人最大生命 25% 的真实伤害", "该技能发射的投射物可以命中同一个敌人", "该技能的霰弹效应衰减系数为 70%"]
+  parsed_values:
+    base_damage: 846
+    mana_cost: 8
+    release_interval_ms: 650
+  anchors:
+    base_damage:
+      20: 846
+level_table:
+  levels:
+    1:
+      base_damage: 84.6
+      mana_cost: 8
+      release_interval_ms: 650
+    2:
+      base_damage: 124.67
+      mana_cost: 8
+      release_interval_ms: 650
+    3:
+      base_damage: 164.75
+      mana_cost: 8
+      release_interval_ms: 650
+    4:
+      base_damage: 204.82
+      mana_cost: 8
+      release_interval_ms: 650
+    5:
+      base_damage: 244.89
+      mana_cost: 8
+      release_interval_ms: 650
+    6:
+      base_damage: 284.97
+      mana_cost: 8
+      release_interval_ms: 650
+    7:
+      base_damage: 325.04
+      mana_cost: 8
+      release_interval_ms: 650
+    8:
+      base_damage: 365.12
+      mana_cost: 8
+      release_interval_ms: 650
+    9:
+      base_damage: 405.19
+      mana_cost: 8
+      release_interval_ms: 650
+    10:
+      base_damage: 445.26
+      mana_cost: 8
+      release_interval_ms: 650
+    11:
+      base_damage: 485.34
+      mana_cost: 8
+      release_interval_ms: 650
+    12:
+      base_damage: 525.41
+      mana_cost: 8
+      release_interval_ms: 650
+    13:
+      base_damage: 565.48
+      mana_cost: 8
+      release_interval_ms: 650
+    14:
+      base_damage: 605.56
+      mana_cost: 8
+      release_interval_ms: 650
+    15:
+      base_damage: 645.63
+      mana_cost: 8
+      release_interval_ms: 650
+    16:
+      base_damage: 685.71
+      mana_cost: 8
+      release_interval_ms: 650
+    17:
+      base_damage: 725.78
+      mana_cost: 8
+      release_interval_ms: 650
+    18:
+      base_damage: 765.85
+      mana_cost: 8
+      release_interval_ms: 650
+    19:
+      base_damage: 805.93
+      mana_cost: 8
+      release_interval_ms: 650
+    20:
+      base_damage: 846.0
+      mana_cost: 8
+      release_interval_ms: 650
+    21:
+      base_damage: 850.23
+      mana_cost: 8
+      release_interval_ms: 650
+    22:
+      base_damage: 854.46
+      mana_cost: 8
+      release_interval_ms: 650
+    23:
+      base_damage: 858.69
+      mana_cost: 8
+      release_interval_ms: 650
+    24:
+      base_damage: 862.92
+      mana_cost: 8
+      release_interval_ms: 650
+    25:
+      base_damage: 867.15
+      mana_cost: 8
+      release_interval_ms: 650
+    26:
+      base_damage: 871.38
+      mana_cost: 8
+      release_interval_ms: 650
+    27:
+      base_damage: 875.61
+      mana_cost: 8
+      release_interval_ms: 650
+    28:
+      base_damage: 879.84
+      mana_cost: 8
+      release_interval_ms: 650
+    29:
+      base_damage: 884.07
+      mana_cost: 8
+      release_interval_ms: 650
+    30:
+      base_damage: 888.3
+      mana_cost: 8
+      release_interval_ms: 650
+    31:
+      base_damage: 892.53
+      mana_cost: 8
+      release_interval_ms: 650
+    32:
+      base_damage: 896.76
+      mana_cost: 8
+      release_interval_ms: 650
+    33:
+      base_damage: 900.99
+      mana_cost: 8
+      release_interval_ms: 650
+    34:
+      base_damage: 905.22
+      mana_cost: 8
+      release_interval_ms: 650
+    35:
+      base_damage: 909.45
+      mana_cost: 8
+      release_interval_ms: 650
+    36:
+      base_damage: 913.68
+      mana_cost: 8
+      release_interval_ms: 650
+    37:
+      base_damage: 917.91
+      mana_cost: 8
+      release_interval_ms: 650
+    38:
+      base_damage: 922.14
+      mana_cost: 8
+      release_interval_ms: 650
+    39:
+      base_damage: 926.37
+      mana_cost: 8
+      release_interval_ms: 650
+    40:
+      base_damage: 930.6
+      mana_cost: 8
+      release_interval_ms: 650
+auto_release:
+  policy: "nearest_enemy"
+  notes: ["??????????TLIDB ???? Lv20 ???"]
+display:
+  name_key: "gem.active_chromatic_shot.name"
+  description_key: "gem.active_chromatic_shot.description"
+classification:
+  tags: ["spell", "fire", "cold", "lightning", "projectile", "area"]
+  damage_type: "fire"
+  damage_form: "spell"
+cast:
+  mode: "spell"
+  target_selector: "nearest_enemy"
+  search_range: 420
+  cooldown_ms: 0
+  release_interval_ms: 650
+  base_cooldown_ms: 0
+  trigger_interval_ms: 0
+  mana_cost: 8
+  windup_ms: 0
+  recovery_ms: 0
+behavior:
+  template: "projectile"
+  params:
+    projectile_count: 3
+    spread_angle_deg: 24
+    projectile_speed: 600
+    projectile_width: 46
+    projectile_height: 32
+    max_distance: 420
+    hit_policy: "first_hit"
+    pierce_count: 0
+    collision_radius: 16
+    spawn_offset:
+      x: -14
+      y: -20
+    projectile_radius: 12
+    impact_radius: 28
+    max_targets: 1
+    min_duration_ms: 80
+    max_duration_ms: 2200
+hit:
+  base_damage: 846
+  can_crit: true
+  can_apply_status: true
+  damage_timing: "on_projectile_hit"
+  hit_delay_ms: 160
+  hit_radius: 28
+  target_policy: "selected_target"
+scaling:
+  additive_stats: ["damage_add_percent", "fire_damage_add_percent", "cast_speed_add_percent"]
+  final_stats: ["damage_final_percent", "skill_speed_final_percent"]
+  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add", "area_add_percent"]
+presentation:
+  vfx: "skill_event.chromatic_shot.vfx"
+  cast_vfx_key: "skill_event.chromatic_shot.vfx"
+  projectile_vfx_key: "skill_event.chromatic_shot.vfx"
+  hit_vfx_key: "skill_event.chromatic_shot.vfx"
+  sfx: "skill_event.chromatic_shot.sfx"
+  floating_text: "skill_event.chromatic_shot.floating_text"
+  floating_text_style: "skill_event.chromatic_shot.floating_text"
+  screen_feedback: "skill_event.chromatic_shot.screen_feedback"
+  hit_stop_ms: 0
+  camera_shake: 0
+preview:
+  show_fields: ["final_damage", "actual_interval_ms", "mana_cost", "base_damage", "damage_type", "damage_form"]

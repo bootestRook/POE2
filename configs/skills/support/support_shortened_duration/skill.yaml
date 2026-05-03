@@ -1,0 +1,105 @@
+id: "support_shortened_duration"
+sort_order: 26
+name_key: "gem.support_shortened_duration.name"
+description_key: "gem.support_shortened_duration.description"
+category: "risk_reward"
+gem_type: "gem_type_6"
+gem_kind: "support"
+sudoku_digit: 6
+source_values:
+  source: "tlidb"
+  tlidb_id: "Shortened_Duration"
+  display_level: 20
+  raw_lines: ["辅助持续或能造成异常状态的技能。", "被辅助技能 -10% 持续时间 (Lv1:-10) (Lv21:-8) (Lv41:-6)", "被辅助技能额外 +20% 持续伤害 (Lv1:20) (Lv21:30) (Lv41:40)", "被辅助技能 -10% 持续时间 (Lv1:-10) (Lv21:-8) (Lv41:-6)", "被辅助技能额外 +20% 持续伤害 (Lv1:20) (Lv21:30) (Lv41:40)"]
+  parsed_values:
+    duration_add_percent: -10
+  anchors:
+    duration_add_percent:
+      20: -10
+level_table:
+  levels:
+    1:
+      duration_add_percent: -1.0
+    2:
+      duration_add_percent: -1.47
+    3:
+      duration_add_percent: -1.95
+    4:
+      duration_add_percent: -2.42
+    5:
+      duration_add_percent: -2.89
+    6:
+      duration_add_percent: -3.37
+    7:
+      duration_add_percent: -3.84
+    8:
+      duration_add_percent: -4.32
+    9:
+      duration_add_percent: -4.79
+    10:
+      duration_add_percent: -5.26
+    11:
+      duration_add_percent: -5.74
+    12:
+      duration_add_percent: -6.21
+    13:
+      duration_add_percent: -6.68
+    14:
+      duration_add_percent: -7.16
+    15:
+      duration_add_percent: -7.63
+    16:
+      duration_add_percent: -8.11
+    17:
+      duration_add_percent: -8.58
+    18:
+      duration_add_percent: -9.05
+    19:
+      duration_add_percent: -9.53
+    20:
+      duration_add_percent: -10.0
+    21:
+      duration_add_percent: -10.05
+    22:
+      duration_add_percent: -10.1
+    23:
+      duration_add_percent: -10.15
+    24:
+      duration_add_percent: -10.2
+    25:
+      duration_add_percent: -10.25
+    26:
+      duration_add_percent: -10.3
+    27:
+      duration_add_percent: -10.35
+    28:
+      duration_add_percent: -10.4
+    29:
+      duration_add_percent: -10.45
+    30:
+      duration_add_percent: -10.5
+    31:
+      duration_add_percent: -10.55
+    32:
+      duration_add_percent: -10.6
+    33:
+      duration_add_percent: -10.65
+    34:
+      duration_add_percent: -10.7
+    35:
+      duration_add_percent: -10.75
+    36:
+      duration_add_percent: -10.8
+    37:
+      duration_add_percent: -10.85
+    38:
+      duration_add_percent: -10.9
+    39:
+      duration_add_percent: -10.95
+    40:
+      duration_add_percent: -11.0
+tags: ["gem", "support_gem", "loot_gem", "gem_type_6", "support_damage"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["dot"]
+effect_stats: ["duration_add_percent", "dot_damage_add_percent"]

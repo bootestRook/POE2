@@ -253,6 +253,20 @@ class CombatSession:
                 monster = self._first_alive_monster()
                 if monster is None:
                     break
+                skip_reason = self._skill_release_skip_reason(cooldown.skill)
+                if skip_reason:
+                    self._last_release_skip_reasons[cooldown.skill.active_gem_instance_id] = skip_reason
+                    cooldown.remaining_ms = max(1, cooldown.skill.actual_interval_ms)
+                    events.append(
+                        SkillReleaseEvent(
+                            skill_instance=cooldown.skill,
+                            monster_id=monster.monster_id,
+                            damage=0.0,
+                            killed=False,
+                            skipped_reason=skip_reason,
+                        )
+                    )
+                    break
                 if not self.player.spend_mana(cooldown.skill.mana_cost):
                     self._last_release_skip_reasons[cooldown.skill.active_gem_instance_id] = "combat.skip.insufficient_mana"
                     cooldown.remaining_ms = max(1, cooldown.skill.actual_interval_ms)
@@ -283,6 +297,25 @@ class CombatSession:
                         self._drop_from_monster(monster)
                 cooldown.remaining_ms = max(1, cooldown.skill.actual_interval_ms)
         return tuple(events)
+
+    def _skill_release_skip_reason(self, skill: FinalSkillInstance) -> str:
+        source_context = skill.source_context or {}
+        auto_release = source_context.get("auto_release", {})
+        if not isinstance(auto_release, dict):
+            return ""
+        if auto_release.get("policy") != "defensive_threshold":
+            return ""
+        life_threshold = float(auto_release.get("low_life_percent", 70.0))
+        shield_threshold = float(auto_release.get("low_shield_percent", 50.0))
+        life_ratio = (self.player.current_life / self.player.max_life * 100.0) if self.player.max_life > 0 else 0.0
+        shield_ratio = 100.0
+        if self.player.max_energy_shield > 0:
+            shield_ratio = self.player.current_energy_shield / self.player.max_energy_shield * 100.0
+        if life_ratio <= life_threshold:
+            return ""
+        if self.player.max_energy_shield > 0 and shield_ratio <= shield_threshold:
+            return ""
+        return "combat.skip.defensive_threshold"
 
     def _queue_pending_skill_events(
         self,

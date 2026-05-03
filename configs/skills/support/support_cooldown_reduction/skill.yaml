@@ -1,0 +1,105 @@
+id: "support_cooldown_reduction"
+sort_order: 2
+name_key: "gem.support_cooldown_reduction.name"
+description_key: "gem.support_cooldown_reduction.description"
+category: "general_skill_modifier"
+gem_type: "gem_type_3"
+gem_kind: "support"
+sudoku_digit: 3
+source_values:
+  source: "tlidb"
+  tlidb_id: "Cooldown_Reduction"
+  display_level: 20
+  raw_lines: ["辅助任意技能。", "被辅助技能 +13% 冷却回复速度 (Lv1:13) (Lv21:23) (Lv41:33)", "被辅助技能 +13% 冷却回复速度 (Lv1:13) (Lv21:23) (Lv41:33)"]
+  parsed_values:
+    cooldown_recovery_add_percent: 13
+  anchors:
+    cooldown_recovery_add_percent:
+      20: 13
+level_table:
+  levels:
+    1:
+      cooldown_recovery_add_percent: 1.3
+    2:
+      cooldown_recovery_add_percent: 1.92
+    3:
+      cooldown_recovery_add_percent: 2.53
+    4:
+      cooldown_recovery_add_percent: 3.15
+    5:
+      cooldown_recovery_add_percent: 3.76
+    6:
+      cooldown_recovery_add_percent: 4.38
+    7:
+      cooldown_recovery_add_percent: 4.99
+    8:
+      cooldown_recovery_add_percent: 5.61
+    9:
+      cooldown_recovery_add_percent: 6.23
+    10:
+      cooldown_recovery_add_percent: 6.84
+    11:
+      cooldown_recovery_add_percent: 7.46
+    12:
+      cooldown_recovery_add_percent: 8.07
+    13:
+      cooldown_recovery_add_percent: 8.69
+    14:
+      cooldown_recovery_add_percent: 9.31
+    15:
+      cooldown_recovery_add_percent: 9.92
+    16:
+      cooldown_recovery_add_percent: 10.54
+    17:
+      cooldown_recovery_add_percent: 11.15
+    18:
+      cooldown_recovery_add_percent: 11.77
+    19:
+      cooldown_recovery_add_percent: 12.38
+    20:
+      cooldown_recovery_add_percent: 13.0
+    21:
+      cooldown_recovery_add_percent: 13.06
+    22:
+      cooldown_recovery_add_percent: 13.13
+    23:
+      cooldown_recovery_add_percent: 13.19
+    24:
+      cooldown_recovery_add_percent: 13.26
+    25:
+      cooldown_recovery_add_percent: 13.32
+    26:
+      cooldown_recovery_add_percent: 13.39
+    27:
+      cooldown_recovery_add_percent: 13.45
+    28:
+      cooldown_recovery_add_percent: 13.52
+    29:
+      cooldown_recovery_add_percent: 13.58
+    30:
+      cooldown_recovery_add_percent: 13.65
+    31:
+      cooldown_recovery_add_percent: 13.71
+    32:
+      cooldown_recovery_add_percent: 13.78
+    33:
+      cooldown_recovery_add_percent: 13.84
+    34:
+      cooldown_recovery_add_percent: 13.91
+    35:
+      cooldown_recovery_add_percent: 13.97
+    36:
+      cooldown_recovery_add_percent: 14.04
+    37:
+      cooldown_recovery_add_percent: 14.11
+    38:
+      cooldown_recovery_add_percent: 14.17
+    39:
+      cooldown_recovery_add_percent: 14.23
+    40:
+      cooldown_recovery_add_percent: 14.3
+tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_cooldown"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["attack", "spell", "projectile", "area", "melee", "ranged", "aura"]
+effect_stats: ["cooldown_recovery_add_percent"]

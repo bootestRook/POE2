@@ -85,6 +85,8 @@ class GemInventory:
         definition = self._definitions.get(base_gem_id)
         if definition is None:
             raise ValueError(f"宝石基础定义不存在：{base_gem_id}")
+        if level < 1 or level > 20:
+            raise ValueError(f"宝石等级必须在 1-20 之间：{level}")
         order = self._next_order
         self._next_order += 1
         instance = GemInstance(
@@ -112,6 +114,8 @@ class GemInventory:
         definition = self._definitions.get(instance.base_gem_id)
         if definition is None:
             raise ValueError(f"宝石基础定义不存在：{instance.base_gem_id}")
+        if instance.level < 1 or instance.level > 20:
+            raise ValueError(f"宝石等级必须在 1-20 之间：{instance.level}")
         if not instance.gem_kind:
             instance.gem_kind = definition.gem_kind
         if not instance.sudoku_digit:

@@ -1,0 +1,105 @@
+id: "support_quick_decision"
+sort_order: 1
+name_key: "gem.support_quick_decision.name"
+description_key: "gem.support_quick_decision.description"
+category: "general_skill_modifier"
+gem_type: "gem_type_3"
+gem_kind: "support"
+sudoku_digit: 3
+source_values:
+  source: "tlidb"
+  tlidb_id: "Quick_Decision"
+  display_level: 20
+  raw_lines: ["辅助攻击或法术技能。", "无法辅助位移技能。", "被辅助技能额外 +15% 攻击和施法速度 (Lv1:15) (Lv21:25) (Lv41:35)", "被辅助技能额外 +15% 攻击和施法速度 (Lv1:15) (Lv21:25) (Lv41:35)"]
+  parsed_values:
+    attack_speed_add_percent: 15
+  anchors:
+    attack_speed_add_percent:
+      20: 15
+level_table:
+  levels:
+    1:
+      attack_speed_add_percent: 1.5
+    2:
+      attack_speed_add_percent: 2.21
+    3:
+      attack_speed_add_percent: 2.92
+    4:
+      attack_speed_add_percent: 3.63
+    5:
+      attack_speed_add_percent: 4.34
+    6:
+      attack_speed_add_percent: 5.05
+    7:
+      attack_speed_add_percent: 5.76
+    8:
+      attack_speed_add_percent: 6.47
+    9:
+      attack_speed_add_percent: 7.18
+    10:
+      attack_speed_add_percent: 7.89
+    11:
+      attack_speed_add_percent: 8.61
+    12:
+      attack_speed_add_percent: 9.32
+    13:
+      attack_speed_add_percent: 10.03
+    14:
+      attack_speed_add_percent: 10.74
+    15:
+      attack_speed_add_percent: 11.45
+    16:
+      attack_speed_add_percent: 12.16
+    17:
+      attack_speed_add_percent: 12.87
+    18:
+      attack_speed_add_percent: 13.58
+    19:
+      attack_speed_add_percent: 14.29
+    20:
+      attack_speed_add_percent: 15.0
+    21:
+      attack_speed_add_percent: 15.07
+    22:
+      attack_speed_add_percent: 15.15
+    23:
+      attack_speed_add_percent: 15.22
+    24:
+      attack_speed_add_percent: 15.3
+    25:
+      attack_speed_add_percent: 15.37
+    26:
+      attack_speed_add_percent: 15.45
+    27:
+      attack_speed_add_percent: 15.52
+    28:
+      attack_speed_add_percent: 15.6
+    29:
+      attack_speed_add_percent: 15.67
+    30:
+      attack_speed_add_percent: 15.75
+    31:
+      attack_speed_add_percent: 15.82
+    32:
+      attack_speed_add_percent: 15.9
+    33:
+      attack_speed_add_percent: 15.97
+    34:
+      attack_speed_add_percent: 16.05
+    35:
+      attack_speed_add_percent: 16.12
+    36:
+      attack_speed_add_percent: 16.2
+    37:
+      attack_speed_add_percent: 16.27
+    38:
+      attack_speed_add_percent: 16.35
+    39:
+      attack_speed_add_percent: 16.43
+    40:
+      attack_speed_add_percent: 16.5
+tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_speed"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["attack", "spell"]
+effect_stats: ["attack_speed_add_percent", "cast_speed_add_percent"]

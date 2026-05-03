@@ -1,0 +1,105 @@
+id: "support_added_fire_damage"
+sort_order: 14
+name_key: "gem.support_added_fire_damage.name"
+description_key: "gem.support_added_fire_damage.description"
+category: "damage_type_enhancer"
+gem_type: "gem_type_4"
+gem_kind: "support"
+sudoku_digit: 4
+source_values:
+  source: "tlidb"
+  tlidb_id: "Added_Fire_Damage"
+  display_level: 20
+  raw_lines: ["辅助击中敌人的技能。", "被辅助技能附加 1 - 3 点火焰伤害 (Lv1:1) (Lv2:2) (Lv3:3) (Lv4:4) (Lv5:4) (Lv6:5) (Lv7:6) (Lv8:6) (Lv9:8) (Lv10:9) (Lv11:11) (Lv12:12) (Lv13:14) (Lv14:18) (Lv15:25) (Lv16:35) (Lv17:42) (Lv18:49) (Lv19:60) (Lv20:73) (Lv21:74) (Lv22:74) (Lv23:75) (Lv24:76) (Lv25:77) (Lv26:77) (Lv27:78) (Lv28:79) (Lv29:80) (Lv30:81) (Lv31:81) (Lv32:82) (Lv33:83) (Lv34:84) (Lv35:85) (Lv36:86) (Lv37:86) (Lv38:87) (Lv39:88) (Lv40:89) (Lv1:3) (Lv2:4) (Lv3:5) (Lv4:7) (Lv5:8) (Lv6:9) (Lv7:10) (Lv8:12) (Lv9:14) (Lv10:17) (Lv11:20) (Lv12:22) (Lv13:26) (Lv14:33) (Lv15:46) (Lv16:65) (Lv17:78) (Lv18:91) (Lv19:111) (Lv20:135) (Lv21:137) (Lv22:138) (Lv23:140) (Lv24:141) (Lv25:142) (Lv26:144) (Lv27:145) (Lv28:147) (Lv29:148) (Lv30:150) (Lv31:151) (Lv32:153) (Lv33:154) (Lv34:156) (Lv35:157) (Lv36:159) (Lv37:160) (Lv38:162) (Lv39:164) (Lv40:165)", "被辅助技能附加 1 - 3 点火焰伤害 (Lv1:1) (Lv2:2) (Lv3:3) (Lv4:4) (Lv5:4) (Lv6:5) (Lv7:6) (Lv8:6) (Lv9:8) (Lv10:9) (Lv11:11) (Lv12:12) (Lv13:14) (Lv14:18) (Lv15:25) (Lv16:35) (Lv17:42) (Lv18:49) (Lv19:60) (Lv20:73) (Lv21:74) (Lv22:74) (Lv23:75) (Lv24:76) (Lv25:77) (Lv26:77) (Lv27:78) (Lv28:79) (Lv29:80) (Lv30:81) (Lv31:81) (Lv32:82) (Lv33:83) (Lv34:84) (Lv35:85) (Lv36:86) (Lv37:86) (Lv38:87) (Lv39:88) (Lv40:89) (Lv1:3) (Lv2:4) (Lv3:5) (Lv4:7) (Lv5:8) (Lv6:9) (Lv7:10) (Lv8:12) (Lv9:14) (Lv10:17) (Lv11:20) (Lv12:22) (Lv13:26) (Lv14:33) (Lv15:46) (Lv16:65) (Lv17:78) (Lv18:91) (Lv19:111) (Lv20:135) (Lv21:137) (Lv22:138) (Lv23:140) (Lv24:141) (Lv25:142) (Lv26:144) (Lv27:145) (Lv28:147) (Lv29:148) (Lv30:150) (Lv31:151) (Lv32:153) (Lv33:154) (Lv34:156) (Lv35:157) (Lv36:159) (Lv37:160) (Lv38:162) (Lv39:164) (Lv40:165)"]
+  parsed_values:
+    fire_damage_add_percent: 104
+  anchors:
+    fire_damage_add_percent:
+      20: 104
+level_table:
+  levels:
+    1:
+      fire_damage_add_percent: 10.4
+    2:
+      fire_damage_add_percent: 15.33
+    3:
+      fire_damage_add_percent: 20.25
+    4:
+      fire_damage_add_percent: 25.18
+    5:
+      fire_damage_add_percent: 30.11
+    6:
+      fire_damage_add_percent: 35.03
+    7:
+      fire_damage_add_percent: 39.96
+    8:
+      fire_damage_add_percent: 44.88
+    9:
+      fire_damage_add_percent: 49.81
+    10:
+      fire_damage_add_percent: 54.74
+    11:
+      fire_damage_add_percent: 59.66
+    12:
+      fire_damage_add_percent: 64.59
+    13:
+      fire_damage_add_percent: 69.52
+    14:
+      fire_damage_add_percent: 74.44
+    15:
+      fire_damage_add_percent: 79.37
+    16:
+      fire_damage_add_percent: 84.29
+    17:
+      fire_damage_add_percent: 89.22
+    18:
+      fire_damage_add_percent: 94.15
+    19:
+      fire_damage_add_percent: 99.07
+    20:
+      fire_damage_add_percent: 104.0
+    21:
+      fire_damage_add_percent: 104.52
+    22:
+      fire_damage_add_percent: 105.04
+    23:
+      fire_damage_add_percent: 105.56
+    24:
+      fire_damage_add_percent: 106.08
+    25:
+      fire_damage_add_percent: 106.6
+    26:
+      fire_damage_add_percent: 107.12
+    27:
+      fire_damage_add_percent: 107.64
+    28:
+      fire_damage_add_percent: 108.16
+    29:
+      fire_damage_add_percent: 108.68
+    30:
+      fire_damage_add_percent: 109.2
+    31:
+      fire_damage_add_percent: 109.72
+    32:
+      fire_damage_add_percent: 110.24
+    33:
+      fire_damage_add_percent: 110.76
+    34:
+      fire_damage_add_percent: 111.28
+    35:
+      fire_damage_add_percent: 111.8
+    36:
+      fire_damage_add_percent: 112.32
+    37:
+      fire_damage_add_percent: 112.84
+    38:
+      fire_damage_add_percent: 113.36
+    39:
+      fire_damage_add_percent: 113.88
+    40:
+      fire_damage_add_percent: 114.4
+tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["fire"]
+effect_stats: ["fire_damage_add_percent"]

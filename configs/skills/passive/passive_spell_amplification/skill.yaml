@@ -1,0 +1,105 @@
+id: "passive_spell_amplification"
+sort_order: 1
+name_key: "gem.passive_spell_amplification.name"
+description_key: "gem.passive_spell_amplification.description"
+gem_type: "gem_type_2"
+gem_kind: "passive_skill"
+sudoku_digit: 2
+visual_effect: "passive_spell_amplification"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Spell_Amplification"
+  display_level: 20
+  raw_lines: ["激活光环，自身和一定范围内的所有友军获得增益：", "法术技能额外 16% 伤害。", "激活光环，自身和一定范围内的所有友军获得增益：", "额外 +35% 法术伤害"]
+  parsed_values:
+    spell_damage_add_percent: 16
+  anchors:
+    spell_damage_add_percent:
+      20: 16
+level_table:
+  levels:
+    1:
+      spell_damage_add_percent: 1.6
+    2:
+      spell_damage_add_percent: 2.36
+    3:
+      spell_damage_add_percent: 3.12
+    4:
+      spell_damage_add_percent: 3.87
+    5:
+      spell_damage_add_percent: 4.63
+    6:
+      spell_damage_add_percent: 5.39
+    7:
+      spell_damage_add_percent: 6.15
+    8:
+      spell_damage_add_percent: 6.91
+    9:
+      spell_damage_add_percent: 7.66
+    10:
+      spell_damage_add_percent: 8.42
+    11:
+      spell_damage_add_percent: 9.18
+    12:
+      spell_damage_add_percent: 9.94
+    13:
+      spell_damage_add_percent: 10.69
+    14:
+      spell_damage_add_percent: 11.45
+    15:
+      spell_damage_add_percent: 12.21
+    16:
+      spell_damage_add_percent: 12.97
+    17:
+      spell_damage_add_percent: 13.73
+    18:
+      spell_damage_add_percent: 14.48
+    19:
+      spell_damage_add_percent: 15.24
+    20:
+      spell_damage_add_percent: 16.0
+    21:
+      spell_damage_add_percent: 16.08
+    22:
+      spell_damage_add_percent: 16.16
+    23:
+      spell_damage_add_percent: 16.24
+    24:
+      spell_damage_add_percent: 16.32
+    25:
+      spell_damage_add_percent: 16.4
+    26:
+      spell_damage_add_percent: 16.48
+    27:
+      spell_damage_add_percent: 16.56
+    28:
+      spell_damage_add_percent: 16.64
+    29:
+      spell_damage_add_percent: 16.72
+    30:
+      spell_damage_add_percent: 16.8
+    31:
+      spell_damage_add_percent: 16.88
+    32:
+      spell_damage_add_percent: 16.96
+    33:
+      spell_damage_add_percent: 17.04
+    34:
+      spell_damage_add_percent: 17.12
+    35:
+      spell_damage_add_percent: 17.2
+    36:
+      spell_damage_add_percent: 17.28
+    37:
+      spell_damage_add_percent: 17.36
+    38:
+      spell_damage_add_percent: 17.44
+    39:
+      spell_damage_add_percent: 17.52
+    40:
+      spell_damage_add_percent: 17.6
+tags: ["gem", "passive_skill_gem", "loot_gem", "gem_type_2", "aura", "spell"]
+apply_filter:
+  target_kinds: ["active_skill"]
+  tags_any: ["spell"]
+passive_effects: [{"target": "active_skill", "stat": "spell_damage_add_percent", "value": 16, "layer": "additive"}]

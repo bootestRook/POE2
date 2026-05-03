@@ -1,0 +1,105 @@
+id: "support_jump"
+sort_order: 24
+name_key: "gem.support_jump.name"
+description_key: "gem.support_jump.description"
+category: "projectile_area_specialist"
+gem_type: "gem_type_5"
+gem_kind: "support"
+sudoku_digit: 5
+source_values:
+  source: "tlidb"
+  tlidb_id: "Jump"
+  display_level: 20
+  raw_lines: ["辅助直射投射物技能或连锁技能。", "被辅助技能 +2 弹射次数", "被辅助技能额外 +4% 伤害 (Lv1:4) (Lv21:8) (Lv41:12)", "被辅助技能 +2 弹射次数", "被辅助技能额外 +4% 伤害 (Lv1:4) (Lv21:8) (Lv41:12)"]
+  parsed_values:
+    chain_count_add: 2
+  anchors:
+    chain_count_add:
+      20: 2
+level_table:
+  levels:
+    1:
+      chain_count_add: 0.2
+    2:
+      chain_count_add: 0.29
+    3:
+      chain_count_add: 0.39
+    4:
+      chain_count_add: 0.48
+    5:
+      chain_count_add: 0.58
+    6:
+      chain_count_add: 0.67
+    7:
+      chain_count_add: 0.77
+    8:
+      chain_count_add: 0.86
+    9:
+      chain_count_add: 0.96
+    10:
+      chain_count_add: 1.05
+    11:
+      chain_count_add: 1.15
+    12:
+      chain_count_add: 1.24
+    13:
+      chain_count_add: 1.34
+    14:
+      chain_count_add: 1.43
+    15:
+      chain_count_add: 1.53
+    16:
+      chain_count_add: 1.62
+    17:
+      chain_count_add: 1.72
+    18:
+      chain_count_add: 1.81
+    19:
+      chain_count_add: 1.91
+    20:
+      chain_count_add: 2.0
+    21:
+      chain_count_add: 2.01
+    22:
+      chain_count_add: 2.02
+    23:
+      chain_count_add: 2.03
+    24:
+      chain_count_add: 2.04
+    25:
+      chain_count_add: 2.05
+    26:
+      chain_count_add: 2.06
+    27:
+      chain_count_add: 2.07
+    28:
+      chain_count_add: 2.08
+    29:
+      chain_count_add: 2.09
+    30:
+      chain_count_add: 2.1
+    31:
+      chain_count_add: 2.11
+    32:
+      chain_count_add: 2.12
+    33:
+      chain_count_add: 2.13
+    34:
+      chain_count_add: 2.14
+    35:
+      chain_count_add: 2.15
+    36:
+      chain_count_add: 2.16
+    37:
+      chain_count_add: 2.17
+    38:
+      chain_count_add: 2.18
+    39:
+      chain_count_add: 2.19
+    40:
+      chain_count_add: 2.2
+tags: ["gem", "support_gem", "loot_gem", "gem_type_5", "support_projectile"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["projectile", "chain"]
+effect_stats: ["chain_count_add", "damage_final_percent"]

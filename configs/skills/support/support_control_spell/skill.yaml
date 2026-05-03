@@ -1,0 +1,105 @@
+id: "support_control_spell"
+sort_order: 6
+name_key: "gem.support_control_spell.name"
+description_key: "gem.support_control_spell.description"
+category: "general_skill_modifier"
+gem_type: "gem_type_3"
+gem_kind: "support"
+sudoku_digit: 3
+source_values:
+  source: "tlidb"
+  tlidb_id: "Control_Spell"
+  display_level: 20
+  raw_lines: ["辅助法术技能。", "被辅助技能 -100% 暴击值", "被辅助技能额外 +28% 伤害 (Lv1:28) (Lv21:38) (Lv41:48)", "被辅助技能 -100% 暴击值", "被辅助技能额外 +28% 伤害 (Lv1:28) (Lv21:38) (Lv41:48)"]
+  parsed_values:
+    crit_rating: -100
+  anchors:
+    crit_rating:
+      20: -100
+level_table:
+  levels:
+    1:
+      crit_rating: -10.0
+    2:
+      crit_rating: -14.74
+    3:
+      crit_rating: -19.47
+    4:
+      crit_rating: -24.21
+    5:
+      crit_rating: -28.95
+    6:
+      crit_rating: -33.68
+    7:
+      crit_rating: -38.42
+    8:
+      crit_rating: -43.16
+    9:
+      crit_rating: -47.89
+    10:
+      crit_rating: -52.63
+    11:
+      crit_rating: -57.37
+    12:
+      crit_rating: -62.11
+    13:
+      crit_rating: -66.84
+    14:
+      crit_rating: -71.58
+    15:
+      crit_rating: -76.32
+    16:
+      crit_rating: -81.05
+    17:
+      crit_rating: -85.79
+    18:
+      crit_rating: -90.53
+    19:
+      crit_rating: -95.26
+    20:
+      crit_rating: -100.0
+    21:
+      crit_rating: -100.5
+    22:
+      crit_rating: -101.0
+    23:
+      crit_rating: -101.5
+    24:
+      crit_rating: -102.0
+    25:
+      crit_rating: -102.5
+    26:
+      crit_rating: -103.0
+    27:
+      crit_rating: -103.5
+    28:
+      crit_rating: -104.0
+    29:
+      crit_rating: -104.5
+    30:
+      crit_rating: -105.0
+    31:
+      crit_rating: -105.5
+    32:
+      crit_rating: -106.0
+    33:
+      crit_rating: -106.5
+    34:
+      crit_rating: -107.0
+    35:
+      crit_rating: -107.5
+    36:
+      crit_rating: -108.0
+    37:
+      crit_rating: -108.5
+    38:
+      crit_rating: -109.0
+    39:
+      crit_rating: -109.5
+    40:
+      crit_rating: -110.0
+tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_damage", "support_crit"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["spell"]
+effect_stats: ["crit_rating", "damage_final_percent"]

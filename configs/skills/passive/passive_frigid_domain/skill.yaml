@@ -1,0 +1,105 @@
+id: "passive_frigid_domain"
+sort_order: 7
+name_key: "gem.passive_frigid_domain.name"
+description_key: "gem.passive_frigid_domain.description"
+gem_type: "gem_type_2"
+gem_kind: "passive_skill"
+sudoku_digit: 2
+visual_effect: "passive_frigid_domain"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Frigid_Domain"
+  display_level: 20
+  raw_lines: ["激活光环，自身和一定范围内的所有友军获得增益：", "额外 16% 冰冷伤害。", "激活光环，自身和一定范围内的所有友军获得增益：", "额外 +35% 冰冷伤害"]
+  parsed_values:
+    cold_damage_add_percent: 16
+  anchors:
+    cold_damage_add_percent:
+      20: 16
+level_table:
+  levels:
+    1:
+      cold_damage_add_percent: 1.6
+    2:
+      cold_damage_add_percent: 2.36
+    3:
+      cold_damage_add_percent: 3.12
+    4:
+      cold_damage_add_percent: 3.87
+    5:
+      cold_damage_add_percent: 4.63
+    6:
+      cold_damage_add_percent: 5.39
+    7:
+      cold_damage_add_percent: 6.15
+    8:
+      cold_damage_add_percent: 6.91
+    9:
+      cold_damage_add_percent: 7.66
+    10:
+      cold_damage_add_percent: 8.42
+    11:
+      cold_damage_add_percent: 9.18
+    12:
+      cold_damage_add_percent: 9.94
+    13:
+      cold_damage_add_percent: 10.69
+    14:
+      cold_damage_add_percent: 11.45
+    15:
+      cold_damage_add_percent: 12.21
+    16:
+      cold_damage_add_percent: 12.97
+    17:
+      cold_damage_add_percent: 13.73
+    18:
+      cold_damage_add_percent: 14.48
+    19:
+      cold_damage_add_percent: 15.24
+    20:
+      cold_damage_add_percent: 16.0
+    21:
+      cold_damage_add_percent: 16.08
+    22:
+      cold_damage_add_percent: 16.16
+    23:
+      cold_damage_add_percent: 16.24
+    24:
+      cold_damage_add_percent: 16.32
+    25:
+      cold_damage_add_percent: 16.4
+    26:
+      cold_damage_add_percent: 16.48
+    27:
+      cold_damage_add_percent: 16.56
+    28:
+      cold_damage_add_percent: 16.64
+    29:
+      cold_damage_add_percent: 16.72
+    30:
+      cold_damage_add_percent: 16.8
+    31:
+      cold_damage_add_percent: 16.88
+    32:
+      cold_damage_add_percent: 16.96
+    33:
+      cold_damage_add_percent: 17.04
+    34:
+      cold_damage_add_percent: 17.12
+    35:
+      cold_damage_add_percent: 17.2
+    36:
+      cold_damage_add_percent: 17.28
+    37:
+      cold_damage_add_percent: 17.36
+    38:
+      cold_damage_add_percent: 17.44
+    39:
+      cold_damage_add_percent: 17.52
+    40:
+      cold_damage_add_percent: 17.6
+tags: ["gem", "passive_skill_gem", "loot_gem", "gem_type_2", "aura", "cold"]
+apply_filter:
+  target_kinds: ["active_skill"]
+  tags_any: ["cold"]
+passive_effects: [{"target": "active_skill", "stat": "cold_damage_add_percent", "value": 16, "layer": "additive"}]

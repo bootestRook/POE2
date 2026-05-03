@@ -1,0 +1,105 @@
+id: "support_projectile_split"
+sort_order: 22
+name_key: "gem.support_projectile_split.name"
+description_key: "gem.support_projectile_split.description"
+category: "projectile_area_specialist"
+gem_type: "gem_type_5"
+gem_kind: "support"
+sudoku_digit: 5
+source_values:
+  source: "tlidb"
+  tlidb_id: "Projectile_Split"
+  display_level: 20
+  raw_lines: ["辅助抛射投射物技能。", "释放被辅助技能时，+50% 几率使该次技能 +2 分裂数量", "被辅助技能额外 8.2% 伤害 (Lv1:41/5) (Lv21:61/5) (Lv41:71/5)", "释放被辅助技能时，+50% 几率使该次技能 +2 分裂数量", "被辅助技能额外 8.2% 伤害 (Lv1:41/5) (Lv21:61/5) (Lv41:71/5)"]
+  parsed_values:
+    projectile_count_add: 2
+  anchors:
+    projectile_count_add:
+      20: 2
+level_table:
+  levels:
+    1:
+      projectile_count_add: 0.2
+    2:
+      projectile_count_add: 0.29
+    3:
+      projectile_count_add: 0.39
+    4:
+      projectile_count_add: 0.48
+    5:
+      projectile_count_add: 0.58
+    6:
+      projectile_count_add: 0.67
+    7:
+      projectile_count_add: 0.77
+    8:
+      projectile_count_add: 0.86
+    9:
+      projectile_count_add: 0.96
+    10:
+      projectile_count_add: 1.05
+    11:
+      projectile_count_add: 1.15
+    12:
+      projectile_count_add: 1.24
+    13:
+      projectile_count_add: 1.34
+    14:
+      projectile_count_add: 1.43
+    15:
+      projectile_count_add: 1.53
+    16:
+      projectile_count_add: 1.62
+    17:
+      projectile_count_add: 1.72
+    18:
+      projectile_count_add: 1.81
+    19:
+      projectile_count_add: 1.91
+    20:
+      projectile_count_add: 2.0
+    21:
+      projectile_count_add: 2.01
+    22:
+      projectile_count_add: 2.02
+    23:
+      projectile_count_add: 2.03
+    24:
+      projectile_count_add: 2.04
+    25:
+      projectile_count_add: 2.05
+    26:
+      projectile_count_add: 2.06
+    27:
+      projectile_count_add: 2.07
+    28:
+      projectile_count_add: 2.08
+    29:
+      projectile_count_add: 2.09
+    30:
+      projectile_count_add: 2.1
+    31:
+      projectile_count_add: 2.11
+    32:
+      projectile_count_add: 2.12
+    33:
+      projectile_count_add: 2.13
+    34:
+      projectile_count_add: 2.14
+    35:
+      projectile_count_add: 2.15
+    36:
+      projectile_count_add: 2.16
+    37:
+      projectile_count_add: 2.17
+    38:
+      projectile_count_add: 2.18
+    39:
+      projectile_count_add: 2.19
+    40:
+      projectile_count_add: 2.2
+tags: ["gem", "support_gem", "loot_gem", "gem_type_5", "support_projectile"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["projectile"]
+effect_stats: ["projectile_count_add", "damage_final_percent"]

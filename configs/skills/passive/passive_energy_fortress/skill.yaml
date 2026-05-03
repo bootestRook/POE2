@@ -1,0 +1,105 @@
+id: "passive_energy_fortress"
+sort_order: 5
+name_key: "gem.passive_energy_fortress.name"
+description_key: "gem.passive_energy_fortress.description"
+gem_type: "gem_type_2"
+gem_kind: "passive_skill"
+sudoku_digit: 2
+visual_effect: "passive_energy_fortress"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Energy_Fortress"
+  display_level: 20
+  raw_lines: ["激活光环，自身和一定范围内的所有友军获得增益：", "67 最大护盾，额外 3.2% 最大护盾。", "激活光环，自身和一定范围内的所有友军获得增益：", "319.7 最大护盾", "额外 13.37% 最大护盾"]
+  parsed_values:
+    max_energy_shield: 120
+  anchors:
+    max_energy_shield:
+      20: 120
+level_table:
+  levels:
+    1:
+      max_energy_shield: 12.0
+    2:
+      max_energy_shield: 17.68
+    3:
+      max_energy_shield: 23.37
+    4:
+      max_energy_shield: 29.05
+    5:
+      max_energy_shield: 34.74
+    6:
+      max_energy_shield: 40.42
+    7:
+      max_energy_shield: 46.11
+    8:
+      max_energy_shield: 51.79
+    9:
+      max_energy_shield: 57.47
+    10:
+      max_energy_shield: 63.16
+    11:
+      max_energy_shield: 68.84
+    12:
+      max_energy_shield: 74.53
+    13:
+      max_energy_shield: 80.21
+    14:
+      max_energy_shield: 85.89
+    15:
+      max_energy_shield: 91.58
+    16:
+      max_energy_shield: 97.26
+    17:
+      max_energy_shield: 102.95
+    18:
+      max_energy_shield: 108.63
+    19:
+      max_energy_shield: 114.32
+    20:
+      max_energy_shield: 120.0
+    21:
+      max_energy_shield: 120.6
+    22:
+      max_energy_shield: 121.2
+    23:
+      max_energy_shield: 121.8
+    24:
+      max_energy_shield: 122.4
+    25:
+      max_energy_shield: 123.0
+    26:
+      max_energy_shield: 123.6
+    27:
+      max_energy_shield: 124.2
+    28:
+      max_energy_shield: 124.8
+    29:
+      max_energy_shield: 125.4
+    30:
+      max_energy_shield: 126.0
+    31:
+      max_energy_shield: 126.6
+    32:
+      max_energy_shield: 127.2
+    33:
+      max_energy_shield: 127.8
+    34:
+      max_energy_shield: 128.4
+    35:
+      max_energy_shield: 129.0
+    36:
+      max_energy_shield: 129.6
+    37:
+      max_energy_shield: 130.2
+    38:
+      max_energy_shield: 130.8
+    39:
+      max_energy_shield: 131.4
+    40:
+      max_energy_shield: 132.0
+tags: ["gem", "passive_skill_gem", "loot_gem", "gem_type_2", "aura"]
+apply_filter:
+  target_kinds: ["active_skill"]
+  tags_any: ["attack", "spell"]
+passive_effects: [{"target": "self_stat", "stat": "max_energy_shield", "value": 120, "layer": "additive"}]

@@ -1,0 +1,599 @@
+{
+  "version": 1,
+  "source_files": [
+    "tlidb_skills/skills_for_ai.md",
+    "tlidb_skills/skills_for_ai.jsonl"
+  ],
+  "counts": {
+    "active": 16,
+    "support": 30,
+    "passive": 9,
+    "board_conduits": 3,
+    "tlidb_content_total": 55,
+    "total_with_conduits": 58
+  },
+  "active": [
+    {
+      "id": "active_split_firebolt",
+      "tlidb_id": "Split_Firebolt",
+      "name": "裂变火球",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "nearest_enemy",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Split_Firebolt"
+    },
+    {
+      "id": "active_ice_shot",
+      "tlidb_id": "Ice_Shot",
+      "name": "寒冰射击",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "nearest_enemy",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Ice_Shot"
+    },
+    {
+      "id": "active_chromatic_shot",
+      "tlidb_id": "Chromatic_Shot",
+      "name": "五彩魔矢",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "nearest_enemy",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Chromatic_Shot"
+    },
+    {
+      "id": "active_whirlwind",
+      "tlidb_id": "Whirlwind",
+      "name": "旋风斩",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "duration_window",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Whirlwind"
+    },
+    {
+      "id": "active_stoneskin",
+      "tlidb_id": "Stoneskin",
+      "name": "石肤术",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "defensive_threshold",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Stoneskin"
+    },
+    {
+      "id": "active_thundercloud",
+      "tlidb_id": "Thundercloud",
+      "name": "雷云放射",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "duration_window",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Thundercloud"
+    },
+    {
+      "id": "active_blizzard",
+      "tlidb_id": "Blizzard",
+      "name": "暴风雪",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "target_cluster",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Blizzard"
+    },
+    {
+      "id": "active_chain_lightning",
+      "tlidb_id": "Chain_Lightning",
+      "name": "闪电链",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "nearest_enemy",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Chain_Lightning"
+    },
+    {
+      "id": "active_ring_of_ice",
+      "tlidb_id": "Ring_of_Ice",
+      "name": "冰环术",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "self_center",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Ring_of_Ice"
+    },
+    {
+      "id": "active_flame_slash",
+      "tlidb_id": "Flame_Slash",
+      "name": "烈焰斩",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "nearest_enemy",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Flame_Slash"
+    },
+    {
+      "id": "active_lightning_shot",
+      "tlidb_id": "Lightning_Shot",
+      "name": "闪电射击",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "nearest_enemy",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Lightning_Shot"
+    },
+    {
+      "id": "active_corrosive_shot",
+      "tlidb_id": "Corrosive_Shot",
+      "name": "侵蚀弹",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "target_cluster",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Corrosive_Shot"
+    },
+    {
+      "id": "active_burning_shot",
+      "tlidb_id": "Burning_Shot",
+      "name": "燃烧射击",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "nearest_enemy",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Burning_Shot"
+    },
+    {
+      "id": "active_rain_of_arrows",
+      "tlidb_id": "Rain_of_Arrows",
+      "name": "箭雨",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "target_cluster",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Rain_of_Arrows"
+    },
+    {
+      "id": "active_sparkle",
+      "tlidb_id": "Sparkle",
+      "name": "电火花",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "target_cluster",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Sparkle"
+    },
+    {
+      "id": "active_black_hole",
+      "tlidb_id": "Black_Hole",
+      "name": "黑洞",
+      "gem_kind": "active_skill",
+      "category": "active",
+      "auto_release_policy": "target_cluster",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Black_Hole"
+    }
+  ],
+  "support": [
+    {
+      "id": "support_multistrike",
+      "tlidb_id": "Multistrike",
+      "name": "连续攻击",
+      "gem_kind": "support",
+      "category": "general_skill_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Multistrike"
+    },
+    {
+      "id": "support_quick_decision",
+      "tlidb_id": "Quick_Decision",
+      "name": "速决",
+      "gem_kind": "support",
+      "category": "general_skill_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Quick_Decision"
+    },
+    {
+      "id": "support_cooldown_reduction",
+      "tlidb_id": "Cooldown_Reduction",
+      "name": "加速冷却",
+      "gem_kind": "support",
+      "category": "general_skill_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Cooldown_Reduction"
+    },
+    {
+      "id": "support_critical_strike_rating_increase",
+      "tlidb_id": "Critical_Strike_Rating_Increase",
+      "name": "提高暴击值",
+      "gem_kind": "support",
+      "category": "general_skill_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Critical_Strike_Rating_Increase"
+    },
+    {
+      "id": "support_critical_strike_damage_increase",
+      "tlidb_id": "Critical_Strike_Damage_Increase",
+      "name": "提高暴击伤害",
+      "gem_kind": "support",
+      "category": "general_skill_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Critical_Strike_Damage_Increase"
+    },
+    {
+      "id": "support_channel_preparation",
+      "tlidb_id": "Channel_Preparation",
+      "name": "预备引导",
+      "gem_kind": "support",
+      "category": "general_skill_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Channel_Preparation"
+    },
+    {
+      "id": "support_control_spell",
+      "tlidb_id": "Control_Spell",
+      "name": "法术控制",
+      "gem_kind": "support",
+      "category": "general_skill_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Control_Spell"
+    },
+    {
+      "id": "support_overload",
+      "tlidb_id": "Overload",
+      "name": "过载",
+      "gem_kind": "support",
+      "category": "general_skill_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Overload"
+    },
+    {
+      "id": "support_melee_knockback",
+      "tlidb_id": "Melee_Knockback",
+      "name": "近战击退",
+      "gem_kind": "support",
+      "category": "general_skill_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Melee_Knockback"
+    },
+    {
+      "id": "support_high_voltage",
+      "tlidb_id": "High_Voltage",
+      "name": "高压电",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#High_Voltage"
+    },
+    {
+      "id": "support_glacial_freeze",
+      "tlidb_id": "Glacial_Freeze",
+      "name": "凛冽冰冻",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Glacial_Freeze"
+    },
+    {
+      "id": "support_additional_ignite",
+      "tlidb_id": "Additional_Ignite",
+      "name": "额外点燃",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Additional_Ignite"
+    },
+    {
+      "id": "support_physical_to_fire",
+      "tlidb_id": "Physical_to_Fire",
+      "name": "物理转火焰",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Physical_to_Fire"
+    },
+    {
+      "id": "support_lightning_to_cold",
+      "tlidb_id": "Lightning_to_Cold",
+      "name": "闪电转冰冷",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Lightning_to_Cold"
+    },
+    {
+      "id": "support_added_fire_damage",
+      "tlidb_id": "Added_Fire_Damage",
+      "name": "附加火焰伤害",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Added_Fire_Damage"
+    },
+    {
+      "id": "support_added_cold_damage",
+      "tlidb_id": "Added_Cold_Damage",
+      "name": "附加冰冷伤害",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Added_Cold_Damage"
+    },
+    {
+      "id": "support_added_lightning_damage",
+      "tlidb_id": "Added_Lightning_Damage",
+      "name": "附加闪电伤害",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Added_Lightning_Damage"
+    },
+    {
+      "id": "support_added_erosion_damage",
+      "tlidb_id": "Added_Erosion_Damage",
+      "name": "附加腐蚀伤害",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Added_Erosion_Damage"
+    },
+    {
+      "id": "support_elemental_fusion",
+      "tlidb_id": "Elemental_Fusion",
+      "name": "元素融合",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Elemental_Fusion"
+    },
+    {
+      "id": "support_tendonslicer",
+      "tlidb_id": "Tendonslicer",
+      "name": "断筋锋刃",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Tendonslicer"
+    },
+    {
+      "id": "support_improved_corrosion",
+      "tlidb_id": "Improved_Corrosion",
+      "name": "强烈侵蚀",
+      "gem_kind": "support",
+      "category": "damage_type_enhancer",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Improved_Corrosion"
+    },
+    {
+      "id": "support_multiple_projectiles",
+      "tlidb_id": "Multiple_Projectiles",
+      "name": "散射",
+      "gem_kind": "support",
+      "category": "projectile_area_specialist",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Multiple_Projectiles"
+    },
+    {
+      "id": "support_projectile_split",
+      "tlidb_id": "Projectile_Split",
+      "name": "投射物分裂",
+      "gem_kind": "support",
+      "category": "projectile_area_specialist",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Projectile_Split"
+    },
+    {
+      "id": "support_increased_area",
+      "tlidb_id": "Increased_Area",
+      "name": "范围扩大",
+      "gem_kind": "support",
+      "category": "projectile_area_specialist",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Increased_Area"
+    },
+    {
+      "id": "support_jump",
+      "tlidb_id": "Jump",
+      "name": "弹射",
+      "gem_kind": "support",
+      "category": "projectile_area_specialist",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Jump"
+    },
+    {
+      "id": "support_spell_concentration",
+      "tlidb_id": "Spell_Concentration",
+      "name": "法术集中",
+      "gem_kind": "support",
+      "category": "risk_reward",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Spell_Concentration"
+    },
+    {
+      "id": "support_shortened_duration",
+      "tlidb_id": "Shortened_Duration",
+      "name": "持续时间缩短",
+      "gem_kind": "support",
+      "category": "risk_reward",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Shortened_Duration"
+    },
+    {
+      "id": "support_guard",
+      "tlidb_id": "Guard",
+      "name": "守护",
+      "gem_kind": "support",
+      "category": "risk_reward",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Guard"
+    },
+    {
+      "id": "support_slow_projectile",
+      "tlidb_id": "Slow_Projectile",
+      "name": "慢速投射",
+      "gem_kind": "support",
+      "category": "risk_reward",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Slow_Projectile"
+    },
+    {
+      "id": "support_raging_slash",
+      "tlidb_id": "Raging_Slash",
+      "name": "怒斩",
+      "gem_kind": "support",
+      "category": "skill_shape_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Raging_Slash"
+    }
+  ],
+  "passive": [
+    {
+      "id": "passive_weapon_amplification",
+      "tlidb_id": "Weapon_Amplification",
+      "name": "武器增幅",
+      "gem_kind": "passive_skill",
+      "category": "aura",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Weapon_Amplification"
+    },
+    {
+      "id": "passive_spell_amplification",
+      "tlidb_id": "Spell_Amplification",
+      "name": "法术增幅",
+      "gem_kind": "passive_skill",
+      "category": "aura",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Spell_Amplification"
+    },
+    {
+      "id": "passive_precise_projectiles",
+      "tlidb_id": "Precise_Projectiles",
+      "name": "精准投射",
+      "gem_kind": "passive_skill",
+      "category": "aura",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Precise_Projectiles"
+    },
+    {
+      "id": "passive_fearless",
+      "tlidb_id": "Fearless",
+      "name": "狂猛",
+      "gem_kind": "passive_skill",
+      "category": "aura",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Fearless"
+    },
+    {
+      "id": "passive_rejuvenation",
+      "tlidb_id": "Rejuvenation",
+      "name": "再生",
+      "gem_kind": "passive_skill",
+      "category": "aura",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Rejuvenation"
+    },
+    {
+      "id": "passive_energy_fortress",
+      "tlidb_id": "Energy_Fortress",
+      "name": "能量壁垒",
+      "gem_kind": "passive_skill",
+      "category": "aura",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Energy_Fortress"
+    },
+    {
+      "id": "passive_electric_conversion",
+      "tlidb_id": "Electric_Conversion",
+      "name": "电能转化",
+      "gem_kind": "passive_skill",
+      "category": "aura",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Electric_Conversion"
+    },
+    {
+      "id": "passive_frigid_domain",
+      "tlidb_id": "Frigid_Domain",
+      "name": "冰寒领域",
+      "gem_kind": "passive_skill",
+      "category": "aura",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Frigid_Domain"
+    },
+    {
+      "id": "passive_magical_source",
+      "tlidb_id": "Magical_Source",
+      "name": "魔源",
+      "gem_kind": "passive_skill",
+      "category": "aura",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Magical_Source"
+    }
+  ],
+  "board_conduits": [
+    {
+      "id": "support_row_conduit",
+      "name": "???",
+      "gem_kind": "support",
+      "category": "board_conduit",
+      "product_status": "product"
+    },
+    {
+      "id": "support_column_conduit",
+      "name": "???",
+      "gem_kind": "support",
+      "category": "board_conduit",
+      "product_status": "product"
+    },
+    {
+      "id": "support_box_conduit",
+      "name": "???",
+      "gem_kind": "support",
+      "category": "board_conduit",
+      "product_status": "product"
+    }
+  ],
+  "omitted_active_families": [
+    {
+      "family": "pure_movement",
+      "examples": [
+        "闪现",
+        "暗影冲刺",
+        "寒冰传送"
+      ],
+      "reason": "自动释放会破坏站位，改由后续移动/脱险 AI 处理。"
+    },
+    {
+      "family": "movement_attack",
+      "examples": [
+        "跃击",
+        "火箭跳",
+        "高能跃击"
+      ],
+      "reason": "会把角色带入危险区域，第一版不作为主动宝石。"
+    },
+    {
+      "family": "potion",
+      "examples": [
+        "生命药水",
+        "魔力药水",
+        "复合药水"
+      ],
+      "reason": "属于消耗品或自动喝药系统。"
+    },
+    {
+      "family": "complex_summon",
+      "examples": [
+        "召唤机械警卫",
+        "召唤蜘蛛坦克"
+      ],
+      "reason": "需要召唤物 AI 和单位管理。"
+    },
+    {
+      "family": "manual_ground_precision",
+      "examples": [
+        "需要精确地面点的区域技能"
+      ],
+      "reason": "只有能稳定改为怪群中心的技能才进入第一版。"
+    }
+  ]
+}

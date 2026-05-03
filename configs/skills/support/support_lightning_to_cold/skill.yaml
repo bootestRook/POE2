@@ -1,0 +1,105 @@
+id: "support_lightning_to_cold"
+sort_order: 13
+name_key: "gem.support_lightning_to_cold.name"
+description_key: "gem.support_lightning_to_cold.description"
+category: "damage_type_enhancer"
+gem_type: "gem_type_4"
+gem_kind: "support"
+sudoku_digit: 4
+source_values:
+  source: "tlidb"
+  tlidb_id: "Lightning_to_Cold"
+  display_level: 20
+  raw_lines: ["辅助击中敌人的技能。", "被辅助技能 50% 闪电伤害转化为冰冷伤害", "被辅助技能额外 5.5% 闪电伤害 (Lv1:11/2) (Lv21:31/2) (Lv41:51/2)", "被辅助技能 50% 闪电伤害转化为冰冷伤害", "被辅助技能额外 5.5% 闪电伤害 (Lv1:11/2) (Lv21:31/2) (Lv41:51/2)"]
+  parsed_values:
+    cold_damage_add_percent: 5.5
+  anchors:
+    cold_damage_add_percent:
+      20: 5.5
+level_table:
+  levels:
+    1:
+      cold_damage_add_percent: 0.55
+    2:
+      cold_damage_add_percent: 0.81
+    3:
+      cold_damage_add_percent: 1.07
+    4:
+      cold_damage_add_percent: 1.33
+    5:
+      cold_damage_add_percent: 1.59
+    6:
+      cold_damage_add_percent: 1.85
+    7:
+      cold_damage_add_percent: 2.11
+    8:
+      cold_damage_add_percent: 2.37
+    9:
+      cold_damage_add_percent: 2.63
+    10:
+      cold_damage_add_percent: 2.89
+    11:
+      cold_damage_add_percent: 3.16
+    12:
+      cold_damage_add_percent: 3.42
+    13:
+      cold_damage_add_percent: 3.68
+    14:
+      cold_damage_add_percent: 3.94
+    15:
+      cold_damage_add_percent: 4.2
+    16:
+      cold_damage_add_percent: 4.46
+    17:
+      cold_damage_add_percent: 4.72
+    18:
+      cold_damage_add_percent: 4.98
+    19:
+      cold_damage_add_percent: 5.24
+    20:
+      cold_damage_add_percent: 5.5
+    21:
+      cold_damage_add_percent: 5.53
+    22:
+      cold_damage_add_percent: 5.55
+    23:
+      cold_damage_add_percent: 5.58
+    24:
+      cold_damage_add_percent: 5.61
+    25:
+      cold_damage_add_percent: 5.64
+    26:
+      cold_damage_add_percent: 5.67
+    27:
+      cold_damage_add_percent: 5.69
+    28:
+      cold_damage_add_percent: 5.72
+    29:
+      cold_damage_add_percent: 5.75
+    30:
+      cold_damage_add_percent: 5.78
+    31:
+      cold_damage_add_percent: 5.8
+    32:
+      cold_damage_add_percent: 5.83
+    33:
+      cold_damage_add_percent: 5.86
+    34:
+      cold_damage_add_percent: 5.89
+    35:
+      cold_damage_add_percent: 5.91
+    36:
+      cold_damage_add_percent: 5.94
+    37:
+      cold_damage_add_percent: 5.97
+    38:
+      cold_damage_add_percent: 6.0
+    39:
+      cold_damage_add_percent: 6.02
+    40:
+      cold_damage_add_percent: 6.05
+tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["lightning", "cold"]
+effect_stats: ["cold_damage_add_percent"]

@@ -163,23 +163,18 @@ class V1WebAppApi:
 
     def _seed_inventory(self) -> None:
         active_seed_ids = [
-            "active_fire_bolt",
-            "active_ice_shards",
-            "active_lightning_chain",
-            "active_frost_nova",
-            "active_puncture",
-            "active_penetrating_shot",
-            "active_lava_orb",
-            "active_fungal_petards",
+            base_gem_id
+            for base_gem_id, definition in sorted(self.definitions.items())
+            if definition.is_active_skill
         ]
         passive_seed_ids = [
-            "passive_fire_focus",
-            "passive_vitality",
-            "passive_swift_gathering",
+            base_gem_id
+            for base_gem_id, definition in sorted(self.definitions.items())
+            if definition.is_passive_skill
         ]
         support_seed_ids = self._support_seed_ids_by_category()
 
-        for index, base_gem_id in enumerate(active_seed_ids, start=1):
+        for index, base_gem_id in enumerate((gem_id for gem_id in active_seed_ids if gem_id in self.definitions), start=1):
             definition = self.definitions[base_gem_id]
             self._add_seed_gem(
                 f"web_seed_active_{index}_{base_gem_id}",
@@ -188,7 +183,7 @@ class V1WebAppApi:
                 rarity="magic" if index == 1 else "normal",
                 level=1,
             )
-        for index, base_gem_id in enumerate(passive_seed_ids, start=1):
+        for index, base_gem_id in enumerate((gem_id for gem_id in passive_seed_ids if gem_id in self.definitions), start=1):
             definition = self.definitions[base_gem_id]
             self._add_seed_gem(
                 f"web_seed_passive_{index}_{base_gem_id}",
@@ -207,7 +202,7 @@ class V1WebAppApi:
                     rarity="normal",
                     level=1,
                 )
-        self.logs.append("已准备现有主动技能宝石各 1 颗、3 颗不同被动技能宝石，以及 7 类辅助宝石各 3 颗。")
+        self.logs.append("已准备 TLIDB 主动技能宝石、被动/光环宝石，以及按数独分类抽样的辅助宝石。")
 
     def _support_seed_ids_by_category(self) -> dict[str, list[str]]:
         category_order = [
@@ -223,10 +218,11 @@ class V1WebAppApi:
         for base_gem_id, definition in self.definitions.items():
             if definition.is_support and definition.category in ids_by_category:
                 ids_by_category[definition.category].append(base_gem_id)
-        missing = [category for category in category_order if len(ids_by_category[category]) < 3]
-        if missing:
-            raise ValueError("缺少可用于初始化的辅助宝石类型：" + "、".join(missing))
-        return {category: ids_by_category[category][:3] for category in category_order}
+        return {
+            category: ids_by_category[category][:3]
+            for category in category_order
+            if ids_by_category[category]
+        }
 
     def _add_seed_gem(
         self,

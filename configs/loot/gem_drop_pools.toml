@@ -7,29 +7,43 @@ entries = [
 
 [drop_pool.active_skill_gems]
 entries = [
-  { id = "active_fire_bolt", weight = 100 },
-  { id = "active_ice_shards", weight = 100 },
-  { id = "active_lightning_chain", weight = 100 },
-  { id = "active_frost_nova", weight = 100 },
-  { id = "active_puncture", weight = 100 },
-  { id = "active_penetrating_shot", weight = 100 },
-  { id = "active_lava_orb", weight = 100 },
-  { id = "active_fungal_petards", weight = 100 },
+  { id = "active_split_firebolt", weight = 100 },
+  { id = "active_ice_shot", weight = 100 },
+  { id = "active_chromatic_shot", weight = 100 },
+  { id = "active_whirlwind", weight = 100 },
+  { id = "active_stoneskin", weight = 100 },
+  { id = "active_thundercloud", weight = 100 },
+  { id = "active_blizzard", weight = 100 },
+  { id = "active_chain_lightning", weight = 100 },
+  { id = "active_ring_of_ice", weight = 100 },
+  { id = "active_flame_slash", weight = 100 },
+  { id = "active_lightning_shot", weight = 100 },
+  { id = "active_corrosive_shot", weight = 100 },
+  { id = "active_burning_shot", weight = 100 },
+  { id = "active_rain_of_arrows", weight = 100 },
+  { id = "active_sparkle", weight = 100 },
+  { id = "active_black_hole", weight = 100 },
 ]
 
 [drop_pool.support_gems]
 entries = [
-  { tag = "gem_type_3", weight = 400 },
-  { tag = "gem_type_4", weight = 120 },
-  { tag = "gem_type_5", weight = 250 },
-  { tag = "gem_type_8", weight = 100 },
-  { tag = "gem_type_9", weight = 150 },
-  { tag = "support_shape", weight = 250 },
+  { tag = "gem_type_3", weight = 220 },
+  { tag = "gem_type_4", weight = 300 },
+  { tag = "gem_type_5", weight = 160 },
+  { tag = "gem_type_6", weight = 140 },
+  { tag = "gem_type_7", weight = 80 },
+  { tag = "gem_type_9", weight = 100 },
 ]
 
 [drop_pool.passive_skill_gems]
 entries = [
-  { id = "passive_fire_focus", weight = 120 },
-  { id = "passive_vitality", weight = 100 },
-  { id = "passive_swift_gathering", weight = 100 },
+  { id = "passive_weapon_amplification", weight = 100 },
+  { id = "passive_spell_amplification", weight = 100 },
+  { id = "passive_precise_projectiles", weight = 100 },
+  { id = "passive_fearless", weight = 100 },
+  { id = "passive_rejuvenation", weight = 100 },
+  { id = "passive_energy_fortress", weight = 100 },
+  { id = "passive_electric_conversion", weight = 100 },
+  { id = "passive_frigid_domain", weight = 100 },
+  { id = "passive_magical_source", weight = 100 },
 ]

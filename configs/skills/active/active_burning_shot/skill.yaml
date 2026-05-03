@@ -1,0 +1,243 @@
+id: "active_burning_shot"
+version: "1.0.0"
+product_status: "product"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Burning_Shot"
+  display_level: 20
+  raw_lines: ["释放该技能向前发射 1 个烈焰箭，造成 256% 武器攻击伤害，且造成的点燃伤害额外增加。", "该技能击中点燃的敌人时引发爆炸，对半径 3 米内敌人造成相当于 100% 该敌人受到的每秒点燃伤害的真实伤害，并造成 5-5 间接火焰伤害。", "该技能全部物理伤害转化为火焰伤害。", "燃烧射击：", "造成 256% 武器攻击伤害", "基础发射 1 个投射物", "该技能额外 +30% 点燃伤害", "该技能 100% 物理伤害转化为火焰伤害", "该技能 +25% 点燃几率 (Lv1:25)", "该技能击中点燃的敌人时引发爆炸，对半径 3 米内敌人造成相当于 100% 该敌人受到的每秒点燃伤害的真实伤害；该效果对同一敌人有 5 秒冷却时间"]
+  parsed_values:
+    base_damage: 256
+    mana_cost: 5
+    release_interval_ms: 1000
+  anchors:
+    base_damage:
+      20: 256
+level_table:
+  levels:
+    1:
+      base_damage: 25.6
+      mana_cost: 5
+      release_interval_ms: 1000
+    2:
+      base_damage: 37.73
+      mana_cost: 5
+      release_interval_ms: 1000
+    3:
+      base_damage: 49.85
+      mana_cost: 5
+      release_interval_ms: 1000
+    4:
+      base_damage: 61.98
+      mana_cost: 5
+      release_interval_ms: 1000
+    5:
+      base_damage: 74.11
+      mana_cost: 5
+      release_interval_ms: 1000
+    6:
+      base_damage: 86.23
+      mana_cost: 5
+      release_interval_ms: 1000
+    7:
+      base_damage: 98.36
+      mana_cost: 5
+      release_interval_ms: 1000
+    8:
+      base_damage: 110.48
+      mana_cost: 5
+      release_interval_ms: 1000
+    9:
+      base_damage: 122.61
+      mana_cost: 5
+      release_interval_ms: 1000
+    10:
+      base_damage: 134.74
+      mana_cost: 5
+      release_interval_ms: 1000
+    11:
+      base_damage: 146.86
+      mana_cost: 5
+      release_interval_ms: 1000
+    12:
+      base_damage: 158.99
+      mana_cost: 5
+      release_interval_ms: 1000
+    13:
+      base_damage: 171.12
+      mana_cost: 5
+      release_interval_ms: 1000
+    14:
+      base_damage: 183.24
+      mana_cost: 5
+      release_interval_ms: 1000
+    15:
+      base_damage: 195.37
+      mana_cost: 5
+      release_interval_ms: 1000
+    16:
+      base_damage: 207.49
+      mana_cost: 5
+      release_interval_ms: 1000
+    17:
+      base_damage: 219.62
+      mana_cost: 5
+      release_interval_ms: 1000
+    18:
+      base_damage: 231.75
+      mana_cost: 5
+      release_interval_ms: 1000
+    19:
+      base_damage: 243.87
+      mana_cost: 5
+      release_interval_ms: 1000
+    20:
+      base_damage: 256.0
+      mana_cost: 5
+      release_interval_ms: 1000
+    21:
+      base_damage: 257.28
+      mana_cost: 5
+      release_interval_ms: 1000
+    22:
+      base_damage: 258.56
+      mana_cost: 5
+      release_interval_ms: 1000
+    23:
+      base_damage: 259.84
+      mana_cost: 5
+      release_interval_ms: 1000
+    24:
+      base_damage: 261.12
+      mana_cost: 5
+      release_interval_ms: 1000
+    25:
+      base_damage: 262.4
+      mana_cost: 5
+      release_interval_ms: 1000
+    26:
+      base_damage: 263.68
+      mana_cost: 5
+      release_interval_ms: 1000
+    27:
+      base_damage: 264.96
+      mana_cost: 5
+      release_interval_ms: 1000
+    28:
+      base_damage: 266.24
+      mana_cost: 5
+      release_interval_ms: 1000
+    29:
+      base_damage: 267.52
+      mana_cost: 5
+      release_interval_ms: 1000
+    30:
+      base_damage: 268.8
+      mana_cost: 5
+      release_interval_ms: 1000
+    31:
+      base_damage: 270.08
+      mana_cost: 5
+      release_interval_ms: 1000
+    32:
+      base_damage: 271.36
+      mana_cost: 5
+      release_interval_ms: 1000
+    33:
+      base_damage: 272.64
+      mana_cost: 5
+      release_interval_ms: 1000
+    34:
+      base_damage: 273.92
+      mana_cost: 5
+      release_interval_ms: 1000
+    35:
+      base_damage: 275.2
+      mana_cost: 5
+      release_interval_ms: 1000
+    36:
+      base_damage: 276.48
+      mana_cost: 5
+      release_interval_ms: 1000
+    37:
+      base_damage: 277.76
+      mana_cost: 5
+      release_interval_ms: 1000
+    38:
+      base_damage: 279.04
+      mana_cost: 5
+      release_interval_ms: 1000
+    39:
+      base_damage: 280.32
+      mana_cost: 5
+      release_interval_ms: 1000
+    40:
+      base_damage: 281.6
+      mana_cost: 5
+      release_interval_ms: 1000
+auto_release:
+  policy: "nearest_enemy"
+  notes: ["??????????TLIDB ???? Lv20 ???"]
+display:
+  name_key: "gem.active_burning_shot.name"
+  description_key: "gem.active_burning_shot.description"
+classification:
+  tags: ["attack", "ranged", "bow", "fire", "projectile"]
+  damage_type: "fire"
+  damage_form: "attack"
+cast:
+  mode: "attack"
+  target_selector: "nearest_enemy"
+  search_range: 420
+  cooldown_ms: 0
+  release_interval_ms: 1000
+  base_cooldown_ms: 0
+  trigger_interval_ms: 0
+  mana_cost: 5
+  windup_ms: 0
+  recovery_ms: 0
+behavior:
+  template: "projectile"
+  params:
+    projectile_count: 1
+    spread_angle_deg: 0
+    projectile_speed: 620
+    projectile_width: 50
+    projectile_height: 30
+    max_distance: 430
+    hit_policy: "first_hit"
+    pierce_count: 0
+    collision_radius: 16
+    spawn_offset:
+      x: -14
+      y: -20
+    projectile_radius: 12
+    impact_radius: 36
+    max_targets: 1
+    min_duration_ms: 80
+    max_duration_ms: 2200
+hit:
+  base_damage: 256
+  can_crit: true
+  can_apply_status: true
+  damage_timing: "on_projectile_hit"
+  hit_delay_ms: 160
+  hit_radius: 36
+  target_policy: "selected_target"
+scaling:
+  additive_stats: ["damage_add_percent", "fire_damage_add_percent", "attack_speed_add_percent"]
+  final_stats: ["damage_final_percent", "skill_speed_final_percent"]
+  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add", "area_add_percent"]
+presentation:
+  vfx: "skill_event.burning_shot.vfx"
+  cast_vfx_key: "skill_event.burning_shot.vfx"
+  projectile_vfx_key: "skill_event.burning_shot.vfx"
+  hit_vfx_key: "skill_event.burning_shot.vfx"
+  sfx: "skill_event.burning_shot.sfx"
+  floating_text: "skill_event.burning_shot.floating_text"
+  floating_text_style: "skill_event.burning_shot.floating_text"
+  screen_feedback: "skill_event.burning_shot.screen_feedback"
+  hit_stop_ms: 0
+  camera_shake: 0
+preview:
+  show_fields: ["final_damage", "actual_interval_ms", "mana_cost", "base_damage", "damage_type", "damage_form"]

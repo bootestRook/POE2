@@ -19,6 +19,42 @@
   "properties": {
     "id": { "type": "string", "pattern": "^active_[a-z0-9_]+$" },
     "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "product_status": { "enum": ["product", "reference_only"] },
+    "source_values": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["source", "tlidb_id", "display_level", "raw_lines"],
+      "properties": {
+        "source": { "const": "tlidb" },
+        "tlidb_id": { "type": "string" },
+        "display_level": { "type": "integer", "minimum": 1 },
+        "raw_lines": { "type": "array", "items": { "type": "string" } },
+        "parsed_values": { "type": "object" },
+        "anchors": { "type": "object" }
+      }
+    },
+    "level_table": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["levels"],
+      "properties": {
+        "levels": {
+          "type": "object",
+          "minProperties": 40,
+          "maxProperties": 40,
+          "additionalProperties": { "type": "object" }
+        }
+      }
+    },
+    "auto_release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy"],
+      "properties": {
+        "policy": { "enum": ["nearest_enemy", "target_cluster", "self_center", "duration_window", "periodic", "defensive_threshold"] },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
     "display": {
       "type": "object",
       "additionalProperties": false,

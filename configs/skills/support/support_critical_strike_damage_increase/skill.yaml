@@ -1,0 +1,105 @@
+id: "support_critical_strike_damage_increase"
+sort_order: 4
+name_key: "gem.support_critical_strike_damage_increase.name"
+description_key: "gem.support_critical_strike_damage_increase.description"
+category: "general_skill_modifier"
+gem_type: "gem_type_3"
+gem_kind: "support"
+sudoku_digit: 3
+source_values:
+  source: "tlidb"
+  tlidb_id: "Critical_Strike_Damage_Increase"
+  display_level: 20
+  raw_lines: ["辅助击中敌人的技能。", "被辅助技能暴击时，额外 +26% 伤害 (Lv1:26) (Lv21:36) (Lv41:46)", "被辅助技能暴击时，额外 +26% 伤害 (Lv1:26) (Lv21:36) (Lv41:46)"]
+  parsed_values:
+    crit_damage_add_percent: 26
+  anchors:
+    crit_damage_add_percent:
+      20: 26
+level_table:
+  levels:
+    1:
+      crit_damage_add_percent: 2.6
+    2:
+      crit_damage_add_percent: 3.83
+    3:
+      crit_damage_add_percent: 5.06
+    4:
+      crit_damage_add_percent: 6.29
+    5:
+      crit_damage_add_percent: 7.53
+    6:
+      crit_damage_add_percent: 8.76
+    7:
+      crit_damage_add_percent: 9.99
+    8:
+      crit_damage_add_percent: 11.22
+    9:
+      crit_damage_add_percent: 12.45
+    10:
+      crit_damage_add_percent: 13.68
+    11:
+      crit_damage_add_percent: 14.92
+    12:
+      crit_damage_add_percent: 16.15
+    13:
+      crit_damage_add_percent: 17.38
+    14:
+      crit_damage_add_percent: 18.61
+    15:
+      crit_damage_add_percent: 19.84
+    16:
+      crit_damage_add_percent: 21.07
+    17:
+      crit_damage_add_percent: 22.31
+    18:
+      crit_damage_add_percent: 23.54
+    19:
+      crit_damage_add_percent: 24.77
+    20:
+      crit_damage_add_percent: 26.0
+    21:
+      crit_damage_add_percent: 26.13
+    22:
+      crit_damage_add_percent: 26.26
+    23:
+      crit_damage_add_percent: 26.39
+    24:
+      crit_damage_add_percent: 26.52
+    25:
+      crit_damage_add_percent: 26.65
+    26:
+      crit_damage_add_percent: 26.78
+    27:
+      crit_damage_add_percent: 26.91
+    28:
+      crit_damage_add_percent: 27.04
+    29:
+      crit_damage_add_percent: 27.17
+    30:
+      crit_damage_add_percent: 27.3
+    31:
+      crit_damage_add_percent: 27.43
+    32:
+      crit_damage_add_percent: 27.56
+    33:
+      crit_damage_add_percent: 27.69
+    34:
+      crit_damage_add_percent: 27.82
+    35:
+      crit_damage_add_percent: 27.95
+    36:
+      crit_damage_add_percent: 28.08
+    37:
+      crit_damage_add_percent: 28.21
+    38:
+      crit_damage_add_percent: 28.34
+    39:
+      crit_damage_add_percent: 28.47
+    40:
+      crit_damage_add_percent: 28.6
+tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_crit"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["attack", "spell", "projectile", "area", "melee", "ranged", "aura"]
+effect_stats: ["crit_damage_add_percent"]

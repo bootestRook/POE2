@@ -1,0 +1,105 @@
+id: "support_high_voltage"
+sort_order: 9
+name_key: "gem.support_high_voltage.name"
+description_key: "gem.support_high_voltage.description"
+category: "damage_type_enhancer"
+gem_type: "gem_type_4"
+gem_kind: "support"
+sudoku_digit: 4
+source_values:
+  source: "tlidb"
+  tlidb_id: "High_Voltage"
+  display_level: 20
+  raw_lines: ["辅助击中敌人的技能。", "被辅助技能额外 10.3% 闪电伤害 (Lv1:103/10) (Lv21:163/10) (Lv41:183/10)", "被辅助技能造成击中闪电伤害时，施加麻痹", "被辅助技能额外 10.3% 闪电伤害 (Lv1:103/10) (Lv21:163/10) (Lv41:183/10)", "被辅助技能造成击中闪电伤害时，施加麻痹"]
+  parsed_values:
+    lightning_damage_add_percent: 10.3
+  anchors:
+    lightning_damage_add_percent:
+      20: 10.3
+level_table:
+  levels:
+    1:
+      lightning_damage_add_percent: 1.03
+    2:
+      lightning_damage_add_percent: 1.52
+    3:
+      lightning_damage_add_percent: 2.01
+    4:
+      lightning_damage_add_percent: 2.49
+    5:
+      lightning_damage_add_percent: 2.98
+    6:
+      lightning_damage_add_percent: 3.47
+    7:
+      lightning_damage_add_percent: 3.96
+    8:
+      lightning_damage_add_percent: 4.45
+    9:
+      lightning_damage_add_percent: 4.93
+    10:
+      lightning_damage_add_percent: 5.42
+    11:
+      lightning_damage_add_percent: 5.91
+    12:
+      lightning_damage_add_percent: 6.4
+    13:
+      lightning_damage_add_percent: 6.88
+    14:
+      lightning_damage_add_percent: 7.37
+    15:
+      lightning_damage_add_percent: 7.86
+    16:
+      lightning_damage_add_percent: 8.35
+    17:
+      lightning_damage_add_percent: 8.84
+    18:
+      lightning_damage_add_percent: 9.32
+    19:
+      lightning_damage_add_percent: 9.81
+    20:
+      lightning_damage_add_percent: 10.3
+    21:
+      lightning_damage_add_percent: 10.35
+    22:
+      lightning_damage_add_percent: 10.4
+    23:
+      lightning_damage_add_percent: 10.45
+    24:
+      lightning_damage_add_percent: 10.51
+    25:
+      lightning_damage_add_percent: 10.56
+    26:
+      lightning_damage_add_percent: 10.61
+    27:
+      lightning_damage_add_percent: 10.66
+    28:
+      lightning_damage_add_percent: 10.71
+    29:
+      lightning_damage_add_percent: 10.76
+    30:
+      lightning_damage_add_percent: 10.82
+    31:
+      lightning_damage_add_percent: 10.87
+    32:
+      lightning_damage_add_percent: 10.92
+    33:
+      lightning_damage_add_percent: 10.97
+    34:
+      lightning_damage_add_percent: 11.02
+    35:
+      lightning_damage_add_percent: 11.07
+    36:
+      lightning_damage_add_percent: 11.12
+    37:
+      lightning_damage_add_percent: 11.18
+    38:
+      lightning_damage_add_percent: 11.23
+    39:
+      lightning_damage_add_percent: 11.28
+    40:
+      lightning_damage_add_percent: 11.33
+tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage", "support_status"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["lightning"]
+effect_stats: ["lightning_damage_add_percent"]

@@ -1,0 +1,243 @@
+id: "active_split_firebolt"
+version: "1.0.0"
+product_status: "product"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Split_Firebolt"
+  display_level: 20
+  raw_lines: ["释放该技能向前发射 1 个火球，火球抵达射程终点时产生爆炸，火球击中和爆炸时各能造成 674-1011 法术火焰伤害。", "火球击中后分裂成三个小型火球，小型火球击中时造成 337-506 法术火焰伤害。", "火球：", "造成 674-1011 法术火焰伤害", "基础发射 1 个投射物", "火球爆炸：", "造成 674-1011 法术火焰伤害", "小型火球：", "造成 337-506 法术火焰伤害", "该技能分裂出的小火球 +1 穿透次数"]
+  parsed_values:
+    base_damage: 842.5
+    mana_cost: 8
+    release_interval_ms: 650
+  anchors:
+    base_damage:
+      20: 842.5
+level_table:
+  levels:
+    1:
+      base_damage: 84.25
+      mana_cost: 8
+      release_interval_ms: 650
+    2:
+      base_damage: 124.16
+      mana_cost: 8
+      release_interval_ms: 650
+    3:
+      base_damage: 164.07
+      mana_cost: 8
+      release_interval_ms: 650
+    4:
+      base_damage: 203.97
+      mana_cost: 8
+      release_interval_ms: 650
+    5:
+      base_damage: 243.88
+      mana_cost: 8
+      release_interval_ms: 650
+    6:
+      base_damage: 283.79
+      mana_cost: 8
+      release_interval_ms: 650
+    7:
+      base_damage: 323.7
+      mana_cost: 8
+      release_interval_ms: 650
+    8:
+      base_damage: 363.61
+      mana_cost: 8
+      release_interval_ms: 650
+    9:
+      base_damage: 403.51
+      mana_cost: 8
+      release_interval_ms: 650
+    10:
+      base_damage: 443.42
+      mana_cost: 8
+      release_interval_ms: 650
+    11:
+      base_damage: 483.33
+      mana_cost: 8
+      release_interval_ms: 650
+    12:
+      base_damage: 523.24
+      mana_cost: 8
+      release_interval_ms: 650
+    13:
+      base_damage: 563.14
+      mana_cost: 8
+      release_interval_ms: 650
+    14:
+      base_damage: 603.05
+      mana_cost: 8
+      release_interval_ms: 650
+    15:
+      base_damage: 642.96
+      mana_cost: 8
+      release_interval_ms: 650
+    16:
+      base_damage: 682.87
+      mana_cost: 8
+      release_interval_ms: 650
+    17:
+      base_damage: 722.78
+      mana_cost: 8
+      release_interval_ms: 650
+    18:
+      base_damage: 762.68
+      mana_cost: 8
+      release_interval_ms: 650
+    19:
+      base_damage: 802.59
+      mana_cost: 8
+      release_interval_ms: 650
+    20:
+      base_damage: 842.5
+      mana_cost: 8
+      release_interval_ms: 650
+    21:
+      base_damage: 846.71
+      mana_cost: 8
+      release_interval_ms: 650
+    22:
+      base_damage: 850.92
+      mana_cost: 8
+      release_interval_ms: 650
+    23:
+      base_damage: 855.14
+      mana_cost: 8
+      release_interval_ms: 650
+    24:
+      base_damage: 859.35
+      mana_cost: 8
+      release_interval_ms: 650
+    25:
+      base_damage: 863.56
+      mana_cost: 8
+      release_interval_ms: 650
+    26:
+      base_damage: 867.77
+      mana_cost: 8
+      release_interval_ms: 650
+    27:
+      base_damage: 871.99
+      mana_cost: 8
+      release_interval_ms: 650
+    28:
+      base_damage: 876.2
+      mana_cost: 8
+      release_interval_ms: 650
+    29:
+      base_damage: 880.41
+      mana_cost: 8
+      release_interval_ms: 650
+    30:
+      base_damage: 884.62
+      mana_cost: 8
+      release_interval_ms: 650
+    31:
+      base_damage: 888.84
+      mana_cost: 8
+      release_interval_ms: 650
+    32:
+      base_damage: 893.05
+      mana_cost: 8
+      release_interval_ms: 650
+    33:
+      base_damage: 897.26
+      mana_cost: 8
+      release_interval_ms: 650
+    34:
+      base_damage: 901.48
+      mana_cost: 8
+      release_interval_ms: 650
+    35:
+      base_damage: 905.69
+      mana_cost: 8
+      release_interval_ms: 650
+    36:
+      base_damage: 909.9
+      mana_cost: 8
+      release_interval_ms: 650
+    37:
+      base_damage: 914.11
+      mana_cost: 8
+      release_interval_ms: 650
+    38:
+      base_damage: 918.33
+      mana_cost: 8
+      release_interval_ms: 650
+    39:
+      base_damage: 922.54
+      mana_cost: 8
+      release_interval_ms: 650
+    40:
+      base_damage: 926.75
+      mana_cost: 8
+      release_interval_ms: 650
+auto_release:
+  policy: "nearest_enemy"
+  notes: ["??????????TLIDB ???? Lv20 ???"]
+display:
+  name_key: "gem.active_split_firebolt.name"
+  description_key: "gem.active_split_firebolt.description"
+classification:
+  tags: ["spell", "fire", "projectile", "area"]
+  damage_type: "fire"
+  damage_form: "spell"
+cast:
+  mode: "spell"
+  target_selector: "nearest_enemy"
+  search_range: 420
+  cooldown_ms: 0
+  release_interval_ms: 650
+  base_cooldown_ms: 0
+  trigger_interval_ms: 0
+  mana_cost: 8
+  windup_ms: 0
+  recovery_ms: 0
+behavior:
+  template: "projectile"
+  params:
+    projectile_count: 1
+    spread_angle_deg: 0
+    projectile_speed: 620
+    projectile_width: 56
+    projectile_height: 40
+    max_distance: 420
+    hit_policy: "first_hit"
+    pierce_count: 1
+    collision_radius: 18
+    spawn_offset:
+      x: -14
+      y: -20
+    projectile_radius: 14
+    impact_radius: 36
+    max_targets: 1
+    min_duration_ms: 80
+    max_duration_ms: 2200
+hit:
+  base_damage: 842.5
+  can_crit: true
+  can_apply_status: true
+  damage_timing: "on_projectile_hit"
+  hit_delay_ms: 160
+  hit_radius: 36
+  target_policy: "selected_target"
+scaling:
+  additive_stats: ["damage_add_percent", "fire_damage_add_percent", "cast_speed_add_percent"]
+  final_stats: ["damage_final_percent", "skill_speed_final_percent"]
+  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add", "area_add_percent"]
+presentation:
+  vfx: "skill_event.split_firebolt.vfx"
+  cast_vfx_key: "skill_event.split_firebolt.vfx"
+  projectile_vfx_key: "skill_event.split_firebolt.vfx"
+  hit_vfx_key: "skill_event.split_firebolt.vfx"
+  sfx: "skill_event.split_firebolt.sfx"
+  floating_text: "skill_event.split_firebolt.floating_text"
+  floating_text_style: "skill_event.split_firebolt.floating_text"
+  screen_feedback: "skill_event.split_firebolt.screen_feedback"
+  hit_stop_ms: 0
+  camera_shake: 0
+preview:
+  show_fields: ["final_damage", "actual_interval_ms", "mana_cost", "base_damage", "damage_type", "damage_form"]

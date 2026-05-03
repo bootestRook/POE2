@@ -1,0 +1,105 @@
+id: "support_tendonslicer"
+sort_order: 19
+name_key: "gem.support_tendonslicer.name"
+description_key: "gem.support_tendonslicer.description"
+category: "damage_type_enhancer"
+gem_type: "gem_type_4"
+gem_kind: "support"
+sudoku_digit: 4
+source_values:
+  source: "tlidb"
+  tlidb_id: "Tendonslicer"
+  display_level: 20
+  raw_lines: ["辅助能造成伤害的技能。", "被辅助技能额外 7.5% 物理伤害 (Lv1:15/2) (Lv21:35/2) (Lv41:55/2)", "被辅助技能造成伤害时，有 40% 几率施加减益，使敌人 +10% 受到的被辅助技能的伤害，持续 2 秒", "被辅助技能额外 7.5% 物理伤害 (Lv1:15/2) (Lv21:35/2) (Lv41:55/2)", "被辅助技能造成伤害时，有 40% 几率施加减益，使敌人 +10% 受到的被辅助技能的伤害，持续 2 秒"]
+  parsed_values:
+    physical_damage_add_percent: 7.5
+  anchors:
+    physical_damage_add_percent:
+      20: 7.5
+level_table:
+  levels:
+    1:
+      physical_damage_add_percent: 0.75
+    2:
+      physical_damage_add_percent: 1.11
+    3:
+      physical_damage_add_percent: 1.46
+    4:
+      physical_damage_add_percent: 1.82
+    5:
+      physical_damage_add_percent: 2.17
+    6:
+      physical_damage_add_percent: 2.53
+    7:
+      physical_damage_add_percent: 2.88
+    8:
+      physical_damage_add_percent: 3.24
+    9:
+      physical_damage_add_percent: 3.59
+    10:
+      physical_damage_add_percent: 3.95
+    11:
+      physical_damage_add_percent: 4.3
+    12:
+      physical_damage_add_percent: 4.66
+    13:
+      physical_damage_add_percent: 5.01
+    14:
+      physical_damage_add_percent: 5.37
+    15:
+      physical_damage_add_percent: 5.72
+    16:
+      physical_damage_add_percent: 6.08
+    17:
+      physical_damage_add_percent: 6.43
+    18:
+      physical_damage_add_percent: 6.79
+    19:
+      physical_damage_add_percent: 7.14
+    20:
+      physical_damage_add_percent: 7.5
+    21:
+      physical_damage_add_percent: 7.54
+    22:
+      physical_damage_add_percent: 7.58
+    23:
+      physical_damage_add_percent: 7.61
+    24:
+      physical_damage_add_percent: 7.65
+    25:
+      physical_damage_add_percent: 7.69
+    26:
+      physical_damage_add_percent: 7.73
+    27:
+      physical_damage_add_percent: 7.76
+    28:
+      physical_damage_add_percent: 7.8
+    29:
+      physical_damage_add_percent: 7.84
+    30:
+      physical_damage_add_percent: 7.88
+    31:
+      physical_damage_add_percent: 7.91
+    32:
+      physical_damage_add_percent: 7.95
+    33:
+      physical_damage_add_percent: 7.99
+    34:
+      physical_damage_add_percent: 8.03
+    35:
+      physical_damage_add_percent: 8.06
+    36:
+      physical_damage_add_percent: 8.1
+    37:
+      physical_damage_add_percent: 8.14
+    38:
+      physical_damage_add_percent: 8.18
+    39:
+      physical_damage_add_percent: 8.21
+    40:
+      physical_damage_add_percent: 8.25
+tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage", "support_status"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["physical"]
+effect_stats: ["physical_damage_add_percent"]

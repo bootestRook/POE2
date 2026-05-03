@@ -1,0 +1,236 @@
+id: "active_black_hole"
+version: "1.0.0"
+product_status: "product"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Black_Hole"
+  display_level: 20
+  raw_lines: ["释放该技能在指定位置形成黑洞，对一定范围内敌人造成每秒 249 持续腐蚀伤害，且周期性反向击退其中的敌人，持续 4 秒。受到该技能伤害的敌人被施加 100 点加剧值，冷却时间为 1 秒。", "释放该技能获得亢奋：", "黑洞中的敌人每有 10 点加剧值，你对其额外造成 3.5% 持续伤害,持续 4 秒", "黑洞：", "造成 249-249 持续腐蚀伤害", "该技能具有反向击退", "该技能造成持续伤害时，对敌人施加 100 点加剧值，该效果冷却时间为 1 秒", "黑洞每间隔 0.5 秒击退其中的敌人", "持续 4 秒", "释放该技能获得亢奋：", "黑洞中的敌人每有 10 点加剧值，你对其额外造成 3.5% 持续伤害,持续 4 秒"]
+  parsed_values:
+    base_damage: 249
+    mana_cost: 15
+    release_interval_ms: 800
+  anchors:
+    base_damage:
+      20: 249
+level_table:
+  levels:
+    1:
+      base_damage: 24.9
+      mana_cost: 15
+      release_interval_ms: 800
+    2:
+      base_damage: 36.69
+      mana_cost: 15
+      release_interval_ms: 800
+    3:
+      base_damage: 48.49
+      mana_cost: 15
+      release_interval_ms: 800
+    4:
+      base_damage: 60.28
+      mana_cost: 15
+      release_interval_ms: 800
+    5:
+      base_damage: 72.08
+      mana_cost: 15
+      release_interval_ms: 800
+    6:
+      base_damage: 83.87
+      mana_cost: 15
+      release_interval_ms: 800
+    7:
+      base_damage: 95.67
+      mana_cost: 15
+      release_interval_ms: 800
+    8:
+      base_damage: 107.46
+      mana_cost: 15
+      release_interval_ms: 800
+    9:
+      base_damage: 119.26
+      mana_cost: 15
+      release_interval_ms: 800
+    10:
+      base_damage: 131.05
+      mana_cost: 15
+      release_interval_ms: 800
+    11:
+      base_damage: 142.85
+      mana_cost: 15
+      release_interval_ms: 800
+    12:
+      base_damage: 154.64
+      mana_cost: 15
+      release_interval_ms: 800
+    13:
+      base_damage: 166.44
+      mana_cost: 15
+      release_interval_ms: 800
+    14:
+      base_damage: 178.23
+      mana_cost: 15
+      release_interval_ms: 800
+    15:
+      base_damage: 190.03
+      mana_cost: 15
+      release_interval_ms: 800
+    16:
+      base_damage: 201.82
+      mana_cost: 15
+      release_interval_ms: 800
+    17:
+      base_damage: 213.62
+      mana_cost: 15
+      release_interval_ms: 800
+    18:
+      base_damage: 225.41
+      mana_cost: 15
+      release_interval_ms: 800
+    19:
+      base_damage: 237.21
+      mana_cost: 15
+      release_interval_ms: 800
+    20:
+      base_damage: 249.0
+      mana_cost: 15
+      release_interval_ms: 800
+    21:
+      base_damage: 250.24
+      mana_cost: 15
+      release_interval_ms: 800
+    22:
+      base_damage: 251.49
+      mana_cost: 15
+      release_interval_ms: 800
+    23:
+      base_damage: 252.73
+      mana_cost: 15
+      release_interval_ms: 800
+    24:
+      base_damage: 253.98
+      mana_cost: 15
+      release_interval_ms: 800
+    25:
+      base_damage: 255.22
+      mana_cost: 15
+      release_interval_ms: 800
+    26:
+      base_damage: 256.47
+      mana_cost: 15
+      release_interval_ms: 800
+    27:
+      base_damage: 257.71
+      mana_cost: 15
+      release_interval_ms: 800
+    28:
+      base_damage: 258.96
+      mana_cost: 15
+      release_interval_ms: 800
+    29:
+      base_damage: 260.2
+      mana_cost: 15
+      release_interval_ms: 800
+    30:
+      base_damage: 261.45
+      mana_cost: 15
+      release_interval_ms: 800
+    31:
+      base_damage: 262.69
+      mana_cost: 15
+      release_interval_ms: 800
+    32:
+      base_damage: 263.94
+      mana_cost: 15
+      release_interval_ms: 800
+    33:
+      base_damage: 265.19
+      mana_cost: 15
+      release_interval_ms: 800
+    34:
+      base_damage: 266.43
+      mana_cost: 15
+      release_interval_ms: 800
+    35:
+      base_damage: 267.68
+      mana_cost: 15
+      release_interval_ms: 800
+    36:
+      base_damage: 268.92
+      mana_cost: 15
+      release_interval_ms: 800
+    37:
+      base_damage: 270.16
+      mana_cost: 15
+      release_interval_ms: 800
+    38:
+      base_damage: 271.41
+      mana_cost: 15
+      release_interval_ms: 800
+    39:
+      base_damage: 272.65
+      mana_cost: 15
+      release_interval_ms: 800
+    40:
+      base_damage: 273.9
+      mana_cost: 15
+      release_interval_ms: 800
+auto_release:
+  policy: "target_cluster"
+  notes: ["??????????TLIDB ???? Lv20 ???"]
+display:
+  name_key: "gem.active_black_hole.name"
+  description_key: "gem.active_black_hole.description"
+classification:
+  tags: ["spell", "chaos", "area", "dot"]
+  damage_type: "chaos"
+  damage_form: "spell"
+cast:
+  mode: "spell"
+  target_selector: "nearest_enemy"
+  search_range: 420
+  cooldown_ms: 0
+  release_interval_ms: 800
+  base_cooldown_ms: 10000
+  trigger_interval_ms: 0
+  mana_cost: 15
+  windup_ms: 0
+  recovery_ms: 0
+behavior:
+  template: "damage_zone"
+  params:
+    shape: "circle"
+    origin_policy: "caster"
+    facing_policy: "none"
+    hit_at_ms: 200
+    max_targets: 10
+    status_chance_scale: 1
+    zone_vfx_key: "skill_event.fungal_petards.vfx"
+    radius: 125
+    expand_duration_ms: 200
+    ring_width: 90
+hit:
+  base_damage: 249
+  can_crit: true
+  can_apply_status: true
+  damage_timing: "on_damage_zone_hit"
+  hit_delay_ms: 160
+  hit_radius: 125
+  target_policy: "selected_target"
+scaling:
+  additive_stats: ["damage_add_percent", "chaos_damage_add_percent", "cast_speed_add_percent"]
+  final_stats: ["damage_final_percent", "skill_speed_final_percent"]
+  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add", "area_add_percent"]
+presentation:
+  vfx: "skill_event.black_hole.vfx"
+  cast_vfx_key: "skill_event.black_hole.vfx"
+  projectile_vfx_key: "skill_event.black_hole.vfx"
+  hit_vfx_key: "skill_event.black_hole.vfx"
+  sfx: "skill_event.black_hole.sfx"
+  floating_text: "skill_event.black_hole.floating_text"
+  floating_text_style: "skill_event.black_hole.floating_text"
+  screen_feedback: "skill_event.black_hole.screen_feedback"
+  hit_stop_ms: 0
+  camera_shake: 0
+preview:
+  show_fields: ["final_damage", "actual_interval_ms", "mana_cost", "base_damage", "damage_type", "damage_form"]

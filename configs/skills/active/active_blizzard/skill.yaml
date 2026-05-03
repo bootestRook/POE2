@@ -1,0 +1,236 @@
+id: "active_blizzard"
+version: "1.0.0"
+product_status: "product"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Blizzard"
+  display_level: 20
+  raw_lines: ["释放该技能在指定位置落下 3 波暴风雪，造成 203-303 法术冰冷伤害。", "该技能击中时对敌人施加减益：额外 10% 受到的冰冷伤害，持续 6 秒。", "暴风雪：", "造成 203-303 法术冰冷伤害", "基础落下 1 波暴风雪", "该技能 +2 总波次", "额外 +10% 受到的冰冷伤害"]
+  parsed_values:
+    base_damage: 253
+    mana_cost: 8
+    release_interval_ms: 900
+  anchors:
+    base_damage:
+      20: 253
+level_table:
+  levels:
+    1:
+      base_damage: 25.3
+      mana_cost: 8
+      release_interval_ms: 900
+    2:
+      base_damage: 37.28
+      mana_cost: 8
+      release_interval_ms: 900
+    3:
+      base_damage: 49.27
+      mana_cost: 8
+      release_interval_ms: 900
+    4:
+      base_damage: 61.25
+      mana_cost: 8
+      release_interval_ms: 900
+    5:
+      base_damage: 73.24
+      mana_cost: 8
+      release_interval_ms: 900
+    6:
+      base_damage: 85.22
+      mana_cost: 8
+      release_interval_ms: 900
+    7:
+      base_damage: 97.21
+      mana_cost: 8
+      release_interval_ms: 900
+    8:
+      base_damage: 109.19
+      mana_cost: 8
+      release_interval_ms: 900
+    9:
+      base_damage: 121.17
+      mana_cost: 8
+      release_interval_ms: 900
+    10:
+      base_damage: 133.16
+      mana_cost: 8
+      release_interval_ms: 900
+    11:
+      base_damage: 145.14
+      mana_cost: 8
+      release_interval_ms: 900
+    12:
+      base_damage: 157.13
+      mana_cost: 8
+      release_interval_ms: 900
+    13:
+      base_damage: 169.11
+      mana_cost: 8
+      release_interval_ms: 900
+    14:
+      base_damage: 181.09
+      mana_cost: 8
+      release_interval_ms: 900
+    15:
+      base_damage: 193.08
+      mana_cost: 8
+      release_interval_ms: 900
+    16:
+      base_damage: 205.06
+      mana_cost: 8
+      release_interval_ms: 900
+    17:
+      base_damage: 217.05
+      mana_cost: 8
+      release_interval_ms: 900
+    18:
+      base_damage: 229.03
+      mana_cost: 8
+      release_interval_ms: 900
+    19:
+      base_damage: 241.02
+      mana_cost: 8
+      release_interval_ms: 900
+    20:
+      base_damage: 253.0
+      mana_cost: 8
+      release_interval_ms: 900
+    21:
+      base_damage: 254.26
+      mana_cost: 8
+      release_interval_ms: 900
+    22:
+      base_damage: 255.53
+      mana_cost: 8
+      release_interval_ms: 900
+    23:
+      base_damage: 256.79
+      mana_cost: 8
+      release_interval_ms: 900
+    24:
+      base_damage: 258.06
+      mana_cost: 8
+      release_interval_ms: 900
+    25:
+      base_damage: 259.32
+      mana_cost: 8
+      release_interval_ms: 900
+    26:
+      base_damage: 260.59
+      mana_cost: 8
+      release_interval_ms: 900
+    27:
+      base_damage: 261.85
+      mana_cost: 8
+      release_interval_ms: 900
+    28:
+      base_damage: 263.12
+      mana_cost: 8
+      release_interval_ms: 900
+    29:
+      base_damage: 264.38
+      mana_cost: 8
+      release_interval_ms: 900
+    30:
+      base_damage: 265.65
+      mana_cost: 8
+      release_interval_ms: 900
+    31:
+      base_damage: 266.91
+      mana_cost: 8
+      release_interval_ms: 900
+    32:
+      base_damage: 268.18
+      mana_cost: 8
+      release_interval_ms: 900
+    33:
+      base_damage: 269.44
+      mana_cost: 8
+      release_interval_ms: 900
+    34:
+      base_damage: 270.71
+      mana_cost: 8
+      release_interval_ms: 900
+    35:
+      base_damage: 271.97
+      mana_cost: 8
+      release_interval_ms: 900
+    36:
+      base_damage: 273.24
+      mana_cost: 8
+      release_interval_ms: 900
+    37:
+      base_damage: 274.5
+      mana_cost: 8
+      release_interval_ms: 900
+    38:
+      base_damage: 275.77
+      mana_cost: 8
+      release_interval_ms: 900
+    39:
+      base_damage: 277.03
+      mana_cost: 8
+      release_interval_ms: 900
+    40:
+      base_damage: 278.3
+      mana_cost: 8
+      release_interval_ms: 900
+auto_release:
+  policy: "target_cluster"
+  notes: ["??????????TLIDB ???? Lv20 ???"]
+display:
+  name_key: "gem.active_blizzard.name"
+  description_key: "gem.active_blizzard.description"
+classification:
+  tags: ["spell", "cold", "area"]
+  damage_type: "cold"
+  damage_form: "spell"
+cast:
+  mode: "spell"
+  target_selector: "nearest_enemy"
+  search_range: 420
+  cooldown_ms: 0
+  release_interval_ms: 900
+  base_cooldown_ms: 0
+  trigger_interval_ms: 0
+  mana_cost: 8
+  windup_ms: 0
+  recovery_ms: 0
+behavior:
+  template: "damage_zone"
+  params:
+    shape: "circle"
+    origin_policy: "caster"
+    facing_policy: "none"
+    hit_at_ms: 240
+    max_targets: 8
+    status_chance_scale: 1
+    zone_vfx_key: "skill_event.frost_nova.vfx"
+    radius: 120
+    expand_duration_ms: 180
+    ring_width: 80
+hit:
+  base_damage: 253
+  can_crit: true
+  can_apply_status: true
+  damage_timing: "on_damage_zone_hit"
+  hit_delay_ms: 160
+  hit_radius: 120
+  target_policy: "selected_target"
+scaling:
+  additive_stats: ["damage_add_percent", "cold_damage_add_percent", "cast_speed_add_percent"]
+  final_stats: ["damage_final_percent", "skill_speed_final_percent"]
+  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add", "area_add_percent"]
+presentation:
+  vfx: "skill_event.blizzard.vfx"
+  cast_vfx_key: "skill_event.blizzard.vfx"
+  projectile_vfx_key: "skill_event.blizzard.vfx"
+  hit_vfx_key: "skill_event.blizzard.vfx"
+  sfx: "skill_event.blizzard.sfx"
+  floating_text: "skill_event.blizzard.floating_text"
+  floating_text_style: "skill_event.blizzard.floating_text"
+  screen_feedback: "skill_event.blizzard.screen_feedback"
+  hit_stop_ms: 0
+  camera_shake: 0
+preview:
+  show_fields: ["final_damage", "actual_interval_ms", "mana_cost", "base_damage", "damage_type", "damage_form"]

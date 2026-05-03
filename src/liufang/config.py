@@ -9,6 +9,13 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from liufang.torchlight_adoption import (
+    active_product_ids,
+    manifest_present,
+    passive_product_ids,
+    support_product_ids,
+)
+
 GEM_KINDS = frozenset({"active_skill", "passive_skill", "support"})
 ALLOWED_SKILL_BEHAVIOR_TEMPLATES = frozenset(
     {
@@ -69,7 +76,23 @@ SKILL_PACKAGE_REQUIRED_PATHS = (
     ("preview", "show_fields"),
 )
 SKILL_PACKAGE_TOP_LEVEL_FIELDS = frozenset(
-    {"id", "version", "display", "classification", "cast", "behavior", "modules", "hit", "scaling", "presentation", "preview"}
+    {
+        "id",
+        "version",
+        "product_status",
+        "source_values",
+        "level_table",
+        "auto_release",
+        "display",
+        "classification",
+        "cast",
+        "behavior",
+        "modules",
+        "hit",
+        "scaling",
+        "presentation",
+        "preview",
+    }
 )
 SKILL_PACKAGE_FIELD_ALLOWLISTS = {
     "display": frozenset({"name_key", "description_key"}),
@@ -183,6 +206,9 @@ class GemDefinition:
     apply_filter_tags_any: frozenset[str] = frozenset()
     apply_filter_tags_all: frozenset[str] = frozenset()
     apply_filter_tags_none: frozenset[str] = frozenset()
+    source_values: dict[str, Any] = field(default_factory=dict)
+    level_table: dict[str, Any] = field(default_factory=dict)
+    auto_release: dict[str, Any] = field(default_factory=dict)
 
     @property
     def is_active_skill(self) -> bool:
@@ -319,6 +345,9 @@ class SkillTemplate:
     runtime_params: dict[str, Any] = field(default_factory=dict)
     presentation_keys: dict[str, Any] = field(default_factory=dict)
     preview_show_fields: tuple[str, ...] = ()
+    source_values: dict[str, Any] = field(default_factory=dict)
+    level_table: dict[str, Any] = field(default_factory=dict)
+    auto_release: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -548,13 +577,23 @@ def load_board_rules(config_root: Path) -> BoardRules:
 
 def load_gem_definitions(config_root: Path) -> dict[str, GemDefinition]:
     definitions: dict[str, GemDefinition] = {}
+    use_manifest = manifest_present(config_root)
+    active_ids = active_product_ids(config_root) if use_manifest else set()
+    passive_ids = passive_product_ids(config_root) if use_manifest else set()
+    support_ids = support_product_ids(config_root) if use_manifest else set()
     for package in load_skill_packages(config_root).values():
+        if use_manifest and str(package["id"]) not in active_ids:
+            continue
         definition = _active_gem_definition_from_package(package)
         definitions[definition.base_gem_id] = definition
     for entry in _load_gem_definition_packages(config_root, "passive"):
+        if use_manifest and str(entry.get("id", "")) not in passive_ids:
+            continue
         definition = _gem_definition_from_entry(entry)
         definitions[definition.base_gem_id] = definition
     for entry in _load_gem_definition_packages(config_root, "support"):
+        if use_manifest and str(entry.get("id", "")) not in support_ids:
+            continue
         definition = _gem_definition_from_entry(entry)
         definitions[definition.base_gem_id] = definition
     return definitions
@@ -594,6 +633,9 @@ def _gem_definition_from_entry(entry: dict[str, Any]) -> GemDefinition:
         apply_filter_tags_any=frozenset(apply_filter.get("tags_any", [])),
         apply_filter_tags_all=frozenset(apply_filter.get("tags_all", [])),
         apply_filter_tags_none=frozenset(apply_filter.get("tags_none", [])),
+        source_values=dict(entry.get("source_values", {})),
+        level_table=dict(entry.get("level_table", {})),
+        auto_release=dict(entry.get("auto_release", {})),
     )
 
 
@@ -614,6 +656,9 @@ def _active_gem_definition_from_package(package: dict[str, Any]) -> GemDefinitio
         description_key=str(package["display"]["description_key"]),
         skill_template_id=template_id,
         visual_effect=str(presentation["vfx"]),
+        source_values=dict(package.get("source_values", {})),
+        level_table=dict(package.get("level_table", {})),
+        auto_release=dict(package.get("auto_release", {})),
     )
 
 
@@ -760,6 +805,14 @@ def validate_skill_package_data(
     version = _require_string(package["version"], "version")
     if not re.match(r"^\d+\.\d+\.\d+$", version):
         raise ValueError(f"skill package version must use MAJOR.MINOR.PATCH: {package_id}")
+    if "product_status" in package and package["product_status"] not in {"product", "reference_only"}:
+        raise ValueError(f"skill package product_status is invalid: {package_id}")
+    if "source_values" in package:
+        _validate_source_values(package["source_values"], package_id)
+    if "level_table" in package:
+        _validate_level_table(package["level_table"], package_id)
+    if "auto_release" in package:
+        _validate_auto_release(package["auto_release"], package_id)
 
     display = _require_mapping(package["display"], "display")
     _reject_unknown_fields(display, SKILL_PACKAGE_FIELD_ALLOWLISTS["display"], "display", package_id)
@@ -875,6 +928,50 @@ def validate_skill_package_data(
     # schema fields are the contract this loader enforces without adding a DSL.
     if "required" not in schema:
         raise ValueError("skill.schema.json must declare root required fields")
+
+
+def _validate_source_values(value: Any, package_id: str) -> None:
+    source_values = _require_mapping(value, "source_values")
+    if source_values.get("source") != "tlidb":
+        raise ValueError(f"skill package source_values.source must be tlidb: {package_id}")
+    _require_string(source_values.get("tlidb_id"), "source_values.tlidb_id")
+    display_level = source_values.get("display_level")
+    if not _is_integer(display_level) or display_level <= 0:
+        raise ValueError(f"skill package source_values.display_level must be a positive integer: {package_id}")
+    raw_lines = source_values.get("raw_lines")
+    if not isinstance(raw_lines, list) or not all(isinstance(line, str) for line in raw_lines):
+        raise ValueError(f"skill package source_values.raw_lines must be a string array: {package_id}")
+    anchors = source_values.get("anchors", {})
+    if anchors is not None and not isinstance(anchors, dict):
+        raise ValueError(f"skill package source_values.anchors must be an object: {package_id}")
+    parsed_values = source_values.get("parsed_values", {})
+    if parsed_values is not None and not isinstance(parsed_values, dict):
+        raise ValueError(f"skill package source_values.parsed_values must be an object: {package_id}")
+
+
+def _validate_level_table(value: Any, package_id: str) -> None:
+    level_table = _require_mapping(value, "level_table")
+    levels = level_table.get("levels")
+    if not isinstance(levels, dict):
+        raise ValueError(f"skill package level_table.levels must be an object: {package_id}")
+    expected_keys = {str(level) for level in range(1, 41)}
+    actual_keys = {str(key) for key in levels}
+    if actual_keys != expected_keys:
+        raise ValueError(f"skill package level_table.levels must cover levels 1-40 exactly: {package_id}")
+    for level, fields in levels.items():
+        if not isinstance(fields, dict):
+            raise ValueError(f"skill package level_table.levels.{level} must be an object: {package_id}")
+
+
+def _validate_auto_release(value: Any, package_id: str) -> None:
+    auto_release = _require_mapping(value, "auto_release")
+    policy = auto_release.get("policy")
+    allowed = {"nearest_enemy", "target_cluster", "self_center", "duration_window", "periodic", "defensive_threshold"}
+    if policy not in allowed:
+        raise ValueError(f"skill package auto_release.policy is invalid: {package_id}")
+    notes = auto_release.get("notes", [])
+    if notes is not None and (not isinstance(notes, list) or not all(isinstance(note, str) for note in notes)):
+        raise ValueError(f"skill package auto_release.notes must be a string array: {package_id}")
 
 
 def _reject_script_fields(value: Any, path: tuple[str, ...]) -> None:
@@ -1204,6 +1301,9 @@ def _skill_template_from_package(package: dict[str, Any]) -> SkillTemplate:
         runtime_params=runtime_params,
         presentation_keys=dict(presentation),
         preview_show_fields=tuple(str(field) for field in package["preview"]["show_fields"]),
+        source_values=dict(package.get("source_values", {})),
+        level_table=dict(package.get("level_table", {})),
+        auto_release=dict(package.get("auto_release", {})),
     )
 
 

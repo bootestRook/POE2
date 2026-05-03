@@ -1,0 +1,105 @@
+id: "support_channel_preparation"
+sort_order: 5
+name_key: "gem.support_channel_preparation.name"
+description_key: "gem.support_channel_preparation.description"
+category: "general_skill_modifier"
+gem_type: "gem_type_3"
+gem_kind: "support"
+sudoku_digit: 3
+source_values:
+  source: "tlidb"
+  tlidb_id: "Channel_Preparation"
+  display_level: 20
+  raw_lines: ["辅助引导技能。", "被辅助技能额外 +4% 伤害 (Lv1:4) (Lv21:12) (Lv41:20)", "被辅助技能 +1 引导层数下限 (Lv1:1) (Lv9:1) (Lv10:2) (Lv29:2) (Lv30:3)", "被辅助技能额外 +4% 伤害 (Lv1:4) (Lv21:12) (Lv41:20)", "被辅助技能 +1 引导层数下限 (Lv1:1) (Lv9:1) (Lv10:2) (Lv29:2) (Lv30:3)"]
+  parsed_values:
+    damage_final_percent: 4
+  anchors:
+    damage_final_percent:
+      20: 4
+level_table:
+  levels:
+    1:
+      damage_final_percent: 0.4
+    2:
+      damage_final_percent: 0.59
+    3:
+      damage_final_percent: 0.78
+    4:
+      damage_final_percent: 0.97
+    5:
+      damage_final_percent: 1.16
+    6:
+      damage_final_percent: 1.35
+    7:
+      damage_final_percent: 1.54
+    8:
+      damage_final_percent: 1.73
+    9:
+      damage_final_percent: 1.92
+    10:
+      damage_final_percent: 2.11
+    11:
+      damage_final_percent: 2.29
+    12:
+      damage_final_percent: 2.48
+    13:
+      damage_final_percent: 2.67
+    14:
+      damage_final_percent: 2.86
+    15:
+      damage_final_percent: 3.05
+    16:
+      damage_final_percent: 3.24
+    17:
+      damage_final_percent: 3.43
+    18:
+      damage_final_percent: 3.62
+    19:
+      damage_final_percent: 3.81
+    20:
+      damage_final_percent: 4.0
+    21:
+      damage_final_percent: 4.02
+    22:
+      damage_final_percent: 4.04
+    23:
+      damage_final_percent: 4.06
+    24:
+      damage_final_percent: 4.08
+    25:
+      damage_final_percent: 4.1
+    26:
+      damage_final_percent: 4.12
+    27:
+      damage_final_percent: 4.14
+    28:
+      damage_final_percent: 4.16
+    29:
+      damage_final_percent: 4.18
+    30:
+      damage_final_percent: 4.2
+    31:
+      damage_final_percent: 4.22
+    32:
+      damage_final_percent: 4.24
+    33:
+      damage_final_percent: 4.26
+    34:
+      damage_final_percent: 4.28
+    35:
+      damage_final_percent: 4.3
+    36:
+      damage_final_percent: 4.32
+    37:
+      damage_final_percent: 4.34
+    38:
+      damage_final_percent: 4.36
+    39:
+      damage_final_percent: 4.38
+    40:
+      damage_final_percent: 4.4
+tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_damage"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["attack", "spell", "projectile", "area", "melee", "ranged", "aura"]
+effect_stats: ["damage_final_percent"]

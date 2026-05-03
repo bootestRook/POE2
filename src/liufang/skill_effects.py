@@ -194,7 +194,7 @@ class SkillEffectCalculator:
                 continue
             relation_scale, conduit_modifiers = self._relation_scale(support, active, relation)
             modifiers.extend(conduit_modifiers)
-            for base_modifier in self._support_base_modifiers(support.base_gem_id):
+            for base_modifier in self._support_base_modifiers(support):
                 self._append_raw_modifier(
                     modifiers,
                     dedupe,
@@ -224,7 +224,8 @@ class SkillEffectCalculator:
                     continue
                 if self.player_runtime_stat_ids is not None and effect.stat not in self.player_runtime_stat_ids:
                     continue
-                value = effect.value + supported_values.get(effect.stat, 0.0)
+                value = _definition_level_number(passive_definition, passive.level, effect.stat, effect.value)
+                value += supported_values.get(effect.stat, 0.0)
                 modifiers.append(
                     PlayerStatModifier(
                         source_instance_id=passive.instance_id,
@@ -331,7 +332,7 @@ class SkillEffectCalculator:
                 continue
             relation_scale, conduit_modifiers = self._relation_scale(support, passive, relation)
             modifiers.extend(conduit_modifiers)
-            for base_modifier in self._support_base_modifiers(support.base_gem_id):
+            for base_modifier in self._support_base_modifiers(support):
                 if base_modifier.stat not in supported_stats:
                     continue
                 key = (support.instance_id, passive.instance_id, base_modifier.stat)
@@ -468,12 +469,24 @@ class SkillEffectCalculator:
                 return amplifier
         return None
 
-    def _support_base_modifiers(self, support_id: str) -> list[SupportBaseModifier]:
-        return [
-            modifier
-            for modifier in self.scaling_rules.support_base_modifiers
-            if modifier.support_id == support_id
-        ]
+    def _support_base_modifiers(self, support: GemInstance) -> list[SupportBaseModifier]:
+        definition = self.definitions.get(support.base_gem_id)
+        result: list[SupportBaseModifier] = []
+        for modifier in self.scaling_rules.support_base_modifiers:
+            if modifier.support_id != support.base_gem_id:
+                continue
+            value = modifier.value
+            if definition is not None:
+                value = _definition_level_number(definition, support.level, modifier.stat, modifier.value)
+            result.append(
+                SupportBaseModifier(
+                    support_id=modifier.support_id,
+                    stat=modifier.stat,
+                    value=value,
+                    layer=modifier.layer,
+                )
+            )
+        return result
 
     def _append_affix_modifier(
         self,
@@ -563,13 +576,17 @@ class SkillEffectCalculator:
         scale: float,
         extra_value: float,
     ) -> None:
+        source_definition = self.definitions.get(source.base_gem_id)
+        base_value = effect.value
+        if source_definition is not None:
+            base_value = _definition_level_number(source_definition, source.level, effect.stat, effect.value)
         self._append_raw_modifier(
             modifiers,
             dedupe,
             source=source,
             target=target,
             stat=effect.stat,
-            raw_value=effect.value + extra_value,
+            raw_value=base_value + extra_value,
             layer=effect.layer,
             relation=relation,
             scale=scale,
@@ -625,13 +642,19 @@ class SkillEffectCalculator:
             dict.fromkeys(modifier.shape_effect for modifier in applied if modifier.shape_effect)
         )
         active_definition = self.definitions[active.base_gem_id]
+        level_values = _template_level_values(template, active.level)
+        base_damage = _level_number(level_values, "base_damage", template.base_damage)
+        base_release_interval_ms = round(_level_number(level_values, "release_interval_ms", template.base_release_interval_ms))
+        base_cooldown_ms = round(_level_number(level_values, "base_cooldown_ms", template.base_cooldown_ms))
+        trigger_interval_ms = round(_level_number(level_values, "trigger_interval_ms", template.trigger_interval_ms))
+        mana_cost = round(_level_number(level_values, "mana_cost", template.mana_cost))
 
         increase_pool = self._increase_pool(skill_stats, template)
         final_pool = self._numeric_stat(skill_stats, "damage_final_percent") + self._numeric_stat(
             skill_stats,
             "hit_damage_final_percent",
         )
-        non_crit_damage = template.base_damage * (1.0 + increase_pool / 100.0) * (1.0 + final_pool / 100.0)
+        non_crit_damage = base_damage * (1.0 + increase_pool / 100.0) * (1.0 + final_pool / 100.0)
         final_damage = non_crit_damage
         can_crit = bool(template.hit.get("can_crit", False)) and not bool(skill_stats.get("cannot_crit", False))
         crit_multiplier = self._numeric_stat(skill_stats, "derived_crit_damage_percent") / 100.0
@@ -656,15 +679,15 @@ class SkillEffectCalculator:
         speed_multiplier *= max(0.01, 1.0 + skill_speed_final_percent / 100.0)
 
         release_interval = 0.0
-        if template.base_release_interval_ms > 0 and ("attack" in template.tags or "spell" in template.tags):
-            release_interval = template.base_release_interval_ms / speed_multiplier
+        if base_release_interval_ms > 0 and ("attack" in template.tags or "spell" in template.tags):
+            release_interval = base_release_interval_ms / speed_multiplier
         release_interval_ms = max(1, round(release_interval)) if release_interval > 0 else 0
 
         cooldown_recovery_multiplier = max(0.01, 1.0 + cooldown_recovery_add_percent / 100.0)
         cooldown = 0.0
-        has_cooldown_constraint = template.base_cooldown_ms > 0 or added_cooldown_ms != 0
+        has_cooldown_constraint = base_cooldown_ms > 0 or added_cooldown_ms != 0
         if has_cooldown_constraint:
-            cooldown = template.base_cooldown_ms / cooldown_recovery_multiplier + added_cooldown_ms
+            cooldown = base_cooldown_ms / cooldown_recovery_multiplier + added_cooldown_ms
             cooldown = max(100.0, cooldown)
         final_cooldown_ms = max(0, round(cooldown))
         actual_interval_ms = max(release_interval_ms, final_cooldown_ms)
@@ -674,6 +697,17 @@ class SkillEffectCalculator:
         area_multiplier = 1.0 + self._numeric_stat(skill_stats, "area_add_percent") / 100.0
         projectile_speed_multiplier = 1.0 + self._numeric_stat(skill_stats, "projectile_speed_add_percent") / 100.0
         runtime_params = dict(template.runtime_params)
+        for key, value in level_values.items():
+            if key in {
+                "base_damage",
+                "release_interval_ms",
+                "base_cooldown_ms",
+                "trigger_interval_ms",
+                "mana_cost",
+            }:
+                continue
+            if isinstance(value, (int, float)) and not isinstance(value, bool):
+                runtime_params[key] = value
         if "projectile_speed" in runtime_params:
             runtime_params["projectile_speed"] = float(runtime_params["projectile_speed"]) * projectile_speed_multiplier
         if "radius" in runtime_params:
@@ -699,10 +733,18 @@ class SkillEffectCalculator:
                 1.0 + self._numeric_stat(skill_stats, "status_chance_add_percent") / 100.0
             )
         base_projectile_count = int(runtime_params.get("projectile_count", 1))
+        projectile_count_add = round(self._numeric_stat(skill_stats, "projectile_count_add"))
         runtime_params["projectile_count"] = max(
             1,
-            base_projectile_count + round(self._numeric_stat(skill_stats, "projectile_count_add")),
+            base_projectile_count + projectile_count_add,
         )
+        if (
+            projectile_count_add > 0
+            and runtime_params["projectile_count"] > 1
+            and float(runtime_params.get("spread_angle_deg", 0.0)) <= 0.0
+            and float(runtime_params.get("angle_step", 0.0)) <= 0.0
+        ):
+            runtime_params["spread_angle_deg"] = min(60.0, 12.0 * (int(runtime_params["projectile_count"]) - 1))
         if runtime_params.get("max_targets") != "unlimited":
             runtime_params["max_targets"] = max(1, int(runtime_params.get("max_targets", 1)))
         if "chain_count" in runtime_params:
@@ -725,7 +767,7 @@ class SkillEffectCalculator:
             base_gem_id=active.base_gem_id,
             skill_template_id=template.template_id,
             tags=template.tags,
-            base_damage=template.base_damage,
+            base_damage=base_damage,
             final_damage=final_damage,
             non_crit_damage=non_crit_damage,
             increase_pool=increase_pool,
@@ -740,13 +782,13 @@ class SkillEffectCalculator:
             behavior_type=template.behavior_type,
             visual_effect=active_definition.visual_effect or template.visual_effect or template.behavior_type,
             shape_effects=shape_effects,
-            base_release_interval_ms=template.base_release_interval_ms,
+            base_release_interval_ms=base_release_interval_ms,
             release_interval_ms=release_interval_ms,
-            base_cooldown_ms=template.base_cooldown_ms,
+            base_cooldown_ms=base_cooldown_ms,
             final_cooldown_ms=final_cooldown_ms,
             actual_interval_ms=actual_interval_ms,
-            trigger_interval_ms=template.trigger_interval_ms,
-            mana_cost=template.mana_cost,
+            trigger_interval_ms=trigger_interval_ms,
+            mana_cost=mana_cost,
             projectile_count=int(runtime_params["projectile_count"]),
             area_multiplier=area_multiplier,
             speed_multiplier=speed_multiplier,
@@ -754,8 +796,14 @@ class SkillEffectCalculator:
             skill_package_id=template.skill_package_id,
             skill_package_version=template.skill_package_version,
             behavior_template=template.behavior_template,
-            cast=dict(template.cast),
-            hit=dict(template.hit),
+            cast={
+                **dict(template.cast),
+                "release_interval_ms": base_release_interval_ms,
+                "base_cooldown_ms": base_cooldown_ms,
+                "trigger_interval_ms": trigger_interval_ms,
+                "mana_cost": mana_cost,
+            },
+            hit={**dict(template.hit), "base_damage": base_damage},
             runtime_params=runtime_params,
             presentation_keys=dict(template.presentation_keys),
             source_context={
@@ -763,6 +811,9 @@ class SkillEffectCalculator:
                 "base_gem_id": active.base_gem_id,
                 "gem_kind": active.gem_kind,
                 "sudoku_digit": active.sudoku_digit,
+                "tlidb_source_values": dict(active_definition.source_values),
+                "level_values": dict(level_values),
+                "auto_release": dict(active_definition.auto_release or template.auto_release),
             },
             skill_stats=skill_stats,
         )
@@ -868,3 +919,36 @@ def _scaled_modules(
 
 def _clamp(value: float, minimum: float, maximum: float) -> float:
     return min(maximum, max(minimum, value))
+
+
+def _template_level_values(template: SkillTemplate, level: int) -> dict[str, object]:
+    levels = template.level_table.get("levels") if isinstance(template.level_table, dict) else None
+    if not isinstance(levels, dict):
+        return {}
+    clamped_level = max(1, min(40, int(level)))
+    value = levels.get(str(clamped_level), levels.get(clamped_level))
+    if isinstance(value, dict):
+        return value
+    return {}
+
+
+def _definition_level_values(definition: GemDefinition, level: int) -> dict[str, object]:
+    levels = definition.level_table.get("levels") if isinstance(definition.level_table, dict) else None
+    if not isinstance(levels, dict):
+        return {}
+    clamped_level = max(1, min(40, int(level)))
+    value = levels.get(str(clamped_level), levels.get(clamped_level))
+    if isinstance(value, dict):
+        return value
+    return {}
+
+
+def _level_number(level_values: dict[str, object], key: str, fallback: float | int) -> float:
+    value = level_values.get(key)
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return float(value)
+    return float(fallback)
+
+
+def _definition_level_number(definition: GemDefinition, level: int, key: str, fallback: float | int) -> float:
+    return _level_number(_definition_level_values(definition, level), key, fallback)

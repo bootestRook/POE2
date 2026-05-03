@@ -1,0 +1,105 @@
+id: "passive_magical_source"
+sort_order: 8
+name_key: "gem.passive_magical_source.name"
+description_key: "gem.passive_magical_source.description"
+gem_type: "gem_type_2"
+gem_kind: "passive_skill"
+sudoku_digit: 2
+visual_effect: "passive_magical_source"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Magical_Source"
+  display_level: 20
+  raw_lines: ["激活光环，自身和一定范围内的所有友军获得增益：", "5 魔力每秒自然回复。", "激活光环，自身和一定范围内的所有友军获得增益：", "+140 魔力每秒自然回复"]
+  parsed_values:
+    max_mana: 50
+  anchors:
+    max_mana:
+      20: 50
+level_table:
+  levels:
+    1:
+      max_mana: 5.0
+    2:
+      max_mana: 7.37
+    3:
+      max_mana: 9.74
+    4:
+      max_mana: 12.11
+    5:
+      max_mana: 14.47
+    6:
+      max_mana: 16.84
+    7:
+      max_mana: 19.21
+    8:
+      max_mana: 21.58
+    9:
+      max_mana: 23.95
+    10:
+      max_mana: 26.32
+    11:
+      max_mana: 28.68
+    12:
+      max_mana: 31.05
+    13:
+      max_mana: 33.42
+    14:
+      max_mana: 35.79
+    15:
+      max_mana: 38.16
+    16:
+      max_mana: 40.53
+    17:
+      max_mana: 42.89
+    18:
+      max_mana: 45.26
+    19:
+      max_mana: 47.63
+    20:
+      max_mana: 50.0
+    21:
+      max_mana: 50.25
+    22:
+      max_mana: 50.5
+    23:
+      max_mana: 50.75
+    24:
+      max_mana: 51.0
+    25:
+      max_mana: 51.25
+    26:
+      max_mana: 51.5
+    27:
+      max_mana: 51.75
+    28:
+      max_mana: 52.0
+    29:
+      max_mana: 52.25
+    30:
+      max_mana: 52.5
+    31:
+      max_mana: 52.75
+    32:
+      max_mana: 53.0
+    33:
+      max_mana: 53.25
+    34:
+      max_mana: 53.5
+    35:
+      max_mana: 53.75
+    36:
+      max_mana: 54.0
+    37:
+      max_mana: 54.25
+    38:
+      max_mana: 54.5
+    39:
+      max_mana: 54.75
+    40:
+      max_mana: 55.0
+tags: ["gem", "passive_skill_gem", "loot_gem", "gem_type_2", "aura", "spell"]
+apply_filter:
+  target_kinds: ["active_skill"]
+  tags_any: ["spell"]
+passive_effects: [{"target": "self_stat", "stat": "max_mana", "value": 50, "layer": "additive"}, {"target": "active_skill", "stat": "cast_speed_add_percent", "value": 10, "layer": "additive"}]

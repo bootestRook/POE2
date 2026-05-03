@@ -1,0 +1,105 @@
+id: "passive_rejuvenation"
+sort_order: 4
+name_key: "gem.passive_rejuvenation.name"
+description_key: "gem.passive_rejuvenation.description"
+gem_type: "gem_type_2"
+gem_kind: "passive_skill"
+sudoku_digit: 2
+visual_effect: "passive_rejuvenation"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Rejuvenation"
+  display_level: 20
+  raw_lines: ["激活光环，自身和一定范围内的所有友军获得增益：", "2 生命每秒自然回复。", "激活光环，自身和一定范围内的所有友军获得增益：", "+227 生命每秒自然回复"]
+  parsed_values:
+    life_regen_flat: 40
+  anchors:
+    life_regen_flat:
+      20: 40
+level_table:
+  levels:
+    1:
+      life_regen_flat: 4.0
+    2:
+      life_regen_flat: 5.89
+    3:
+      life_regen_flat: 7.79
+    4:
+      life_regen_flat: 9.68
+    5:
+      life_regen_flat: 11.58
+    6:
+      life_regen_flat: 13.47
+    7:
+      life_regen_flat: 15.37
+    8:
+      life_regen_flat: 17.26
+    9:
+      life_regen_flat: 19.16
+    10:
+      life_regen_flat: 21.05
+    11:
+      life_regen_flat: 22.95
+    12:
+      life_regen_flat: 24.84
+    13:
+      life_regen_flat: 26.74
+    14:
+      life_regen_flat: 28.63
+    15:
+      life_regen_flat: 30.53
+    16:
+      life_regen_flat: 32.42
+    17:
+      life_regen_flat: 34.32
+    18:
+      life_regen_flat: 36.21
+    19:
+      life_regen_flat: 38.11
+    20:
+      life_regen_flat: 40.0
+    21:
+      life_regen_flat: 40.2
+    22:
+      life_regen_flat: 40.4
+    23:
+      life_regen_flat: 40.6
+    24:
+      life_regen_flat: 40.8
+    25:
+      life_regen_flat: 41.0
+    26:
+      life_regen_flat: 41.2
+    27:
+      life_regen_flat: 41.4
+    28:
+      life_regen_flat: 41.6
+    29:
+      life_regen_flat: 41.8
+    30:
+      life_regen_flat: 42.0
+    31:
+      life_regen_flat: 42.2
+    32:
+      life_regen_flat: 42.4
+    33:
+      life_regen_flat: 42.6
+    34:
+      life_regen_flat: 42.8
+    35:
+      life_regen_flat: 43.0
+    36:
+      life_regen_flat: 43.2
+    37:
+      life_regen_flat: 43.4
+    38:
+      life_regen_flat: 43.6
+    39:
+      life_regen_flat: 43.8
+    40:
+      life_regen_flat: 44.0
+tags: ["gem", "passive_skill_gem", "loot_gem", "gem_type_2", "aura"]
+apply_filter:
+  target_kinds: ["active_skill"]
+  tags_any: ["attack", "spell"]
+passive_effects: [{"target": "self_stat", "stat": "life_regen_flat", "value": 40, "layer": "additive"}]

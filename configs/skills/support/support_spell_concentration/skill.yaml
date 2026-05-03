@@ -1,0 +1,105 @@
+id: "support_spell_concentration"
+sort_order: 25
+name_key: "gem.support_spell_concentration.name"
+description_key: "gem.support_spell_concentration.description"
+category: "risk_reward"
+gem_type: "gem_type_6"
+gem_kind: "support"
+sudoku_digit: 6
+source_values:
+  source: "tlidb"
+  tlidb_id: "Spell_Concentration"
+  display_level: 20
+  raw_lines: ["辅助范围法术技能。", "被辅助技能 -30% 技能范围 (Lv1:-30) (Lv99:-30)", "被辅助技能额外 22.5% 伤害 (Lv1:45/2) (Lv21:65/2) (Lv41:85/2)", "被辅助技能 -30% 技能范围 (Lv1:-30) (Lv99:-30)", "被辅助技能额外 22.5% 伤害 (Lv1:45/2) (Lv21:65/2) (Lv41:85/2)"]
+  parsed_values:
+    area_add_percent: -30
+  anchors:
+    area_add_percent:
+      20: -30
+level_table:
+  levels:
+    1:
+      area_add_percent: -3.0
+    2:
+      area_add_percent: -4.42
+    3:
+      area_add_percent: -5.84
+    4:
+      area_add_percent: -7.26
+    5:
+      area_add_percent: -8.68
+    6:
+      area_add_percent: -10.11
+    7:
+      area_add_percent: -11.53
+    8:
+      area_add_percent: -12.95
+    9:
+      area_add_percent: -14.37
+    10:
+      area_add_percent: -15.79
+    11:
+      area_add_percent: -17.21
+    12:
+      area_add_percent: -18.63
+    13:
+      area_add_percent: -20.05
+    14:
+      area_add_percent: -21.47
+    15:
+      area_add_percent: -22.89
+    16:
+      area_add_percent: -24.32
+    17:
+      area_add_percent: -25.74
+    18:
+      area_add_percent: -27.16
+    19:
+      area_add_percent: -28.58
+    20:
+      area_add_percent: -30.0
+    21:
+      area_add_percent: -30.15
+    22:
+      area_add_percent: -30.3
+    23:
+      area_add_percent: -30.45
+    24:
+      area_add_percent: -30.6
+    25:
+      area_add_percent: -30.75
+    26:
+      area_add_percent: -30.9
+    27:
+      area_add_percent: -31.05
+    28:
+      area_add_percent: -31.2
+    29:
+      area_add_percent: -31.35
+    30:
+      area_add_percent: -31.5
+    31:
+      area_add_percent: -31.65
+    32:
+      area_add_percent: -31.8
+    33:
+      area_add_percent: -31.95
+    34:
+      area_add_percent: -32.1
+    35:
+      area_add_percent: -32.25
+    36:
+      area_add_percent: -32.4
+    37:
+      area_add_percent: -32.55
+    38:
+      area_add_percent: -32.7
+    39:
+      area_add_percent: -32.85
+    40:
+      area_add_percent: -33.0
+tags: ["gem", "support_gem", "loot_gem", "gem_type_6", "support_area", "support_damage"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["spell", "area"]
+effect_stats: ["area_add_percent", "damage_final_percent"]

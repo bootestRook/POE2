@@ -792,6 +792,18 @@ class SkillEffectTest(unittest.TestCase):
         self.assertAlmostEqual(final_skill.preview_dps, final_skill.expected_hit_damage * final_skill.uses_per_second)
         self.assertIsInstance(final_skill.applied_modifiers, tuple)
 
+    def test_extra_projectile_support_adds_visible_spread_when_target_has_none(self) -> None:
+        self.inventory.add_instance("active", "active_penetrating_shot")
+        self.inventory.add_instance("support", "support_extra_projectile")
+        self.board.mount_gem("active", 0, 0)
+        self.board.mount_gem("support", 1, 0)
+
+        final_skill = self.calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.projectile_count, 2)
+        self.assertEqual(final_skill.runtime_params["projectile_count"], 2)
+        self.assertGreater(final_skill.runtime_params["spread_angle_deg"], 0)
+
     def test_passive_to_active_and_support_to_passive_are_applied_in_order(self) -> None:
         self.inventory.add_instance("active", "active_fire_bolt")
         self.inventory.add_instance("passive", "passive_fire_focus")

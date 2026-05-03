@@ -1,0 +1,105 @@
+id: "passive_fearless"
+sort_order: 3
+name_key: "gem.passive_fearless.name"
+description_key: "gem.passive_fearless.description"
+gem_type: "gem_type_2"
+gem_kind: "passive_skill"
+sudoku_digit: 2
+visual_effect: "passive_fearless"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Fearless"
+  display_level: 20
+  raw_lines: ["激活光环，自身和一定范围内的所有友军获得增益：", "近战技能 61% 暴击值，额外 11% 伤害。", "激活光环，自身和一定范围内的所有友军获得增益：", "近战技能 +80% 暴击值", "近战技能额外 +30% 伤害"]
+  parsed_values:
+    crit_rating: 61
+  anchors:
+    crit_rating:
+      20: 61
+level_table:
+  levels:
+    1:
+      crit_rating: 6.1
+    2:
+      crit_rating: 8.99
+    3:
+      crit_rating: 11.88
+    4:
+      crit_rating: 14.77
+    5:
+      crit_rating: 17.66
+    6:
+      crit_rating: 20.55
+    7:
+      crit_rating: 23.44
+    8:
+      crit_rating: 26.33
+    9:
+      crit_rating: 29.22
+    10:
+      crit_rating: 32.11
+    11:
+      crit_rating: 34.99
+    12:
+      crit_rating: 37.88
+    13:
+      crit_rating: 40.77
+    14:
+      crit_rating: 43.66
+    15:
+      crit_rating: 46.55
+    16:
+      crit_rating: 49.44
+    17:
+      crit_rating: 52.33
+    18:
+      crit_rating: 55.22
+    19:
+      crit_rating: 58.11
+    20:
+      crit_rating: 61.0
+    21:
+      crit_rating: 61.3
+    22:
+      crit_rating: 61.61
+    23:
+      crit_rating: 61.91
+    24:
+      crit_rating: 62.22
+    25:
+      crit_rating: 62.52
+    26:
+      crit_rating: 62.83
+    27:
+      crit_rating: 63.13
+    28:
+      crit_rating: 63.44
+    29:
+      crit_rating: 63.74
+    30:
+      crit_rating: 64.05
+    31:
+      crit_rating: 64.35
+    32:
+      crit_rating: 64.66
+    33:
+      crit_rating: 64.97
+    34:
+      crit_rating: 65.27
+    35:
+      crit_rating: 65.58
+    36:
+      crit_rating: 65.88
+    37:
+      crit_rating: 66.19
+    38:
+      crit_rating: 66.49
+    39:
+      crit_rating: 66.8
+    40:
+      crit_rating: 67.1
+tags: ["gem", "passive_skill_gem", "loot_gem", "gem_type_2", "aura", "melee"]
+apply_filter:
+  target_kinds: ["active_skill"]
+  tags_any: ["melee"]
+passive_effects: [{"target": "active_skill", "stat": "crit_rating", "value": 61, "layer": "additive"}, {"target": "active_skill", "stat": "damage_final_percent", "value": 11, "layer": "final"}]

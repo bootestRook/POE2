@@ -1,0 +1,105 @@
+id: "support_critical_strike_rating_increase"
+sort_order: 3
+name_key: "gem.support_critical_strike_rating_increase.name"
+description_key: "gem.support_critical_strike_rating_increase.description"
+category: "general_skill_modifier"
+gem_type: "gem_type_3"
+gem_kind: "support"
+sudoku_digit: 3
+source_values:
+  source: "tlidb"
+  tlidb_id: "Critical_Strike_Rating_Increase"
+  display_level: 20
+  raw_lines: ["辅助击中敌人的技能。", "被辅助技能 +135% 暴击值 (Lv1:135) (Lv21:235) (Lv41:335)", "被辅助技能 +135% 暴击值 (Lv1:135) (Lv21:235) (Lv41:335)"]
+  parsed_values:
+    crit_rating: 135
+  anchors:
+    crit_rating:
+      20: 135
+level_table:
+  levels:
+    1:
+      crit_rating: 13.5
+    2:
+      crit_rating: 19.89
+    3:
+      crit_rating: 26.29
+    4:
+      crit_rating: 32.68
+    5:
+      crit_rating: 39.08
+    6:
+      crit_rating: 45.47
+    7:
+      crit_rating: 51.87
+    8:
+      crit_rating: 58.26
+    9:
+      crit_rating: 64.66
+    10:
+      crit_rating: 71.05
+    11:
+      crit_rating: 77.45
+    12:
+      crit_rating: 83.84
+    13:
+      crit_rating: 90.24
+    14:
+      crit_rating: 96.63
+    15:
+      crit_rating: 103.03
+    16:
+      crit_rating: 109.42
+    17:
+      crit_rating: 115.82
+    18:
+      crit_rating: 122.21
+    19:
+      crit_rating: 128.61
+    20:
+      crit_rating: 135.0
+    21:
+      crit_rating: 135.67
+    22:
+      crit_rating: 136.35
+    23:
+      crit_rating: 137.02
+    24:
+      crit_rating: 137.7
+    25:
+      crit_rating: 138.38
+    26:
+      crit_rating: 139.05
+    27:
+      crit_rating: 139.72
+    28:
+      crit_rating: 140.4
+    29:
+      crit_rating: 141.07
+    30:
+      crit_rating: 141.75
+    31:
+      crit_rating: 142.42
+    32:
+      crit_rating: 143.1
+    33:
+      crit_rating: 143.78
+    34:
+      crit_rating: 144.45
+    35:
+      crit_rating: 145.12
+    36:
+      crit_rating: 145.8
+    37:
+      crit_rating: 146.47
+    38:
+      crit_rating: 147.15
+    39:
+      crit_rating: 147.82
+    40:
+      crit_rating: 148.5
+tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_crit"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["attack", "spell", "projectile", "area", "melee", "ranged", "aura"]
+effect_stats: ["crit_rating"]

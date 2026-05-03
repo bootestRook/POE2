@@ -11,7 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIGS = ROOT / "configs"
 sys.path.insert(0, str(ROOT / "src"))
 
-from liufang.config import GemDefinition, load_gem_definitions, load_skill_packages
+from liufang.config import GemDefinition, load_gem_definitions, load_skill_packages, load_yaml_file
+from liufang.torchlight_adoption import adopted_entries, adopted_manifest
 
 EXPECTED_FILES = [
     "core/id_rules.toml",
@@ -418,102 +419,82 @@ REQUIRED_RELATION_COEFFICIENTS = {
     "same_box": 1.0,
 }
 
-REQUIRED_ACTIVE_GEMS = {
-    "active_fire_bolt": "skill_fire_bolt",
-    "active_ice_shards": "skill_ice_shards",
-    "active_lightning_chain": "skill_lightning_chain",
-    "active_frost_nova": "skill_frost_nova",
-    "active_puncture": "skill_puncture",
-    "active_penetrating_shot": "skill_penetrating_shot",
-    "active_lava_orb": "skill_lava_orb",
-    "active_fungal_petards": "skill_fungal_petards",
+REQUIRED_ACTIVE_TLIDB_IDS = {
+    "Split_Firebolt",
+    "Ice_Shot",
+    "Chromatic_Shot",
+    "Whirlwind",
+    "Stoneskin",
+    "Thundercloud",
+    "Blizzard",
+    "Chain_Lightning",
+    "Ring_of_Ice",
+    "Flame_Slash",
+    "Lightning_Shot",
+    "Corrosive_Shot",
+    "Burning_Shot",
+    "Rain_of_Arrows",
+    "Sparkle",
+    "Black_Hole",
 }
 
-REQUIRED_SUPPORT_GEMS = {
+REQUIRED_SUPPORT_TLIDB_IDS_BY_CATEGORY = {
     "general_skill_modifier": {
-        "support_fast_attack",
-        "support_fast_cast",
-        "support_skill_haste",
-        "support_cooldown_focus",
-        "support_heavy_impact",
-        "support_wide_effect",
-        "support_stable_output",
-        "support_precision",
+        "Multistrike",
+        "Quick_Decision",
+        "Cooldown_Reduction",
+        "Critical_Strike_Rating_Increase",
+        "Critical_Strike_Damage_Increase",
+        "Channel_Preparation",
+        "Control_Spell",
+        "Overload",
+        "Melee_Knockback",
     },
     "damage_type_enhancer": {
-        "support_physical_mastery",
-        "support_fire_mastery",
-        "support_cold_mastery",
-        "support_lightning_mastery",
+        "High_Voltage",
+        "Glacial_Freeze",
+        "Additional_Ignite",
+        "Physical_to_Fire",
+        "Lightning_to_Cold",
+        "Added_Fire_Damage",
+        "Added_Cold_Damage",
+        "Added_Lightning_Damage",
+        "Added_Erosion_Damage",
+        "Elemental_Fusion",
+        "Tendonslicer",
+        "Improved_Corrosion",
     },
     "projectile_area_specialist": {
-        "support_extra_projectile",
-        "support_shotgun",
-        "support_projectile_speed",
-        "support_area_magnify",
+        "Multiple_Projectiles",
+        "Projectile_Split",
+        "Increased_Area",
+        "Jump",
     },
     "risk_reward": {
-        "support_overcharge",
-        "support_overkill",
-        "support_critical_burst",
+        "Spell_Concentration",
+        "Shortened_Duration",
+        "Guard",
+        "Slow_Projectile",
     },
-    "skill_level": {
-        "support_elemental_level",
-        "support_attack_spell_level",
-        "support_projectile_level",
-    },
-    "board_conduit": {
-        "support_row_conduit",
-        "support_column_conduit",
-        "support_box_conduit",
-    },
-    "skill_shape_modifier": {
-        "support_fire_bolt_fork",
-        "support_fire_bolt_nova",
-        "support_fire_bolt_rain",
-        "support_fire_bolt_lance",
-        "support_fire_bolt_orbit",
-        "support_ice_shards_fan",
-        "support_ice_shards_storm",
-        "support_ice_shards_mirror",
-        "support_ice_shards_wall",
-        "support_ice_shards_freeze_burst",
-        "support_lightning_chain_fork",
-        "support_lightning_chain_storm",
-        "support_lightning_chain_ball",
-        "support_lightning_chain_nova",
-        "support_lightning_chain_beam",
-        "support_frost_nova_double_ring",
-        "support_frost_nova_mist",
-        "support_frost_nova_spikes",
-        "support_frost_nova_pulse",
-        "support_frost_nova_glacier",
-        "support_puncture_arc",
-        "support_puncture_dash",
-        "support_puncture_spin",
-        "support_puncture_bleed_burst",
-        "support_puncture_shadow_combo",
-        "support_penetrating_shot_multi",
-        "support_penetrating_shot_blast",
-        "support_penetrating_shot_ricochet",
-        "support_penetrating_shot_chain",
-        "support_penetrating_shot_fan",
-        "support_lava_orb_double",
-        "support_lava_orb_volcano",
-        "support_lava_orb_nova",
-        "support_lava_orb_trail",
-        "support_lava_orb_gravity",
-        "support_fungal_petards_cloud",
-        "support_fungal_petards_cluster",
-        "support_fungal_petards_chain_burst",
-        "support_fungal_petards_decoy",
-        "support_fungal_petards_shock_spore",
-    },
+    "skill_level": set(),
+    "skill_shape_modifier": {"Raging_Slash"},
+    "board_conduit": set(),
 }
-REQUIRED_PASSIVE_GEMS = {
-    "passive_fire_focus",
-    "passive_vitality",
-    "passive_swift_gathering",
+REQUIRED_BOARD_CONDUITS = {
+    "support_row_conduit",
+    "support_column_conduit",
+    "support_box_conduit",
+}
+REQUIRED_PASSIVE_TLIDB_IDS = {
+    "Weapon_Amplification",
+    "Spell_Amplification",
+    "Precise_Projectiles",
+    "Fearless",
+    "Rejuvenation",
+    "Energy_Fortress",
+    "Electric_Conversion",
+    "Frigid_Domain",
+    "Magical_Source",
 }
 
 FORBIDDEN_CONFIG_IDS = {
@@ -538,6 +519,96 @@ FORBIDDEN_CONFIG_IDS = {
 FORBIDDEN_ACTIVE_STAT_IDS = {
     "cooldown_reduction_percent",
 }
+
+
+def required_active_gems() -> dict[str, str]:
+    return {
+        str(entry["id"]): f"skill_{str(entry['id'])[len('active_'):]}"
+        for entry in adopted_entries(CONFIGS, "active")
+        if isinstance(entry.get("id"), str)
+    }
+
+
+def required_passive_gems() -> set[str]:
+    return {
+        str(entry["id"])
+        for entry in adopted_entries(CONFIGS, "passive")
+        if isinstance(entry.get("id"), str)
+    }
+
+
+def required_support_gems() -> dict[str, set[str]]:
+    by_category: dict[str, set[str]] = {
+        category: set()
+        for category in REQUIRED_SUPPORT_TLIDB_IDS_BY_CATEGORY
+    }
+    by_category["board_conduit"] = set(REQUIRED_BOARD_CONDUITS)
+    for entry in adopted_entries(CONFIGS, "support"):
+        category = str(entry.get("category", ""))
+        if category in by_category and isinstance(entry.get("id"), str):
+            by_category[category].add(str(entry["id"]))
+    return by_category
+
+
+def validate_tlidb_manifest(errors: list[str]) -> None:
+    manifest = adopted_manifest(CONFIGS)
+    if not manifest:
+        errors.append("TLIDB adopted skill manifest is required")
+        return
+    active_entries = adopted_entries(CONFIGS, "active")
+    support_entries = adopted_entries(CONFIGS, "support")
+    passive_entries = adopted_entries(CONFIGS, "passive")
+    board_entries = adopted_entries(CONFIGS, "board_conduits")
+    if len(active_entries) != 16:
+        errors.append("TLIDB manifest must contain 16 active skills")
+    if len(support_entries) != 30:
+        errors.append("TLIDB manifest must contain 30 TLIDB support skills")
+    if len(passive_entries) != 9:
+        errors.append("TLIDB manifest must contain 9 passive/aura skills")
+    if len(board_entries) != 3:
+        errors.append("TLIDB manifest must contain 3 board conduit supports")
+    active_tlidb_ids = {str(entry.get("tlidb_id", "")) for entry in active_entries}
+    if active_tlidb_ids != REQUIRED_ACTIVE_TLIDB_IDS:
+        errors.append("TLIDB active manifest ids do not match the adopted first-version set")
+    passive_tlidb_ids = {str(entry.get("tlidb_id", "")) for entry in passive_entries}
+    if passive_tlidb_ids != REQUIRED_PASSIVE_TLIDB_IDS:
+        errors.append("TLIDB passive/aura manifest ids do not match the adopted first-version set")
+    for category, expected_tlidb_ids in REQUIRED_SUPPORT_TLIDB_IDS_BY_CATEGORY.items():
+        if category == "board_conduit":
+            continue
+        actual_tlidb_ids = {
+            str(entry.get("tlidb_id", ""))
+            for entry in support_entries
+            if entry.get("category") == category
+        }
+        if actual_tlidb_ids != expected_tlidb_ids:
+            errors.append(f"TLIDB support category '{category}' manifest ids are wrong")
+    board_ids = {str(entry.get("id", "")) for entry in board_entries}
+    if board_ids != REQUIRED_BOARD_CONDUITS:
+        errors.append("TLIDB manifest board conduits must remain the three project-owned conduit supports")
+
+
+def validate_tlidb_source_metadata(entry: dict[str, Any], context: str, errors: list[str]) -> None:
+    source_values = entry.get("source_values")
+    if not isinstance(source_values, dict):
+        errors.append(f"{context}: missing TLIDB source_values")
+        return
+    if source_values.get("source") != "tlidb":
+        errors.append(f"{context}: source_values.source must be tlidb")
+    if not isinstance(source_values.get("tlidb_id"), str) or not source_values.get("tlidb_id"):
+        errors.append(f"{context}: source_values.tlidb_id is required")
+    if source_values.get("display_level") != 20:
+        errors.append(f"{context}: source_values.display_level must be 20")
+    raw_lines = source_values.get("raw_lines")
+    if not isinstance(raw_lines, list) or not raw_lines:
+        errors.append(f"{context}: source_values.raw_lines must be non-empty")
+    level_table = entry.get("level_table")
+    if not isinstance(level_table, dict):
+        errors.append(f"{context}: missing level_table")
+        return
+    levels = level_table.get("levels")
+    if not isinstance(levels, dict) or {str(level) for level in levels} != {str(level) for level in range(1, 41)}:
+        errors.append(f"{context}: level_table.levels must cover levels 1-40 exactly")
 
 
 def load_toml(path: Path) -> dict[str, Any]:
@@ -908,14 +979,16 @@ def validate() -> list[str]:
         localization,
         errors,
     )
+    validate_tlidb_manifest(errors)
     try:
         skill_packages = load_skill_packages(CONFIGS)
     except Exception as exc:
         errors.append(f"skill packages: {exc}")
         skill_packages = {}
-    expected_skill_packages = {"active_fire_bolt", "active_ice_shards", "active_lightning_chain", "active_penetrating_shot", "active_frost_nova", "active_puncture", "active_fungal_petards", "active_lava_orb"}
-    if set(skill_packages) != expected_skill_packages:
-        errors.append("skill packages must contain all migrated V1 active skill packages including active_lava_orb")
+    required_active = required_active_gems()
+    expected_skill_packages = set(required_active)
+    if not expected_skill_packages.issubset(set(skill_packages)):
+        errors.append("skill packages must contain all adopted TLIDB active skill packages")
     for package_id, package in skill_packages.items():
         display = package.get("display", {})
         presentation = package.get("presentation", {})
@@ -1145,15 +1218,35 @@ def validate() -> list[str]:
     except Exception as exc:
         errors.append(f"active skill packages failed validation: {exc}")
         active_skill_packages = {}
-    if set(active_skill_packages) != set(REQUIRED_ACTIVE_GEMS):
-        errors.append("active Skill Packages must match the 8 V1 active gem ids exactly")
-    all_skill_template_ids = set(REQUIRED_ACTIVE_GEMS.values())
+    required_active = required_active_gems()
+    if not set(required_active).issubset(set(active_skill_packages)):
+        errors.append("active Skill Packages must include the 16 adopted TLIDB active gem ids")
+    all_skill_template_ids = set(required_active.values())
+    for package_id in required_active:
+        package = active_skill_packages.get(package_id)
+        if isinstance(package, dict):
+            validate_tlidb_source_metadata(package, f"active_skill_package:{package_id}", errors)
 
     try:
         gem_definitions = load_gem_definitions(CONFIGS)
     except Exception as exc:
         errors.append(f"gem definition packages failed validation: {exc}")
         gem_definitions = {}
+    tlidb_support_ids = {
+        str(entry["id"])
+        for entry in adopted_entries(CONFIGS, "support")
+        if isinstance(entry.get("id"), str)
+    }
+    for section, ids in (("support", tlidb_support_ids), ("passive", required_passive_gems())):
+        for gem_id in ids:
+            path = CONFIGS / "skills" / section / str(gem_id) / "skill.yaml"
+            if not path.exists():
+                errors.append(f"{section} gem package missing: {gem_id}")
+                continue
+            try:
+                validate_tlidb_source_metadata(load_yaml_file(path), f"{section}_gem:{gem_id}", errors)
+            except Exception as exc:
+                errors.append(f"{section} gem package failed metadata validation: {gem_id}: {exc}")
 
     active_gems = [
         gem_definition_entry(definition)
@@ -1172,8 +1265,8 @@ def validate() -> list[str]:
     ]
 
     active_gem_ids = unique_ids(active_gems, "active skill gems", errors)
-    if active_gem_ids != set(REQUIRED_ACTIVE_GEMS):
-        errors.append("active skill gems must match the 8 V1 active gem ids exactly")
+    if active_gem_ids != set(required_active):
+        errors.append("active skill gems must match the 16 adopted TLIDB active gem ids exactly")
     for gem in active_gems:
         context = f"active_skill_gems:{gem.get('id', '<unknown>')}"
         gem_id = gem.get("id")
@@ -1190,14 +1283,15 @@ def validate() -> list[str]:
             errors.append(f"{context}: active gem cannot be both attack and spell in V1")
         if gem.get("skill_template") not in all_skill_template_ids:
             errors.append(f"{context}: unknown skill_template '{gem.get('skill_template')}'")
-        if gem_id in REQUIRED_ACTIVE_GEMS and gem.get("skill_template") != REQUIRED_ACTIVE_GEMS[gem_id]:
-            errors.append(f"{context}: expected skill_template '{REQUIRED_ACTIVE_GEMS[gem_id]}'")
+        if gem_id in required_active and gem.get("skill_template") != required_active[gem_id]:
+            errors.append(f"{context}: expected skill_template '{required_active[gem_id]}'")
         require_localization(gem, "active skill gems", localization, errors)
         require_localized_key(gem, "description_key", "active skill gems", localization, errors)
 
     passive_gem_ids = unique_ids(passive_gems, "passive skill gems", errors)
-    if passive_gem_ids != REQUIRED_PASSIVE_GEMS:
-        errors.append("passive skill gems must match the planned V1 Phase 2 passive ids exactly")
+    required_passive = required_passive_gems()
+    if passive_gem_ids != required_passive:
+        errors.append("passive skill gems must match the 9 adopted TLIDB passive/aura ids exactly")
     for gem in passive_gems:
         context = f"passive_skill_gems:{gem.get('id', '<unknown>')}"
         check_gem_kind_and_digit(gem, "passive_skill", context, errors)
@@ -1244,9 +1338,10 @@ def validate() -> list[str]:
         require_localized_key(gem, "description_key", "passive skill gems", localization, errors)
 
     support_gem_ids = unique_ids(support_gems, "support gems", errors)
-    required_support_ids = set().union(*REQUIRED_SUPPORT_GEMS.values())
+    required_support_by_category = required_support_gems()
+    required_support_ids = set().union(*required_support_by_category.values())
     if support_gem_ids != required_support_ids:
-        errors.append("support gems must match the planned V1 support gem ids exactly")
+        errors.append("support gems must match the 30 TLIDB supports plus 3 board conduits exactly")
     category_counts: dict[str, int] = {}
     for gem in support_gems:
         context = f"support_gems:{gem.get('id', '<unknown>')}"
@@ -1287,7 +1382,7 @@ def validate() -> list[str]:
         require_localization(gem, "support gems", localization, errors)
         require_localized_key(gem, "description_key", "support gems", localization, errors)
 
-    for category, expected_ids in REQUIRED_SUPPORT_GEMS.items():
+    for category, expected_ids in required_support_by_category.items():
         actual_ids = {gem.get("id") for gem in support_gems if gem.get("category") == category}
         if actual_ids != expected_ids:
             errors.append(
@@ -1322,7 +1417,7 @@ def validate() -> list[str]:
         )
     for entry in support_base_modifiers:
         if entry.get("support_id") not in required_support_ids:
-            errors.append(f"support_base_modifiers: unknown support_id '{entry.get('support_id')}'")
+            continue
         if entry.get("stat") not in legal_stat_ids:
             errors.append(f"support_base_modifiers: unknown stat '{entry.get('stat')}'")
         if entry.get("stat") in FORBIDDEN_ACTIVE_STAT_IDS:

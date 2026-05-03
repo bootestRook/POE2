@@ -315,3 +315,99 @@ id = "support_shape"
 name_key = "tag.support_shape.name"
 display_name_key = "tag.support_shape.name"
 category = "support"
+
+[[tags]]
+id = "skill_split_firebolt"
+name_key = "tag.skill_split_firebolt.name"
+display_name_key = "tag.skill_split_firebolt.name"
+category = "skill"
+
+[[tags]]
+id = "skill_ice_shot"
+name_key = "tag.skill_ice_shot.name"
+display_name_key = "tag.skill_ice_shot.name"
+category = "skill"
+
+[[tags]]
+id = "skill_chromatic_shot"
+name_key = "tag.skill_chromatic_shot.name"
+display_name_key = "tag.skill_chromatic_shot.name"
+category = "skill"
+
+[[tags]]
+id = "skill_whirlwind"
+name_key = "tag.skill_whirlwind.name"
+display_name_key = "tag.skill_whirlwind.name"
+category = "skill"
+
+[[tags]]
+id = "skill_stoneskin"
+name_key = "tag.skill_stoneskin.name"
+display_name_key = "tag.skill_stoneskin.name"
+category = "skill"
+
+[[tags]]
+id = "skill_thundercloud"
+name_key = "tag.skill_thundercloud.name"
+display_name_key = "tag.skill_thundercloud.name"
+category = "skill"
+
+[[tags]]
+id = "skill_blizzard"
+name_key = "tag.skill_blizzard.name"
+display_name_key = "tag.skill_blizzard.name"
+category = "skill"
+
+[[tags]]
+id = "skill_chain_lightning"
+name_key = "tag.skill_chain_lightning.name"
+display_name_key = "tag.skill_chain_lightning.name"
+category = "skill"
+
+[[tags]]
+id = "skill_ring_of_ice"
+name_key = "tag.skill_ring_of_ice.name"
+display_name_key = "tag.skill_ring_of_ice.name"
+category = "skill"
+
+[[tags]]
+id = "skill_flame_slash"
+name_key = "tag.skill_flame_slash.name"
+display_name_key = "tag.skill_flame_slash.name"
+category = "skill"
+
+[[tags]]
+id = "skill_lightning_shot"
+name_key = "tag.skill_lightning_shot.name"
+display_name_key = "tag.skill_lightning_shot.name"
+category = "skill"
+
+[[tags]]
+id = "skill_corrosive_shot"
+name_key = "tag.skill_corrosive_shot.name"
+display_name_key = "tag.skill_corrosive_shot.name"
+category = "skill"
+
+[[tags]]
+id = "skill_burning_shot"
+name_key = "tag.skill_burning_shot.name"
+display_name_key = "tag.skill_burning_shot.name"
+category = "skill"
+
+[[tags]]
+id = "skill_rain_of_arrows"
+name_key = "tag.skill_rain_of_arrows.name"
+display_name_key = "tag.skill_rain_of_arrows.name"
+category = "skill"
+
+[[tags]]
+id = "skill_sparkle"
+name_key = "tag.skill_sparkle.name"
+display_name_key = "tag.skill_sparkle.name"
+category = "skill"
+
+[[tags]]
+id = "skill_black_hole"
+name_key = "tag.skill_black_hole.name"
+display_name_key = "tag.skill_black_hole.name"
+category = "skill"

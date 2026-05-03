@@ -1,0 +1,105 @@
+id: "support_increased_area"
+sort_order: 23
+name_key: "gem.support_increased_area.name"
+description_key: "gem.support_increased_area.description"
+category: "projectile_area_specialist"
+gem_type: "gem_type_5"
+gem_kind: "support"
+sudoku_digit: 5
+source_values:
+  source: "tlidb"
+  tlidb_id: "Increased_Area"
+  display_level: 20
+  raw_lines: ["辅助范围技能。", "被辅助技能 +20% 技能范围 (Lv1:20) (Lv21:20) (Lv41:20)", "被辅助技能额外 +16% 伤害 (Lv1:16) (Lv21:20) (Lv41:24)", "被辅助技能 +20% 技能范围 (Lv1:20) (Lv21:20) (Lv41:20)", "被辅助技能额外 +16% 伤害 (Lv1:16) (Lv21:20) (Lv41:24)"]
+  parsed_values:
+    area_add_percent: 20
+  anchors:
+    area_add_percent:
+      20: 20
+level_table:
+  levels:
+    1:
+      area_add_percent: 2.0
+    2:
+      area_add_percent: 2.95
+    3:
+      area_add_percent: 3.89
+    4:
+      area_add_percent: 4.84
+    5:
+      area_add_percent: 5.79
+    6:
+      area_add_percent: 6.74
+    7:
+      area_add_percent: 7.68
+    8:
+      area_add_percent: 8.63
+    9:
+      area_add_percent: 9.58
+    10:
+      area_add_percent: 10.53
+    11:
+      area_add_percent: 11.47
+    12:
+      area_add_percent: 12.42
+    13:
+      area_add_percent: 13.37
+    14:
+      area_add_percent: 14.32
+    15:
+      area_add_percent: 15.26
+    16:
+      area_add_percent: 16.21
+    17:
+      area_add_percent: 17.16
+    18:
+      area_add_percent: 18.11
+    19:
+      area_add_percent: 19.05
+    20:
+      area_add_percent: 20.0
+    21:
+      area_add_percent: 20.1
+    22:
+      area_add_percent: 20.2
+    23:
+      area_add_percent: 20.3
+    24:
+      area_add_percent: 20.4
+    25:
+      area_add_percent: 20.5
+    26:
+      area_add_percent: 20.6
+    27:
+      area_add_percent: 20.7
+    28:
+      area_add_percent: 20.8
+    29:
+      area_add_percent: 20.9
+    30:
+      area_add_percent: 21.0
+    31:
+      area_add_percent: 21.1
+    32:
+      area_add_percent: 21.2
+    33:
+      area_add_percent: 21.3
+    34:
+      area_add_percent: 21.4
+    35:
+      area_add_percent: 21.5
+    36:
+      area_add_percent: 21.6
+    37:
+      area_add_percent: 21.7
+    38:
+      area_add_percent: 21.8
+    39:
+      area_add_percent: 21.9
+    40:
+      area_add_percent: 22.0
+tags: ["gem", "support_gem", "loot_gem", "gem_type_5", "support_area", "support_damage"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["area"]
+effect_stats: ["area_add_percent", "damage_final_percent"]

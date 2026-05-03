@@ -162,6 +162,14 @@ class PresentationTest(unittest.TestCase):
             self.presenter.localizer.text("gem.active_fire_bolt.name"),
         )
 
+    def test_all_gem_descriptions_resolve_localization_placeholders(self) -> None:
+        for index, definition in enumerate(self.definitions.values()):
+            with self.subTest(gem=definition.base_gem_id):
+                instance = self.inventory.add_instance(f"gem_{index}", definition.base_gem_id)
+                detail = self.presenter.gem_detail(instance)
+                self.assertNotIn("{", detail["description_text"])
+                self.assertNotIn("}", detail["description_text"])
+
     def test_board_view_includes_grid_boxes_prompts_highlights_influence_and_skill_preview(self) -> None:
         self.inventory.add_instance("active", "active_fire_bolt")
         self.inventory.add_instance("support", "support_fire_mastery")

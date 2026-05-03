@@ -1,0 +1,105 @@
+id: "support_physical_to_fire"
+sort_order: 12
+name_key: "gem.support_physical_to_fire.name"
+description_key: "gem.support_physical_to_fire.description"
+category: "damage_type_enhancer"
+gem_type: "gem_type_4"
+gem_kind: "support"
+sudoku_digit: 4
+source_values:
+  source: "tlidb"
+  tlidb_id: "Physical_to_Fire"
+  display_level: 20
+  raw_lines: ["辅助击中敌人的技能。", "被辅助技能 100% 物理伤害转化为火焰伤害", "被辅助技能附加 15.5% 物理伤害的火焰伤害 (Lv1:31/2) (Lv21:51/2) (Lv41:71/2)", "被辅助技能 100% 物理伤害转化为火焰伤害", "被辅助技能附加 15.5% 物理伤害的火焰伤害 (Lv1:31/2) (Lv21:51/2) (Lv41:71/2)"]
+  parsed_values:
+    conversion_physical_to_fire_percent: 100
+  anchors:
+    conversion_physical_to_fire_percent:
+      20: 100
+level_table:
+  levels:
+    1:
+      conversion_physical_to_fire_percent: 10.0
+    2:
+      conversion_physical_to_fire_percent: 14.74
+    3:
+      conversion_physical_to_fire_percent: 19.47
+    4:
+      conversion_physical_to_fire_percent: 24.21
+    5:
+      conversion_physical_to_fire_percent: 28.95
+    6:
+      conversion_physical_to_fire_percent: 33.68
+    7:
+      conversion_physical_to_fire_percent: 38.42
+    8:
+      conversion_physical_to_fire_percent: 43.16
+    9:
+      conversion_physical_to_fire_percent: 47.89
+    10:
+      conversion_physical_to_fire_percent: 52.63
+    11:
+      conversion_physical_to_fire_percent: 57.37
+    12:
+      conversion_physical_to_fire_percent: 62.11
+    13:
+      conversion_physical_to_fire_percent: 66.84
+    14:
+      conversion_physical_to_fire_percent: 71.58
+    15:
+      conversion_physical_to_fire_percent: 76.32
+    16:
+      conversion_physical_to_fire_percent: 81.05
+    17:
+      conversion_physical_to_fire_percent: 85.79
+    18:
+      conversion_physical_to_fire_percent: 90.53
+    19:
+      conversion_physical_to_fire_percent: 95.26
+    20:
+      conversion_physical_to_fire_percent: 100.0
+    21:
+      conversion_physical_to_fire_percent: 100.5
+    22:
+      conversion_physical_to_fire_percent: 101.0
+    23:
+      conversion_physical_to_fire_percent: 101.5
+    24:
+      conversion_physical_to_fire_percent: 102.0
+    25:
+      conversion_physical_to_fire_percent: 102.5
+    26:
+      conversion_physical_to_fire_percent: 103.0
+    27:
+      conversion_physical_to_fire_percent: 103.5
+    28:
+      conversion_physical_to_fire_percent: 104.0
+    29:
+      conversion_physical_to_fire_percent: 104.5
+    30:
+      conversion_physical_to_fire_percent: 105.0
+    31:
+      conversion_physical_to_fire_percent: 105.5
+    32:
+      conversion_physical_to_fire_percent: 106.0
+    33:
+      conversion_physical_to_fire_percent: 106.5
+    34:
+      conversion_physical_to_fire_percent: 107.0
+    35:
+      conversion_physical_to_fire_percent: 107.5
+    36:
+      conversion_physical_to_fire_percent: 108.0
+    37:
+      conversion_physical_to_fire_percent: 108.5
+    38:
+      conversion_physical_to_fire_percent: 109.0
+    39:
+      conversion_physical_to_fire_percent: 109.5
+    40:
+      conversion_physical_to_fire_percent: 110.0
+tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["physical", "fire"]
+effect_stats: ["conversion_physical_to_fire_percent", "fire_damage_add_percent"]

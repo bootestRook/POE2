@@ -1,0 +1,247 @@
+id: "active_rain_of_arrows"
+version: "1.0.0"
+product_status: "product"
+source_values:
+  source: "tlidb"
+  tlidb_id: "Rain_of_Arrows"
+  display_level: 20
+  raw_lines: ["释放该技能向空中发射 15 个投射物，投射物落下时随机攻击一定范围内的敌人，造成 134% 武器攻击伤害。", "投射物速度使该技能伤害额外增加。", "箭雨：", "造成 134% 武器攻击伤害", "基础发射 1 个投射物", "该技能 +14 投射物数量", "对该技能投射物速度加成的 25% 同样作用于该技能额外伤害", "该技能发射的投射物可以命中同一个敌人", "该技能的霰弹效应衰减系数为 70%"]
+  parsed_values:
+    base_damage: 134
+    mana_cost: 5
+    release_interval_ms: 1000
+  anchors:
+    base_damage:
+      20: 134
+level_table:
+  levels:
+    1:
+      base_damage: 13.4
+      mana_cost: 5
+      release_interval_ms: 1000
+    2:
+      base_damage: 19.75
+      mana_cost: 5
+      release_interval_ms: 1000
+    3:
+      base_damage: 26.09
+      mana_cost: 5
+      release_interval_ms: 1000
+    4:
+      base_damage: 32.44
+      mana_cost: 5
+      release_interval_ms: 1000
+    5:
+      base_damage: 38.79
+      mana_cost: 5
+      release_interval_ms: 1000
+    6:
+      base_damage: 45.14
+      mana_cost: 5
+      release_interval_ms: 1000
+    7:
+      base_damage: 51.48
+      mana_cost: 5
+      release_interval_ms: 1000
+    8:
+      base_damage: 57.83
+      mana_cost: 5
+      release_interval_ms: 1000
+    9:
+      base_damage: 64.18
+      mana_cost: 5
+      release_interval_ms: 1000
+    10:
+      base_damage: 70.53
+      mana_cost: 5
+      release_interval_ms: 1000
+    11:
+      base_damage: 76.87
+      mana_cost: 5
+      release_interval_ms: 1000
+    12:
+      base_damage: 83.22
+      mana_cost: 5
+      release_interval_ms: 1000
+    13:
+      base_damage: 89.57
+      mana_cost: 5
+      release_interval_ms: 1000
+    14:
+      base_damage: 95.92
+      mana_cost: 5
+      release_interval_ms: 1000
+    15:
+      base_damage: 102.26
+      mana_cost: 5
+      release_interval_ms: 1000
+    16:
+      base_damage: 108.61
+      mana_cost: 5
+      release_interval_ms: 1000
+    17:
+      base_damage: 114.96
+      mana_cost: 5
+      release_interval_ms: 1000
+    18:
+      base_damage: 121.31
+      mana_cost: 5
+      release_interval_ms: 1000
+    19:
+      base_damage: 127.65
+      mana_cost: 5
+      release_interval_ms: 1000
+    20:
+      base_damage: 134.0
+      mana_cost: 5
+      release_interval_ms: 1000
+    21:
+      base_damage: 134.67
+      mana_cost: 5
+      release_interval_ms: 1000
+    22:
+      base_damage: 135.34
+      mana_cost: 5
+      release_interval_ms: 1000
+    23:
+      base_damage: 136.01
+      mana_cost: 5
+      release_interval_ms: 1000
+    24:
+      base_damage: 136.68
+      mana_cost: 5
+      release_interval_ms: 1000
+    25:
+      base_damage: 137.35
+      mana_cost: 5
+      release_interval_ms: 1000
+    26:
+      base_damage: 138.02
+      mana_cost: 5
+      release_interval_ms: 1000
+    27:
+      base_damage: 138.69
+      mana_cost: 5
+      release_interval_ms: 1000
+    28:
+      base_damage: 139.36
+      mana_cost: 5
+      release_interval_ms: 1000
+    29:
+      base_damage: 140.03
+      mana_cost: 5
+      release_interval_ms: 1000
+    30:
+      base_damage: 140.7
+      mana_cost: 5
+      release_interval_ms: 1000
+    31:
+      base_damage: 141.37
+      mana_cost: 5
+      release_interval_ms: 1000
+    32:
+      base_damage: 142.04
+      mana_cost: 5
+      release_interval_ms: 1000
+    33:
+      base_damage: 142.71
+      mana_cost: 5
+      release_interval_ms: 1000
+    34:
+      base_damage: 143.38
+      mana_cost: 5
+      release_interval_ms: 1000
+    35:
+      base_damage: 144.05
+      mana_cost: 5
+      release_interval_ms: 1000
+    36:
+      base_damage: 144.72
+      mana_cost: 5
+      release_interval_ms: 1000
+    37:
+      base_damage: 145.39
+      mana_cost: 5
+      release_interval_ms: 1000
+    38:
+      base_damage: 146.06
+      mana_cost: 5
+      release_interval_ms: 1000
+    39:
+      base_damage: 146.73
+      mana_cost: 5
+      release_interval_ms: 1000
+    40:
+      base_damage: 147.4
+      mana_cost: 5
+      release_interval_ms: 1000
+auto_release:
+  policy: "target_cluster"
+  notes: ["??????????TLIDB ???? Lv20 ???"]
+display:
+  name_key: "gem.active_rain_of_arrows.name"
+  description_key: "gem.active_rain_of_arrows.description"
+classification:
+  tags: ["attack", "ranged", "bow", "projectile", "area", "physical"]
+  damage_type: "physical"
+  damage_form: "attack"
+cast:
+  mode: "attack"
+  target_selector: "nearest_enemy"
+  search_range: 420
+  cooldown_ms: 0
+  release_interval_ms: 1000
+  base_cooldown_ms: 0
+  trigger_interval_ms: 0
+  mana_cost: 5
+  windup_ms: 0
+  recovery_ms: 0
+behavior:
+  template: "projectile"
+  params:
+    projectile_count: 15
+    burst_interval_ms: 20
+    spread_angle_deg: 60
+    projectile_speed: 500
+    projectile_width: 24
+    projectile_height: 24
+    max_distance: 360
+    hit_policy: "first_hit"
+    pierce_count: 0
+    collision_radius: 14
+    spawn_offset:
+      x: 0
+      y: -40
+    projectile_radius: 8
+    impact_radius: 30
+    max_targets: 1
+    min_duration_ms: 180
+    max_duration_ms: 1800
+    trajectory: "ballistic"
+    travel_time_ms: 420
+    arc_height: 90
+hit:
+  base_damage: 134
+  can_crit: true
+  can_apply_status: true
+  damage_timing: "on_projectile_hit"
+  hit_delay_ms: 160
+  hit_radius: 30
+  target_policy: "selected_target"
+scaling:
+  additive_stats: ["damage_add_percent", "physical_damage_add_percent", "attack_speed_add_percent"]
+  final_stats: ["damage_final_percent", "skill_speed_final_percent"]
+  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add", "area_add_percent"]
+presentation:
+  vfx: "skill_event.rain_of_arrows.vfx"
+  cast_vfx_key: "skill_event.rain_of_arrows.vfx"
+  projectile_vfx_key: "skill_event.rain_of_arrows.vfx"
+  hit_vfx_key: "skill_event.rain_of_arrows.vfx"
+  sfx: "skill_event.rain_of_arrows.sfx"
+  floating_text: "skill_event.rain_of_arrows.floating_text"
+  floating_text_style: "skill_event.rain_of_arrows.floating_text"
+  screen_feedback: "skill_event.rain_of_arrows.screen_feedback"
+  hit_stop_ms: 0
+  camera_shake: 0
+preview:
+  show_fields: ["final_damage", "actual_interval_ms", "mana_cost", "base_damage", "damage_type", "damage_form"]
