@@ -134,7 +134,15 @@ class V1LoopTest(unittest.TestCase):
         self.assertTrue(first_board_view["can_enter_combat"])
 
         session = CombatSession.start(
-            player=Player("player_1", current_life=100, max_life=100, position=Position(0, 0), item_interaction_reach=2),
+            player=Player(
+                "player_1",
+                current_life=100,
+                max_life=100,
+                position=Position(0, 0),
+                item_interaction_reach=2,
+                current_mana=100,
+                max_mana=100,
+            ),
             monsters=[Monster("monster_1", current_life=5, max_life=5, position=Position(1, 0))],
             inventory=self.inventory,
             skill_effect_calculator=self.calculator(),

@@ -32,6 +32,7 @@ class Player:
     move_speed: float = 1.0
     current_mana: float = 0.0
     max_mana: float = 0.0
+    life_regen_flat: float = 0.0
     mana_regen_flat: float = 0.0
     current_energy_shield: float = 0.0
     max_energy_shield: float = 0.0
@@ -63,6 +64,8 @@ class Player:
 
     def regenerate(self, delta_ms: int) -> None:
         seconds = max(0, delta_ms) / 1000.0
+        if self.max_life > 0 and self.life_regen_flat > 0:
+            self.current_life = min(self.max_life, self.current_life + self.life_regen_flat * seconds)
         if self.max_mana > 0 and self.mana_regen_flat > 0:
             self.current_mana = min(self.max_mana, self.current_mana + self.mana_regen_flat * seconds)
         if self.max_energy_shield <= 0:
@@ -76,6 +79,17 @@ class Player:
         if self.energy_shield_charge_speed_percent > 0:
             recharge_per_second = self.max_energy_shield * self.energy_shield_charge_speed_percent / 100.0
             self.current_energy_shield = min(self.max_energy_shield, self.current_energy_shield + recharge_per_second * seconds)
+
+    def can_spend_mana(self, amount: float) -> bool:
+        cost = max(0.0, float(amount))
+        return self.current_mana >= cost
+
+    def spend_mana(self, amount: float) -> bool:
+        cost = max(0.0, float(amount))
+        if self.current_mana < cost:
+            return False
+        self.current_mana -= cost
+        return True
 
     def take_hit(self, damage: float, *, damage_type: str = "physical", hit_kind: str = "attack", avoidable: bool = True) -> float:
         incoming = max(0.0, float(damage))
@@ -162,6 +176,8 @@ class SkillReleaseEvent:
     damage: float
     killed: bool
     skill_events: tuple[SkillEvent, ...] = ()
+    mana_spent: int = 0
+    skipped_reason: str = ""
 
 
 @dataclass
@@ -185,6 +201,7 @@ class CombatSession:
     _pending_skill_events: list[PendingSkillEvent] = field(default_factory=list)
     _skill_runtime: SkillRuntime = field(default_factory=SkillRuntime)
     _next_drop_number: int = 1
+    _last_release_skip_reasons: dict[str, str] = field(default_factory=dict)
 
     @classmethod
     def start(
@@ -236,6 +253,11 @@ class CombatSession:
                 monster = self._first_alive_monster()
                 if monster is None:
                     break
+                if not self.player.spend_mana(cooldown.skill.mana_cost):
+                    self._last_release_skip_reasons[cooldown.skill.active_gem_instance_id] = "combat.skip.insufficient_mana"
+                    cooldown.remaining_ms = max(1, cooldown.skill.actual_interval_ms)
+                    break
+                self._last_release_skip_reasons.pop(cooldown.skill.active_gem_instance_id, None)
                 if cooldown.skill.uses_skill_event_pipeline:
                     skill_events = self._skill_runtime.execute(
                         cooldown.skill,
@@ -254,11 +276,12 @@ class CombatSession:
                         monster_id=monster.monster_id,
                         damage=cooldown.skill.final_damage,
                         killed=killed,
+                        mana_spent=cooldown.skill.mana_cost,
                     )
                     events.append(event)
                     if killed:
                         self._drop_from_monster(monster)
-                cooldown.remaining_ms = max(1, cooldown.skill.final_cooldown_ms)
+                cooldown.remaining_ms = max(1, cooldown.skill.actual_interval_ms)
         return tuple(events)
 
     def _queue_pending_skill_events(

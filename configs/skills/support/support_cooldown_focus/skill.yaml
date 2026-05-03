@@ -10,4 +10,4 @@ tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_cooldown"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["attack", "spell", "summon"]
-effect_stats: ["cooldown_reduction_percent", "damage_final_percent"]
+effect_stats: ["cooldown_recovery_add_percent", "damage_final_percent"]

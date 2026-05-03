@@ -1,5 +1,5 @@
 id: orbit_emitter
-allowed_params: ["orbit_center_policy", "duration_ms", "tick_interval_ms", "orbit_radius", "orbit_speed_deg_per_sec", "orb_count", "start_angle_deg", "tick_marker_id", "spawn_vfx_key", "tick_vfx_key"]
+allowed_params: ["orbit_center_policy", "duration_ms", "tick_interval_ms", "orbit_radius", "orbit_speed_deg_per_sec", "orb_count", "start_angle_deg", "orbit_radius_cycle_enabled", "orbit_radius_cycle_amplitude", "orbit_radius_cycle_period_ms", "orbit_radius_cycle_phase_deg", "tick_marker_id", "spawn_vfx_key", "tick_vfx_key"]
 param_constraints:
   orbit_center_policy:
     type: string
@@ -19,6 +19,16 @@ param_constraints:
     type: integer
     minimum: 1
   start_angle_deg:
+    type: number
+  orbit_radius_cycle_enabled:
+    type: boolean
+  orbit_radius_cycle_amplitude:
+    type: number
+    minimum: 0
+  orbit_radius_cycle_period_ms:
+    type: integer
+    minimum: 1
+  orbit_radius_cycle_phase_deg:
     type: number
   tick_marker_id:
     type: string

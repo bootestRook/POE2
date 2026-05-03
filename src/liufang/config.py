@@ -48,6 +48,10 @@ SKILL_PACKAGE_REQUIRED_PATHS = (
     ("cast", "target_selector"),
     ("cast", "search_range"),
     ("cast", "cooldown_ms"),
+    ("cast", "release_interval_ms"),
+    ("cast", "base_cooldown_ms"),
+    ("cast", "trigger_interval_ms"),
+    ("cast", "mana_cost"),
     ("cast", "windup_ms"),
     ("cast", "recovery_ms"),
     ("behavior", "template"),
@@ -70,7 +74,20 @@ SKILL_PACKAGE_TOP_LEVEL_FIELDS = frozenset(
 SKILL_PACKAGE_FIELD_ALLOWLISTS = {
     "display": frozenset({"name_key", "description_key"}),
     "classification": frozenset({"tags", "damage_type", "damage_form"}),
-    "cast": frozenset({"mode", "target_selector", "search_range", "cooldown_ms", "windup_ms", "recovery_ms"}),
+    "cast": frozenset(
+        {
+            "mode",
+            "target_selector",
+            "search_range",
+            "cooldown_ms",
+            "release_interval_ms",
+            "base_cooldown_ms",
+            "trigger_interval_ms",
+            "mana_cost",
+            "windup_ms",
+            "recovery_ms",
+        }
+    ),
     "behavior": frozenset({"template", "params"}),
     "hit": frozenset(
         {
@@ -105,10 +122,15 @@ ALLOWED_PREVIEW_SHOW_FIELDS = frozenset(
     {
         "final_damage",
         "final_cooldown_ms",
+        "actual_interval_ms",
         "projectile_count",
         "speed_multiplier",
+        "release_interval_ms",
         "base_damage",
         "base_cooldown_ms",
+        "base_release_interval_ms",
+        "trigger_interval_ms",
+        "mana_cost",
         "damage_type",
         "damage_form",
         "trajectory",
@@ -124,6 +146,10 @@ ALLOWED_PREVIEW_SHOW_FIELDS = frozenset(
         "orbit_speed_deg_per_sec",
         "orb_count",
         "start_angle_deg",
+        "orbit_radius_cycle_enabled",
+        "orbit_radius_cycle_amplitude",
+        "orbit_radius_cycle_period_ms",
+        "orbit_radius_cycle_phase_deg",
         "tick_marker_id",
         "radius",
     }
@@ -221,6 +247,9 @@ class MonsterDefinition:
     monster_id: str
     numeric_id: int
     tier: str
+    role: str
+    visual_rarity: str
+    palette_key: str
     group_numeric_id: int
     marker_id: str
     name_key: str
@@ -228,6 +257,17 @@ class MonsterDefinition:
     primary_color: str
     accent_color: str
     size_px: int
+    base_life: float
+    base_attack: float
+    rarity_arc_color: str
+    rarity_arc_segments: int
+    rarity_arc_width_px: int
+    rarity_pedestal_shape: str
+    rarity_pedestal_color: str
+    rarity_pedestal_alpha: float
+    rarity_pedestal_radius_scale: float
+    rarity_pedestal_line_width_px: float
+    rarity_pedestal_pulse: bool
     movement_kind: str
     movement_interval_sec: float
     movement_distance_px: int
@@ -261,7 +301,10 @@ class SkillTemplate:
     template_id: str
     tags: frozenset[str]
     base_damage: float
+    base_release_interval_ms: int
     base_cooldown_ms: int
+    trigger_interval_ms: int
+    mana_cost: int
     name_key: str = ""
     damage_type: str = ""
     behavior_type: str = ""
@@ -442,6 +485,9 @@ def load_monster_definitions(config_root: Path) -> dict[str, MonsterDefinition]:
             monster_id=monster_id,
             numeric_id=int(entry["numeric_id"]),
             tier=str(entry["tier"]),
+            role=str(entry["role"]),
+            visual_rarity=str(entry["visual_rarity"]),
+            palette_key=str(entry["palette_key"]),
             group_numeric_id=int(entry["group_numeric_id"]),
             marker_id=str(entry["marker_id"]),
             name_key=str(entry["name_key"]),
@@ -449,6 +495,17 @@ def load_monster_definitions(config_root: Path) -> dict[str, MonsterDefinition]:
             primary_color=str(entry["primary_color"]),
             accent_color=str(entry["accent_color"]),
             size_px=int(entry["size_px"]),
+            base_life=float(entry["base_life"]),
+            base_attack=float(entry["base_attack"]),
+            rarity_arc_color=str(entry["rarity_arc_color"]),
+            rarity_arc_segments=int(entry["rarity_arc_segments"]),
+            rarity_arc_width_px=int(entry["rarity_arc_width_px"]),
+            rarity_pedestal_shape=str(entry["rarity_pedestal_shape"]),
+            rarity_pedestal_color=str(entry["rarity_pedestal_color"]),
+            rarity_pedestal_alpha=float(entry["rarity_pedestal_alpha"]),
+            rarity_pedestal_radius_scale=float(entry["rarity_pedestal_radius_scale"]),
+            rarity_pedestal_line_width_px=float(entry["rarity_pedestal_line_width_px"]),
+            rarity_pedestal_pulse=bool(entry["rarity_pedestal_pulse"]),
             movement_kind=str(entry["movement_kind"]),
             movement_interval_sec=float(entry["movement_interval_sec"]),
             movement_distance_px=int(entry["movement_distance_px"]),
@@ -727,7 +784,7 @@ def validate_skill_package_data(
         raise ValueError(f"skill package has invalid cast.target_selector: {package_id}")
     if not _is_number(cast["search_range"]) or cast["search_range"] < 0:
         raise ValueError(f"skill package cast.search_range must be non-negative: {package_id}")
-    for field_name in ["cooldown_ms", "windup_ms", "recovery_ms"]:
+    for field_name in ["cooldown_ms", "release_interval_ms", "base_cooldown_ms", "trigger_interval_ms", "mana_cost", "windup_ms", "recovery_ms"]:
         if not _is_integer(cast[field_name]) or cast[field_name] < 0:
             raise ValueError(f"skill package cast.{field_name} must be a non-negative integer: {package_id}")
 
@@ -944,6 +1001,14 @@ def _validate_orbit_emitter_params(params: dict[str, Any], package_id: str) -> N
         raise ValueError(f"skill package behavior.params.orb_count must be a positive integer: {package_id}")
     if not _is_number(params.get("start_angle_deg")):
         raise ValueError(f"skill package behavior.params.start_angle_deg must be numeric: {package_id}")
+    if "orbit_radius_cycle_enabled" in params and not isinstance(params["orbit_radius_cycle_enabled"], bool):
+        raise ValueError(f"skill package behavior.params.orbit_radius_cycle_enabled must be boolean: {package_id}")
+    if "orbit_radius_cycle_amplitude" in params and (not _is_number(params["orbit_radius_cycle_amplitude"]) or params["orbit_radius_cycle_amplitude"] < 0):
+        raise ValueError(f"skill package behavior.params.orbit_radius_cycle_amplitude must be non-negative: {package_id}")
+    if "orbit_radius_cycle_period_ms" in params and (not _is_integer(params["orbit_radius_cycle_period_ms"]) or params["orbit_radius_cycle_period_ms"] <= 0):
+        raise ValueError(f"skill package behavior.params.orbit_radius_cycle_period_ms must be positive: {package_id}")
+    if "orbit_radius_cycle_phase_deg" in params and not _is_number(params["orbit_radius_cycle_phase_deg"]):
+        raise ValueError(f"skill package behavior.params.orbit_radius_cycle_phase_deg must be numeric: {package_id}")
     marker_id = params.get("tick_marker_id")
     if not isinstance(marker_id, str) or not marker_id:
         raise ValueError(f"skill package behavior.params.tick_marker_id must be a non-empty string: {package_id}")
@@ -1114,7 +1179,10 @@ def _skill_template_from_package(package: dict[str, Any]) -> SkillTemplate:
         template_id=template_id,
         tags=frozenset(str(tag) for tag in classification["tags"]),
         base_damage=float(hit["base_damage"]),
-        base_cooldown_ms=int(cast["cooldown_ms"]),
+        base_release_interval_ms=int(cast["release_interval_ms"]),
+        base_cooldown_ms=int(cast["base_cooldown_ms"]),
+        trigger_interval_ms=int(cast["trigger_interval_ms"]),
+        mana_cost=int(cast["mana_cost"]),
         name_key=str(package["display"]["name_key"]),
         damage_type=str(classification["damage_type"]),
         behavior_type="module_chain" if isinstance(modules, list) and modules else str(behavior["template"]),

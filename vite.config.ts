@@ -10,8 +10,16 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     hmr: {
-      host: "127.0.0.1",
-      clientPort: 5173
+      host: "127.0.0.1"
+    },
+    watch: {
+      ignored: [
+        "**/dist/**",
+        "**/dist-webapp/**",
+        "**/dist-map-editor/**",
+        "**/reports/**",
+        "**/.vite/**"
+      ]
     },
     proxy: {
       "/api": "http://127.0.0.1:8000"

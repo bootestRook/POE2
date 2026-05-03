@@ -6,13 +6,14 @@ import { ISO_TILE_H, ISO_TILE_W, unprojectScreenToWorld } from "./isoProjection"
 import { BAKED_BATTLE_MAPS, bakedMapAssetById, DEFAULT_BAKED_BATTLE_MAP_ID } from "./bakedMapAssets";
 import { BakedBattleMapData, isMapPointWalkable, loadBakedBattleMap, MapPoint, resolveWalkableMove } from "./bakedMapLoader";
 import mapSpawnV1Config from "../configs/monsters/map_spawn_v1.json";
+import monsterDefsToml from "../configs/monsters/monster_defs.toml?raw";
 import map001Document from "../map/map_001.json";
-import { generateProceduralMonsterSpawns } from "./mapSpawnRuntime";
+import { generateProceduralMonsterSpawns, parseMonsterDefinitionsToml } from "./mapSpawnRuntime";
 import type { MapSpawnV1Config, ProceduralSpawnDebugSummary, ProceduralSpawnRarity, ProceduralZoneType } from "./mapSpawnRuntime";
 import { getAnimationFrame, resolveDirection, resolveUnitAnimation, UnitAnimationContext, UnitAnimationFrame } from "./unitAnimation";
 import { BattleGeometryCanvas } from "./BattleGeometryCanvas";
 import type { BattleGeometrySnapshot } from "./battleGeometryRenderer";
-import { fallbackUnitVisualForMonster } from "./monsterGeometryVisuals";
+import { fallbackUnitVisualForMonster, resolveMonsterGeometryVisual } from "./monsterGeometryVisuals";
 import {
   selectEnemyUnitType,
   UNIT_ANIMATION_ASSETS,
@@ -123,6 +124,8 @@ type SkillPreview = {
   crit_multiplier?: number;
   expected_hit_damage?: number;
   uses_per_second?: number;
+  actual_interval_ms?: number;
+  mana_cost?: number;
   hit_coverage_factor?: number;
   preview_dps?: number;
   final_cooldown_ms: number;
@@ -692,6 +695,8 @@ type PlayerRuntimeState = {
   y: number;
   hp: number;
   maxHp: number;
+  currentMana: number;
+  maxMana: number;
   currentEnergyShield: number;
   maxEnergyShield: number;
 };
@@ -731,6 +736,7 @@ type Enemy = {
   maxHp: number;
   lastDamagedAt?: number;
   monsterId?: string;
+  visualPrimaryColor?: string;
   authored?: boolean;
   boss?: boolean;
   spawnPlanSourceId?: string;
@@ -757,6 +763,10 @@ type Enemy = {
   navTargetGridY?: number;
 };
 
+type EncounterMonsterPalette = {
+  primary: string;
+};
+
 type EnemyRuntimeTier = "dormant" | "aware" | "active" | "visible" | "dead";
 type EnemyEngagementTier = "inner" | "outer";
 
@@ -773,6 +783,7 @@ type FloatingText = {
   x: number;
   y: number;
   text: string;
+  damageType: string;
   ttl: number;
   duration: number;
 };
@@ -817,6 +828,7 @@ type HitVfx = {
   id: number;
   x: number;
   y: number;
+  targetId?: number;
   projectileId?: string;
   projectileIndex?: number;
   projectileCount?: number;
@@ -899,6 +911,49 @@ type DamageZoneVfx = {
   skillId?: string;
   warning?: boolean;
   vfxScale?: number;
+};
+
+type LavaOrbitRuntime = {
+  visualId: number;
+  skillInstanceId: string;
+  skillId: string;
+  skillName: string;
+  damageType: string;
+  finalDamage: number;
+  manaPerSecond: number;
+  elapsedMs: number;
+  tickTimerMs: number;
+  tickIntervalMs: number;
+  orbitRadius: number;
+  orbitSpeedDegPerSec: number;
+  orbCount: number;
+  startAngleDeg: number;
+  radiusCycleEnabled: boolean;
+  radiusCycleAmplitude: number;
+  radiusCyclePeriodMs: number;
+  radiusCyclePhaseDeg: number;
+  damageRadius: number;
+  ringWidth: number;
+  maxTargets: number;
+  spawnVfxKey: string;
+  tickVfxKey: string;
+  hitVfxKey: string;
+  vfxScale?: number;
+};
+
+type LavaOrbitVisual = {
+  id: number;
+  x: number;
+  y: number;
+  orbitRadius: number;
+  orbitSpeedDegPerSec: number;
+  orbCount: number;
+  startAngleDeg: number;
+  elapsedMs: number;
+  damageRadius: number;
+  ringWidth: number;
+  damageType: string;
+  vfxKey: string;
 };
 
 type ScheduledSkillEvent = {
@@ -1069,7 +1124,10 @@ const ENEMY_CAMERA_VISIBLE_RANGE = 1180;
 const ENEMY_LOW_FREQUENCY_THINK_INTERVAL = 0.18;
 const MAX_VISIBLE_ENEMY_DOM_NODES = 180;
 const MONSTER_CHASE_SPEED_MULTIPLIER = 2;
-const ENEMY_MELEE_ATTACK_DISTANCE = 96;
+const PLAYER_GEOMETRY_RADIUS = 18;
+const ENEMY_MELEE_ATTACK_DISTANCE = 42;
+const ENEMY_MELEE_ATTACK_RANGE_MAX = 120;
+const ENEMY_MELEE_CONTACT_GAP = 4;
 const ENEMY_ATTACK_VISUAL_DURATION_MS = 640;
 const ENEMY_ATTACK_VISUAL_COOLDOWN_MS = 520;
 const ENEMY_WALK_VISUAL_DEADZONE = 0.35;
@@ -1077,16 +1135,16 @@ const ENEMY_HEALTH_VISIBLE_SECONDS = 5;
 const ENEMY_COLLISION_RADIUS = 25;
 const ENEMY_BOSS_COLLISION_RADIUS = 40;
 const ENEMY_COLLISION_MAX_PUSH = 2.2;
-const ENEMY_PLAYER_CONTACT_HOLD_RADIUS = 90;
-const ENEMY_PLAYER_CONTACT_SLOW_RADIUS = 145;
-const ENEMY_PLAYER_BODY_SOFT_RADIUS = 84;
+const ENEMY_PLAYER_CONTACT_HOLD_RADIUS = 42;
+const ENEMY_PLAYER_CONTACT_SLOW_RADIUS = 84;
+const ENEMY_PLAYER_BODY_SOFT_RADIUS = 0;
 const ENEMY_PLAYER_BODY_REPEL_FORCE = 2.25;
 const ENEMY_SWARM_INNER_RING_RADIUS = 88;
 const ENEMY_SWARM_RING_SPACING = 30;
 const ENEMY_SWARM_RING_COUNT = 4;
 const ENEMY_SWARM_SEPARATION_RATIO = 1.04;
 const ENEMY_SWARM_SEPARATION_FORCE = 1.2;
-const ENEMY_SWARM_TANGENT_FORCE = 0.26;
+const ENEMY_SWARM_TANGENT_FORCE = 0;
 const ENEMY_SWARM_MAX_REPEL = 1.35;
 const ENEMY_SWARM_MIN_CHASE_WEIGHT = 0.58;
 const ENEMY_SWARM_VELOCITY_LERP = 0.24;
@@ -1131,6 +1189,18 @@ const SKILL_TEST_DUMMY_OFFSETS = [
   { x: 420, y: 120 },
   { x: 560, y: -220 },
   { x: 560, y: 220 }
+];
+const ENCOUNTER_MONSTER_PALETTES: EncounterMonsterPalette[] = [
+  { primary: "#EF4444" },
+  { primary: "#F97316" },
+  { primary: "#EAB308" },
+  { primary: "#84CC16" },
+  { primary: "#14B8A6" },
+  { primary: "#38BDF8" },
+  { primary: "#818CF8" },
+  { primary: "#A78BFA" },
+  { primary: "#F472B6" },
+  { primary: "#94A3B8" }
 ];
 const UNIT_RENDER_SCALE = 0.7;
 const FLOATING_GEM_OFFSET = { x: 18, y: 18 };
@@ -3855,6 +3925,8 @@ function GameApp() {
     y: MAP_HEIGHT / 2,
     hp: 100,
     maxHp: 100,
+    currentMana: 0,
+    maxMana: 0,
     currentEnergyShield: 0,
     maxEnergyShield: 0
   });
@@ -3865,6 +3937,7 @@ function GameApp() {
   const [meleeArcs, setMeleeArcs] = useState<MeleeArcVfx[]>([]);
   const [chainSegments, setChainSegments] = useState<ChainSegmentVfx[]>([]);
   const [damageZones, setDamageZones] = useState<DamageZoneVfx[]>([]);
+  const [lavaOrbitVisuals, setLavaOrbitVisuals] = useState<LavaOrbitVisual[]>([]);
   const [hitVfxs, setHitVfxs] = useState<HitVfx[]>([]);
   const [kills, setKills] = useState(0);
   const [elapsed, setElapsed] = useState(0);
@@ -3900,9 +3973,11 @@ function GameApp() {
   const nextChainSegmentId = useRef(1);
   const nextDamageZoneId = useRef(1);
   const nextHitVfxId = useRef(1);
+  const nextLavaOrbitVisualId = useRef(1);
   const nextPromptId = useRef(1);
   const attackTimers = useRef<Record<string, number>>({});
   const scheduledSkillEvents = useRef<ScheduledSkillEvent[]>([]);
+  const activeLavaOrbits = useRef(new Map<string, LavaOrbitRuntime>());
   const runtimePerf = useRef<RuntimePerfSummary>({
     frame_ms: 0,
     logic_ms: 0,
@@ -3920,6 +3995,7 @@ function GameApp() {
   const playerVisual = useRef<UnitVisualRuntime>({ direction: "down", movementVector: { x: 0, y: 0 } });
   const enemyVisuals = useRef(new Map<number, EnemyVisualRuntime>());
   const triggeredEncounterSourceIds = useRef<Set<string>>(new Set());
+  const encounterMonsterPalette = useRef<EncounterMonsterPalette>(createEncounterMonsterPalette());
   const playerStateRef = useRef(player);
   const enemiesStateRef = useRef(enemies);
   const elapsedRef = useRef(0);
@@ -3982,7 +4058,9 @@ function GameApp() {
         setRuntimePlayer((current) => ({ ...current, x: map.playerSpawn.x, y: map.playerSpawn.y }));
         if (skillEditorMode) {
           nextEnemyId.current = SKILL_TEST_DUMMY_OFFSETS.length + 1;
-          setEnemies(createSkillTestDummies(1, map.playerSpawn.x, map.playerSpawn.y));
+          const nextPalette = createEncounterMonsterPalette();
+          encounterMonsterPalette.current = nextPalette;
+          setEnemies(createSkillTestDummies(1, map.playerSpawn.x, map.playerSpawn.y, nextPalette));
         } else {
           setEnemies([]);
         }
@@ -4004,6 +4082,16 @@ function GameApp() {
     if (!maxLife) return;
     setRuntimePlayer((current) => ({ ...current, hp: Math.max(current.hp, maxLife), maxHp: maxLife }));
   }, [state?.player_stats?.max_life?.value]);
+
+  useEffect(() => {
+    const maxMana = statNumber(state?.player_stats?.max_mana, 0);
+    const currentMana = statNumber(state?.player_stats?.current_mana, maxMana);
+    setRuntimePlayer((current) => ({
+      ...current,
+      currentMana: Math.max(current.currentMana, currentMana),
+      maxMana
+    }));
+  }, [state?.player_stats?.current_mana?.value, state?.player_stats?.max_mana?.value]);
 
   useEffect(() => {
     const maxEnergyShield = statNumber(state?.player_stats?.max_energy_shield, 0);
@@ -4124,12 +4212,13 @@ function GameApp() {
     const length = Math.hypot(dx, dy) || 1;
     const mapWidth = battleMap?.meta.world_width ?? MAP_WIDTH;
     const mapHeight = battleMap?.meta.world_height ?? MAP_HEIGHT;
+    const regeneratedPlayer = regeneratePlayerResources(currentPlayer, state?.player_stats, dt);
     const nextPlayerPosition = resolveWalkableMove(battleMap, currentPlayer, {
-      x: clamp(currentPlayer.x + (dx / length) * playerSpeed * dt, 40, mapWidth - 40),
-      y: clamp(currentPlayer.y + (dy / length) * playerSpeed * dt, 40, mapHeight - 40)
+      x: clamp(regeneratedPlayer.x + (dx / length) * playerSpeed * dt, 40, mapWidth - 40),
+      y: clamp(regeneratedPlayer.y + (dy / length) * playerSpeed * dt, 40, mapHeight - 40)
     });
     const nextPlayer = {
-      ...currentPlayer,
+      ...regeneratedPlayer,
       x: nextPlayerPosition.x,
       y: nextPlayerPosition.y
     };
@@ -4146,7 +4235,7 @@ function GameApp() {
 
       const attackLockedEnemyIds = currentEnemyAttackLockedIds(elapsedRef.current * 1000, enemiesStateRef.current, nextPlayer);
       const movingEnemies = updateRuntimeEnemies(enemiesStateRef.current, nextPlayer, battleMap, dt, elapsedRef.current, authoredSpawnPlanActive, authoredAggroSources, triggeredEncounterSourceIds.current, attackLockedEnemyIds);
-      currentVisualEnemies = spawnEnemy ? [...movingEnemies, createEnemy(nextEnemyId.current++, nextPlayer.x, nextPlayer.y, battleMap)] : movingEnemies;
+      currentVisualEnemies = spawnEnemy ? [...movingEnemies, createEnemy(nextEnemyId.current++, nextPlayer.x, nextPlayer.y, battleMap, "normal", encounterMonsterPalette.current)] : movingEnemies;
       enemiesStateRef.current = currentVisualEnemies;
       setEnemies(currentVisualEnemies);
     }
@@ -4157,11 +4246,18 @@ function GameApp() {
       for (const timerId of Object.keys(attackTimers.current)) {
         if (!activeIds.has(timerId)) delete attackTimers.current[timerId];
       }
+      for (const orbitId of Array.from(activeLavaOrbits.current.keys())) {
+        if (!activeIds.has(orbitId)) activeLavaOrbits.current.delete(orbitId);
+      }
       for (const skill of activeSkills) {
         const timerId = skill.active_gem_instance_id;
+        if (isLavaOrbitSkill(skill)) {
+          updateLavaOrbitSkill(skill, currentVisualEnemies, dt);
+          continue;
+        }
         attackTimers.current[timerId] = (attackTimers.current[timerId] ?? 0) - dt;
         if (attackTimers.current[timerId] <= 0) {
-          attackTimers.current[timerId] = Math.max(0.16, skill.final_cooldown_ms / 1000);
+          attackTimers.current[timerId] = skillReleaseIntervalSeconds(skill);
           setEnemies((current) => {
             const next = hitEnemies(current, skill);
             enemiesStateRef.current = next;
@@ -4178,6 +4274,7 @@ function GameApp() {
     setChainSegments((current) => advanceRuntimeVisuals(current, dt, MAX_RUNTIME_AREA_VFX));
     setDamageZones((current) => advanceRuntimeVisuals(current, dt, MAX_RUNTIME_AREA_VFX));
     setHitVfxs((current) => advanceRuntimeVisuals(current, dt, MAX_RUNTIME_HIT_VFX));
+    syncLavaOrbitVisuals();
     return consumeScheduledSkillEvents(dt);
   }
 
@@ -4285,6 +4382,236 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     return lockedIds;
   }
 
+  function skillReleaseIntervalSeconds(skill: SkillPreview) {
+    const intervalMs = Number(skill.actual_interval_ms ?? skill.final_cooldown_ms ?? 0);
+    return Math.max(0.16, intervalMs / 1000);
+  }
+
+  function skillManaCost(skill: SkillPreview) {
+    return Math.max(0, Number(skill.mana_cost ?? 0));
+  }
+
+  function trySpendSkillMana(skill: SkillPreview) {
+    const cost = skillManaCost(skill);
+    if (cost <= 0) return true;
+    const currentMana = playerStateRef.current.currentMana;
+    if (currentMana < cost) {
+      setCombatLogs((logs) => [`${skill.name_text} 魔力不足。`, ...logs].slice(0, 8));
+      return false;
+    }
+    setRuntimePlayer((current) => ({
+      ...current,
+      currentMana: clamp(current.currentMana - cost, 0, current.maxMana)
+    }));
+    return true;
+  }
+
+  function isLavaOrbitSkill(skill: SkillPreview) {
+    return skill.skill_package_id === "active_lava_orb" || skillHasOrbitModuleChain(skill);
+  }
+
+  function updateLavaOrbitSkill(skill: SkillPreview, currentEnemies: Enemy[], dt: number) {
+    let orbit = activeLavaOrbits.current.get(skill.active_gem_instance_id);
+    if (!orbit) {
+      const manaPerSecond = skillManaCost(skill);
+      if (manaPerSecond > 0 && playerStateRef.current.currentMana <= 0) return;
+      orbit = createLavaOrbitRuntime(skill, manaPerSecond);
+      activeLavaOrbits.current.set(skill.active_gem_instance_id, orbit);
+      setCombatLogs((logs) => [`${skill.name_text} 开始维持。`, ...logs].slice(0, 8));
+    }
+
+    const manaCost = orbit.manaPerSecond * dt;
+    if (manaCost > 0) {
+      const currentMana = playerStateRef.current.currentMana;
+      if (currentMana < manaCost) {
+        activeLavaOrbits.current.delete(skill.active_gem_instance_id);
+        setCombatLogs((logs) => [`${skill.name_text} 魔力耗尽，维持结束。`, ...logs].slice(0, 8));
+        return;
+      }
+      setRuntimePlayer((current) => ({
+        ...current,
+        currentMana: clamp(current.currentMana - manaCost, 0, current.maxMana)
+      }));
+    }
+
+    orbit.elapsedMs += dt * 1000;
+    orbit.tickTimerMs -= dt * 1000;
+    while (orbit.tickTimerMs <= 0) {
+      orbit.tickTimerMs += orbit.tickIntervalMs;
+      resolveLavaOrbitTick(orbit, currentEnemies);
+    }
+  }
+
+  function createLavaOrbitRuntime(skill: SkillPreview, manaPerSecond: number): LavaOrbitRuntime {
+    const modules = Array.isArray(skill.runtime_params?.modules) ? skill.runtime_params.modules as { type?: string; params?: Record<string, unknown>; trigger?: Record<string, unknown> }[] : [];
+    const orbitModule = modules.find((module) => module.type === "orbit_emitter");
+    const zoneModule = modules.find((module) => module.type === "damage_zone");
+    const orbitParams = orbitModule?.params ?? skill.runtime_params ?? {};
+    const zoneParams = zoneModule?.params ?? {};
+    const orbitRadius = Math.max(1, Number(orbitParams.orbit_radius ?? 118));
+    return {
+      visualId: nextLavaOrbitVisualId.current++,
+      skillInstanceId: skill.active_gem_instance_id,
+      skillId: skill.skill_package_id ?? skill.skill_template_id,
+      skillName: skill.name_text,
+      damageType: skill.damage_type,
+      finalDamage: skill.final_damage,
+      manaPerSecond,
+      elapsedMs: 0,
+      tickTimerMs: 0,
+      tickIntervalMs: Math.max(1, Math.round(Number(orbitParams.tick_interval_ms ?? 180))),
+      orbitRadius,
+      orbitSpeedDegPerSec: Number(orbitParams.orbit_speed_deg_per_sec ?? 160),
+      orbCount: Math.max(1, Math.round(Number(orbitParams.orb_count ?? 1))),
+      startAngleDeg: Number(orbitParams.start_angle_deg ?? -90),
+      radiusCycleEnabled: Boolean(orbitParams.orbit_radius_cycle_enabled ?? false),
+      radiusCycleAmplitude: Math.max(0, Number(orbitParams.orbit_radius_cycle_amplitude ?? 0)),
+      radiusCyclePeriodMs: Math.max(1, Math.round(Number(orbitParams.orbit_radius_cycle_period_ms ?? 1200))),
+      radiusCyclePhaseDeg: Number(orbitParams.orbit_radius_cycle_phase_deg ?? 0),
+      damageRadius: Math.max(1, Number(zoneParams.radius ?? skill.hit?.hit_radius ?? 52)),
+      ringWidth: Math.max(1, Number(zoneParams.ring_width ?? 20)),
+      maxTargets: Math.max(1, Math.round(Number(zoneParams.max_targets ?? 8))),
+      spawnVfxKey: String(orbitParams.spawn_vfx_key ?? skill.presentation_keys?.projectile_vfx_key ?? "skill_event.lava_orb.spawn"),
+      tickVfxKey: String(orbitParams.tick_vfx_key ?? skill.presentation_keys?.vfx ?? "skill_event.lava_orb.tick"),
+      hitVfxKey: skill.presentation_keys?.hit_vfx_key ?? String(zoneParams.vfx_key ?? "skill_event.lava_orb.hit"),
+      vfxScale: skillPreviewVfxScale(skill)
+    };
+  }
+
+  function resolveLavaOrbitTick(orbit: LavaOrbitRuntime, currentEnemies: Enemy[]) {
+    const center = { x: playerStateRef.current.x, y: playerStateRef.current.y };
+    const damageEvents: SkillEvent[] = [];
+    const hitVfxsForTick: HitVfx[] = [];
+    const textsForTick: FloatingText[] = [];
+    const damageZonesForTick: DamageZoneVfx[] = [];
+    const hitTargetIds = new Set<number>();
+    const timestampMs = Math.round(elapsedRef.current * 1000);
+
+    for (let orbIndex = 0; orbIndex < orbit.orbCount; orbIndex += 1) {
+      const orbPosition = lavaOrbitPosition(orbit, center, orbIndex);
+      damageZonesForTick.push({
+        id: nextDamageZoneId.current++,
+        x: orbPosition.x,
+        y: orbPosition.y,
+        shape: "circle",
+        radius: orbit.damageRadius,
+        length: orbit.damageRadius * 2,
+        width: orbit.damageRadius * 2,
+        directionX: 0,
+        directionY: 0,
+        ttl: 0.22,
+        duration: 0.22,
+        damageType: orbit.damageType,
+        vfxKey: orbit.hitVfxKey,
+        zoneId: `${orbit.skillInstanceId}.lava_orbit.${timestampMs}.${orbIndex}`,
+        skillId: orbit.skillId,
+        vfxScale: orbit.vfxScale
+      });
+      const targets = currentEnemies
+        .filter((enemy) => enemy.hp > 0 && !hitTargetIds.has(enemy.id))
+        .map((enemy) => ({ enemy, distance: distance(enemy, orbPosition) }))
+        .filter((item) => item.distance <= orbit.damageRadius)
+        .sort((left, right) => left.distance - right.distance)
+        .slice(0, orbit.maxTargets);
+      for (const item of targets) {
+        hitTargetIds.add(item.enemy.id);
+        const targetPosition = { x: item.enemy.x, y: item.enemy.y };
+        const eventBase = {
+          timestamp_ms: timestampMs,
+          source_entity: "player",
+          target_entity: String(item.enemy.id),
+          position: targetPosition,
+          direction: guideDirection(orbPosition, targetPosition),
+          delay_ms: 0,
+          damage_type: orbit.damageType,
+          skill_instance_id: orbit.skillInstanceId,
+          vfx_key: orbit.hitVfxKey,
+          sfx_key: "",
+          reason_key: "",
+          payload: {
+            skill_id: orbit.skillId,
+            skill_name: orbit.skillName,
+            orb_position: orbPosition,
+            target_world_position: targetPosition,
+            hit_world_position: targetPosition,
+            target_distance: item.distance
+          }
+        };
+        damageEvents.push({ ...eventBase, event_id: `${orbit.skillInstanceId}.lava_orbit.damage.${item.enemy.id}.${timestampMs}`, type: "damage", duration_ms: 0, amount: orbit.finalDamage });
+        hitVfxsForTick.push({
+          id: nextHitVfxId.current++,
+          x: targetPosition.x,
+          y: targetPosition.y,
+          targetId: item.enemy.id,
+          impactKind: "lava_orbit_hit",
+          impactRadius: orbit.damageRadius,
+          ttl: 0.42,
+          duration: 0.42,
+          damageType: orbit.damageType,
+          vfxKey: orbit.hitVfxKey,
+          skillTemplateId: orbit.skillId,
+          vfxScale: orbit.vfxScale
+        });
+        textsForTick.push({
+          id: nextTextId.current++,
+          x: targetPosition.x,
+          y: targetPosition.y - 28,
+          text: damageNumberText(orbit.finalDamage),
+          damageType: orbit.damageType,
+          ttl: 0.8,
+          duration: 0.8
+        });
+      }
+    }
+
+    if (damageZonesForTick.length > 0) setDamageZones((items) => capRuntimeVisualBudget([...items, ...damageZonesForTick], MAX_RUNTIME_AREA_VFX));
+    if (hitVfxsForTick.length > 0) setHitVfxs((items) => capRuntimeVisualBudget([...items, ...hitVfxsForTick], MAX_RUNTIME_HIT_VFX));
+    if (textsForTick.length > 0) setTexts((items) => capRuntimeVisualBudget([...items, ...textsForTick], MAX_RUNTIME_FLOATING_TEXT));
+    if (damageEvents.length > 0) applyDamageEventBatch(damageEvents);
+  }
+
+  function lavaOrbitPosition(orbit: LavaOrbitRuntime, center: { x: number; y: number }, orbIndex: number) {
+    const effectiveRadius = orbitEffectiveRadius(
+      orbit.orbitRadius,
+      orbit.elapsedMs,
+      orbit.radiusCycleEnabled,
+      orbit.radiusCycleAmplitude,
+      orbit.radiusCyclePeriodMs,
+      orbit.radiusCyclePhaseDeg
+    );
+    const angleDeg = orbit.startAngleDeg + (360 / orbit.orbCount) * orbIndex + orbit.orbitSpeedDegPerSec * (orbit.elapsedMs / 1000);
+    const angleRad = angleDeg * Math.PI / 180;
+    return {
+      x: center.x + Math.cos(angleRad) * effectiveRadius,
+      y: center.y + Math.sin(angleRad) * effectiveRadius
+    };
+  }
+
+  function syncLavaOrbitVisuals() {
+    const center = playerStateRef.current;
+    setLavaOrbitVisuals(Array.from(activeLavaOrbits.current.values()).map((orbit) => ({
+      id: orbit.visualId,
+      x: center.x,
+      y: center.y,
+      orbitRadius: orbitEffectiveRadius(
+        orbit.orbitRadius,
+        orbit.elapsedMs,
+        orbit.radiusCycleEnabled,
+        orbit.radiusCycleAmplitude,
+        orbit.radiusCyclePeriodMs,
+        orbit.radiusCyclePhaseDeg
+      ),
+      orbitSpeedDegPerSec: orbit.orbitSpeedDegPerSec,
+      orbCount: orbit.orbCount,
+      startAngleDeg: orbit.startAngleDeg,
+      elapsedMs: orbit.elapsedMs,
+      damageRadius: orbit.damageRadius,
+      ringWidth: orbit.ringWidth,
+      damageType: orbit.damageType,
+      vfxKey: orbit.spawnVfxKey
+    })));
+  }
+
   function hitEnemies(current: Enemy[], skill: SkillPreview) {
     if (usesSkillEventPipeline(skill)) return hitEnemiesWithSkillEvents(current, skill);
     if (current.length === 0) return current;
@@ -4296,6 +4623,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       .filter((enemy) => distance(enemy, caster) <= range)
       .slice(0, Math.max(1, skill.projectile_count));
     if (targets.length === 0) return current;
+    if (!trySpendSkillMana(skill)) return current;
 
     const targetIds = new Set(targets.map((target) => target.id));
     const nextTexts: FloatingText[] = [];
@@ -4361,6 +4689,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
             id: nextHitVfxId.current++,
             x: target.x,
             y: target.y,
+            targetId: target.id,
             ttl: legacyProjectileVfxKind === "ice_shards" ? ICE_SHARDS_IMPACT_DURATION_MS / 1000 : FIRE_BOLT_IMPACT_DURATION_MS / 1000,
             duration: legacyProjectileVfxKind === "ice_shards" ? ICE_SHARDS_IMPACT_DURATION_MS / 1000 : FIRE_BOLT_IMPACT_DURATION_MS / 1000,
             damageType: skill.damage_type,
@@ -4381,9 +4710,10 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     if (current.length === 0) return current;
     const caster = playerStateRef.current;
     if (skill.behavior_template === "module_chain") {
-      if (!hasLiveEnemyInCastRange(current, skill, caster)) return current;
+      if (!skillHasOrbitModuleChain(skill) && !hasLiveEnemyInCastRange(current, skill, caster)) return current;
       const skillEvents = createModuleChainSkillEvents(skill, current);
       if (skillEvents.length === 0) return current;
+      if (!trySpendSkillMana(skill)) return current;
       consumeImmediateSkillEvents(skillEvents);
       for (const event of skillEvents) {
         if (event.delay_ms > 0) {
@@ -4397,6 +4727,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       const targets = selectDamageZoneTargets(current, skill, caster);
       if (targets.length === 0) return current;
       const skillEvents = createDamageZoneSkillEvents(skill, targets);
+      if (!trySpendSkillMana(skill)) return current;
       consumeImmediateSkillEvents(skillEvents);
       for (const event of skillEvents) {
         if (event.delay_ms > 0) {
@@ -4410,6 +4741,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       const targets = selectPlayerNovaTargets(current, skill, caster);
       if (targets.length === 0) return current;
       const skillEvents = createPlayerNovaSkillEvents(skill, targets);
+      if (!trySpendSkillMana(skill)) return current;
       consumeImmediateSkillEvents(skillEvents);
       for (const event of skillEvents) {
         if (event.delay_ms > 0) {
@@ -4423,6 +4755,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       const targets = selectMeleeArcTargets(current, skill, caster);
       if (targets.length === 0) return current;
       const skillEvents = createMeleeArcSkillEvents(skill, targets);
+      if (!trySpendSkillMana(skill)) return current;
       consumeImmediateSkillEvents(skillEvents);
       for (const event of skillEvents) {
         if (event.delay_ms > 0) {
@@ -4436,6 +4769,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       const targets = selectChainTargets(current, skill, caster);
       if (targets.length === 0) return current;
       const skillEvents = createChainSkillEvents(skill, targets);
+      if (!trySpendSkillMana(skill)) return current;
       consumeImmediateSkillEvents(skillEvents);
       for (const event of skillEvents) {
         if (event.delay_ms > 0) {
@@ -4449,6 +4783,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     if (targets.length === 0) return current;
 
     const skillEvents = createProjectileSkillEvents(skill, targets[0].enemy, targets);
+    if (!trySpendSkillMana(skill)) return current;
     consumeImmediateSkillEvents(skillEvents);
     for (const event of skillEvents) {
       if (event.delay_ms > 0) {
@@ -4591,6 +4926,10 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     const orbitSpeedDegPerSec = Number(orbitParams.orbit_speed_deg_per_sec ?? 180);
     const orbCount = Math.max(1, Math.round(Number(orbitParams.orb_count ?? 1)));
     const startAngleDeg = Number(orbitParams.start_angle_deg ?? 0);
+    const radiusCycleEnabled = Boolean(orbitParams.orbit_radius_cycle_enabled ?? false);
+    const radiusCycleAmplitude = Math.max(0, Number(orbitParams.orbit_radius_cycle_amplitude ?? 0));
+    const radiusCyclePeriodMs = Math.max(1, Math.round(Number(orbitParams.orbit_radius_cycle_period_ms ?? 1000)));
+    const radiusCyclePhaseDeg = Number(orbitParams.orbit_radius_cycle_phase_deg ?? 0);
     const tickMarkerId = String(orbitParams.tick_marker_id ?? "");
     const triggerMarkerId = String(triggerParams.trigger_marker_id ?? zoneParams.trigger_marker_id ?? "");
     if (!tickMarkerId || tickMarkerId !== triggerMarkerId) return [];
@@ -4620,7 +4959,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     };
     const events: SkillEvent[] = [
       { ...base, event_id: `${skill.active_gem_instance_id}.cast_start.${timestampMs}`, type: "cast_start", position: origin, delay_ms: 0, duration_ms: 0, amount: null, vfx_key: spawnVfxKey, reason_key: "", payload: { skill_id: skillId, skill_name: skill.name_text } },
-      { ...base, event_id: `${skill.active_gem_instance_id}.orbit_spawn.${timestampMs}`, type: "orbit_spawn", position: origin, delay_ms: 0, duration_ms: durationMs, amount: null, vfx_key: spawnVfxKey, reason_key: "", payload: { orbit_id: orbitId, skill_id: skillId, skill_name: skill.name_text, orbit_center: origin, orbit_radius: orbitRadius, duration_ms: durationMs, orb_count: orbCount, orbit_speed_deg_per_sec: orbitSpeedDegPerSec, spawn_vfx_key: spawnVfxKey, vfx_scale: vfxScale } }
+      { ...base, event_id: `${skill.active_gem_instance_id}.orbit_spawn.${timestampMs}`, type: "orbit_spawn", position: origin, delay_ms: 0, duration_ms: durationMs, amount: null, vfx_key: spawnVfxKey, reason_key: "", payload: { orbit_id: orbitId, skill_id: skillId, skill_name: skill.name_text, orbit_center: origin, orbit_radius: orbitRadius, duration_ms: durationMs, orb_count: orbCount, orbit_speed_deg_per_sec: orbitSpeedDegPerSec, orbit_radius_cycle_enabled: radiusCycleEnabled, orbit_radius_cycle_amplitude: radiusCycleAmplitude, orbit_radius_cycle_period_ms: radiusCyclePeriodMs, orbit_radius_cycle_phase_deg: radiusCyclePhaseDeg, spawn_vfx_key: spawnVfxKey, vfx_scale: vfxScale } }
     ];
 
     const tickCount = Math.floor(durationMs / tickIntervalMs);
@@ -4629,9 +4968,10 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       for (let orbIndex = 0; orbIndex < orbCount; orbIndex += 1) {
         const angleDeg = startAngleDeg + (360 / orbCount) * orbIndex + orbitSpeedDegPerSec * (tickTimeMs / 1000);
         const angleRad = (angleDeg * Math.PI) / 180;
+        const effectiveOrbitRadius = orbitEffectiveRadius(orbitRadius, tickTimeMs, radiusCycleEnabled, radiusCycleAmplitude, radiusCyclePeriodMs, radiusCyclePhaseDeg);
         const orbPosition = {
-          x: origin.x + Math.cos(angleRad) * orbitRadius,
-          y: origin.y + Math.sin(angleRad) * orbitRadius
+          x: origin.x + Math.cos(angleRad) * effectiveOrbitRadius,
+          y: origin.y + Math.sin(angleRad) * effectiveOrbitRadius
         };
         const tickEventId = `${skill.active_gem_instance_id}.orbit_tick.${tickIndex}.${orbIndex}.${timestampMs}`;
         const zoneId = `${skill.active_gem_instance_id}.${timestampMs}.orbit_zone.${tickIndex}.${orbIndex}`;
@@ -4651,6 +4991,11 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           tick_vfx_key: tickVfxKey,
           orbit_radius: orbitRadius,
           orbit_speed_deg_per_sec: orbitSpeedDegPerSec,
+          orbit_radius_cycle_enabled: radiusCycleEnabled,
+          orbit_radius_cycle_amplitude: radiusCycleAmplitude,
+          orbit_radius_cycle_period_ms: radiusCyclePeriodMs,
+          orbit_radius_cycle_phase_deg: radiusCyclePhaseDeg,
+          orb_distance: effectiveOrbitRadius,
           start_angle_deg: startAngleDeg,
           vfx_scale: vfxScale
         };
@@ -4674,6 +5019,11 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           orb_position: orbPosition,
           orbit_radius: orbitRadius,
           orbit_speed_deg_per_sec: orbitSpeedDegPerSec,
+          orbit_radius_cycle_enabled: radiusCycleEnabled,
+          orbit_radius_cycle_amplitude: radiusCycleAmplitude,
+          orbit_radius_cycle_period_ms: radiusCyclePeriodMs,
+          orbit_radius_cycle_phase_deg: radiusCyclePhaseDeg,
+          orb_distance: effectiveOrbitRadius,
           start_angle_deg: startAngleDeg,
           delay_ms: triggerDelayMs,
           radius,
@@ -5250,7 +5600,8 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       ...projectileSpawns,
       ...damageTargets.flatMap(({ enemy: damageTarget, projectileIndex }, hitIndex) => {
         const projectileDirection = projectileDirections[projectileIndex] ?? direction;
-        const hitDistance = Math.hypot(damageTarget.x - start.x, damageTarget.y - start.y) || 1;
+        const hitMetrics = projectileLineMetrics(start, projectileDirection, damageTarget);
+        const hitDistance = projectileImpactDistance(hitMetrics, damageTarget);
         const hitEnd = {
           x: start.x + projectileDirection.x * hitDistance,
           y: start.y + projectileDirection.y * hitDistance
@@ -5395,12 +5746,30 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     const radius = Math.max(1, Number(payload.orbit_radius ?? 1));
     const speed = Number(payload.orbit_speed_deg_per_sec ?? 0);
     const startAngle = Number(payload.start_angle_deg ?? 0);
+    const radiusCycleEnabled = Boolean(payload.orbit_radius_cycle_enabled ?? false);
+    const radiusCycleAmplitude = Math.max(0, Number(payload.orbit_radius_cycle_amplitude ?? 0));
+    const radiusCyclePeriodMs = Math.max(1, Math.round(Number(payload.orbit_radius_cycle_period_ms ?? 1000)));
+    const radiusCyclePhaseDeg = Number(payload.orbit_radius_cycle_phase_deg ?? 0);
     const angleDeg = startAngle + (360 / orbCount) * orbIndex + speed * (tickTimeMs / 1000);
     const angleRad = (angleDeg * Math.PI) / 180;
+    const effectiveRadius = orbitEffectiveRadius(radius, tickTimeMs, radiusCycleEnabled, radiusCycleAmplitude, radiusCyclePeriodMs, radiusCyclePhaseDeg);
     return {
-      x: center.x + Math.cos(angleRad) * radius,
-      y: center.y + Math.sin(angleRad) * radius
+      x: center.x + Math.cos(angleRad) * effectiveRadius,
+      y: center.y + Math.sin(angleRad) * effectiveRadius
     };
+  }
+
+  function orbitEffectiveRadius(
+    radius: number,
+    timestampMs: number,
+    radiusCycleEnabled: boolean,
+    radiusCycleAmplitude: number,
+    radiusCyclePeriodMs: number,
+    radiusCyclePhaseDeg: number
+  ) {
+    if (!radiusCycleEnabled || radiusCycleAmplitude <= 0) return Math.max(1, radius);
+    const cycleRad = (timestampMs / Math.max(1, radiusCyclePeriodMs)) * Math.PI * 2 + radiusCyclePhaseDeg * Math.PI / 180;
+    return Math.max(1, radius + Math.sin(cycleRad) * radiusCycleAmplitude);
   }
 
   function consumeSkillEventBatch(events: SkillEvent[]) {
@@ -5484,21 +5853,6 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           const reasonKey = typeof payload.reason_key === "string" ? payload.reason_key : event.reason_key;
           const floatingKey = typeof payload.floating_text_key === "string" ? payload.floating_text_key : "";
           const damageAmount = Number(payload.damage_amount ?? 0);
-          nextHitVfxs.push({
-            id: nextHitVfxId.current++,
-            x: followedOrbitPosition.x,
-            y: followedOrbitPosition.y,
-            projectileId: typeof payload.orbit_id === "string" ? payload.orbit_id : undefined,
-            projectileIndex: Number(payload.orb_index ?? 0) + 1,
-            projectileCount: Number(payload.orb_count ?? 1),
-            impactKind: "orbit_damage_zone",
-            ttl: FIRE_BOLT_IMPACT_DURATION_MS / 1000,
-            duration: FIRE_BOLT_IMPACT_DURATION_MS / 1000,
-            damageType: event.damage_type,
-            vfxKey: hitVfxKey,
-            skillTemplateId: event.skill_instance_id,
-            vfxScale: normalizedVfxScale(payload.vfx_scale)
-          });
           for (const [targetIndex, item] of orbitHitTargets.entries()) {
             const targetPosition = { x: item.enemy.x, y: item.enemy.y };
             const hitPayload = {
@@ -5519,11 +5873,28 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
               reason_key: reasonKey,
               payload: hitPayload
             });
+            nextHitVfxs.push({
+              id: nextHitVfxId.current++,
+              x: targetPosition.x,
+              y: targetPosition.y,
+              targetId: item.enemy.id,
+              projectileId: typeof payload.orbit_id === "string" ? payload.orbit_id : undefined,
+              projectileIndex: Number(payload.orb_index ?? 0) + 1,
+              projectileCount: Number(payload.orb_count ?? 1),
+              impactKind: "orbit_damage_zone",
+              ttl: FIRE_BOLT_IMPACT_DURATION_MS / 1000,
+              duration: FIRE_BOLT_IMPACT_DURATION_MS / 1000,
+              damageType: event.damage_type,
+              vfxKey: hitVfxKey,
+              skillTemplateId: event.skill_instance_id,
+              vfxScale: normalizedVfxScale(payload.vfx_scale)
+            });
             nextTexts.push({
               id: nextTextId.current++,
               x: targetPosition.x,
               y: targetPosition.y - 28,
-              text: `${Math.round(damageAmount)}点${damageTypeText(event.damage_type)}伤害`,
+              text: damageNumberText(damageAmount),
+              damageType: event.damage_type,
               ttl: 0.8,
               duration: 0.8
             });
@@ -5665,10 +6036,15 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       if (event.type === "hit_vfx") {
         const eventVfxKind = projectileVfxKind(event.vfx_key) ?? projectileVfxKind(event.skill_instance_id);
         const visualDuration = eventVfxKind === "penetrating_shot" ? PENETRATING_SHOT_IMPACT_DURATION_MS / 1000 : Math.max(0.12, event.duration_ms / 1000);
+        const impact = pointFromUnknown(event.payload?.hit_world_position)
+          ?? pointFromUnknown(event.payload?.impact_world_position)
+          ?? pointFromUnknown(event.position)
+          ?? event.position;
         nextHitVfxs.push({
           id: nextHitVfxId.current++,
-          x: event.position.x,
-          y: event.position.y,
+          x: impact.x,
+          y: impact.y,
+          targetId: hitVfxTargetId(event),
           projectileId: typeof event.payload?.projectile_id === "string" ? event.payload.projectile_id : undefined,
           projectileIndex: Number(event.payload?.projectile_index ?? 1),
           projectileCount: Number(event.payload?.projectile_count ?? 1),
@@ -5691,7 +6067,8 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           id: nextTextId.current++,
           x: event.position.x,
           y: event.position.y,
-          text: typeof event.payload?.text === "string" ? event.payload.text : Math.round(Number(event.amount ?? 0)).toString(),
+          text: damageNumberText(event.amount),
+          damageType: event.damage_type,
           ttl: Math.max(0.3, event.duration_ms / 1000),
           duration: Math.max(0.3, event.duration_ms / 1000)
         });
@@ -5955,12 +6332,17 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     if (event.type === "hit_vfx") {
       const eventVfxKind = projectileVfxKind(event.vfx_key) ?? projectileVfxKind(event.skill_instance_id);
       const visualDuration = eventVfxKind === "penetrating_shot" ? PENETRATING_SHOT_IMPACT_DURATION_MS / 1000 : Math.max(0.12, event.duration_ms / 1000);
+      const impact = pointFromUnknown(event.payload?.hit_world_position)
+        ?? pointFromUnknown(event.payload?.impact_world_position)
+        ?? pointFromUnknown(event.position)
+        ?? event.position;
       setHitVfxs((items) => [
         ...items,
         {
           id: nextHitVfxId.current++,
-          x: event.position.x,
-          y: event.position.y,
+          x: impact.x,
+          y: impact.y,
+          targetId: hitVfxTargetId(event),
           projectileId: typeof event.payload?.projectile_id === "string" ? event.payload.projectile_id : undefined,
           projectileIndex: Number(event.payload?.projectile_index ?? 1),
           projectileCount: Number(event.payload?.projectile_count ?? 1),
@@ -5986,7 +6368,8 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           id: nextTextId.current++,
           x: event.position.x,
           y: event.position.y,
-          text: event.payload?.text ?? `${Math.round(Number(event.amount ?? 0))}点${damageTypeText(event.damage_type)}伤害`,
+          text: damageNumberText(event.amount),
+          damageType: event.damage_type,
           ttl: Math.max(0.35, event.duration_ms / 1000),
           duration: Math.max(0.35, event.duration_ms / 1000)
         }
@@ -6120,6 +6503,41 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     }
   }
 
+  function resetBattleRuntimeForChallenge(spawnPoint: { x: number; y: number }) {
+    const resetPlayer = {
+      ...playerStateRef.current,
+      x: spawnPoint.x,
+      y: spawnPoint.y,
+      hp: playerStateRef.current.maxHp,
+      currentMana: playerStateRef.current.maxMana,
+      currentEnergyShield: playerStateRef.current.maxEnergyShield
+    };
+    setRuntimePlayer(() => resetPlayer);
+    enemiesStateRef.current = [];
+    setEnemies([]);
+    setTexts([]);
+    setBolts([]);
+    setAreaNovas([]);
+    setMeleeArcs([]);
+    setChainSegments([]);
+    setDamageZones([]);
+    setLavaOrbitVisuals([]);
+    setHitVfxs([]);
+    setKills(0);
+    setElapsed(0);
+    elapsedRef.current = 0;
+    elapsedLastUiSync.current = 0;
+    lastFrame.current = null;
+    spawnTimer.current = 0;
+    attackTimers.current = {};
+    scheduledSkillEvents.current = [];
+    activeLavaOrbits.current.clear();
+    enemyVisuals.current = new Map();
+    playerVisual.current = { direction: "down", movementVector: { x: 0, y: 0 } };
+    triggeredEncounterSourceIds.current = new Set();
+    nextEnemyId.current = skillEditorMode ? SKILL_TEST_DUMMY_OFFSETS.length + 1 : 1;
+  }
+
   function startGame() {
     if (!selectedMapId) {
       setNotice("请先选择地图。");
@@ -6129,15 +6547,13 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       setNotice("地图资源仍在加载，请稍候。");
       return;
     }
+    const challengeSpawn = battleMap.playerSpawn;
+    const nextEncounterPalette = createEncounterMonsterPalette();
+    encounterMonsterPalette.current = nextEncounterPalette;
+    resetBattleRuntimeForChallenge(challengeSpawn);
     setGameFailureOpen(false);
     setPlaying(true);
     setBagOpen(false);
-    setRuntimePlayer((current) => ({
-      ...current,
-      hp: current.maxHp,
-      currentEnergyShield: current.maxEnergyShield
-    }));
-    triggeredEncounterSourceIds.current = new Set();
     let startedProceduralSpawnPlan = false;
     let spawnDebugLog: string | null = null;
     if (skillEditorMode) {
@@ -6145,7 +6561,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       setAuthoredAggroSources([]);
       setSpawnPlanWarnings([]);
       setProceduralSpawnDebug(null);
-      const nextEnemies = createSkillTestDummies(1, player.x, player.y);
+      const nextEnemies = createSkillTestDummies(1, challengeSpawn.x, challengeSpawn.y, nextEncounterPalette);
       enemiesStateRef.current = nextEnemies;
       setEnemies(nextEnemies);
       nextEnemyId.current = SKILL_TEST_DUMMY_OFFSETS.length + 1;
@@ -6158,8 +6574,9 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         startedProceduralSpawnPlan = true;
         setSpawnPlanWarnings([]);
         setProceduralSpawnDebug(proceduralSpawnPlan.debug);
-        enemiesStateRef.current = proceduralSpawnPlan.enemies;
-        setEnemies(proceduralSpawnPlan.enemies);
+        const nextEnemies = applyEncounterMonsterPalette(proceduralSpawnPlan.enemies, nextEncounterPalette);
+        enemiesStateRef.current = nextEnemies;
+        setEnemies(nextEnemies);
         spawnDebugLog = proceduralSpawnLogLine(proceduralSpawnPlan.debug);
       } else {
         setProceduralSpawnDebug(proceduralSpawnPlan.debug);
@@ -6171,9 +6588,9 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         setSpawnPlanWarnings([]);
         setProceduralSpawnDebug(null);
         const nextEnemies = [
-          createEnemy(nextEnemyId.current++, player.x, player.y, battleMap),
-          createEnemy(nextEnemyId.current++, player.x, player.y, battleMap),
-          createEnemy(nextEnemyId.current++, player.x, player.y, battleMap, "elite")
+          createEnemy(nextEnemyId.current++, challengeSpawn.x, challengeSpawn.y, battleMap, "normal", nextEncounterPalette),
+          createEnemy(nextEnemyId.current++, challengeSpawn.x, challengeSpawn.y, battleMap, "normal", nextEncounterPalette),
+          createEnemy(nextEnemyId.current++, challengeSpawn.x, challengeSpawn.y, battleMap, "elite", nextEncounterPalette)
         ];
         enemiesStateRef.current = nextEnemies;
         setEnemies(nextEnemies);
@@ -6251,7 +6668,9 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
   const runtimeUsesEditorMap = battleMap ? isEditorRuntimeBattleMap(battleMap) : false;
   const battleCamera = createBattleCamera(player.x, player.y, skillEditorMode ? skillEditorCameraSettings.zoom : runtimeUsesEditorMap ? 1 : BATTLE_CAMERA_ZOOM);
   const visibleEnemies = selectRenderableEnemies(enemies, player);
-  const sortedRenderItems = createBattleRenderItems(player, visibleEnemies, bolts, hitVfxs, runtimeUsesEditorMap ? MAP_EDITOR_PLAYER_RENDER_SCALE : UNIT_RENDER_SCALE);
+  const anchoredHitVfxs = anchorHitVfxsToTargets(hitVfxs, enemies);
+  const activeBossEnemy = visibleEnemies.find((enemy) => enemy.boss && enemy.hp > 0) ?? null;
+  const sortedRenderItems = createBattleRenderItems(player, visibleEnemies, bolts, anchoredHitVfxs, runtimeUsesEditorMap ? MAP_EDITOR_PLAYER_RENDER_SCALE : UNIT_RENDER_SCALE);
   const animationNowMs = elapsed * 1000;
   const battleAnimationContexts = createBattleAnimationContexts(playerVisual.current, enemyVisuals.current, visibleEnemies, player, animationNowMs, statNumber(state.player_stats?.move_speed, 1));
   const terrainWidth = battleMap?.meta.world_width ?? MAP_VISUAL_WIDTH;
@@ -6278,6 +6697,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       hp: enemy.hp,
       maxHp: enemy.maxHp,
       monsterId: enemy.monsterId,
+      visualPrimaryColor: enemy.visualPrimaryColor,
       boss: enemy.boss,
       runtimeTier: enemy.runtimeTier
     })),
@@ -6339,6 +6759,23 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         ttl: zone.ttl,
         duration: zone.duration
       })),
+      ...lavaOrbitVisuals.map((orbit) => ({
+        id: orbit.id,
+        kind: "lava-orbit" as const,
+        x: orbit.x,
+        y: orbit.y,
+        radius: orbit.orbitRadius,
+        orbitSpeedDegPerSec: orbit.orbitSpeedDegPerSec,
+        orbCount: orbit.orbCount,
+        startAngleDeg: orbit.startAngleDeg,
+        elapsedMs: orbit.elapsedMs,
+        damageRadius: orbit.damageRadius,
+        ringWidth: orbit.ringWidth,
+        damageType: orbit.damageType,
+        vfxKey: orbit.vfxKey,
+        ttl: 1,
+        duration: 1
+      })),
       ...meleeArcs.map((arc) => ({
         id: arc.id,
         kind: "melee-arc" as const,
@@ -6366,7 +6803,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         duration: segment.duration
       }))
     ],
-    hits: hitVfxs.map((vfx) => ({
+    hits: anchoredHitVfxs.map((vfx) => ({
       id: vfx.id,
       x: vfx.x,
       y: vfx.y,
@@ -6381,6 +6818,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       x: text.x,
       y: text.y,
       text: text.text,
+      damageType: text.damageType,
       ttl: text.ttl,
       duration: text.duration
     }))
@@ -6388,6 +6826,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
 
   return (
     <main className="game-screen">
+      {activeBossEnemy && <BossHealthBar enemy={activeBossEnemy} />}
       <section className="map-layer" aria-label="可玩地图">
         <div
           className="terrain"
@@ -6428,7 +6867,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           </div>
           <div className="battle-text-layer">
             {!CANVAS_GEOMETRY_SKILL_EFFECTS && texts.map((text) => (
-              <div key={text.id} className="floating-text" style={floatingTextStyle(text)}>{text.text}</div>
+              <div key={text.id} className={`floating-text floating-text-${cssToken(text.damageType)}`} style={floatingTextStyle(text)}>{text.text}</div>
             ))}
           </div>
         </div>
@@ -6669,56 +7108,72 @@ function statNumber(stat: PlayerStatView | undefined, fallback: number) {
   return typeof stat?.value === "number" ? stat.value : fallback;
 }
 
+function regeneratePlayerResources(player: PlayerRuntimeState, stats: AppState["player_stats"] | undefined, dt: number): PlayerRuntimeState {
+  const lifeRegen = Math.max(0, statNumber(stats?.life_regen_flat, 0));
+  const manaRegen = Math.max(0, statNumber(stats?.mana_regen_flat, 0));
+  if (lifeRegen <= 0 && manaRegen <= 0) return player;
+  return {
+    ...player,
+    hp: clamp(player.hp + lifeRegen * dt, 0, player.maxHp),
+    currentMana: clamp(player.currentMana + manaRegen * dt, 0, player.maxMana)
+  };
+}
+
 function PlayerResourceHud({ state, player, inventoryMode }: { state: AppState; player: PlayerRuntimeState; inventoryMode: boolean }) {
   const maxLife = Math.max(0, player.maxHp);
   const currentLife = clamp(player.hp, 0, maxLife);
   const maxShield = Math.max(0, player.maxEnergyShield);
   const currentShield = clamp(player.currentEnergyShield, 0, maxShield);
-  const maxMana = Math.max(0, statNumber(state.player_stats?.max_mana, 0));
-  const currentMana = clamp(statNumber(state.player_stats?.current_mana, maxMana), 0, maxMana);
+  const maxMana = Math.max(0, player.maxMana);
+  const currentMana = clamp(player.currentMana, 0, maxMana);
 
   return (
     <aside className={`player-resource-hud${inventoryMode ? " inventory-mode" : ""}`} aria-label="玩家资源">
-      <div className="player-resource-side player-resource-side-left">
-        <ResourceOrb kind="life" label="生命" current={currentLife} max={maxLife} />
-        <div className="player-resource-lines">
-          <ResourceLine kind="life" label="生命" current={currentLife} max={maxLife} />
-          <ResourceLine kind="shield" label="护盾" current={currentShield} max={maxShield} />
-        </div>
-      </div>
-      <div className="player-resource-center" aria-hidden="true">
-        <span />
-      </div>
-      <div className="player-resource-side player-resource-side-right">
-        <div className="player-resource-lines">
-          <ResourceLine kind="mana" label="魔力" current={currentMana} max={maxMana} />
-        </div>
-        <ResourceOrb kind="mana" label="魔力" current={currentMana} max={maxMana} />
-      </div>
+      <ResourceOrb kind="life" label="生命" current={currentLife} max={maxLife} secondaryLabel="护盾" secondaryCurrent={currentShield} secondaryMax={maxShield} />
+      <ResourceOrb kind="mana" label="魔力" current={currentMana} max={maxMana} />
     </aside>
   );
 }
 
-function ResourceOrb({ kind, label, current, max }: { kind: string; label: string; current: number; max: number }) {
+function ResourceOrb({
+  kind,
+  label,
+  current,
+  max,
+  secondaryLabel,
+  secondaryCurrent,
+  secondaryMax
+}: {
+  kind: string;
+  label: string;
+  current: number;
+  max: number;
+  secondaryLabel?: string;
+  secondaryCurrent?: number;
+  secondaryMax?: number;
+}) {
   return (
-    <div className={`player-resource-orb player-resource-orb-${kind}`} aria-hidden="true">
-      <span style={{ height: `${resourcePercent(current, max)}%` }} />
-      <strong>{label}</strong>
-    </div>
-  );
-}
-
-function ResourceLine({ kind, label, current, max }: { kind: string; label: string; current: number; max: number }) {
-  return (
-    <div className={`player-resource-line player-resource-line-${kind}`}>
-      <div>
-        <span>{label}</span>
-        <strong>{formatResourceValue(current)} / {formatResourceValue(max)}</strong>
+    <section className={`player-resource-node player-resource-node-${kind}`}>
+      <div className="player-resource-readout">
+        {secondaryLabel && (
+          <>
+            <span>{label}:</span>
+            <strong>{formatResourceValue(current)} / {formatResourceValue(max)}</strong>
+            <span>{secondaryLabel}:</span>
+            <strong>{formatResourceValue(secondaryCurrent ?? 0)} / {formatResourceValue(secondaryMax ?? 0)}</strong>
+          </>
+        )}
+        {!secondaryLabel && (
+          <>
+            <span>{label}:</span>
+            <strong>{formatResourceValue(current)} / {formatResourceValue(max)}</strong>
+          </>
+        )}
       </div>
-      <div className="player-resource-track" aria-hidden="true">
-        <span style={{ width: `${resourcePercent(current, max)}%` }} />
+      <div className={`player-resource-orb player-resource-orb-${kind}`} aria-hidden="true">
+        <span style={{ height: `${resourcePercent(current, max)}%` }} />
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -7713,6 +8168,10 @@ function SkillEditorPanel({
       "orbit_speed_deg_per_sec",
       "orb_count",
       "start_angle_deg",
+      "orbit_radius_cycle_enabled",
+      "orbit_radius_cycle_amplitude",
+      "orbit_radius_cycle_period_ms",
+      "orbit_radius_cycle_phase_deg",
       "tick_marker_id",
       "spawn_vfx_key",
       "tick_vfx_key"
@@ -7845,6 +8304,10 @@ function SkillEditorPanel({
       requireNumberAtLeast(params.orbit_speed_deg_per_sec, "每秒角速度", -Number.MAX_SAFE_INTEGER, errors);
       requireIntegerAtLeast(params.orb_count, "熔岩球数量", 1, errors);
       requireNumberRange(params.start_angle_deg, "起始角度", -360, 360, errors);
+      if (params.orbit_radius_cycle_enabled !== undefined && typeof params.orbit_radius_cycle_enabled !== "boolean") errors.push("半径循环开关必须是布尔值。");
+      requireNumberAtLeast(params.orbit_radius_cycle_amplitude, "半径循环振幅", 0, errors);
+      requireIntegerAtLeast(params.orbit_radius_cycle_period_ms, "半径循环周期毫秒", 1, errors);
+      requireNumberRange(params.orbit_radius_cycle_phase_deg, "半径循环相位", -360, 360, errors);
       if (typeof params.tick_marker_id !== "string" || !/^[a-z][a-z0-9_]*$/.test(params.tick_marker_id)) errors.push("tick 标识必须是配置标识。");
       if (typeof params.spawn_vfx_key !== "string" || !/^[a-z][a-z0-9_.-]*\.[a-z0-9_.-]+$/.test(params.spawn_vfx_key)) errors.push("生成特效键必须是配置键。");
       if (typeof params.tick_vfx_key !== "string" || !/^[a-z][a-z0-9_.-]*\.[a-z0-9_.-]+$/.test(params.tick_vfx_key)) errors.push("tick 特效键必须是配置键。");
@@ -9127,6 +9590,10 @@ function ProjectileParameterPanel({
             <NumberInput label="每秒角速度" value={numberValue(orbitModuleParams.orbit_speed_deg_per_sec, 0)} disabled={!canEdit} onChange={(value) => updateModuleParam(orbitModuleIndex, "orbit_speed_deg_per_sec", value)} />
             <NumberInput label="熔岩球数量" value={numberValue(orbitModuleParams.orb_count, 1)} min={1} integer disabled={!canEdit} onChange={(value) => updateModuleParam(orbitModuleIndex, "orb_count", value)} />
             <NumberInput label="起始角度" value={numberValue(orbitModuleParams.start_angle_deg, 0)} disabled={!canEdit} onChange={(value) => updateModuleParam(orbitModuleIndex, "start_angle_deg", value)} />
+            <CheckboxInput label="半径循环变化" checked={Boolean(orbitModuleParams.orbit_radius_cycle_enabled ?? false)} disabled={!canEdit} onChange={(value) => updateModuleParam(orbitModuleIndex, "orbit_radius_cycle_enabled", value)} />
+            <NumberInput label="半径循环振幅" value={numberValue(orbitModuleParams.orbit_radius_cycle_amplitude, 0)} min={0} disabled={!canEdit} onChange={(value) => updateModuleParam(orbitModuleIndex, "orbit_radius_cycle_amplitude", value)} />
+            <NumberInput label="半径循环周期毫秒" value={numberValue(orbitModuleParams.orbit_radius_cycle_period_ms, 1000)} min={1} integer disabled={!canEdit} onChange={(value) => updateModuleParam(orbitModuleIndex, "orbit_radius_cycle_period_ms", value)} />
+            <NumberInput label="半径循环相位" value={numberValue(orbitModuleParams.orbit_radius_cycle_phase_deg, 0)} disabled={!canEdit} onChange={(value) => updateModuleParam(orbitModuleIndex, "orbit_radius_cycle_phase_deg", value)} />
             <TextInput label="tick 标识" value={tickMarkerId} disabled={!canEdit} onChange={(value) => updateModuleParam(orbitModuleIndex, "tick_marker_id", value)} />
             <TextInput label="生成特效" value={String(orbitModuleParams.spawn_vfx_key ?? "")} disabled={!canEdit} onChange={(value) => updateModuleParam(orbitModuleIndex, "spawn_vfx_key", value)} />
             <TextInput label="tick 特效" value={String(orbitModuleParams.tick_vfx_key ?? "")} disabled={!canEdit} onChange={(value) => updateModuleParam(orbitModuleIndex, "tick_vfx_key", value)} />
@@ -10146,9 +10613,12 @@ function createProceduralSpawnPlanEnemies(map: BakedBattleMapData, startId: numb
       }))
     }))
   } : map;
-  const result = generateProceduralMonsterSpawns(spawnMap, mapSpawnV1Config as MapSpawnV1Config, {
+  const result = generateProceduralMonsterSpawns(spawnMap, {
+    ...(mapSpawnV1Config as MapSpawnV1Config),
+    monster_definitions: parseMonsterDefinitionsToml(monsterDefsToml)
+  }, {
     startId,
-    seed: `${selectedMapId ?? map.id}:${map.displayName}:v1`
+    seed: `${selectedMapId ?? map.id}:${map.displayName}:v1:${Date.now()}:${Math.random()}`
   });
   const enemies: Enemy[] = result.enemies.map((monster) => ({
     id: monster.runtime_id,
@@ -10469,7 +10939,19 @@ function resetEnemyEngagement(enemy: Enemy): Enemy {
 }
 
 function monsterAttackRange(enemy: Enemy) {
-  return Math.max(1, enemy.attackRange ?? ENEMY_MELEE_ATTACK_DISTANCE);
+  const configuredRange = Math.max(1, enemy.attackRange ?? ENEMY_MELEE_ATTACK_DISTANCE);
+  if (configuredRange > ENEMY_MELEE_ATTACK_RANGE_MAX) return configuredRange;
+  return meleeContactAttackRange(enemy);
+}
+
+function meleeContactAttackRange(enemy: Enemy) {
+  return PLAYER_GEOMETRY_RADIUS + enemyVisualRadius(enemy) + ENEMY_MELEE_CONTACT_GAP;
+}
+
+function enemyVisualRadius(enemy: Enemy) {
+  const visual = resolveMonsterGeometryVisual(enemy.monsterId);
+  if (visual) return visual.sizePx * 0.5;
+  return enemy.boss || enemy.monsterId === "enemy_brute" ? ENEMY_BOSS_COLLISION_RADIUS : ENEMY_COLLISION_RADIUS;
 }
 
 function monsterAttackCadenceMs(enemy: Enemy) {
@@ -10585,6 +11067,15 @@ function moveEnemyTowardPlayer(
   const length = Math.hypot(dx, dy);
   const speed = (enemy.boss ? 44 : 70) * MONSTER_CHASE_SPEED_MULTIPLIER;
   const playerDistance = distance(enemy, player);
+  const attackRange = monsterAttackRange(enemy);
+  if (playerDistance <= attackRange) {
+    return {
+      ...enemy,
+      velocityX: 0,
+      velocityY: 0,
+      runtimeTier
+    };
+  }
   const directCharge = enemy.aggroLocked === true;
   const chaseWeight = directCharge
     ? 1
@@ -10597,7 +11088,9 @@ function moveEnemyTowardPlayer(
   const desired = length > 1
     ? { x: dx / length, y: dy / length }
     : { x: Math.cos(fallbackAngle), y: Math.sin(fallbackAngle) };
-  const steering = steerEnemySwarm(enemy, desired, spatialIndex);
+  const steering = directCharge
+    ? { x: 0, y: 0, speedScale: 1, active: false }
+    : steerEnemySwarm(enemy, desired, spatialIndex);
   const playerRepelPressure = !directCharge && playerDistance < ENEMY_PLAYER_BODY_SOFT_RADIUS
     ? (ENEMY_PLAYER_BODY_SOFT_RADIUS - playerDistance) / ENEMY_PLAYER_BODY_SOFT_RADIUS
     : 0;
@@ -10621,7 +11114,7 @@ function moveEnemyTowardPlayer(
   const clampedVelocity = velocityLength > speed
     ? { x: nextVelocity.x / velocityLength * speed, y: nextVelocity.y / velocityLength * speed }
     : nextVelocity;
-  const stepDistance = Math.hypot(clampedVelocity.x, clampedVelocity.y) * dt;
+  const stepDistance = Math.min(Math.hypot(clampedVelocity.x, clampedVelocity.y) * dt, Math.max(0, playerDistance - attackRange));
   const direction = normalizeMoveVector(clampedVelocity);
   const retreatingFromPlayer = !directCharge && playerRepelPressure > 0.02
     && direction.x * fromPlayer.x + direction.y * fromPlayer.y > 0.25;
@@ -10631,7 +11124,9 @@ function moveEnemyTowardPlayer(
       y: enemy.y + fromPlayer.y * ENEMY_PLAYER_BODY_SOFT_RADIUS
     }
     : approachTarget;
-  const nextPosition = resolveEnemySteeredMove(map, enemy, movementTarget, direction, stepDistance, steering.active, spatialIndex);
+  const nextPosition = directCharge
+    ? resolveEnemyDirectChargeMove(map, enemy, direction, stepDistance)
+    : resolveEnemySteeredMove(map, enemy, movementTarget, direction, stepDistance, steering.active, spatialIndex);
   return {
     ...enemy,
     x: nextPosition.x,
@@ -10642,6 +11137,20 @@ function moveEnemyTowardPlayer(
     navTargetGridX: "gridX" in approachTarget ? approachTarget.gridX : undefined,
     navTargetGridY: "gridY" in approachTarget ? approachTarget.gridY : undefined
   };
+}
+
+function resolveEnemyDirectChargeMove(
+  map: BakedBattleMapData | null,
+  enemy: Enemy,
+  direction: { x: number; y: number },
+  stepDistance: number
+) {
+  if (stepDistance <= 0.001) return enemy;
+  const directNext = {
+    x: enemy.x + direction.x * stepDistance,
+    y: enemy.y + direction.y * stepDistance
+  };
+  return map ? resolveWalkableMove(map, enemy, directNext) : directNext;
 }
 
 function enemyNavigationMoveTarget(
@@ -10707,24 +11216,6 @@ function enemyNavigationCandidateScore(navigation: EnemyNavigationContext, gridX
 
 function enemyApproachTarget(enemy: Enemy, player: { x: number; y: number }, map: BakedBattleMapData | null) {
   if (enemy.aggroLocked) return player;
-  const playerDistance = distance(enemy, player);
-  if (playerDistance <= ENEMY_PLAYER_CONTACT_SLOW_RADIUS * 1.45) {
-    const fallbackAngle = ((enemy.id * 137) % 360) * Math.PI / 180;
-    const away = playerDistance > 1
-      ? { x: (enemy.x - player.x) / playerDistance, y: (enemy.y - player.y) / playerDistance }
-      : { x: Math.cos(fallbackAngle), y: Math.sin(fallbackAngle) };
-    const ringIndex = Math.floor((enemy.id * 7) % ENEMY_SWARM_RING_COUNT);
-    const ringRadius = ENEMY_SWARM_INNER_RING_RADIUS + ringIndex * ENEMY_SWARM_RING_SPACING;
-    const sideOffset = enemyLaneSign(enemy) * Math.min(ENEMY_APPROACH_SIDE_STEP, ENEMY_SWARM_RING_SPACING * 0.45);
-    if (!map) {
-      return {
-        x: player.x + away.x * ringRadius,
-        y: player.y + away.y * ringRadius
-      };
-    }
-    const ringTarget = nearestWalkableApproachTarget(map, player, away, sideOffset, ringRadius);
-    if (ringTarget) return ringTarget;
-  }
   if (!map || isMapPointWalkable(map, player.x, player.y)) return player;
   const fromEnemy = guideDirection(enemy, player);
   return nearestWalkableApproachTarget(map, player, fromEnemy, 0, map.meta.grid_size) ?? player;
@@ -11014,8 +11505,7 @@ function separateOverlappingEnemies(enemies: Enemy[], map: BakedBattleMapData | 
 }
 
 function enemyCollisionRadius(enemy: Enemy) {
-  const largeGeometryMonster = typeof enemy.monsterId === "string" && /^mon_[34]\d{5}$/.test(enemy.monsterId);
-  return enemy.boss || enemy.monsterId === "enemy_brute" || largeGeometryMonster ? ENEMY_BOSS_COLLISION_RADIUS : ENEMY_COLLISION_RADIUS;
+  return enemyVisualRadius(enemy);
 }
 
 function selectRenderableEnemies(enemies: Enemy[], player: { x: number; y: number }) {
@@ -11082,6 +11572,14 @@ function projectileLineMetrics(source: { x: number; y: number }, direction: { x:
   const forward = dx * direction.x + dy * direction.y;
   const perpendicular = Math.abs(dx * -direction.y + dy * direction.x);
   return { forward, perpendicular };
+}
+
+function projectileImpactDistance(metrics: { forward: number; perpendicular: number }, enemy: Enemy) {
+  const targetRadius = enemyCollisionRadius(enemy);
+  const contactInset = metrics.perpendicular < targetRadius
+    ? Math.sqrt(Math.max(0, targetRadius * targetRadius - metrics.perpendicular * metrics.perpendicular))
+    : 0;
+  return Math.max(0, metrics.forward - contactInset);
 }
 
 function nearestGuideTarget(
@@ -11238,6 +11736,12 @@ function hasLiveEnemyInCastRange(enemies: Enemy[], skill: SkillPreview, source: 
   );
   return candidateEnemiesNear(enemies, source, range)
     .some((enemy) => enemy.hp > 0 && distance(enemy, source) <= range);
+}
+
+function skillHasOrbitModuleChain(skill: SkillPreview) {
+  const modules = Array.isArray(skill.runtime_params?.modules) ? skill.runtime_params.modules as { type?: unknown }[] : [];
+  return modules.some((module) => module.type === "orbit_emitter")
+    && modules.some((module) => module.type === "damage_zone");
 }
 
 function nearestEnemy(enemies: Enemy[], source: { x: number; y: number }) {
@@ -11418,7 +11922,7 @@ function createBattleRenderEntities(player: { x: number; y: number; hp: number; 
       renderScale
     })),
     { kind: "player" as const, id: "player" as const, x: player.x, y: player.y, hp: player.hp, maxHp: player.maxHp, renderScale }
-  ].sort(compareDimetricDepth);
+  ].sort(compareBattleRenderEntities);
 }
 
 function createBattleRenderItems(
@@ -11435,7 +11939,41 @@ function createBattleRenderItems(
       return { kind: "fire-bolt" as const, id: bolt.id, x: point.x, y: point.y, bolt };
     }),
     ...hitVfxs.map((vfx) => ({ kind: "hit-vfx" as const, id: vfx.id, x: vfx.x, y: vfx.y, vfx }))
-  ].sort((left, right) => dimetricDepth(left.x, left.y) - dimetricDepth(right.x, right.y));
+  ].sort(compareBattleRenderItems);
+}
+
+function compareBattleRenderItems(left: BattleRenderItem, right: BattleRenderItem) {
+  if (isBattleRenderEntity(left) && isBattleRenderEntity(right)) return compareBattleRenderEntities(left, right);
+  return dimetricDepth(left.x, left.y) - dimetricDepth(right.x, right.y);
+}
+
+function compareBattleRenderEntities(left: BattleRenderEntity, right: BattleRenderEntity) {
+  const depth = compareDimetricDepth(left, right);
+  if (left.kind === "enemy" && right.kind === "enemy") {
+    const rarity = enemyBattleRenderRarityRank(left) - enemyBattleRenderRarityRank(right);
+    if (rarity !== 0) return rarity;
+    return depth || left.id - right.id;
+  }
+  if (Math.abs(depth) > 28) return depth;
+  return battleRenderEntityRarityRank(left) - battleRenderEntityRarityRank(right);
+}
+
+function isBattleRenderEntity(item: BattleRenderItem): item is BattleRenderEntity {
+  return item.kind === "enemy" || item.kind === "player";
+}
+
+function battleRenderEntityRarityRank(entity: BattleRenderEntity) {
+  if (entity.kind === "player") return 2;
+  return enemyBattleRenderRarityRank(entity);
+}
+
+function enemyBattleRenderRarityRank(enemy: Extract<BattleRenderEntity, { kind: "enemy" }>) {
+  const visual = resolveMonsterGeometryVisual(enemy.monsterId);
+  const tier = visual?.tier ?? (enemy.monsterId === "enemy_brute" ? "rare" : "normal");
+  if (tier === "boss") return 4;
+  if (tier === "rare") return 3;
+  if (tier === "magic") return 1;
+  return 0;
 }
 
 function createBattleAnimationContexts(
@@ -11491,6 +12029,32 @@ function renderBattleRenderItem(item: BattleRenderItem, depthIndex: number, anim
     return <HitVfxView key={`hit-vfx-${item.id}`} vfx={item.vfx} depthIndex={depthIndex} />;
   }
   return renderBattleEntity(item, depthIndex, animationContexts);
+}
+
+function BossHealthBar({ enemy }: { enemy: Enemy }) {
+  const ratio = clamp(enemy.hp / Math.max(1, enemy.maxHp), 0, 1);
+  return (
+    <section className="boss-health-bar" aria-label="传奇怪物生命值">
+      <div className="boss-health-frame">
+        <span className="boss-health-title">{bossHealthName(enemy)}</span>
+        <span className="boss-health-level">传奇</span>
+        <div className="boss-health-track">
+          <span style={{ width: `${ratio * 100}%` }} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function bossHealthName(enemy: Enemy) {
+  const visual = resolveMonsterGeometryVisual(enemy.monsterId);
+  if (visual?.tier === "boss") return `传奇怪物 ${bossMarkerLabel(enemy.monsterId)}`;
+  return "传奇怪物";
+}
+
+function bossMarkerLabel(monsterId?: string) {
+  const numericId = monsterId?.match(/^mon_4001(\d{2})$/)?.[1];
+  return numericId ? `B-${numericId}` : "";
 }
 
 function shouldRenderLegacyBattleItem(item: BattleRenderItem) {
@@ -11610,10 +12174,12 @@ function battleUnitStyle(entity: { x: number; y: number }, frame: UnitAnimationF
 function floatingTextStyle(text: FloatingText): CSSProperties {
   const visualPoint = projectBattleWorldToScreen(text.x, text.y);
   const progress = clamp(1 - text.ttl / Math.max(0.001, text.duration), 0, 1);
+  const pop = 1 + Math.sin((1 - Math.min(progress, 0.35) / 0.35) * Math.PI) * 0.24;
   return {
     left: visualPoint.x,
     top: visualPoint.y - progress * FLOATING_TEXT_VISUAL_RISE_SPEED,
-    opacity: Math.max(0, text.ttl / Math.max(0.001, text.duration))
+    opacity: Math.max(0, text.ttl / Math.max(0.001, text.duration)),
+    transform: `translate(-50%, -50%) scale(${pop})`
   };
 }
 
@@ -11940,6 +12506,29 @@ function projectileVfxSheets(vfxKind: ProjectileVfxKind) {
     impactVisibleWidth: 129,
     impactVisibleHeight: 116
   };
+}
+
+function damageNumberText(amount: unknown) {
+  const value = Number(amount ?? 0);
+  if (!Number.isFinite(value)) return "0";
+  return Math.max(0, Math.round(value)).toString();
+}
+
+function hitVfxTargetId(event: Pick<SkillEvent, "target_entity" | "payload">) {
+  const payloadTarget = event.payload?.target_entity ?? event.payload?.to_target;
+  const value = Number(event.target_entity || payloadTarget);
+  return Number.isFinite(value) ? value : undefined;
+}
+
+function anchorHitVfxsToTargets(hitVfxs: HitVfx[], enemies: Enemy[]) {
+  if (hitVfxs.length === 0) return hitVfxs;
+  const enemyById = new Map(enemies.map((enemy) => [enemy.id, enemy]));
+  return hitVfxs.map((vfx) => {
+    if (vfx.targetId === undefined) return vfx;
+    const target = enemyById.get(vfx.targetId);
+    if (!target || target.hp <= 0) return vfx;
+    return { ...vfx, x: target.x, y: target.y };
+  });
 }
 
 function projectileBodyVisualScale(
@@ -12306,6 +12895,7 @@ function HitVfxView({ vfx, depthIndex }: { vfx: HitVfx; depthIndex: number }) {
         data-projectile-id={vfx.projectileId}
         data-projectile-index={vfx.projectileIndex}
         data-projectile-count={vfx.projectileCount}
+        data-target-id={vfx.targetId}
         data-pierce-remaining={vfx.pierceRemaining}
         data-impact-kind={vfx.impactKind}
         data-impact-world-x={vfx.x}
@@ -12323,6 +12913,7 @@ function HitVfxView({ vfx, depthIndex }: { vfx: HitVfx; depthIndex: number }) {
           data-projectile-id={vfx.projectileId}
           data-projectile-index={vfx.projectileIndex}
           data-projectile-count={vfx.projectileCount}
+          data-target-id={vfx.targetId}
           data-impact-world-x={vfx.x}
           data-impact-world-y={vfx.y}
           aria-hidden="true"
@@ -12345,6 +12936,7 @@ function LegacyHitVfxView({ vfx, depthIndex }: { vfx: HitVfx; depthIndex: number
       style={{ left: visualPoint.x, top: visualPoint.y, opacity, zIndex: BATTLE_ENTITY_Z_INDEX_BASE + depthIndex, transform: `translate(-50%, -50%) scale(${scale})` }}
       data-skill-event="hit_vfx"
       data-vfx-key={vfx.vfxKey}
+      data-target-id={vfx.targetId}
     />
   );
 }
@@ -12910,7 +13502,14 @@ function shapeClass(value: string) {
   return "glyph";
 }
 
-function createEnemy(id: number, playerX: number, playerY: number, map: BakedBattleMapData | null = null, spawnKind: "normal" | "elite" = "normal"): Enemy {
+function createEnemy(
+  id: number,
+  playerX: number,
+  playerY: number,
+  map: BakedBattleMapData | null = null,
+  spawnKind: "normal" | "elite" = "normal",
+  palette?: EncounterMonsterPalette
+): Enemy {
   const baseDamage = spawnKind === "elite" ? 14 : 8;
   const offense = defaultMonsterOffense(baseDamage);
   const maskedSpawn = randomEnemySpawnPoint(map, spawnKind);
@@ -12922,6 +13521,7 @@ function createEnemy(id: number, playerX: number, playerY: number, map: BakedBat
       hp: 32,
       maxHp: 32,
       monsterId: spawnKind === "elite" ? "enemy_brute" : "enemy_imp",
+      ...encounterMonsterPaletteFields(palette),
       ...offense,
       runtimeTier: "active"
     };
@@ -12938,6 +13538,7 @@ function createEnemy(id: number, playerX: number, playerY: number, map: BakedBat
     hp: 32,
     maxHp: 32,
     monsterId: spawnKind === "elite" ? "enemy_brute" : "enemy_imp",
+    ...encounterMonsterPaletteFields(palette),
     ...offense,
     runtimeTier: "active"
   };
@@ -12979,7 +13580,7 @@ function unitMovementState(moving: boolean, baseMoveSpeed: number, currentMoveSp
   return "walk";
 }
 
-function createSkillTestDummies(firstId: number, playerX: number, playerY: number): Enemy[] {
+function createSkillTestDummies(firstId: number, playerX: number, playerY: number, palette?: EncounterMonsterPalette): Enemy[] {
   return SKILL_TEST_DUMMY_OFFSETS.map((offset, index) => ({
     id: firstId + index,
     x: clamp(playerX + offset.x, 40, MAP_WIDTH - 40),
@@ -12987,9 +13588,27 @@ function createSkillTestDummies(firstId: number, playerX: number, playerY: numbe
     hp: SKILL_TEST_DUMMY_MAX_HP,
     maxHp: SKILL_TEST_DUMMY_MAX_HP,
     monsterId: "enemy_imp",
+    ...encounterMonsterPaletteFields(palette),
     ...defaultMonsterOffense(0),
     runtimeTier: "active"
   }));
+}
+
+function applyEncounterMonsterPalette(enemies: Enemy[], palette: EncounterMonsterPalette) {
+  return enemies.map((enemy) => ({
+    ...enemy,
+    ...encounterMonsterPaletteFields(palette)
+  }));
+}
+
+function encounterMonsterPaletteFields(palette: EncounterMonsterPalette | undefined) {
+  return palette ? {
+    visualPrimaryColor: palette.primary
+  } : {};
+}
+
+function createEncounterMonsterPalette(): EncounterMonsterPalette {
+  return ENCOUNTER_MONSTER_PALETTES[Math.floor(Math.random() * ENCOUNTER_MONSTER_PALETTES.length)] ?? ENCOUNTER_MONSTER_PALETTES[0];
 }
 
 function clamp(value: number, min: number, max: number) {

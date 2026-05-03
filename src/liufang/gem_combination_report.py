@@ -118,12 +118,12 @@ def _frost_nova_area_cooldown_case(config_root: Path) -> dict[str, Any]:
     checks = {
         "area_radius_increased": _runtime_value(combo, "radius") > _runtime_value(baseline, "radius"),
         "area_support_applied": _has_modifier(combo, "support_area_magnify", "area_add_percent"),
-        "cooldown_focus_applied": _has_modifier(combo, "support_cooldown_focus", "cooldown_reduction_percent"),
+        "cooldown_focus_applied": _has_modifier(combo, "support_cooldown_focus", "cooldown_recovery_add_percent"),
     }
     observations: list[str] = []
-    if combo.final_cooldown_ms >= baseline.final_cooldown_ms:
+    if combo.actual_interval_ms >= baseline.actual_interval_ms:
         observations.append(
-            "Cooldown Focus applied, but Area Magnify speed penalty makes net cooldown no faster."
+            "Cooldown Focus applied, but Area Magnify speed penalty makes net release interval no faster."
         )
     return _case(
         "frost_nova_area_and_cooldown_interaction",
@@ -185,7 +185,7 @@ def _self_stat_passive_case(config_root: Path) -> dict[str, Any]:
     )
     player_stats = api.state()["player_stats"]
     checks = {
-        "max_life_increased": player_stats["max_life"]["value"] == 128.5,
+        "max_life_increased": player_stats["max_life"]["value"] == 525,
         "move_speed_increased": player_stats["move_speed"]["value"] == 1.1,
     }
     return _case("self_stat_passives", api, checks, player_stats=player_stats)
@@ -231,6 +231,8 @@ def _skill_summary(skill: Any) -> dict[str, Any]:
         "increase_pool": skill.increase_pool,
         "final_pool": skill.final_pool,
         "final_cooldown_ms": skill.final_cooldown_ms,
+        "actual_interval_ms": skill.actual_interval_ms,
+        "mana_cost": skill.mana_cost,
         "projectile_count": skill.projectile_count,
         "projectile_speed": _runtime_value(skill, "projectile_speed"),
         "radius": _runtime_value(skill, "radius"),

@@ -27,6 +27,20 @@ spawn_tags = [
 ]
 
 [[affixes]]
+id = "affix_cooldown_recovery_t1"
+name_key = "affix.cooldown_recovery.t1.name"
+description_key = "affix.cooldown_recovery.t1.description"
+gen = "prefix"
+category = "skill_numeric"
+stat = "cooldown_recovery_add_percent"
+value_range = [8, 16]
+group = "speed_scaling"
+spawn_tags = [
+  { tag = "active_skill_gem", weight = 500 },
+  { tag = "support_cooldown", weight = 1000 },
+]
+
+[[affixes]]
 id = "affix_projectile_count_t1"
 name_key = "affix.projectile_count.t1.name"
 description_key = "affix.projectile_count.t1.description"

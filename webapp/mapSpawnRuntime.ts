@@ -71,8 +71,10 @@ export type MonsterPackEntry = {
   monster_id: ProceduralMonsterVisualId;
   count_min: number;
   count_max: number;
-  life: number;
-  damage: number;
+  life_multiplier?: number;
+  damage_multiplier?: number;
+  life?: number;
+  damage?: number;
   boss?: boolean;
   offense?: MonsterOffenseConfig;
 };
@@ -105,11 +107,18 @@ export type MonsterRarityRules = {
   multipliers: Record<ProceduralSpawnRarity, { life_multiplier: number; damage_multiplier: number }>;
 };
 
+export type MonsterDefinitionConfig = {
+  id: ProceduralMonsterVisualId;
+  base_life: number;
+  base_attack: number;
+};
+
 export type MapSpawnV1Config = {
   map_spawn_profiles: MapSpawnProfile[];
   monster_packs: MonsterPackDefinition[];
   monster_rarity_rules: MonsterRarityRules;
   monster_offense_defaults?: MonsterOffenseConfig;
+  monster_definitions?: MonsterDefinitionConfig[];
 };
 
 export type ProceduralSpawnFilterReason =
@@ -207,6 +216,9 @@ type MutableVarietyState = {
 
 const DEFAULT_AGGRO_RADIUS_CELLS = 7;
 const LARGE_ROOM_SAMPLE_RADIUS_CELLS = 3;
+const PACK_CENTER_CLEARANCE_CELLS = 1;
+const PACK_MONSTER_CLEARANCE_CELLS = 1;
+const PACK_MONSTER_MIN_SPACING_CELLS = 0.7;
 
 export function generateProceduralMonsterSpawns(
   map: ProceduralBattleMapData,
@@ -216,8 +228,9 @@ export function generateProceduralMonsterSpawns(
   const profile = selectSpawnProfile(config, options.mapType);
   const rng = createSeededRandom(options.seed ?? `${map.id}:${profile.map_type}:procedural-spawn-v1`);
   const maxCandidatePoints = Math.max(12, Math.floor(options.maxCandidatePoints ?? 180));
-  const candidates = collectSpawnCandidates(map, profile, maxCandidatePoints);
+  const candidates = collectSpawnCandidates(map, profile, maxCandidatePoints, rng);
   const packsById = new Map(config.monster_packs.map((pack) => [pack.pack_id, pack]));
+  const monsterBaseStats = resolveMonsterBaseStats(config);
   const debugPoints: ProceduralSpawnPointDebug[] = [];
   const filteredPoints: ProceduralSpawnPointDebug[] = [];
   const enemies: ProceduralMonsterInstance[] = [];
@@ -260,7 +273,7 @@ export function generateProceduralMonsterSpawns(
     }
 
     const aggroSourceId = `proc_${acceptedPackCount + 1}_${candidate.zone_type}`;
-    const packMonsters = instantiatePack(candidate, pack, map, config.monster_rarity_rules, config.monster_offense_defaults, rarityState, varietyState, aggroSourceId, nextId, rng);
+    const packMonsters = instantiatePack(candidate, pack, map, config.monster_rarity_rules, config.monster_offense_defaults, monsterBaseStats, rarityState, varietyState, aggroSourceId, nextId, rng);
     if (packMonsters.length === 0) {
       const rejected: ProceduralSpawnPointDebug = { ...baseDebug, monster_pack_id: pack.pack_id, filter_reason: "不可行走" };
       debugPoints.push(rejected);
@@ -309,7 +322,7 @@ export function selectSpawnProfile(config: MapSpawnV1Config, mapType?: string): 
   return profile;
 }
 
-export function collectSpawnCandidates(map: ProceduralBattleMapData, profile: MapSpawnProfile, maxCandidates: number): CandidatePoint[] {
+export function collectSpawnCandidates(map: ProceduralBattleMapData, profile: MapSpawnProfile, maxCandidates: number, rng?: () => number): CandidatePoint[] {
   const candidates = new Map<string, CandidatePoint>();
   const addCandidate = (point: ProceduralMapPoint, zoneType?: ProceduralZoneType, priority = 3) => {
     const normalized = normalizePoint(map, point);
@@ -327,15 +340,25 @@ export function collectSpawnCandidates(map: ProceduralBattleMapData, profile: Ma
   for (const point of map.bossPoints) addCandidate(point, "boss_room", 0);
   for (const point of map.exitPoints) addCandidate(point, "exit_area", 1);
   for (const point of map.eliteSpawnPoints) addCandidate(point, undefined, 1);
+  if (rng) {
+    for (const zone of shuffled(map.zones ?? [], rng)) {
+      const zonePoints = shuffled(map.walkablePoints.filter((point) => proceduralZoneContainsPoint(zone, point) && !isGridBlocked(map, point.gridX, point.gridY)), rng)
+        .slice(0, 3);
+      for (const point of zonePoints) addCandidate(point, zone.zoneType, 2);
+    }
+  }
   for (const point of map.enemySpawnPoints) addCandidate(point, undefined, 2);
 
-  const walkable = [...map.walkablePoints]
-    .sort((a, b) => stablePointScore(map.id, a) - stablePointScore(map.id, b))
+  const walkable = (rng ? shuffled(map.walkablePoints, rng) : [...map.walkablePoints].sort((a, b) => stablePointScore(map.id, a) - stablePointScore(map.id, b)))
     .slice(0, maxCandidates);
   for (const point of walkable) addCandidate(point, undefined, 4);
 
-  return [...candidates.values()]
-    .sort((a, b) => a.priority - b.priority || stablePointScore(map.id, a) - stablePointScore(map.id, b));
+  const values = rng ? shuffled([...candidates.values()], rng) : [...candidates.values()];
+  return values.sort((a, b) => {
+    if (a.priority !== b.priority) return a.priority - b.priority;
+    const safety = spawnPointSafetyScore(map, b, PACK_CENTER_CLEARANCE_CELLS) - spawnPointSafetyScore(map, a, PACK_CENTER_CLEARANCE_CELLS);
+    return safety || stablePointScore(map.id, a) - stablePointScore(map.id, b);
+  });
 }
 
 export function classifyZoneType(map: ProceduralBattleMapData, point: ProceduralMapPoint, profile: MapSpawnProfile): ProceduralZoneType {
@@ -517,6 +540,7 @@ function instantiatePack(
   map: ProceduralBattleMapData,
   rarityRules: MonsterRarityRules,
   offenseDefaults: MonsterOffenseConfig | undefined,
+  monsterBaseStats: Map<string, { base_life: number; base_attack: number }>,
   rarityState: MutableRarityState,
   varietyState: MutableVarietyState,
   aggroSourceId: string,
@@ -527,11 +551,12 @@ function instantiatePack(
   let nextId = startId;
   let monsterIndex = 0;
   let packHasMagic = false;
+  const occupied: ProceduralMapPoint[] = [];
   for (const entry of pack.entries) {
     if (!entry.boss && !varietyState.allowedNonBossMonsterIds.has(entry.monster_id)) continue;
     const count = randomInt(entry.count_min, entry.count_max, rng);
     for (let index = 0; index < count; index += 1) {
-      const point = findPackMonsterPoint(map, center, monsterIndex, rng);
+      const point = findPackMonsterPoint(map, center, monsterIndex, occupied, rng);
       if (!point) continue;
       const rarity = chooseMonsterRarity(entry.monster_id, center.zone_type, entry.boss === true, packHasMagic, rarityRules, rarityState, rng);
       if (rarity === "magic" && rarityState.magicCount >= maxMagicMonsters(rarityRules)) continue;
@@ -540,6 +565,11 @@ function instantiatePack(
       if (rarity === "magic") rarityState.magicCount += 1;
       if (rarity === "rare") rarityState.rareCount += 1;
       const multiplier = rarityRules.multipliers[rarity] ?? rarityRules.multipliers.normal;
+      const baseStats = monsterBaseStats.get(entry.monster_id) ?? legacyMonsterBaseStats(entry);
+      const entryLifeMultiplier = positiveMultiplier(entry.life_multiplier);
+      const entryDamageMultiplier = positiveMultiplier(entry.damage_multiplier);
+      const lifeMultiplier = multiplier.life_multiplier * entryLifeMultiplier;
+      const damageMultiplier = multiplier.damage_multiplier * entryDamageMultiplier;
       const offense = mergeMonsterOffense(offenseDefaults, entry.offense);
       monsters.push({
         runtime_id: nextId++,
@@ -549,24 +579,76 @@ function instantiatePack(
         spawn_rarity: rarity,
         x: point.x,
         y: point.y,
-        hp: Math.round(entry.life * multiplier.life_multiplier),
-        max_hp: Math.round(entry.life * multiplier.life_multiplier),
-        base_damage: entry.damage,
+        hp: Math.round(baseStats.base_life * lifeMultiplier),
+        max_hp: Math.round(baseStats.base_life * lifeMultiplier),
+        base_damage: baseStats.base_attack,
         damage_type: offense.damage_type,
         hit_kind: offense.hit_kind,
         attack_range: offense.attack_range,
         attack_cadence_ms: offense.attack_cadence_ms,
         offense_modifiers: offense.modifiers,
-        damage_multiplier: multiplier.damage_multiplier,
-        life_multiplier: multiplier.life_multiplier,
+        damage_multiplier: damageMultiplier,
+        life_multiplier: lifeMultiplier,
         boss: entry.boss === true,
         aggro_source_id: aggroSourceId
       });
+      occupied.push(point);
       monsterIndex += 1;
     }
   }
   if (packHasMagic) rarityState.magicPackCount += 1;
   return monsters;
+}
+
+function resolveMonsterBaseStats(config: MapSpawnV1Config) {
+  const result = new Map<string, { base_life: number; base_attack: number }>();
+  for (const monster of config.monster_definitions ?? []) {
+    result.set(monster.id, {
+      base_life: Math.max(1, Number(monster.base_life)),
+      base_attack: Math.max(0, Number(monster.base_attack))
+    });
+  }
+  return result;
+}
+
+function legacyMonsterBaseStats(entry: MonsterPackEntry) {
+  const baseLife = Number(entry.life);
+  const baseAttack = Number(entry.damage);
+  if (Number.isFinite(baseLife) && Number.isFinite(baseAttack)) {
+    return {
+      base_life: Math.max(1, baseLife),
+      base_attack: Math.max(0, baseAttack)
+    };
+  }
+  throw new Error(`monster definition missing base stats: ${entry.monster_id}`);
+}
+
+function positiveMultiplier(value: number | undefined) {
+  if (value === undefined) return 1;
+  return Math.max(0, Number(value));
+}
+
+export function parseMonsterDefinitionsToml(source: string): MonsterDefinitionConfig[] {
+  const definitions: MonsterDefinitionConfig[] = [];
+  for (const block of source.split(/\[\[monsters\]\]\s*/).slice(1)) {
+    const id = tomlStringField(block, "id");
+    const baseLife = tomlNumberField(block, "base_life");
+    const baseAttack = tomlNumberField(block, "base_attack");
+    if (id && baseLife !== null && baseAttack !== null) {
+      definitions.push({ id, base_life: baseLife, base_attack: baseAttack });
+    }
+  }
+  return definitions;
+}
+
+function tomlStringField(block: string, field: string) {
+  const match = block.match(new RegExp(`^${field}\\s*=\\s*"([^"]+)"`, "m"));
+  return match?.[1] ?? "";
+}
+
+function tomlNumberField(block: string, field: string) {
+  const match = block.match(new RegExp(`^${field}\\s*=\\s*(-?\\d+(?:\\.\\d+)?)`, "m"));
+  return match ? Number(match[1]) : null;
 }
 
 function mergeMonsterOffense(defaults: MonsterOffenseConfig | undefined, override: MonsterOffenseConfig | undefined) {
@@ -628,21 +710,40 @@ function chooseRarity(
   return rarity;
 }
 
-function findPackMonsterPoint(map: ProceduralBattleMapData, center: CandidatePoint, monsterIndex: number, rng: () => number): ProceduralMapPoint | null {
-  const cellRadius = Math.max(1, Math.min(4, Math.ceil(Math.sqrt(monsterIndex + 1))));
-  const attempts = 10;
+function findPackMonsterPoint(map: ProceduralBattleMapData, center: CandidatePoint, monsterIndex: number, occupied: ProceduralMapPoint[], rng: () => number): ProceduralMapPoint | null {
+  const cellRadius = Math.max(1.2, Math.min(4.5, 1.2 + Math.sqrt(monsterIndex + 1) * 0.48));
+  const attempts = 28;
+  let fallback: ProceduralMapPoint | null = null;
+  let fallbackScore = -Infinity;
   for (let attempt = 0; attempt < attempts; attempt += 1) {
-    const angle = ((monsterIndex * 137.5 + attempt * 41) * Math.PI) / 180;
-    const radius = map.meta.grid_size * (0.35 + rng() * cellRadius);
+    const angle = ((monsterIndex * 137.5 + attempt * 47 + rng() * 34) * Math.PI) / 180;
+    const radius = map.meta.grid_size * (0.45 + rng() * cellRadius);
     const point = normalizePoint(map, {
       x: center.x + Math.cos(angle) * radius,
       y: center.y + Math.sin(angle) * radius,
       gridX: center.gridX,
       gridY: center.gridY
     });
-    if (isGridWalkable(map, point.gridX, point.gridY) && !isGridBlocked(map, point.gridX, point.gridY)) return point;
+    const score = packMonsterPointScore(map, center, point, occupied);
+    if (score > fallbackScore) {
+      fallback = point;
+      fallbackScore = score;
+    }
+    if (score >= 8) return point;
   }
-  return isGridWalkable(map, center.gridX, center.gridY) && !isGridBlocked(map, center.gridX, center.gridY) ? center : null;
+  const centerScore = packMonsterPointScore(map, center, center, occupied);
+  if (centerScore > fallbackScore) return centerScore >= 3 ? center : null;
+  return fallbackScore >= 3 ? fallback : null;
+}
+
+function packMonsterPointScore(map: ProceduralBattleMapData, center: CandidatePoint, point: ProceduralMapPoint, occupied: ProceduralMapPoint[]) {
+  if (!isGridWalkable(map, point.gridX, point.gridY) || isGridBlocked(map, point.gridX, point.gridY)) return -Infinity;
+  const clearance = spawnPointSafetyScore(map, point, PACK_MONSTER_CLEARANCE_CELLS);
+  const minSpacing = map.meta.grid_size * PACK_MONSTER_MIN_SPACING_CELLS;
+  const tooClosePenalty = occupied.some((other) => distance(point, other) < minSpacing) ? 4 : 0;
+  const clusterDistanceCells = distance(point, center) / Math.max(1, map.meta.grid_size);
+  const clusterPenalty = Math.max(0, clusterDistanceCells - 3.5);
+  return clearance - tooClosePenalty - clusterPenalty;
 }
 
 function normalizePoint(map: ProceduralBattleMapData, point: ProceduralMapPoint): ProceduralMapPoint {
@@ -680,6 +781,10 @@ function isGridWalkable(map: ProceduralBattleMapData, gridX: number, gridY: numb
 
 function isGridBlocked(map: ProceduralBattleMapData, gridX: number, gridY: number) {
   return Boolean(map.blockerGrid[gridY]?.[gridX]);
+}
+
+function spawnPointSafetyScore(map: ProceduralBattleMapData, point: { gridX: number; gridY: number }, radius: number) {
+  return countWalkableCellsNear(map, point.gridX, point.gridY, radius);
 }
 
 function countWalkableCellsNear(map: ProceduralBattleMapData, gridX: number, gridY: number, radius: number) {

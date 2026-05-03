@@ -4,7 +4,7 @@ import sys
 import unittest
 from copy import deepcopy
 from dataclasses import replace
-from math import hypot
+from math import atan2, degrees, hypot
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -583,13 +583,13 @@ class SkillRuntimeTest(unittest.TestCase):
         self.assertEqual(final_skill.behavior_template, "module_chain")
         self.assertIn("cast_start", event_types)
         self.assertEqual(orbit_spawn.payload["orbit_center"], {"x": 0.0, "y": -12.0})
-        self.assertEqual(orbit_spawn.payload["orbit_radius"], 150)
-        self.assertEqual(orbit_spawn.payload["duration_ms"], 3200)
+        self.assertEqual(orbit_spawn.payload["orbit_radius"], 118)
+        self.assertEqual(orbit_spawn.payload["duration_ms"], 3600)
         self.assertEqual(orbit_spawn.payload["orb_count"], 1)
-        self.assertEqual(len(orbit_ticks), 8)
+        self.assertEqual(len(orbit_ticks), 20)
         self.assertEqual(len(zones), len(orbit_ticks))
         self.assertEqual(first_tick.payload["tick_marker_id"], "lava_orb_tick")
-        self.assertEqual(first_tick.payload["tick_time_ms"], 380)
+        self.assertEqual(first_tick.payload["tick_time_ms"], 180)
         self.assertIn("orb_position", first_tick.payload)
         self.assertEqual(first_zone.payload["trigger_marker_id"], "lava_orb_tick")
         self.assertEqual(first_zone.payload["origin"], first_tick.payload["orb_position"])
@@ -599,6 +599,90 @@ class SkillRuntimeTest(unittest.TestCase):
         self.assertTrue(all(event.timestamp_ms >= first_zone.timestamp_ms for event in damage_events))
         self.assertNotIn("damage", [event.type for event in events if event.timestamp_ms < first_zone.timestamp_ms])
         self.assertNotIn("far", {event.target_entity for event in damage_events})
+
+    def test_lava_orb_orb_count_evenly_spaces_orbit_damage_zones(self) -> None:
+        self.inventory.add_instance("active", "active_lava_orb")
+        self.board.mount_gem("active", 0, 0)
+        final_skill = self.calculator.calculate_all()[0]
+        runtime_params = deepcopy(final_skill.runtime_params or {})
+        runtime_params["modules"][0]["params"]["orb_count"] = 6
+        tuned_skill = replace(final_skill, runtime_params=runtime_params)
+
+        events = SkillRuntime().execute(
+            tuned_skill,
+            source_entity="player_1",
+            source_position=Position(0, -12),
+            target_entity="near",
+            target_position=Position(180, -12),
+            timestamp_ms=100,
+            target_entities=[],
+        )
+
+        orbit_spawn = next(event for event in events if event.type == "orbit_spawn")
+        orbit_ticks = [event for event in events if event.type == "orbit_tick"]
+        first_tick_orbs = [event for event in orbit_ticks if event.payload["tick_index"] == 1]
+        self.assertEqual(orbit_spawn.payload["orb_count"], 6)
+        self.assertEqual(len(first_tick_orbs), 6)
+        first_tick_angles = sorted(
+            round(
+                degrees(
+                    atan2(
+                        event.payload["orb_position"]["y"] - orbit_spawn.payload["orbit_center"]["y"],
+                        event.payload["orb_position"]["x"] - orbit_spawn.payload["orbit_center"]["x"],
+                    )
+                ) % 360,
+                3,
+            )
+            for event in first_tick_orbs
+        )
+        angle_gaps = [
+            round((first_tick_angles[(index + 1) % len(first_tick_angles)] - angle + 360) % 360, 3)
+            for index, angle in enumerate(first_tick_angles)
+        ]
+        self.assertTrue(all(gap == 60 for gap in angle_gaps))
+
+    def test_lava_orb_radius_cycle_changes_orbit_distance_when_enabled(self) -> None:
+        self.inventory.add_instance("active", "active_lava_orb")
+        self.board.mount_gem("active", 0, 0)
+        final_skill = self.calculator.calculate_all()[0]
+        runtime_params = deepcopy(final_skill.runtime_params or {})
+        runtime_params["modules"][0]["params"].update(
+            {
+                "orbit_radius": 118,
+                "orbit_radius_cycle_enabled": True,
+                "orbit_radius_cycle_amplitude": 20,
+                "orbit_radius_cycle_period_ms": 720,
+                "orbit_radius_cycle_phase_deg": 0,
+            }
+        )
+        tuned_skill = replace(final_skill, runtime_params=runtime_params)
+
+        events = SkillRuntime().execute(
+            tuned_skill,
+            source_entity="player_1",
+            source_position=Position(0, -12),
+            target_entity="near",
+            target_position=Position(180, -12),
+            timestamp_ms=100,
+            target_entities=[],
+        )
+
+        orbit_spawn = next(event for event in events if event.type == "orbit_spawn")
+        orbit_ticks = [event for event in events if event.type == "orbit_tick"]
+        first_tick = orbit_ticks[0]
+        second_tick = orbit_ticks[1]
+        center = orbit_spawn.payload["orbit_center"]
+        first_distance = hypot(
+            first_tick.payload["orb_position"]["x"] - center["x"],
+            first_tick.payload["orb_position"]["y"] - center["y"],
+        )
+        second_distance = hypot(
+            second_tick.payload["orb_position"]["x"] - center["x"],
+            second_tick.payload["orb_position"]["y"] - center["y"],
+        )
+        self.assertAlmostEqual(first_distance, 138.0, places=6)
+        self.assertAlmostEqual(second_distance, 118.0, places=6)
+        self.assertAlmostEqual(first_tick.payload["orb_distance"], first_distance, places=6)
 
     def test_lava_orb_parameters_change_ticks_positions_or_hit_range(self) -> None:
         self.inventory.add_instance("active", "active_lava_orb")
@@ -634,12 +718,12 @@ class SkillRuntimeTest(unittest.TestCase):
         narrow_zone = run(with_modules(lambda modules: modules[1]["params"].update({"radius": 24})))
         wide_zone = run(with_modules(lambda modules: modules[1]["params"].update({"radius": 110})))
 
-        self.assertEqual(len([event for event in short if event.type == "orbit_tick"]), 2)
-        self.assertEqual(len([event for event in slow if event.type == "orbit_tick"]), 5)
+        self.assertEqual(len([event for event in short if event.type == "orbit_tick"]), 5)
+        self.assertEqual(len([event for event in slow if event.type == "orbit_tick"]), 6)
         base_first_position = next(event for event in run(final_skill) if event.type == "orbit_tick").payload["orb_position"]
         wide_first_position = next(event for event in wide_orbit if event.type == "orbit_tick").payload["orb_position"]
         self.assertNotEqual(base_first_position, wide_first_position)
-        self.assertEqual(len([event for event in two_orbs if event.type == "orbit_tick"]), 16)
+        self.assertEqual(len([event for event in two_orbs if event.type == "orbit_tick"]), 40)
         self.assertLess(
             len([event for event in narrow_zone if event.type == "damage"]),
             len([event for event in wide_zone if event.type == "damage"]),
@@ -847,8 +931,13 @@ class SkillRuntimeTest(unittest.TestCase):
 
         spawn = next(event for event in events if event.type == "projectile_spawn")
         damage = next(event for event in events if event.type == "damage")
-        self.assertEqual(spawn.duration_ms, 18000)
-        self.assertEqual(damage.delay_ms, 18000)
+        expected_duration_ms = round(
+            hypot(360.0 - spawn.position["x"], -12.0 - spawn.position["y"])
+            / float(runtime_params["projectile_speed"])
+            * 1000
+        )
+        self.assertEqual(spawn.duration_ms, expected_duration_ms)
+        self.assertEqual(damage.delay_ms, expected_duration_ms)
 
     def test_ice_shards_projectile_vfx_alignment_payload_covers_counts_and_eight_directions(self) -> None:
         self.inventory.add_instance("active", "active_ice_shards")
@@ -869,7 +958,11 @@ class SkillRuntimeTest(unittest.TestCase):
         for projectile_count in (1, 3, 5):
             runtime_params = {**base_params, "projectile_count": projectile_count}
             tested_skill = replace(final_skill, projectile_count=projectile_count, runtime_params=runtime_params)
-            spawn_position = {"x": 0.0, "y": -12.0}
+            spawn_offset = runtime_params.get("spawn_offset", {})
+            spawn_position = {
+                "x": float(spawn_offset.get("x", 0.0)),
+                "y": -12.0 + float(spawn_offset.get("y", 0.0)),
+            }
             for dx, dy in directions:
                 with self.subTest(projectile_count=projectile_count, direction=(dx, dy)):
                     length = hypot(dx, dy)

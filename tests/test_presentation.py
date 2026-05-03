@@ -201,6 +201,22 @@ class PresentationTest(unittest.TestCase):
         )
         self.assertEqual(dps_line["value_text"], self.presenter._format_number(final_skill.preview_dps))
 
+    def test_active_gem_detail_shows_mana_cost(self) -> None:
+        active = self.inventory.add_instance("active", "active_fire_bolt")
+        self.board.mount_gem(active.instance_id, 0, 0)
+        final_skill = self.calculator().calculate_all()[0]
+
+        active_detail = self.presenter.gem_detail(active, board=self.board, final_skills=(final_skill,))
+        stat_lines = active_detail["tooltip_view"]["sections"]["stats"]["lines"]
+
+        self.assertIn(
+            {
+                "label_text": self.presenter.localizer.text("ui.skill.mana_cost"),
+                "value_text": self.presenter._format_number(final_skill.mana_cost),
+            },
+            stat_lines,
+        )
+
     def test_board_view_shows_localized_invalid_prompt(self) -> None:
         self.inventory.add_instance("support", "support_fast_attack")
         self.board.mount_gem("support", 0, 0)
@@ -213,7 +229,15 @@ class PresentationTest(unittest.TestCase):
         self.inventory.add_instance("active", "active_fire_bolt")
         self.board.mount_gem("active", 0, 0)
         session = CombatSession.start(
-            player=Player("player_1", current_life=100, max_life=100, position=Position(0, 0), item_interaction_reach=2),
+            player=Player(
+                "player_1",
+                current_life=100,
+                max_life=100,
+                position=Position(0, 0),
+                item_interaction_reach=2,
+                current_mana=100,
+                max_mana=100,
+            ),
             monsters=[Monster("monster_1", current_life=5, max_life=5, position=Position(1, 0))],
             inventory=self.inventory,
             skill_effect_calculator=self.calculator(),

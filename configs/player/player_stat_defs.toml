@@ -503,8 +503,8 @@ runtime_effective = true
 affix_spawn_enabled_v1 = true
 
 [[stats]]
-id = "cooldown_reduction_percent"
-name_key = "stat.cooldown_reduction_percent.name"
+id = "cooldown_recovery_add_percent"
+name_key = "stat.cooldown_recovery_add_percent.name"
 category = "speed"
 value_type = "percent"
 v1_status = "V1_ACTIVE"

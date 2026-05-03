@@ -77,12 +77,6 @@ layout = "detail"
 order = 130
 
 [[sections]]
-id = "skill_shape"
-title_key = "ui.character.section.skill_shape"
-layout = "detail"
-order = 140
-
-[[sections]]
 id = "status"
 title_key = "ui.character.section.status"
 layout = "detail"
@@ -105,12 +99,6 @@ id = "drops"
 title_key = "ui.character.section.drops"
 layout = "detail"
 order = 180
-
-[[sections]]
-id = "board_power"
-title_key = "ui.character.section.board_power"
-layout = "detail"
-order = 190
 
 [[rows]]
 id = "strength"
@@ -347,15 +335,6 @@ formatter = "percent"
 order = 40
 
 [[rows]]
-id = "elemental_resistance_percent"
-section_id = "resistances"
-stat_id = "elemental_resistance_percent"
-icon_text = "?"
-tone = "shield"
-formatter = "percent"
-order = 50
-
-[[rows]]
 id = "move_speed"
 section_id = "mobility"
 stat_id = "move_speed"
@@ -590,9 +569,9 @@ formatter = "percent"
 order = 30
 
 [[rows]]
-id = "cooldown_reduction_percent"
+id = "cooldown_recovery_add_percent"
 section_id = "speed_cooldown"
-stat_id = "cooldown_reduction_percent"
+stat_id = "cooldown_recovery_add_percent"
 icon_text = "?"
 tone = "cold"
 formatter = "percent"
@@ -669,78 +648,6 @@ icon_text = "?"
 tone = "shadow"
 formatter = "boolean"
 order = 50
-
-[[rows]]
-id = "area_add_percent"
-section_id = "skill_shape"
-stat_id = "area_add_percent"
-icon_text = "?"
-tone = "cold"
-formatter = "percent"
-order = 10
-
-[[rows]]
-id = "area_final_percent"
-section_id = "skill_shape"
-stat_id = "area_final_percent"
-icon_text = "?"
-tone = "cold"
-formatter = "percent"
-order = 20
-
-[[rows]]
-id = "projectile_count_add"
-section_id = "skill_shape"
-stat_id = "projectile_count_add"
-icon_text = "?"
-tone = "evasion"
-formatter = "integer"
-order = 30
-
-[[rows]]
-id = "chain_count_add"
-section_id = "skill_shape"
-stat_id = "chain_count_add"
-icon_text = "?"
-tone = "lightning"
-formatter = "integer"
-order = 40
-
-[[rows]]
-id = "pierce_count_add"
-section_id = "skill_shape"
-stat_id = "pierce_count_add"
-icon_text = "?"
-tone = "evasion"
-formatter = "integer"
-order = 50
-
-[[rows]]
-id = "duration_add_percent"
-section_id = "skill_shape"
-stat_id = "duration_add_percent"
-icon_text = "?"
-tone = "mana"
-formatter = "percent"
-order = 60
-
-[[rows]]
-id = "skill_effect_frequency_add_percent"
-section_id = "skill_shape"
-stat_id = "skill_effect_frequency_add_percent"
-icon_text = "?"
-tone = "mana"
-formatter = "percent"
-order = 70
-
-[[rows]]
-id = "explosion_radius_add_percent"
-section_id = "skill_shape"
-stat_id = "explosion_radius_add_percent"
-icon_text = "?"
-tone = "fire"
-formatter = "percent"
-order = 80
 
 [[rows]]
 id = "status_chance_add_percent"
@@ -849,120 +756,3 @@ icon_text = "?"
 tone = "mana"
 formatter = "percent"
 order = 20
-
-[[rows]]
-id = "source_power_row"
-section_id = "board_power"
-stat_id = "source_power_row"
-icon_text = "?"
-tone = "mana"
-formatter = "percent"
-order = 10
-
-[[rows]]
-id = "source_power_column"
-section_id = "board_power"
-stat_id = "source_power_column"
-icon_text = "?"
-tone = "mana"
-formatter = "percent"
-order = 20
-
-[[rows]]
-id = "source_power_box"
-section_id = "board_power"
-stat_id = "source_power_box"
-icon_text = "?"
-tone = "mana"
-formatter = "percent"
-order = 30
-
-[[rows]]
-id = "source_power_adjacent"
-section_id = "board_power"
-stat_id = "source_power_adjacent"
-icon_text = "?"
-tone = "mana"
-formatter = "percent"
-order = 40
-
-[[rows]]
-id = "target_power_row"
-section_id = "board_power"
-stat_id = "target_power_row"
-icon_text = "?"
-tone = "shield"
-formatter = "percent"
-order = 50
-
-[[rows]]
-id = "target_power_column"
-section_id = "board_power"
-stat_id = "target_power_column"
-icon_text = "?"
-tone = "shield"
-formatter = "percent"
-order = 60
-
-[[rows]]
-id = "target_power_box"
-section_id = "board_power"
-stat_id = "target_power_box"
-icon_text = "?"
-tone = "shield"
-formatter = "percent"
-order = 70
-
-[[rows]]
-id = "target_power_adjacent"
-section_id = "board_power"
-stat_id = "target_power_adjacent"
-icon_text = "?"
-tone = "shield"
-formatter = "percent"
-order = 80
-
-[[rows]]
-id = "conduit_power_row"
-section_id = "board_power"
-stat_id = "conduit_power_row"
-icon_text = "?"
-tone = "lightning"
-formatter = "percent"
-order = 90
-
-[[rows]]
-id = "conduit_power_column"
-section_id = "board_power"
-stat_id = "conduit_power_column"
-icon_text = "?"
-tone = "lightning"
-formatter = "percent"
-order = 100
-
-[[rows]]
-id = "conduit_power_box"
-section_id = "board_power"
-stat_id = "conduit_power_box"
-icon_text = "?"
-tone = "lightning"
-formatter = "percent"
-order = 110
-
-[[rows]]
-id = "relation_effect_final_percent"
-section_id = "board_power"
-stat_id = "relation_effect_final_percent"
-icon_text = "?"
-tone = "lightning"
-formatter = "percent"
-order = 120
-
-[[rows]]
-id = "adjacent_bonus_final_percent"
-section_id = "board_power"
-stat_id = "adjacent_bonus_final_percent"
-icon_text = "?"
-tone = "lightning"
-formatter = "percent"
-order = 130

@@ -610,6 +610,10 @@ class SkillRuntime:
         orbit_speed = float(orbit_params.get("orbit_speed_deg_per_sec", 0.0))
         orb_count = max(1, int(orbit_params.get("orb_count", 1)))
         start_angle = float(orbit_params.get("start_angle_deg", 0.0))
+        radius_cycle_enabled = bool(orbit_params.get("orbit_radius_cycle_enabled", False))
+        radius_cycle_amplitude = max(0.0, float(orbit_params.get("orbit_radius_cycle_amplitude", 0.0)))
+        radius_cycle_period_ms = max(1, int(orbit_params.get("orbit_radius_cycle_period_ms", 1000)))
+        radius_cycle_phase_deg = float(orbit_params.get("orbit_radius_cycle_phase_deg", 0.0))
         tick_marker_id = str(orbit_params.get("tick_marker_id", ""))
         trigger_marker_id = str(trigger_params.get("trigger_marker_id", zone_params.get("trigger_marker_id", "")))
         trigger_delay_ms = max(0, int(trigger_params.get("trigger_delay_ms", zone_params.get("trigger_delay_ms", 0))))
@@ -676,6 +680,10 @@ class SkillRuntime:
                     "orb_count": orb_count,
                     "orbit_speed_deg_per_sec": orbit_speed,
                     "start_angle_deg": start_angle,
+                    "orbit_radius_cycle_enabled": radius_cycle_enabled,
+                    "orbit_radius_cycle_amplitude": radius_cycle_amplitude,
+                    "orbit_radius_cycle_period_ms": radius_cycle_period_ms,
+                    "orbit_radius_cycle_phase_deg": radius_cycle_phase_deg,
                     "spawn_vfx_key": spawn_vfx_key,
                 },
             ),
@@ -690,6 +698,10 @@ class SkillRuntime:
                     speed_deg_per_sec=orbit_speed,
                     start_angle_deg=start_angle + (360.0 / orb_count) * orb_index,
                     timestamp_ms=tick_time_ms,
+                    radius_cycle_enabled=radius_cycle_enabled,
+                    radius_cycle_amplitude=radius_cycle_amplitude,
+                    radius_cycle_period_ms=radius_cycle_period_ms,
+                    radius_cycle_phase_deg=radius_cycle_phase_deg,
                 )
                 tick_event_id = _event_id(skill, timestamp_ms, next_index, "orbit_tick")
                 tick_payload = {
@@ -705,6 +717,12 @@ class SkillRuntime:
                     "tick_vfx_key": tick_vfx_key,
                     "orbit_radius": orbit_radius,
                     "orbit_speed_deg_per_sec": orbit_speed,
+                    "start_angle_deg": start_angle,
+                    "orbit_radius_cycle_enabled": radius_cycle_enabled,
+                    "orbit_radius_cycle_amplitude": radius_cycle_amplitude,
+                    "orbit_radius_cycle_period_ms": radius_cycle_period_ms,
+                    "orbit_radius_cycle_phase_deg": radius_cycle_phase_deg,
+                    "orb_distance": hypot(orb_position["x"] - origin["x"], orb_position["y"] - origin["y"]),
                 }
                 events.append(
                     SkillEvent(
@@ -754,6 +772,14 @@ class SkillRuntime:
                     "tick_time_ms": tick_time_ms,
                     "orb_index": orb_index,
                     "orb_position": dict(orb_position),
+                    "orbit_radius": orbit_radius,
+                    "orbit_speed_deg_per_sec": orbit_speed,
+                    "start_angle_deg": start_angle,
+                    "orbit_radius_cycle_enabled": radius_cycle_enabled,
+                    "orbit_radius_cycle_amplitude": radius_cycle_amplitude,
+                    "orbit_radius_cycle_period_ms": radius_cycle_period_ms,
+                    "orbit_radius_cycle_phase_deg": radius_cycle_phase_deg,
+                    "orb_distance": hypot(orb_position["x"] - origin["x"], orb_position["y"] - origin["y"]),
                     "delay_ms": trigger_delay_ms,
                     "radius": radius,
                     "ring_width": float(zone_params.get("ring_width", 28.0)),
@@ -785,28 +811,6 @@ class SkillRuntime:
                     )
                 )
                 next_index += 1
-                if hit_targets:
-                    events.append(
-                        SkillEvent(
-                            event_id=_event_id(skill, timestamp_ms, next_index, "hit_vfx"),
-                            type="hit_vfx",
-                            timestamp_ms=timestamp_ms + damage_delay_ms,
-                            source_entity=source_entity,
-                            target_entity=primary_target.entity_id,
-                            position=dict(orb_position),
-                            direction={"x": 0.0, "y": 0.0},
-                            delay_ms=damage_delay_ms,
-                            duration_ms=420,
-                            amount=None,
-                            damage_type=skill.damage_type,
-                            skill_instance_id=skill.active_gem_instance_id,
-                            vfx_key=hit_vfx_key,
-                            sfx_key=sfx_key,
-                            reason_key=reason_key,
-                            payload={**zone_payload, "hit_world_position": dict(orb_position), "skill_name": skill.skill_package_id or skill.skill_template_id},
-                        )
-                    )
-                    next_index += 1
                 for target, target_payload in hit_targets:
                     target_direction = _direction(orb_position, target.position)
                     hit_payload = {
@@ -818,6 +822,7 @@ class SkillRuntime:
                     }
                     for event_type, amount, duration, event_vfx, event_reason, position in (
                         ("damage", damage_amount, 0, hit_vfx_key, reason_key, target.position),
+                        ("hit_vfx", None, 420, hit_vfx_key, reason_key, target.position),
                         ("floating_text", damage_amount, 800, hit_vfx_key, floating_key, {"x": target.position["x"], "y": target.position["y"] - 28.0}),
                     ):
                         payload = {**hit_payload}
@@ -1877,13 +1882,40 @@ def _orbit_position(
     speed_deg_per_sec: float,
     start_angle_deg: float,
     timestamp_ms: int,
+    radius_cycle_enabled: bool = False,
+    radius_cycle_amplitude: float = 0.0,
+    radius_cycle_period_ms: int = 1000,
+    radius_cycle_phase_deg: float = 0.0,
 ) -> dict[str, float]:
     angle_deg = start_angle_deg + speed_deg_per_sec * (timestamp_ms / 1000.0)
     angle_rad = angle_deg * pi / 180.0
+    effective_radius = _orbit_effective_radius(
+        radius,
+        timestamp_ms=timestamp_ms,
+        radius_cycle_enabled=radius_cycle_enabled,
+        radius_cycle_amplitude=radius_cycle_amplitude,
+        radius_cycle_period_ms=radius_cycle_period_ms,
+        radius_cycle_phase_deg=radius_cycle_phase_deg,
+    )
     return {
-        "x": center["x"] + cos(angle_rad) * radius,
-        "y": center["y"] + sin(angle_rad) * radius,
+        "x": center["x"] + cos(angle_rad) * effective_radius,
+        "y": center["y"] + sin(angle_rad) * effective_radius,
     }
+
+
+def _orbit_effective_radius(
+    radius: float,
+    *,
+    timestamp_ms: int,
+    radius_cycle_enabled: bool,
+    radius_cycle_amplitude: float,
+    radius_cycle_period_ms: int,
+    radius_cycle_phase_deg: float,
+) -> float:
+    if not radius_cycle_enabled or radius_cycle_amplitude <= 0:
+        return max(1.0, radius)
+    cycle_rad = (timestamp_ms / max(1, radius_cycle_period_ms)) * 2.0 * pi + radius_cycle_phase_deg * pi / 180.0
+    return max(1.0, radius + sin(cycle_rad) * radius_cycle_amplitude)
 
 
 def _optional_int(value: Any) -> int | None:

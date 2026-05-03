@@ -101,8 +101,13 @@ class FinalSkillInstance:
     behavior_type: str
     visual_effect: str
     shape_effects: tuple[str, ...]
+    base_release_interval_ms: int
+    release_interval_ms: int
     base_cooldown_ms: int
     final_cooldown_ms: int
+    actual_interval_ms: int
+    trigger_interval_ms: int
+    mana_cost: int
     projectile_count: int
     area_multiplier: float
     speed_multiplier: float
@@ -636,26 +641,41 @@ class SkillEffectCalculator:
             crit_chance = 0.0
         expected_hit_damage = non_crit_damage * ((1.0 - crit_chance) + crit_chance * crit_multiplier)
 
-        speed_add = self._numeric_stat(skill_stats, "projectile_speed_add_percent")
-        if "attack" in template.tags:
-            speed_add += self._numeric_stat(skill_stats, "attack_speed_add_percent")
-        if "spell" in template.tags:
-            speed_add += self._numeric_stat(skill_stats, "cast_speed_add_percent")
-        speed_multiplier = 1.0 + speed_add / 100.0
-        speed_multiplier *= 1.0 + self._numeric_stat(skill_stats, "skill_speed_final_percent") / 100.0
+        attack_speed_add_percent = self._numeric_stat(skill_stats, "attack_speed_add_percent")
+        cast_speed_add_percent = self._numeric_stat(skill_stats, "cast_speed_add_percent")
+        skill_speed_final_percent = self._numeric_stat(skill_stats, "skill_speed_final_percent")
+        cooldown_recovery_add_percent = self._numeric_stat(skill_stats, "cooldown_recovery_add_percent")
+        added_cooldown_ms = self._numeric_stat(skill_stats, "added_cooldown_ms")
 
-        cooldown = template.base_cooldown_ms + self._numeric_stat(skill_stats, "added_cooldown_ms")
-        cooldown *= max(0.0, 1.0 - self._numeric_stat(skill_stats, "cooldown_reduction_percent") / 100.0)
-        if speed_multiplier > 0:
-            cooldown /= speed_multiplier
+        release_speed_add = 0.0
+        if "attack" in template.tags:
+            release_speed_add = attack_speed_add_percent
+        elif "spell" in template.tags:
+            release_speed_add = cast_speed_add_percent
+        speed_multiplier = max(0.01, 1.0 + release_speed_add / 100.0)
+        speed_multiplier *= max(0.01, 1.0 + skill_speed_final_percent / 100.0)
+
+        release_interval = 0.0
+        if template.base_release_interval_ms > 0 and ("attack" in template.tags or "spell" in template.tags):
+            release_interval = template.base_release_interval_ms / speed_multiplier
+        release_interval_ms = max(1, round(release_interval)) if release_interval > 0 else 0
+
+        cooldown_recovery_multiplier = max(0.01, 1.0 + cooldown_recovery_add_percent / 100.0)
+        cooldown = 0.0
+        has_cooldown_constraint = template.base_cooldown_ms > 0 or added_cooldown_ms != 0
+        if has_cooldown_constraint:
+            cooldown = template.base_cooldown_ms / cooldown_recovery_multiplier + added_cooldown_ms
+            cooldown = max(100.0, cooldown)
         final_cooldown_ms = max(0, round(cooldown))
-        uses_per_second = 1000.0 / final_cooldown_ms if final_cooldown_ms > 0 else 0.0
+        actual_interval_ms = max(release_interval_ms, final_cooldown_ms)
+        uses_per_second = 1000.0 / actual_interval_ms if actual_interval_ms > 0 else 0.0
         hit_coverage_factor = 1.0
         preview_dps = expected_hit_damage * uses_per_second * hit_coverage_factor
         area_multiplier = 1.0 + self._numeric_stat(skill_stats, "area_add_percent") / 100.0
+        projectile_speed_multiplier = 1.0 + self._numeric_stat(skill_stats, "projectile_speed_add_percent") / 100.0
         runtime_params = dict(template.runtime_params)
         if "projectile_speed" in runtime_params:
-            runtime_params["projectile_speed"] = float(runtime_params["projectile_speed"]) * speed_multiplier
+            runtime_params["projectile_speed"] = float(runtime_params["projectile_speed"]) * projectile_speed_multiplier
         if "radius" in runtime_params:
             runtime_params["radius"] = float(runtime_params["radius"]) * area_multiplier
         if "chain_radius" in runtime_params:
@@ -670,7 +690,7 @@ class SkillEffectCalculator:
             runtime_params["modules"] = _scaled_modules(
                 runtime_params["modules"],
                 area_multiplier,
-                speed_multiplier,
+                projectile_speed_multiplier,
                 round(self._numeric_stat(skill_stats, "chain_count_add")),
                 round(self._numeric_stat(skill_stats, "pierce_count_add")),
             )
@@ -720,8 +740,13 @@ class SkillEffectCalculator:
             behavior_type=template.behavior_type,
             visual_effect=active_definition.visual_effect or template.visual_effect or template.behavior_type,
             shape_effects=shape_effects,
+            base_release_interval_ms=template.base_release_interval_ms,
+            release_interval_ms=release_interval_ms,
             base_cooldown_ms=template.base_cooldown_ms,
             final_cooldown_ms=final_cooldown_ms,
+            actual_interval_ms=actual_interval_ms,
+            trigger_interval_ms=template.trigger_interval_ms,
+            mana_cost=template.mana_cost,
             projectile_count=int(runtime_params["projectile_count"]),
             area_multiplier=area_multiplier,
             speed_multiplier=speed_multiplier,

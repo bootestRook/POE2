@@ -59,8 +59,8 @@
       "weight": 55,
       "budget_cost": 2,
       "entries": [
-        { "monster_id": "mon_100101", "count_min": 2, "count_max": 3, "life": 32, "damage": 8 },
-        { "monster_id": "mon_100104", "count_min": 1, "count_max": 2, "life": 32, "damage": 8 }
+        { "monster_id": "mon_100101", "count_min": 2, "count_max": 3 },
+        { "monster_id": "mon_100104", "count_min": 1, "count_max": 2 }
       ]
     },
     {
@@ -69,8 +69,8 @@
       "weight": 45,
       "budget_cost": 2,
       "entries": [
-        { "monster_id": "mon_100102", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 },
-        { "monster_id": "mon_100105", "count_min": 1, "count_max": 2, "life": 34, "damage": 9 }
+        { "monster_id": "mon_100102", "count_min": 2, "count_max": 3 },
+        { "monster_id": "mon_100105", "count_min": 1, "count_max": 2 }
       ]
     },
     {
@@ -79,8 +79,8 @@
       "weight": 38,
       "budget_cost": 2,
       "entries": [
-        { "monster_id": "mon_100106", "count_min": 2, "count_max": 3, "life": 36, "damage": 8 },
-        { "monster_id": "mon_100108", "count_min": 1, "count_max": 2, "life": 32, "damage": 10 }
+        { "monster_id": "mon_100106", "count_min": 2, "count_max": 3 },
+        { "monster_id": "mon_100108", "count_min": 1, "count_max": 2 }
       ]
     },
     {
@@ -89,9 +89,9 @@
       "weight": 46,
       "budget_cost": 3,
       "entries": [
-        { "monster_id": "mon_100103", "count_min": 2, "count_max": 4, "life": 36, "damage": 8 },
-        { "monster_id": "mon_100107", "count_min": 2, "count_max": 3, "life": 34, "damage": 8 },
-        { "monster_id": "mon_200101", "count_min": 1, "count_max": 1, "life": 42, "damage": 10 }
+        { "monster_id": "mon_100103", "count_min": 2, "count_max": 4 },
+        { "monster_id": "mon_100107", "count_min": 2, "count_max": 3 },
+        { "monster_id": "mon_200101", "count_min": 1, "count_max": 1 }
       ]
     },
     {
@@ -100,9 +100,9 @@
       "weight": 40,
       "budget_cost": 3,
       "entries": [
-        { "monster_id": "mon_100102", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 },
-        { "monster_id": "mon_100105", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 },
-        { "monster_id": "mon_200103", "count_min": 1, "count_max": 1, "life": 40, "damage": 11 }
+        { "monster_id": "mon_100102", "count_min": 2, "count_max": 3 },
+        { "monster_id": "mon_100105", "count_min": 2, "count_max": 3 },
+        { "monster_id": "mon_200103", "count_min": 1, "count_max": 1 }
       ]
     },
     {
@@ -111,9 +111,9 @@
       "weight": 36,
       "budget_cost": 3,
       "entries": [
-        { "monster_id": "mon_100104", "count_min": 2, "count_max": 3, "life": 32, "damage": 8 },
-        { "monster_id": "mon_100106", "count_min": 1, "count_max": 2, "life": 36, "damage": 8 },
-        { "monster_id": "mon_200106", "count_min": 1, "count_max": 1, "life": 44, "damage": 12 }
+        { "monster_id": "mon_100104", "count_min": 2, "count_max": 3 },
+        { "monster_id": "mon_100106", "count_min": 1, "count_max": 2 },
+        { "monster_id": "mon_200106", "count_min": 1, "count_max": 1 }
       ]
     },
     {
@@ -122,9 +122,9 @@
       "weight": 34,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_100107", "count_min": 4, "count_max": 6, "life": 34, "damage": 8 },
-        { "monster_id": "mon_100103", "count_min": 2, "count_max": 3, "life": 36, "damage": 8 },
-        { "monster_id": "mon_200107", "count_min": 1, "count_max": 1, "life": 42, "damage": 11 }
+        { "monster_id": "mon_100107", "count_min": 4, "count_max": 6 },
+        { "monster_id": "mon_100103", "count_min": 2, "count_max": 3 },
+        { "monster_id": "mon_200107", "count_min": 1, "count_max": 1 }
       ]
     },
     {
@@ -133,10 +133,10 @@
       "weight": 30,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_100105", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 },
-        { "monster_id": "mon_100108", "count_min": 2, "count_max": 3, "life": 32, "damage": 10 },
-        { "monster_id": "mon_200102", "count_min": 1, "count_max": 1, "life": 42, "damage": 12 },
-        { "monster_id": "mon_200105", "count_min": 1, "count_max": 1, "life": 40, "damage": 12 }
+        { "monster_id": "mon_100105", "count_min": 2, "count_max": 3 },
+        { "monster_id": "mon_100108", "count_min": 2, "count_max": 3 },
+        { "monster_id": "mon_200102", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_200105", "count_min": 1, "count_max": 1 }
       ]
     },
     {
@@ -145,10 +145,10 @@
       "weight": 24,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_200101", "count_min": 1, "count_max": 2, "life": 42, "damage": 10 },
-        { "monster_id": "mon_200103", "count_min": 1, "count_max": 1, "life": 40, "damage": 11 },
-        { "monster_id": "mon_200104", "count_min": 1, "count_max": 1, "life": 42, "damage": 10 },
-        { "monster_id": "mon_200108", "count_min": 1, "count_max": 1, "life": 44, "damage": 12 }
+        { "monster_id": "mon_200101", "count_min": 1, "count_max": 2 },
+        { "monster_id": "mon_200103", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_200104", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_200108", "count_min": 1, "count_max": 1 }
       ]
     },
     {
@@ -157,8 +157,8 @@
       "weight": 16,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_300101", "count_min": 1, "count_max": 1, "life": 48, "damage": 14 },
-        { "monster_id": "mon_100105", "count_min": 2, "count_max": 4, "life": 34, "damage": 9 }
+        { "monster_id": "mon_300101", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_100105", "count_min": 2, "count_max": 4 }
       ]
     },
     {
@@ -167,8 +167,8 @@
       "weight": 16,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_300102", "count_min": 1, "count_max": 1, "life": 50, "damage": 12 },
-        { "monster_id": "mon_100103", "count_min": 2, "count_max": 4, "life": 36, "damage": 8 }
+        { "monster_id": "mon_300102", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_100103", "count_min": 2, "count_max": 4 }
       ]
     },
     {
@@ -177,8 +177,8 @@
       "weight": 14,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_300103", "count_min": 1, "count_max": 1, "life": 48, "damage": 14 },
-        { "monster_id": "mon_100104", "count_min": 2, "count_max": 4, "life": 32, "damage": 8 }
+        { "monster_id": "mon_300103", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_100104", "count_min": 2, "count_max": 4 }
       ]
     },
     {
@@ -187,8 +187,8 @@
       "weight": 14,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_300104", "count_min": 1, "count_max": 1, "life": 50, "damage": 13 },
-        { "monster_id": "mon_200104", "count_min": 1, "count_max": 1, "life": 42, "damage": 10 }
+        { "monster_id": "mon_300104", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_200104", "count_min": 1, "count_max": 1 }
       ]
     },
     {
@@ -197,8 +197,8 @@
       "weight": 12,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_300105", "count_min": 1, "count_max": 1, "life": 52, "damage": 13 },
-        { "monster_id": "mon_200106", "count_min": 1, "count_max": 1, "life": 44, "damage": 12 }
+        { "monster_id": "mon_300105", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_200106", "count_min": 1, "count_max": 1 }
       ]
     },
     {
@@ -207,8 +207,8 @@
       "weight": 12,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_300106", "count_min": 1, "count_max": 1, "life": 48, "damage": 14 },
-        { "monster_id": "mon_200105", "count_min": 1, "count_max": 1, "life": 40, "damage": 12 }
+        { "monster_id": "mon_300106", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_200105", "count_min": 1, "count_max": 1 }
       ]
     },
     {
@@ -217,8 +217,8 @@
       "weight": 10,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_300107", "count_min": 1, "count_max": 1, "life": 54, "damage": 12 },
-        { "monster_id": "mon_100106", "count_min": 2, "count_max": 3, "life": 36, "damage": 8 }
+        { "monster_id": "mon_300107", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_100106", "count_min": 2, "count_max": 3 }
       ]
     },
     {
@@ -227,8 +227,8 @@
       "weight": 10,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_300108", "count_min": 1, "count_max": 1, "life": 48, "damage": 14 },
-        { "monster_id": "mon_100108", "count_min": 2, "count_max": 3, "life": 32, "damage": 10 }
+        { "monster_id": "mon_300108", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_100108", "count_min": 2, "count_max": 3 }
       ]
     },
     {
@@ -237,9 +237,9 @@
       "weight": 22,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_200108", "count_min": 1, "count_max": 1, "life": 44, "damage": 12 },
-        { "monster_id": "mon_200107", "count_min": 1, "count_max": 1, "life": 42, "damage": 11 },
-        { "monster_id": "mon_100101", "count_min": 2, "count_max": 3, "life": 32, "damage": 8 }
+        { "monster_id": "mon_200108", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_200107", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_100101", "count_min": 2, "count_max": 3 }
       ]
     },
     {
@@ -248,9 +248,9 @@
       "weight": 18,
       "budget_cost": 4,
       "entries": [
-        { "monster_id": "mon_200102", "count_min": 1, "count_max": 1, "life": 42, "damage": 12 },
-        { "monster_id": "mon_200104", "count_min": 1, "count_max": 1, "life": 42, "damage": 10 },
-        { "monster_id": "mon_100102", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 }
+        { "monster_id": "mon_200102", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_200104", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_100102", "count_min": 2, "count_max": 3 }
       ]
     },
     {
@@ -259,8 +259,8 @@
       "weight": 1,
       "budget_cost": 5,
       "entries": [
-        { "monster_id": "mon_400101", "count_min": 1, "count_max": 1, "life": 480, "damage": 24, "boss": true },
-        { "monster_id": "mon_200101", "count_min": 1, "count_max": 2, "life": 42, "damage": 10 }
+        { "monster_id": "mon_400101", "count_min": 1, "count_max": 1, "boss": true },
+        { "monster_id": "mon_200101", "count_min": 1, "count_max": 2 }
       ]
     },
     {
@@ -269,8 +269,8 @@
       "weight": 1,
       "budget_cost": 5,
       "entries": [
-        { "monster_id": "mon_400102", "count_min": 1, "count_max": 1, "life": 500, "damage": 23, "boss": true },
-        { "monster_id": "mon_200108", "count_min": 1, "count_max": 2, "life": 44, "damage": 12 }
+        { "monster_id": "mon_400102", "count_min": 1, "count_max": 1, "boss": true },
+        { "monster_id": "mon_200108", "count_min": 1, "count_max": 2 }
       ]
     },
     {
@@ -279,8 +279,8 @@
       "weight": 1,
       "budget_cost": 5,
       "entries": [
-        { "monster_id": "mon_400103", "count_min": 1, "count_max": 1, "life": 520, "damage": 25, "boss": true },
-        { "monster_id": "mon_100105", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 }
+        { "monster_id": "mon_400103", "count_min": 1, "count_max": 1, "boss": true },
+        { "monster_id": "mon_100105", "count_min": 2, "count_max": 3 }
       ]
     },
     {
@@ -289,8 +289,8 @@
       "weight": 1,
       "budget_cost": 5,
       "entries": [
-        { "monster_id": "mon_400104", "count_min": 1, "count_max": 1, "life": 510, "damage": 22, "boss": true },
-        { "monster_id": "mon_100107", "count_min": 3, "count_max": 4, "life": 34, "damage": 8 }
+        { "monster_id": "mon_400104", "count_min": 1, "count_max": 1, "boss": true },
+        { "monster_id": "mon_100107", "count_min": 3, "count_max": 4 }
       ]
     },
     {
@@ -299,8 +299,8 @@
       "weight": 1,
       "budget_cost": 5,
       "entries": [
-        { "monster_id": "mon_400105", "count_min": 1, "count_max": 1, "life": 520, "damage": 24, "boss": true },
-        { "monster_id": "mon_300102", "count_min": 1, "count_max": 1, "life": 50, "damage": 12 }
+        { "monster_id": "mon_400105", "count_min": 1, "count_max": 1, "boss": true },
+        { "monster_id": "mon_300102", "count_min": 1, "count_max": 1 }
       ]
     },
     {
@@ -309,8 +309,8 @@
       "weight": 1,
       "budget_cost": 5,
       "entries": [
-        { "monster_id": "mon_400106", "count_min": 1, "count_max": 1, "life": 500, "damage": 23, "boss": true },
-        { "monster_id": "mon_200104", "count_min": 1, "count_max": 2, "life": 42, "damage": 10 }
+        { "monster_id": "mon_400106", "count_min": 1, "count_max": 1, "boss": true },
+        { "monster_id": "mon_200104", "count_min": 1, "count_max": 2 }
       ]
     },
     {
@@ -319,8 +319,8 @@
       "weight": 1,
       "budget_cost": 5,
       "entries": [
-        { "monster_id": "mon_400107", "count_min": 1, "count_max": 1, "life": 500, "damage": 23, "boss": true },
-        { "monster_id": "mon_200108", "count_min": 1, "count_max": 2, "life": 44, "damage": 12 }
+        { "monster_id": "mon_400107", "count_min": 1, "count_max": 1, "boss": true },
+        { "monster_id": "mon_200108", "count_min": 1, "count_max": 2 }
       ]
     },
     {
@@ -329,16 +329,16 @@
       "weight": 1,
       "budget_cost": 5,
       "entries": [
-        { "monster_id": "mon_400108", "count_min": 1, "count_max": 1, "life": 540, "damage": 26, "boss": true },
-        { "monster_id": "mon_200102", "count_min": 1, "count_max": 1, "life": 42, "damage": 12 },
-        { "monster_id": "mon_200106", "count_min": 1, "count_max": 1, "life": 44, "damage": 12 }
+        { "monster_id": "mon_400108", "count_min": 1, "count_max": 1, "boss": true },
+        { "monster_id": "mon_200102", "count_min": 1, "count_max": 1 },
+        { "monster_id": "mon_200106", "count_min": 1, "count_max": 1 }
       ]
     }
   ],
   "monster_offense_defaults": {
     "damage_type": "physical",
     "hit_kind": "attack",
-    "attack_range": 96,
+    "attack_range": 42,
     "attack_cadence_ms": 1160,
     "modifiers": {
       "damage_add_percent": 0,

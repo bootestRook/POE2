@@ -9,6 +9,7 @@ const app = readFileSync(join(root, "webapp", "App.tsx"), "utf8");
 const css = readFileSync(join(root, "webapp", "styles.css"), "utf8");
 const mapSpawnRuntime = readFileSync(join(root, "webapp", "mapSpawnRuntime.ts"), "utf8");
 const mapSpawnConfig = JSON.parse(readFileSync(join(root, "configs", "monsters", "map_spawn_v1.json"), "utf8"));
+const monsterDefsToml = readFileSync(join(root, "configs", "monsters", "monster_defs.toml"), "utf8");
 const battleGeometryRenderer = readFileSync(join(root, "webapp", "battleGeometryRenderer.ts"), "utf8");
 const battleGeometryCanvas = readFileSync(join(root, "webapp", "BattleGeometryCanvas.tsx"), "utf8");
 const abstractGeometryRollback = readFileSync(join(root, "openspec", "changes", "migrate-abstract-geometric-visual-system", "rollback.md"), "utf8");
@@ -80,6 +81,17 @@ for (const obsoleteStat of ["pickup_radius", "active_skill_slots", "passive_skil
 }
 if (!app.includes("character_panel") || !app.includes("formatCharacterPanelValue")) {
   throw new Error("CharacterInfoPanel must render the configured character_panel payload");
+}
+for (const requiredRuntimeManaCode of [
+  "skillReleaseIntervalSeconds(skill)",
+  "Number(skill.actual_interval_ms ?? skill.final_cooldown_ms ?? 0)",
+  "function trySpendSkillMana(skill: SkillPreview)",
+  "currentMana: clamp(current.currentMana - cost, 0, current.maxMana)",
+  "if (!trySpendSkillMana(skill)) return current"
+]) {
+  if (!app.includes(requiredRuntimeManaCode)) {
+    throw new Error(`Frontend skill runtime must spend mana and use actual release interval: ${requiredRuntimeManaCode}`);
+  }
 }
 
 const requiredCode = [
@@ -387,7 +399,7 @@ const bakedMapChecks = [
   [app, "\u5730\u56fe\u8c03\u8bd5", "missing map debug toggle"],
   [app, "BakedMapBackground", "missing baked map background renderer"],
   [app, "MapDebugOverlay", "missing map debug overlay"],
-  [app, "createEnemy(nextEnemyId.current++, player.x, player.y, battleMap", "enemy spawning not connected to map points"],
+  [app, "createEnemy(nextEnemyId.current++, challengeSpawn.x, challengeSpawn.y, battleMap", "enemy spawning not connected to map points"],
   [css, ".map-debug-walkable", "missing walkable debug style"],
   [css, ".map-debug-blocker", "missing blocker debug style"],
   [css, ".map-debug-marker-player", "missing player spawn debug marker"]
@@ -834,7 +846,7 @@ const abstractGeometryPhase2Checks = [
   [app, "CANVAS_GEOMETRY_SKILL_EFFECTS = true", "Phase 3 skill effects must default to Canvas geometry rendering."],
   [app, "return item.kind === \"hit-vfx\" && !CANVAS_GEOMETRY_SKILL_EFFECTS;", "Player, enemies, projectiles and hit VFX must not be emitted as per-object DOM by default."],
   [app, "!CANVAS_GEOMETRY_SKILL_EFFECTS && texts.map", "Damage numbers must stay behind the Canvas skill-effects fallback switch."],
-  [app, "hits: hitVfxs.map", "Hit VFX must be forwarded into the Canvas geometry snapshot."],
+  [app, "hits: anchoredHitVfxs.map", "Hit VFX must be forwarded into the Canvas geometry snapshot."],
   [app, "texts: texts.map", "Floating damage numbers must be forwarded into the Canvas geometry snapshot."],
   [app, "moving: Math.hypot(playerVisual.current.movementVector.x", "Player geometry snapshot must preserve visual movement state for rotation speed."],
   [app, "velocityX: bolt.velocityX", "Projectile geometry snapshot must preserve projectile velocity input."],
@@ -999,6 +1011,7 @@ const monsterPackCombatChecks = [
   [app, "currentEnergyShield", "Monster incoming damage must reduce player energy shield before life."],
   [app, "if (enemy.aggroLocked) return player", "Aggro-locked monsters must target the player directly at close range."],
   [app, "!directCharge && playerDistance < ENEMY_PLAYER_BODY_SOFT_RADIUS", "Aggro-locked monsters must not apply player-body repulsion."],
+  [app, "directCharge\n    ? resolveEnemyDirectChargeMove", "Aggro-locked monsters must bypass swarm steering and crowd-yield movement."],
   [app, "MONSTER_CHASE_SPEED_MULTIPLIER = 2", "Monster chase speed must be doubled by a centralized multiplier."],
   [app, "nextAttackReadyAtMs: canStartAttack ? nowMs + monsterAttackCadenceMs(enemy)", "Monster damage must use attack cadence rather than per-frame proximity damage."],
   [mapSpawnRuntime, "monster_offense_defaults", "Procedural spawn runtime must accept monster offense defaults."],
@@ -1068,10 +1081,11 @@ function runProceduralSpawnRuntimeSmoke() {
     "--noEmitOnError", "true"
   ], { cwd: root, encoding: "utf8" });
 
-  const { generateProceduralMonsterSpawns } = require(join(outDir, "mapSpawnRuntime.js"));
+  const { generateProceduralMonsterSpawns, parseMonsterDefinitionsToml } = require(join(outDir, "mapSpawnRuntime.js"));
   const map = createProceduralSmokeMap();
   const config = {
     ...mapSpawnConfig,
+    monster_definitions: parseMonsterDefinitionsToml(monsterDefsToml),
     map_spawn_profiles: [{
       ...mapSpawnConfig.map_spawn_profiles[0],
       base_pack_budget: 14,
@@ -1107,6 +1121,9 @@ function runProceduralSpawnRuntimeSmoke() {
   if (!result.enemies.length) throw new Error("procedural spawn smoke must create enemies.");
   if (result.enemies.some((enemy) => !enemy.base_damage || !enemy.damage_type || !enemy.hit_kind || !enemy.attack_range || !enemy.attack_cadence_ms || !enemy.offense_modifiers)) {
     throw new Error("procedural spawn enemies must include monster offense context.");
+  }
+  if (!result.enemies.every((enemy) => enemy.max_hp >= 32 && enemy.base_damage >= 8)) {
+    throw new Error("procedural spawn enemies must derive base life and attack from monster_defs.");
   }
   if (!result.enemies.every((enemy) => enemy.damage_type === "physical" && enemy.hit_kind === "attack")) {
     throw new Error("procedural spawn enemies must inherit default physical melee offense.");

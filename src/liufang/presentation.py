@@ -145,8 +145,13 @@ class PresentationService:
                 "final_damage": self.localizer.text("ui.skill.final_damage"),
                 "expected_hit_damage": self.localizer.text("ui.skill.expected_hit_damage"),
                 "preview_dps": self.localizer.text("ui.skill.preview_dps"),
+                "base_release_interval_ms": self.localizer.text("ui.skill.base_release_interval_ms"),
+                "release_interval_ms": self.localizer.text("ui.skill.release_interval_ms"),
                 "base_cooldown_ms": self.localizer.text("ui.skill.base_cooldown_ms"),
                 "final_cooldown_ms": self.localizer.text("ui.skill.final_cooldown_ms"),
+                "actual_interval_ms": self.localizer.text("ui.skill.actual_interval_ms"),
+                "trigger_interval_ms": self.localizer.text("ui.skill.trigger_interval_ms"),
+                "mana_cost": self.localizer.text("ui.skill.mana_cost"),
                 "projectile_count": self.localizer.text("ui.skill.projectile_count"),
                 "area_multiplier": self.localizer.text("ui.skill.area_multiplier"),
                 "speed_multiplier": self.localizer.text("ui.skill.speed_multiplier"),
@@ -162,8 +167,13 @@ class PresentationService:
             "uses_per_second": skill.uses_per_second,
             "hit_coverage_factor": skill.hit_coverage_factor,
             "preview_dps": skill.preview_dps,
+            "base_release_interval_ms": skill.base_release_interval_ms,
+            "release_interval_ms": skill.release_interval_ms,
             "base_cooldown_ms": skill.base_cooldown_ms,
             "final_cooldown_ms": skill.final_cooldown_ms,
+            "actual_interval_ms": skill.actual_interval_ms,
+            "trigger_interval_ms": skill.trigger_interval_ms,
+            "mana_cost": skill.mana_cost,
             "projectile_count": skill.projectile_count,
             "area_multiplier": skill.area_multiplier,
             "speed_multiplier": skill.speed_multiplier,
@@ -201,8 +211,10 @@ class PresentationService:
                     "name_text": self.localizer.text(self.definitions[cooldown.skill.base_gem_id].name_key),
                     "remaining_ms": cooldown.remaining_ms,
                     "status_text": self.localizer.text(
-                        "ui.skill.ready" if cooldown.remaining_ms == 0 else "ui.skill.cooldown"
+                        getattr(session, "_last_release_skip_reasons", {}).get(cooldown.skill.active_gem_instance_id)
+                        or ("ui.skill.ready" if cooldown.remaining_ms == 0 else "ui.skill.cooldown")
                     ),
+                    "mana_cost": cooldown.skill.mana_cost,
                 }
                 for cooldown in cooldowns.values()
             ],
@@ -258,7 +270,10 @@ class PresentationService:
                 "template_text": self.localizer.text(template.name_key),
                 "damage_type_text": self.localizer.text(f"damage_type.{template.damage_type}.name"),
                 "base_damage": template.base_damage,
+                "base_release_interval_ms": template.base_release_interval_ms,
                 "base_cooldown_ms": template.base_cooldown_ms,
+                "trigger_interval_ms": template.trigger_interval_ms,
+                "mana_cost": template.mana_cost,
                 "scaling_stats": [self._stat_view(stat) for stat in template.scaling_stats],
             }
 
@@ -782,6 +797,8 @@ class PresentationService:
                         "value_text": self._format_with_delta(damage, damage_delta),
                     },
                     self._cooldown_line(base_effect, final_skill),
+                    self._actual_interval_line(final_skill),
+                    self._mana_cost_line(base_effect, final_skill),
                     self._projectile_line(final_skill, tags),
                     self._area_line(final_skill, tags),
                     self._speed_line(final_skill),
@@ -791,7 +808,7 @@ class PresentationService:
         return lines
 
     def _active_tooltip_dps_lines(self, final_skill: FinalSkillInstance | None) -> list[dict[str, str]]:
-        if final_skill is None or final_skill.final_cooldown_ms <= 0:
+        if final_skill is None or final_skill.actual_interval_ms <= 0:
             return []
         return [
             {
@@ -828,6 +845,27 @@ class PresentationService:
         return {
             "label_text": self.localizer.text("ui.tooltip.stat.cooldown"),
             "value_text": self._format_with_delta(cooldown, cooldown - base_cooldown, suffix=self.localizer.text("ui.tooltip.unit.ms")),
+        }
+
+    def _actual_interval_line(self, final_skill: FinalSkillInstance | None) -> dict[str, str] | None:
+        if final_skill is None or final_skill.actual_interval_ms <= 0:
+            return None
+        return {
+            "label_text": self.localizer.text("ui.skill.actual_interval_ms"),
+            "value_text": self._format_number(final_skill.actual_interval_ms) + self.localizer.text("ui.tooltip.unit.ms"),
+        }
+
+    def _mana_cost_line(
+        self,
+        base_effect: dict[str, Any],
+        final_skill: FinalSkillInstance | None,
+    ) -> dict[str, str] | None:
+        mana_cost = final_skill.mana_cost if final_skill is not None else int(base_effect.get("mana_cost", 0))
+        if mana_cost <= 0:
+            return None
+        return {
+            "label_text": self.localizer.text("ui.skill.mana_cost"),
+            "value_text": self._format_number(mana_cost),
         }
 
     def _projectile_line(
@@ -917,8 +955,16 @@ class PresentationService:
                         "value_text": self._format_number(base_effect["base_damage"]),
                     },
                     {
+                        "label_text": self.localizer.text("ui.skill.base_release_interval_ms"),
+                        "value_text": self._format_number(base_effect["base_release_interval_ms"]),
+                    },
+                    {
                         "label_text": self.localizer.text("ui.skill.base_cooldown_ms"),
                         "value_text": self._format_number(base_effect["base_cooldown_ms"]),
+                    },
+                    {
+                        "label_text": self.localizer.text("ui.skill.mana_cost"),
+                        "value_text": self._format_number(base_effect.get("mana_cost", 0)),
                     },
                     {
                         "label_text": self.localizer.text("ui.tooltip.damage_type"),
@@ -936,6 +982,10 @@ class PresentationService:
                         {
                             "label_text": self.localizer.text("ui.skill.final_cooldown_ms"),
                             "value_text": self._format_number(final_skill.final_cooldown_ms),
+                        },
+                        {
+                            "label_text": self.localizer.text("ui.skill.actual_interval_ms"),
+                            "value_text": self._format_number(final_skill.actual_interval_ms),
                         },
                         {
                             "label_text": self.localizer.text("ui.skill.projectile_count"),

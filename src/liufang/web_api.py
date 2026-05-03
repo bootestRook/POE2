@@ -62,6 +62,7 @@ class V1WebAppApi:
         drops = []
         if self.combat_session is not None:
             drops = [self.presenter.drop_prompt(drop) for drop in self.combat_session.dropped_gems]
+        player_stats = self._player_stats_view()
         return {
             "inventory": inventory,
             "board": board_view,
@@ -70,8 +71,8 @@ class V1WebAppApi:
             "combat": self.presenter.combat_hud(self.combat_session) if self.combat_session else None,
             "drops": drops,
             "logs": list(self.logs),
-            "player_stats": self._player_stats_view(),
-            "character_panel": self._character_panel_view(),
+            "player_stats": player_stats,
+            "character_panel": self._character_panel_view(final_skills, player_stats),
             "skill_editor": self.skill_editor.view(),
             "ui_text": {
                 "only_gems_on_board": self.presenter.localizer.text("ui.inventory.only_gems_on_board"),
@@ -301,6 +302,7 @@ class V1WebAppApi:
             move_speed=float(base_stats.get("move_speed", 1.0)),
             current_mana=float(base_stats.get("current_mana", 0)),
             max_mana=float(base_stats.get("max_mana", 0)),
+            life_regen_flat=float(base_stats.get("life_regen_flat", 0)),
             mana_regen_flat=float(base_stats.get("mana_regen_flat", 0)),
             current_energy_shield=float(base_stats.get("current_energy_shield", 0)),
             max_energy_shield=float(base_stats.get("max_energy_shield", 0)),
@@ -347,19 +349,32 @@ class V1WebAppApi:
             for stat_id, definition in stat_definitions.items()
         }
 
-    def _character_panel_view(self) -> dict[str, Any]:
-        stat_view = self._player_stats_view()
+    def _character_panel_view(
+        self,
+        final_skills: tuple[FinalSkillInstance, ...] = (),
+        stat_view: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        stat_view = stat_view if stat_view is not None else self._player_stats_view()
+        active_skill_stat_deltas = self._active_skill_stat_deltas(final_skills)
         sections = []
         for section in load_character_panel_sections(self.config_root):
             rows = []
             for row in section.rows:
                 stat = stat_view[row.stat_id]
+                value = stat["value"]
+                if row.stat_id in active_skill_stat_deltas:
+                    if stat["value_type"] == "boolean":
+                        value = bool(value) or bool(active_skill_stat_deltas[row.stat_id])
+                    elif isinstance(value, (int, float)) and not isinstance(value, bool):
+                        value = float(value) + active_skill_stat_deltas[row.stat_id]
+                if row.stat_id in {"fire_resistance_percent", "cold_resistance_percent", "lightning_resistance_percent"}:
+                    value = float(value) + float(stat_view.get("elemental_resistance_percent", {}).get("value", 0))
                 rows.append(
                     {
                         "id": row.row_id,
                         "stat_id": row.stat_id,
                         "label_text": stat["label_text"],
-                        "value": stat["value"],
+                        "value": value,
                         "value_type": stat["value_type"],
                         "formatter": row.formatter,
                         "icon_text": row.icon_text,
@@ -376,6 +391,15 @@ class V1WebAppApi:
                 }
             )
         return {"sections": sections}
+
+    def _active_skill_stat_deltas(self, final_skills: tuple[FinalSkillInstance, ...]) -> dict[str, float]:
+        deltas: dict[str, float] = {}
+        for skill in final_skills:
+            for modifier in skill.applied_modifiers:
+                if not modifier.applied or modifier.layer not in {"additive", "final"}:
+                    continue
+                deltas[modifier.stat] = deltas.get(modifier.stat, 0.0) + float(modifier.value)
+        return deltas
 
     def _gem_name(self, instance: GemInstance) -> str:
         return self.presenter.localizer.text(self.definitions[instance.base_gem_id].name_key)

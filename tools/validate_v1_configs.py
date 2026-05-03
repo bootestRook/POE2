@@ -115,7 +115,7 @@ REQUIRED_STATS = {
     "attack_speed_add_percent",
     "cast_speed_add_percent",
     "skill_speed_final_percent",
-    "cooldown_reduction_percent",
+    "cooldown_recovery_add_percent",
     "added_cooldown_ms",
     "cooldown_recovery_final_percent",
     "projectile_speed_add_percent",
@@ -186,6 +186,16 @@ MONSTER_TIER_NUMERIC_RULES = {
     "rare": {"min": 300000, "max": 399999, "group": 3001},
     "boss": {"min": 400000, "max": 499999, "group": 4001},
 }
+MONSTER_VISUAL_RULES = {
+    "normal": {"role": "monster", "visual_rarity": "normal", "size": 38, "arc_color": "", "arc_segments": 0, "arc_width": 0, "pedestal_shape": "shadow", "pedestal_color": "#D9DDE1", "pedestal_alpha": 0.16, "pedestal_radius_scale": 0.72, "pedestal_line_width": 1.0, "pedestal_pulse": False},
+    "magic": {"role": "monster", "visual_rarity": "magic", "size": 46, "arc_color": "", "arc_segments": 0, "arc_width": 0, "pedestal_shape": "diamond", "pedestal_color": "#4AA3FF", "pedestal_alpha": 0.82, "pedestal_radius_scale": 0.82, "pedestal_line_width": 2.0, "pedestal_pulse": False},
+    "rare": {"role": "monster", "visual_rarity": "rare", "size": 58, "arc_color": "", "arc_segments": 0, "arc_width": 0, "pedestal_shape": "hexagon", "pedestal_color": "#F5C542", "pedestal_alpha": 0.88, "pedestal_radius_scale": 0.95, "pedestal_line_width": 2.5, "pedestal_pulse": False},
+    "boss": {"role": "boss", "visual_rarity": "legendary", "size": 82, "arc_color": "", "arc_segments": 0, "arc_width": 0, "pedestal_shape": "hexagon", "pedestal_color": "#FF4D3D", "pedestal_alpha": 0.92, "pedestal_radius_scale": 1.15, "pedestal_line_width": 3.0, "pedestal_pulse": True},
+}
+MONSTER_STANDARD_PRIMARY_COLOR = "#F7F7F2"
+MONSTER_STANDARD_ACCENT_COLOR = "#D9DDE1"
+MONSTER_STANDARD_PALETTE_KEY = "encounter_standard"
+PLAYER_GEOMETRY_RADIUS_PX = 18
 ALLOWED_MONSTER_GEOMETRY_SHAPES = {
     "circle_ring",
     "triangle",
@@ -525,6 +535,9 @@ FORBIDDEN_CONFIG_IDS = {
     "class",
     "profession",
 }
+FORBIDDEN_ACTIVE_STAT_IDS = {
+    "cooldown_reduction_percent",
+}
 
 
 def load_toml(path: Path) -> dict[str, Any]:
@@ -633,10 +646,37 @@ def validate_monster_configs(
             errors.append(f"{context}: unknown tier '{tier}'")
         elif isinstance(numeric_id, int):
             rule = MONSTER_TIER_NUMERIC_RULES[tier]
+            visual_rule = MONSTER_VISUAL_RULES[tier]
             if not rule["min"] <= numeric_id <= rule["max"]:
                 errors.append(f"{context}: numeric_id must be in {tier} range {rule['min']}..{rule['max']}")
             if group_numeric_id != rule["group"]:
                 errors.append(f"{context}: group_numeric_id must be {rule['group']} for tier '{tier}'")
+            if monster.get("role") != visual_rule["role"]:
+                errors.append(f"{context}: role must be '{visual_rule['role']}' for tier '{tier}'")
+            if monster.get("visual_rarity") != visual_rule["visual_rarity"]:
+                errors.append(f"{context}: visual_rarity must be '{visual_rule['visual_rarity']}' for tier '{tier}'")
+            if monster.get("size_px") != visual_rule["size"]:
+                errors.append(f"{context}: size_px must be {visual_rule['size']} for tier '{tier}'")
+            if monster.get("size_px", 0) < PLAYER_GEOMETRY_RADIUS_PX * 2:
+                errors.append(f"{context}: size_px must be at least player diameter {PLAYER_GEOMETRY_RADIUS_PX * 2}")
+            if monster.get("rarity_arc_color") != visual_rule["arc_color"]:
+                errors.append(f"{context}: rarity_arc_color must be '{visual_rule['arc_color']}' for tier '{tier}'")
+            if monster.get("rarity_arc_segments") != visual_rule["arc_segments"]:
+                errors.append(f"{context}: rarity_arc_segments must be {visual_rule['arc_segments']} for tier '{tier}'")
+            if monster.get("rarity_arc_width_px") != visual_rule["arc_width"]:
+                errors.append(f"{context}: rarity_arc_width_px must be {visual_rule['arc_width']} for tier '{tier}'")
+            if monster.get("rarity_pedestal_shape") != visual_rule["pedestal_shape"]:
+                errors.append(f"{context}: rarity_pedestal_shape must be '{visual_rule['pedestal_shape']}' for tier '{tier}'")
+            if monster.get("rarity_pedestal_color") != visual_rule["pedestal_color"]:
+                errors.append(f"{context}: rarity_pedestal_color must be '{visual_rule['pedestal_color']}' for tier '{tier}'")
+            if monster.get("rarity_pedestal_alpha") != visual_rule["pedestal_alpha"]:
+                errors.append(f"{context}: rarity_pedestal_alpha must be {visual_rule['pedestal_alpha']} for tier '{tier}'")
+            if monster.get("rarity_pedestal_radius_scale") != visual_rule["pedestal_radius_scale"]:
+                errors.append(f"{context}: rarity_pedestal_radius_scale must be {visual_rule['pedestal_radius_scale']} for tier '{tier}'")
+            if monster.get("rarity_pedestal_line_width_px") != visual_rule["pedestal_line_width"]:
+                errors.append(f"{context}: rarity_pedestal_line_width_px must be {visual_rule['pedestal_line_width']} for tier '{tier}'")
+            if monster.get("rarity_pedestal_pulse") != visual_rule["pedestal_pulse"]:
+                errors.append(f"{context}: rarity_pedestal_pulse must be {visual_rule['pedestal_pulse']} for tier '{tier}'")
 
         if isinstance(monster_id, str):
             monster_tiers[monster_id] = str(tier)
@@ -659,9 +699,34 @@ def validate_monster_configs(
             errors.append(f"{context}: fallback_unit_visual must be enemy_imp or enemy_brute")
         if not isinstance(monster.get("size_px"), int) or monster.get("size_px") <= 0:
             errors.append(f"{context}: size_px must be a positive integer")
+        if not isinstance(monster.get("base_life"), (int, float)) or monster["base_life"] <= 0:
+            errors.append(f"{context}: base_life must be a positive number")
+        if not isinstance(monster.get("base_attack"), (int, float)) or monster["base_attack"] < 0:
+            errors.append(f"{context}: base_attack must be a non-negative number")
+        if monster.get("palette_key") != MONSTER_STANDARD_PALETTE_KEY:
+            errors.append(f"{context}: palette_key must be '{MONSTER_STANDARD_PALETTE_KEY}'")
+        if monster.get("primary_color") != MONSTER_STANDARD_PRIMARY_COLOR:
+            errors.append(f"{context}: primary_color must use standard monster body color {MONSTER_STANDARD_PRIMARY_COLOR}")
+        if monster.get("accent_color") != MONSTER_STANDARD_ACCENT_COLOR:
+            errors.append(f"{context}: accent_color must use standard monster accent color {MONSTER_STANDARD_ACCENT_COLOR}")
         for field in ("primary_color", "accent_color"):
             if not isinstance(monster.get(field), str) or not HEX_COLOR_PATTERN.match(monster[field]):
                 errors.append(f"{context}: {field} must be #RRGGBB")
+        if monster.get("rarity_arc_color"):
+            if not isinstance(monster.get("rarity_arc_color"), str) or not HEX_COLOR_PATTERN.match(monster["rarity_arc_color"]):
+                errors.append(f"{context}: rarity_arc_color must be empty or #RRGGBB")
+        for field in ("rarity_arc_segments", "rarity_arc_width_px"):
+            if not isinstance(monster.get(field), int) or monster[field] < 0:
+                errors.append(f"{context}: {field} must be a non-negative integer")
+        if monster.get("rarity_pedestal_shape") not in {"shadow", "diamond", "hexagon"}:
+            errors.append(f"{context}: rarity_pedestal_shape must be shadow, diamond, or hexagon")
+        if not isinstance(monster.get("rarity_pedestal_color"), str) or not HEX_COLOR_PATTERN.match(monster["rarity_pedestal_color"]):
+            errors.append(f"{context}: rarity_pedestal_color must be #RRGGBB")
+        for field in ("rarity_pedestal_alpha", "rarity_pedestal_radius_scale", "rarity_pedestal_line_width_px"):
+            if not isinstance(monster.get(field), (int, float)) or monster[field] <= 0:
+                errors.append(f"{context}: {field} must be a positive number")
+        if not isinstance(monster.get("rarity_pedestal_pulse"), bool):
+            errors.append(f"{context}: rarity_pedestal_pulse must be boolean")
         for field in ("movement_interval_sec", "movement_distance_px"):
             if not isinstance(monster.get(field), (int, float)) or monster[field] < 0:
                 errors.append(f"{context}: {field} must be non-negative")
@@ -884,6 +949,9 @@ def validate() -> list[str]:
     obsolete_stats = sorted(OBSOLETE_PLAYER_STATS & stat_ids)
     if obsolete_stats:
         errors.append(f"player stats contain obsolete ids: {', '.join(obsolete_stats)}")
+    forbidden_stats = sorted(FORBIDDEN_ACTIVE_STAT_IDS & stat_ids)
+    if forbidden_stats:
+        errors.append(f"player stats contain forbidden ids: {', '.join(forbidden_stats)}")
     runtime_stat_ids: set[str] = set()
     affix_spawn_enabled_stat_ids: set[str] = set()
     for stat in stats:
@@ -924,6 +992,8 @@ def validate() -> list[str]:
             errors.append(f"player_base: unknown stat '{stat_id}'")
         if stat_id in OBSOLETE_PLAYER_STATS:
             errors.append(f"player_base: obsolete stat '{stat_id}'")
+        if stat_id in FORBIDDEN_ACTIVE_STAT_IDS:
+            errors.append(f"player_base: forbidden stat '{stat_id}'")
         if not isinstance(player_base[stat_id], (int, float, bool)):
             errors.append(f"player_base: stat '{stat_id}' value must be numeric or boolean")
     missing_base_stats = sorted(runtime_stat_ids - set(player_base))
@@ -950,6 +1020,8 @@ def validate() -> list[str]:
             errors.append(f"character panel row '{row_id}': unknown stat_id '{stat_id}'")
         if stat_id in OBSOLETE_PLAYER_STATS:
             errors.append(f"character panel row '{row_id}': obsolete stat_id '{stat_id}'")
+        if stat_id in FORBIDDEN_ACTIVE_STAT_IDS:
+            errors.append(f"character panel row '{row_id}': forbidden stat_id '{stat_id}'")
         if not isinstance(row.get("icon_text"), str) or not row.get("icon_text"):
             errors.append(f"character panel row '{row_id}': icon_text is required")
         if row.get("formatter") not in {"auto", "integer", "number", "percent", "multiplier", "seconds_from_ms", "boolean", "rating"}:
@@ -1152,6 +1224,8 @@ def validate() -> list[str]:
                 stat = effect.get("stat")
                 if stat not in legal_stat_ids:
                     errors.append(f"{context}: unknown passive effect stat '{stat}'")
+                if stat in FORBIDDEN_ACTIVE_STAT_IDS:
+                    errors.append(f"{context}: forbidden passive effect stat '{stat}'")
                 if not isinstance(effect.get("value"), (int, float)):
                     errors.append(f"{context}: passive effect value must be numeric")
                 if effect.get("layer") not in {"additive", "final"}:
@@ -1208,6 +1282,8 @@ def validate() -> list[str]:
             for stat in effect_stats:
                 if stat not in legal_stat_ids:
                     errors.append(f"{context}: unknown effect stat '{stat}'")
+                if stat in FORBIDDEN_ACTIVE_STAT_IDS:
+                    errors.append(f"{context}: forbidden effect stat '{stat}'")
         require_localization(gem, "support gems", localization, errors)
         require_localized_key(gem, "description_key", "support gems", localization, errors)
 
@@ -1249,6 +1325,8 @@ def validate() -> list[str]:
             errors.append(f"support_base_modifiers: unknown support_id '{entry.get('support_id')}'")
         if entry.get("stat") not in legal_stat_ids:
             errors.append(f"support_base_modifiers: unknown stat '{entry.get('stat')}'")
+        if entry.get("stat") in FORBIDDEN_ACTIVE_STAT_IDS:
+            errors.append(f"support_base_modifiers: forbidden stat '{entry.get('stat')}'")
         if entry.get("layer") not in {"additive", "final"}:
             errors.append(f"support_base_modifiers: invalid layer '{entry.get('layer')}'")
         if not isinstance(entry.get("value"), (int, float)):
@@ -1307,6 +1385,8 @@ def validate() -> list[str]:
             errors.append(f"{context}: unknown V1 affix category '{affix.get('category')}'")
         if affix.get("stat") not in legal_stat_ids:
             errors.append(f"{context}: unknown stat '{affix.get('stat')}'")
+        elif affix.get("stat") in FORBIDDEN_ACTIVE_STAT_IDS:
+            errors.append(f"{context}: forbidden stat '{affix.get('stat')}'")
         elif affix.get("stat") not in affix_spawn_enabled_stat_ids:
             errors.append(f"{context}: stat '{affix.get('stat')}' is not enabled for V1 random affix spawning")
         if affix.get("group") not in affix_group_ids:

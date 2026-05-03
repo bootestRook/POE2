@@ -41,12 +41,16 @@
     "cast": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["mode", "target_selector", "search_range", "cooldown_ms", "windup_ms", "recovery_ms"],
+      "required": ["mode", "target_selector", "search_range", "cooldown_ms", "release_interval_ms", "base_cooldown_ms", "trigger_interval_ms", "mana_cost", "windup_ms", "recovery_ms"],
       "properties": {
         "mode": { "enum": ["instant", "attack", "spell"] },
         "target_selector": { "enum": ["nearest_enemy", "target_enemy", "self", "ground"] },
         "search_range": { "type": "number", "minimum": 0 },
         "cooldown_ms": { "type": "integer", "minimum": 0 },
+        "release_interval_ms": { "type": "integer", "minimum": 0 },
+        "base_cooldown_ms": { "type": "integer", "minimum": 0 },
+        "trigger_interval_ms": { "type": "integer", "minimum": 0 },
+        "mana_cost": { "type": "integer", "minimum": 0 },
         "windup_ms": { "type": "integer", "minimum": 0 },
         "recovery_ms": { "type": "integer", "minimum": 0 }
       }
@@ -138,6 +142,10 @@
             "orbit_speed_deg_per_sec": { "type": "number" },
             "orb_count": { "type": "integer", "minimum": 1 },
             "start_angle_deg": { "type": "number" },
+            "orbit_radius_cycle_enabled": { "type": "boolean" },
+            "orbit_radius_cycle_amplitude": { "type": "number", "minimum": 0 },
+            "orbit_radius_cycle_period_ms": { "type": "integer", "minimum": 1 },
+            "orbit_radius_cycle_phase_deg": { "type": "number" },
             "tick_marker_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
             "spawn_vfx_key": { "$ref": "#/$defs/localization_key" },
             "tick_vfx_key": { "$ref": "#/$defs/localization_key" }
@@ -220,10 +228,15 @@
             "enum": [
               "final_damage",
               "final_cooldown_ms",
+              "actual_interval_ms",
               "projectile_count",
               "speed_multiplier",
+              "release_interval_ms",
               "base_damage",
               "base_cooldown_ms",
+              "base_release_interval_ms",
+              "trigger_interval_ms",
+              "mana_cost",
               "damage_type",
               "damage_form"
               ,"duration_ms",

@@ -27,6 +27,33 @@ OBSOLETE_STATS = {
     "skill_slots_active",
 }
 
+SKILL_SHAPE_PANEL_STATS = {
+    "area_add_percent",
+    "area_final_percent",
+    "projectile_count_add",
+    "chain_count_add",
+    "pierce_count_add",
+    "duration_add_percent",
+    "skill_effect_frequency_add_percent",
+    "explosion_radius_add_percent",
+}
+
+BOARD_POWER_PANEL_STATS = {
+    "source_power_row",
+    "source_power_column",
+    "source_power_box",
+    "source_power_adjacent",
+    "target_power_row",
+    "target_power_column",
+    "target_power_box",
+    "target_power_adjacent",
+    "conduit_power_row",
+    "conduit_power_column",
+    "conduit_power_box",
+    "relation_effect_final_percent",
+    "adjacent_bonus_final_percent",
+}
+
 
 class PlayerStatsPanelTest(unittest.TestCase):
     def setUp(self) -> None:
@@ -108,6 +135,10 @@ class PlayerStatsPanelTest(unittest.TestCase):
         self.assertIn("current_life", bound_stats)
         self.assertIn("move_speed", bound_stats)
         self.assertFalse(OBSOLETE_STATS & bound_stats)
+        self.assertFalse(SKILL_SHAPE_PANEL_STATS & bound_stats)
+        self.assertFalse(BOARD_POWER_PANEL_STATS & bound_stats)
+        self.assertFalse(any(section.section_id == "skill_shape" for section in sections))
+        self.assertFalse(any(section.section_id == "board_power" for section in sections))
         self.assertTrue(bound_stats.issubset(definitions))
 
     def test_web_state_exposes_expanded_stats_and_configured_panel(self) -> None:
@@ -115,9 +146,11 @@ class PlayerStatsPanelTest(unittest.TestCase):
 
         self.assertIn("character_panel", state)
         self.assertIn("strength", state["player_stats"])
-        self.assertEqual(state["player_stats"]["max_life"]["value"], 103.5)
-        self.assertEqual(state["player_stats"]["max_life"]["trace"]["primary_attribute"], 3.5)
-        self.assertEqual(state["player_stats"]["max_mana"]["value"], 176.5)
+        self.assertEqual(state["player_stats"]["max_life"]["value"], 500)
+        self.assertEqual(state["player_stats"]["max_life"]["trace"]["primary_attribute"], 5)
+        self.assertEqual(state["player_stats"]["max_mana"]["value"], 100)
+        self.assertEqual(state["player_stats"]["life_regen_flat"]["value"], 10)
+        self.assertEqual(state["player_stats"]["mana_regen_flat"]["value"], 8)
         self.assertEqual(state["player_stats"]["derived_crit_chance_percent"]["value"], 5)
         self.assertEqual(state["player_stats"]["derived_crit_damage_percent"]["value"], 150)
         self.assertEqual(state["player_stats"]["move_speed"]["value"], 1.0)
@@ -133,6 +166,56 @@ class PlayerStatsPanelTest(unittest.TestCase):
         self.assertTrue(any(row["stat_id"] == "crit_damage_rating" and row["formatter"] == "rating" for row in panel_rows))
         self.assertFalse(any(row["stat_id"] == "support_link_limit" for row in panel_rows))
         self.assertFalse(any(row["stat_id"] == "gem_level" for row in panel_rows))
+        self.assertFalse(any(row["stat_id"] == "elemental_resistance_percent" for row in panel_rows))
+        self.assertFalse(any(row["stat_id"] in SKILL_SHAPE_PANEL_STATS for row in panel_rows))
+        self.assertFalse(any(row["stat_id"] in BOARD_POWER_PANEL_STATS for row in panel_rows))
+
+    def test_character_panel_reflects_active_skill_modifier_deltas(self) -> None:
+        api = V1WebAppApi(self.config_root)
+        active = api.inventory.add_instance("active", "active_penetrating_shot")
+        support = api.inventory.add_instance("support", "support_shotgun")
+        conduit = api.inventory.add_instance("conduit", "support_box_conduit")
+        api.board.mount_gem(active.instance_id, 4, 4)
+        api.board.mount_gem(support.instance_id, 4, 3)
+        api.board.mount_gem(conduit.instance_id, 3, 4)
+
+        state = api.state()
+        panel_rows = {
+            row["stat_id"]: row
+            for section in state["character_panel"]["sections"]
+            for row in section["rows"]
+        }
+
+        self.assertEqual(state["player_stats"]["projectile_speed_add_percent"]["value"], 0)
+        self.assertEqual(panel_rows["projectile_speed_add_percent"]["value"], -25)
+
+    def test_character_panel_folds_elemental_resistance_into_three_element_rows(self) -> None:
+        config_root = self.temp_config_root()
+        base_stats_path = config_root / "player" / "player_base_stats.toml"
+        base_stats_path.write_text(
+            base_stats_path.read_text(encoding="utf-8")
+            .replace("fire_resistance_percent = 0", "fire_resistance_percent = 1")
+            .replace("cold_resistance_percent = 0", "cold_resistance_percent = 2")
+            .replace("lightning_resistance_percent = 0", "lightning_resistance_percent = 3")
+            .replace("chaos_resistance_percent = 0", "chaos_resistance_percent = 4")
+            .replace("elemental_resistance_percent = 0", "elemental_resistance_percent = 5"),
+            encoding="utf-8",
+        )
+
+        state = V1WebAppApi(config_root).state()
+        resistance_rows = [
+            row
+            for section in state["character_panel"]["sections"]
+            if section["layout"] == "resistance"
+            for row in section["rows"]
+        ]
+        values = {row["stat_id"]: row["value"] for row in resistance_rows}
+
+        self.assertEqual(values["fire_resistance_percent"], 6)
+        self.assertEqual(values["cold_resistance_percent"], 7)
+        self.assertEqual(values["lightning_resistance_percent"], 8)
+        self.assertEqual(values["chaos_resistance_percent"], 4)
+        self.assertNotIn("elemental_resistance_percent", values)
 
     def test_validation_rejects_obsolete_player_stat_references(self) -> None:
         config_root = self.temp_config_root()
@@ -151,6 +234,24 @@ class PlayerStatsPanelTest(unittest.TestCase):
             validate_v1_configs.CONFIGS = old_configs
 
         self.assertTrue(any("obsolete" in error and "skill_slots_active" in error for error in errors))
+
+    def test_validation_rejects_cooldown_reduction_percent_references(self) -> None:
+        config_root = self.temp_config_root()
+        stat_defs = config_root / "player" / "player_stat_defs.toml"
+        stat_defs.write_text(
+            stat_defs.read_text(encoding="utf-8")
+            + '\n[[stats]]\nid = "cooldown_reduction_percent"\nname_key = "stat.cooldown_recovery_add_percent.name"\ncategory = "speed"\nvalue_type = "percent"\nv1_status = "V1_ACTIVE"\nruntime_effective = true\naffix_spawn_enabled_v1 = false\n',
+            encoding="utf-8",
+        )
+
+        old_configs = validate_v1_configs.CONFIGS
+        try:
+            validate_v1_configs.CONFIGS = config_root
+            errors = validate_v1_configs.validate()
+        finally:
+            validate_v1_configs.CONFIGS = old_configs
+
+        self.assertTrue(any("cooldown_reduction_percent" in error for error in errors))
 
 
 if __name__ == "__main__":

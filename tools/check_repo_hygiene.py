@@ -21,6 +21,7 @@ ALLOWED_ROOT_NAMES = {
     "index.html",
     "logs",
     "map",
+    "mapEditor.bat",
     "node_modules",
     "openspec",
     "package-lock.json",

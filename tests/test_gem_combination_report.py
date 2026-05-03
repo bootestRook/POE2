@@ -50,6 +50,7 @@ class GemCombinationReportTest(unittest.TestCase):
         self.assertTrue(case["checks"]["cooldown_focus_applied"])
         self.assertGreater(case["combo"]["radius"], case["baseline"]["radius"])
         self.assertLess(case["combo"]["final_cooldown_ms"], case["baseline"]["final_cooldown_ms"])
+        self.assertLess(case["combo"]["actual_interval_ms"], case["baseline"]["actual_interval_ms"])
         self.assertEqual(case["observations"], [])
 
     def test_same_row_conduit_is_reported(self) -> None:
@@ -75,7 +76,7 @@ class GemCombinationReportTest(unittest.TestCase):
 
         self.assertTrue(case["checks"]["max_life_increased"])
         self.assertTrue(case["checks"]["move_speed_increased"])
-        self.assertEqual(case["player_stats"]["max_life"]["value"], 128.5)
+        self.assertEqual(case["player_stats"]["max_life"]["value"], 525)
         self.assertEqual(case["player_stats"]["move_speed"]["value"], 1.1)
 
     def test_markdown_report_summarizes_cases(self) -> None:

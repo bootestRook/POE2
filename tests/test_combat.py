@@ -64,6 +64,9 @@ class CombatTest(unittest.TestCase):
             max_life=100,
             position=Position(0, 0),
             item_interaction_reach=item_interaction_reach,
+            current_mana=100,
+            max_mana=100,
+            mana_regen_flat=0,
         )
 
     def test_start_requires_legal_board_and_active_skill(self) -> None:
@@ -139,7 +142,7 @@ class CombatTest(unittest.TestCase):
         self.board.mount_gem("active", 0, 0)
         session = CombatSession.start(
             player=self.player(),
-            monsters=[Monster("monster_1", current_life=30, max_life=30, position=Position(146, 56))],
+            monsters=[Monster("monster_1", current_life=30, max_life=30, position=Position(0, -118))],
             inventory=self.inventory,
             skill_effect_calculator=self.calculator(),
             loot_runtime=self.loot_runtime(),
@@ -155,9 +158,8 @@ class CombatTest(unittest.TestCase):
         self.assertIn("orbit_spawn", event_types)
         self.assertIn("orbit_tick", event_types)
         self.assertIn("damage_zone", event_types)
-        self.assertIn("damage", event_types)
 
-        damage_events = session.tick(380)
+        damage_events = session.tick(2160)
 
         self.assertGreaterEqual(len(damage_events), 1)
         self.assertLess(session.monsters[0].current_life, 30)
@@ -171,6 +173,7 @@ class CombatTest(unittest.TestCase):
             item_interaction_reach=2,
             current_mana=10,
             max_mana=20,
+            life_regen_flat=10,
             mana_regen_flat=5,
             current_energy_shield=20,
             max_energy_shield=20,
@@ -185,7 +188,12 @@ class CombatTest(unittest.TestCase):
         )
 
         player.regenerate(1000)
+        self.assertEqual(player.current_life, 100)
         self.assertEqual(player.current_mana, 15)
+
+        player.current_life = 80
+        player.regenerate(500)
+        self.assertEqual(player.current_life, 85)
 
         life_damage = player.take_hit(40, damage_type="physical", hit_kind="attack")
         self.assertLess(life_damage, 20)
@@ -261,6 +269,35 @@ class CombatTest(unittest.TestCase):
         self.assertEqual(stored.board_position, dropped.gem_instance.board_position)
 
         self.assertEqual(session.pickup_nearby(), ())
+
+    def test_active_skill_spends_mana_and_skips_release_when_insufficient(self) -> None:
+        self.inventory.add_instance("active", "active_fire_bolt")
+        self.board.mount_gem("active", 0, 0)
+        player = self.player()
+        player.current_mana = 6
+        player.max_mana = 6
+        session = CombatSession.start(
+            player=player,
+            monsters=[Monster("monster_1", current_life=50, max_life=50, position=Position(1, 0))],
+            inventory=self.inventory,
+            skill_effect_calculator=self.calculator(),
+            loot_runtime=self.loot_runtime(),
+        )
+
+        session.tick(1)
+
+        self.assertEqual(session.player.current_mana, 0)
+        self.assertTrue(session.skill_events)
+
+        session.skill_events.clear()
+        session.tick(session.active_skill_instances[0].actual_interval_ms)
+
+        self.assertEqual(session.player.current_mana, 0)
+        self.assertEqual(session.skill_events, [])
+        self.assertEqual(
+            session._last_release_skip_reasons["active"],
+            "combat.skip.insufficient_mana",
+        )
 
     def test_item_interaction_reach_blocks_far_drops_until_player_is_near(self) -> None:
         self.inventory.add_instance("active", "active_fire_bolt")
