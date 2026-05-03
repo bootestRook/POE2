@@ -1,0 +1,67 @@
+[[monster_groups]]
+id = "monster_group_1001"
+numeric_id = 1001
+tier = "normal"
+name_key = "monster_group.1001.name"
+selection_policy = "uniform"
+member_ids = [
+  "mon_100101",
+  "mon_100102",
+  "mon_100103",
+  "mon_100104",
+  "mon_100105",
+  "mon_100106",
+  "mon_100107",
+  "mon_100108",
+]
+
+[[monster_groups]]
+id = "monster_group_2001"
+numeric_id = 2001
+tier = "magic"
+name_key = "monster_group.2001.name"
+selection_policy = "uniform"
+member_ids = [
+  "mon_200101",
+  "mon_200102",
+  "mon_200103",
+  "mon_200104",
+  "mon_200105",
+  "mon_200106",
+  "mon_200107",
+  "mon_200108",
+]
+
+[[monster_groups]]
+id = "monster_group_3001"
+numeric_id = 3001
+tier = "rare"
+name_key = "monster_group.3001.name"
+selection_policy = "uniform"
+member_ids = [
+  "mon_300101",
+  "mon_300102",
+  "mon_300103",
+  "mon_300104",
+  "mon_300105",
+  "mon_300106",
+  "mon_300107",
+  "mon_300108",
+]
+
+[[monster_groups]]
+id = "monster_group_4001"
+numeric_id = 4001
+tier = "boss"
+name_key = "monster_group.4001.name"
+selection_policy = "uniform"
+member_ids = [
+  "mon_400101",
+  "mon_400102",
+  "mon_400103",
+  "mon_400104",
+  "mon_400105",
+  "mon_400106",
+  "mon_400107",
+  "mon_400108",
+]

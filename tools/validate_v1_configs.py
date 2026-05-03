@@ -183,7 +183,7 @@ ALLOWED_PLAYER_STAT_VALUE_TYPES = {"number", "integer", "percent", "boolean"}
 MONSTER_TIER_NUMERIC_RULES = {
     "normal": {"min": 100000, "max": 199999, "group": 1001},
     "magic": {"min": 200000, "max": 299999, "group": 2001},
-    "epic": {"min": 300000, "max": 399999, "group": 3001},
+    "rare": {"min": 300000, "max": 399999, "group": 3001},
     "boss": {"min": 400000, "max": 499999, "group": 4001},
 }
 ALLOWED_MONSTER_GEOMETRY_SHAPES = {
@@ -671,7 +671,7 @@ def validate_monster_configs(
     group_ids = unique_ids(groups, "monster groups", errors)
     expected_group_ids = {f"monster_group_{rule['group']}" for rule in MONSTER_TIER_NUMERIC_RULES.values()}
     if group_ids != expected_group_ids:
-        errors.append("monster groups must exactly cover 1001 normal, 2001 magic, 3001 epic, and 4001 boss")
+        errors.append("monster groups must exactly cover 1001 normal, 2001 magic, 3001 rare, and 4001 boss")
 
     for group in groups:
         group_id = group.get("id")

@@ -1,0 +1,370 @@
+{
+  "map_spawn_profiles": [
+    {
+      "map_type": "default_dungeon",
+      "base_pack_budget": 400,
+      "min_distance_from_player_spawn": 520,
+      "min_distance_between_packs": 40,
+      "max_active_packs": 120,
+      "max_non_boss_monster_varieties": 4,
+      "max_boss_packs": 1,
+      "zone_rules": {
+        "entrance": {
+          "enabled": false,
+          "allowed_pack_tags": []
+        },
+        "corridor": {
+          "enabled": true,
+          "allowed_pack_tags": ["small"],
+          "max_pack_budget_cost": 2
+        },
+        "main_room": {
+          "enabled": true,
+          "allowed_pack_tags": ["small", "standard"]
+        },
+        "large_room": {
+          "enabled": true,
+          "allowed_pack_tags": ["standard", "dense", "magic"]
+        },
+        "dead_end": {
+          "enabled": true,
+          "allowed_pack_tags": ["guard", "reward"],
+          "rarity_bias": "rare"
+        },
+        "boss_room": {
+          "enabled": true,
+          "allowed_pack_tags": ["boss", "minion"],
+          "fixed_pack_ids": [
+            "geo_boss_king",
+            "geo_boss_void",
+            "geo_boss_tyrant",
+            "geo_boss_star_mother",
+            "geo_boss_judicator",
+            "geo_boss_eclipse",
+            "geo_boss_mirror",
+            "geo_boss_triad"
+          ]
+        },
+        "exit_area": {
+          "enabled": true,
+          "allowed_pack_tags": ["standard", "guard", "magic"]
+        }
+      }
+    }
+  ],
+  "monster_packs": [
+    {
+      "pack_id": "geo_corridor_crawlers",
+      "tags": ["small", "normal", "corridor"],
+      "weight": 55,
+      "budget_cost": 2,
+      "entries": [
+        { "monster_id": "mon_100101", "count_min": 2, "count_max": 3, "life": 32, "damage": 8 },
+        { "monster_id": "mon_100104", "count_min": 1, "count_max": 2, "life": 32, "damage": 8 }
+      ]
+    },
+    {
+      "pack_id": "geo_corridor_fangs",
+      "tags": ["small", "normal", "corridor"],
+      "weight": 45,
+      "budget_cost": 2,
+      "entries": [
+        { "monster_id": "mon_100102", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 },
+        { "monster_id": "mon_100105", "count_min": 1, "count_max": 2, "life": 34, "damage": 9 }
+      ]
+    },
+    {
+      "pack_id": "geo_corridor_shades",
+      "tags": ["small", "normal", "corridor"],
+      "weight": 38,
+      "budget_cost": 2,
+      "entries": [
+        { "monster_id": "mon_100106", "count_min": 2, "count_max": 3, "life": 36, "damage": 8 },
+        { "monster_id": "mon_100108", "count_min": 1, "count_max": 2, "life": 32, "damage": 10 }
+      ]
+    },
+    {
+      "pack_id": "geo_room_shard_mix",
+      "tags": ["standard", "normal", "magic", "room"],
+      "weight": 46,
+      "budget_cost": 3,
+      "entries": [
+        { "monster_id": "mon_100103", "count_min": 2, "count_max": 4, "life": 36, "damage": 8 },
+        { "monster_id": "mon_100107", "count_min": 2, "count_max": 3, "life": 34, "damage": 8 },
+        { "monster_id": "mon_200101", "count_min": 1, "count_max": 1, "life": 42, "damage": 10 }
+      ]
+    },
+    {
+      "pack_id": "geo_room_hunter_mix",
+      "tags": ["standard", "normal", "magic", "room"],
+      "weight": 40,
+      "budget_cost": 3,
+      "entries": [
+        { "monster_id": "mon_100102", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 },
+        { "monster_id": "mon_100105", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 },
+        { "monster_id": "mon_200103", "count_min": 1, "count_max": 1, "life": 40, "damage": 11 }
+      ]
+    },
+    {
+      "pack_id": "geo_room_sigil_mix",
+      "tags": ["standard", "normal", "magic", "room"],
+      "weight": 36,
+      "budget_cost": 3,
+      "entries": [
+        { "monster_id": "mon_100104", "count_min": 2, "count_max": 3, "life": 32, "damage": 8 },
+        { "monster_id": "mon_100106", "count_min": 1, "count_max": 2, "life": 36, "damage": 8 },
+        { "monster_id": "mon_200106", "count_min": 1, "count_max": 1, "life": 44, "damage": 12 }
+      ]
+    },
+    {
+      "pack_id": "geo_large_swarm",
+      "tags": ["dense", "normal", "magic", "large_room"],
+      "weight": 34,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_100107", "count_min": 4, "count_max": 6, "life": 34, "damage": 8 },
+        { "monster_id": "mon_100103", "count_min": 2, "count_max": 3, "life": 36, "damage": 8 },
+        { "monster_id": "mon_200107", "count_min": 1, "count_max": 1, "life": 42, "damage": 11 }
+      ]
+    },
+    {
+      "pack_id": "geo_large_blinkers",
+      "tags": ["dense", "magic", "large_room"],
+      "weight": 30,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_100105", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 },
+        { "monster_id": "mon_100108", "count_min": 2, "count_max": 3, "life": 32, "damage": 10 },
+        { "monster_id": "mon_200102", "count_min": 1, "count_max": 1, "life": 42, "damage": 12 },
+        { "monster_id": "mon_200105", "count_min": 1, "count_max": 1, "life": 40, "damage": 12 }
+      ]
+    },
+    {
+      "pack_id": "geo_large_casters",
+      "tags": ["dense", "magic", "large_room"],
+      "weight": 24,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_200101", "count_min": 1, "count_max": 2, "life": 42, "damage": 10 },
+        { "monster_id": "mon_200103", "count_min": 1, "count_max": 1, "life": 40, "damage": 11 },
+        { "monster_id": "mon_200104", "count_min": 1, "count_max": 1, "life": 42, "damage": 10 },
+        { "monster_id": "mon_200108", "count_min": 1, "count_max": 1, "life": 44, "damage": 12 }
+      ]
+    },
+    {
+      "pack_id": "geo_guard_tri_crown",
+      "tags": ["guard", "reward", "rare"],
+      "weight": 16,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_300101", "count_min": 1, "count_max": 1, "life": 48, "damage": 14 },
+        { "monster_id": "mon_100105", "count_min": 2, "count_max": 4, "life": 34, "damage": 9 }
+      ]
+    },
+    {
+      "pack_id": "geo_guard_core_warden",
+      "tags": ["guard", "reward", "rare"],
+      "weight": 16,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_300102", "count_min": 1, "count_max": 1, "life": 50, "damage": 12 },
+        { "monster_id": "mon_100103", "count_min": 2, "count_max": 4, "life": 36, "damage": 8 }
+      ]
+    },
+    {
+      "pack_id": "geo_guard_star_hunter",
+      "tags": ["guard", "reward", "rare"],
+      "weight": 14,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_300103", "count_min": 1, "count_max": 1, "life": 48, "damage": 14 },
+        { "monster_id": "mon_100104", "count_min": 2, "count_max": 4, "life": 32, "damage": 8 }
+      ]
+    },
+    {
+      "pack_id": "geo_guard_plague_prism",
+      "tags": ["guard", "reward", "rare"],
+      "weight": 14,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_300104", "count_min": 1, "count_max": 1, "life": 50, "damage": 13 },
+        { "monster_id": "mon_200104", "count_min": 1, "count_max": 1, "life": 42, "damage": 10 }
+      ]
+    },
+    {
+      "pack_id": "geo_guard_red_obsidian",
+      "tags": ["guard", "reward", "rare"],
+      "weight": 12,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_300105", "count_min": 1, "count_max": 1, "life": 52, "damage": 13 },
+        { "monster_id": "mon_200106", "count_min": 1, "count_max": 1, "life": 44, "damage": 12 }
+      ]
+    },
+    {
+      "pack_id": "geo_guard_phase_judge",
+      "tags": ["guard", "reward", "rare"],
+      "weight": 12,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_300106", "count_min": 1, "count_max": 1, "life": 48, "damage": 14 },
+        { "monster_id": "mon_200105", "count_min": 1, "count_max": 1, "life": 40, "damage": 12 }
+      ]
+    },
+    {
+      "pack_id": "geo_guard_obelisk",
+      "tags": ["guard", "reward", "rare"],
+      "weight": 10,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_300107", "count_min": 1, "count_max": 1, "life": 54, "damage": 12 },
+        { "monster_id": "mon_100106", "count_min": 2, "count_max": 3, "life": 36, "damage": 8 }
+      ]
+    },
+    {
+      "pack_id": "geo_guard_twin_shadow",
+      "tags": ["guard", "reward", "rare"],
+      "weight": 10,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_300108", "count_min": 1, "count_max": 1, "life": 48, "damage": 14 },
+        { "monster_id": "mon_100108", "count_min": 2, "count_max": 3, "life": 32, "damage": 10 }
+      ]
+    },
+    {
+      "pack_id": "geo_exit_mirror",
+      "tags": ["standard", "guard", "magic", "exit"],
+      "weight": 22,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_200108", "count_min": 1, "count_max": 1, "life": 44, "damage": 12 },
+        { "monster_id": "mon_200107", "count_min": 1, "count_max": 1, "life": 42, "damage": 11 },
+        { "monster_id": "mon_100101", "count_min": 2, "count_max": 3, "life": 32, "damage": 8 }
+      ]
+    },
+    {
+      "pack_id": "geo_exit_judges",
+      "tags": ["standard", "guard", "magic", "exit"],
+      "weight": 18,
+      "budget_cost": 4,
+      "entries": [
+        { "monster_id": "mon_200102", "count_min": 1, "count_max": 1, "life": 42, "damage": 12 },
+        { "monster_id": "mon_200104", "count_min": 1, "count_max": 1, "life": 42, "damage": 10 },
+        { "monster_id": "mon_100102", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 }
+      ]
+    },
+    {
+      "pack_id": "geo_boss_king",
+      "tags": ["boss"],
+      "weight": 1,
+      "budget_cost": 5,
+      "entries": [
+        { "monster_id": "mon_400101", "count_min": 1, "count_max": 1, "life": 480, "damage": 24, "boss": true },
+        { "monster_id": "mon_200101", "count_min": 1, "count_max": 2, "life": 42, "damage": 10 }
+      ]
+    },
+    {
+      "pack_id": "geo_boss_void",
+      "tags": ["boss"],
+      "weight": 1,
+      "budget_cost": 5,
+      "entries": [
+        { "monster_id": "mon_400102", "count_min": 1, "count_max": 1, "life": 500, "damage": 23, "boss": true },
+        { "monster_id": "mon_200108", "count_min": 1, "count_max": 2, "life": 44, "damage": 12 }
+      ]
+    },
+    {
+      "pack_id": "geo_boss_tyrant",
+      "tags": ["boss"],
+      "weight": 1,
+      "budget_cost": 5,
+      "entries": [
+        { "monster_id": "mon_400103", "count_min": 1, "count_max": 1, "life": 520, "damage": 25, "boss": true },
+        { "monster_id": "mon_100105", "count_min": 2, "count_max": 3, "life": 34, "damage": 9 }
+      ]
+    },
+    {
+      "pack_id": "geo_boss_star_mother",
+      "tags": ["boss"],
+      "weight": 1,
+      "budget_cost": 5,
+      "entries": [
+        { "monster_id": "mon_400104", "count_min": 1, "count_max": 1, "life": 510, "damage": 22, "boss": true },
+        { "monster_id": "mon_100107", "count_min": 3, "count_max": 4, "life": 34, "damage": 8 }
+      ]
+    },
+    {
+      "pack_id": "geo_boss_judicator",
+      "tags": ["boss"],
+      "weight": 1,
+      "budget_cost": 5,
+      "entries": [
+        { "monster_id": "mon_400105", "count_min": 1, "count_max": 1, "life": 520, "damage": 24, "boss": true },
+        { "monster_id": "mon_300102", "count_min": 1, "count_max": 1, "life": 50, "damage": 12 }
+      ]
+    },
+    {
+      "pack_id": "geo_boss_eclipse",
+      "tags": ["boss"],
+      "weight": 1,
+      "budget_cost": 5,
+      "entries": [
+        { "monster_id": "mon_400106", "count_min": 1, "count_max": 1, "life": 500, "damage": 23, "boss": true },
+        { "monster_id": "mon_200104", "count_min": 1, "count_max": 2, "life": 42, "damage": 10 }
+      ]
+    },
+    {
+      "pack_id": "geo_boss_mirror",
+      "tags": ["boss"],
+      "weight": 1,
+      "budget_cost": 5,
+      "entries": [
+        { "monster_id": "mon_400107", "count_min": 1, "count_max": 1, "life": 500, "damage": 23, "boss": true },
+        { "monster_id": "mon_200108", "count_min": 1, "count_max": 2, "life": 44, "damage": 12 }
+      ]
+    },
+    {
+      "pack_id": "geo_boss_triad",
+      "tags": ["boss"],
+      "weight": 1,
+      "budget_cost": 5,
+      "entries": [
+        { "monster_id": "mon_400108", "count_min": 1, "count_max": 1, "life": 540, "damage": 26, "boss": true },
+        { "monster_id": "mon_200102", "count_min": 1, "count_max": 1, "life": 42, "damage": 12 },
+        { "monster_id": "mon_200106", "count_min": 1, "count_max": 1, "life": 44, "damage": 12 }
+      ]
+    }
+  ],
+  "monster_offense_defaults": {
+    "damage_type": "physical",
+    "hit_kind": "attack",
+    "attack_range": 96,
+    "attack_cadence_ms": 1160,
+    "modifiers": {
+      "damage_add_percent": 0,
+      "physical_damage_add_percent": 0,
+      "hit_damage_add_percent": 0,
+      "attack_damage_add_percent": 0,
+      "melee_damage_add_percent": 0,
+      "damage_final_percent": 0,
+      "hit_damage_final_percent": 0,
+      "resistance_penetration_percent": 0
+    }
+  },
+  "monster_rarity_rules": {
+    "normal_weight": 84,
+    "magic_weight": 14,
+    "rare_weight": 2,
+    "max_magic_monsters_per_map": 24,
+    "max_rare_per_map": 3,
+    "max_magic_packs_per_map": 4,
+    "magic_allowed_zone_types": ["main_room", "large_room", "dead_end", "boss_room", "exit_area"],
+    "rare_allowed_zone_types": ["dead_end", "boss_room", "exit_area"],
+    "multipliers": {
+      "normal": { "life_multiplier": 1.0, "damage_multiplier": 1.0 },
+      "magic": { "life_multiplier": 1.5, "damage_multiplier": 1.2 },
+      "rare": { "life_multiplier": 2.5, "damage_multiplier": 1.5 },
+      "boss": { "life_multiplier": 1.0, "damage_multiplier": 1.0 }
+    }
+  }
+}

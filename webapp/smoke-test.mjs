@@ -22,7 +22,6 @@ const localization = readFileSync(join(root, "configs", "localization", "zh_cn.t
 const skillEditorAdapter = readFileSync(join(root, "src", "liufang", "skill_editor.py"), "utf8");
 const webApi = readFileSync(join(root, "src", "liufang", "web_api.py"), "utf8");
 const skillEditorRunner = readFileSync(join(root, "skillEditor_run.bat"), "utf8");
-const workbenchFramePath = join(root, "webapp", "assets", "workbench-frame.png");
 const unitAnimationRuntime = readFileSync(join(root, "webapp", "unitAnimation.ts"), "utf8");
 const unitAssets = readFileSync(join(root, "webapp", "unitAssets.ts"), "utf8");
 const unitAnimationManifest = JSON.parse(readFileSync(join(root, "assets", "battle", "units", "manifests", "unit-animations-manifest.json"), "utf8"));
@@ -122,45 +121,44 @@ const requiredCode = [
   "MAP_EDITOR_MINIMAP_WIDTH",
   "MAP_EDITOR_PLAYER_COLLIDER",
   "MAP_EDITOR_PLAYER_RENDER_SCALE = 0.35",
-  "const speed = enemy.boss ? 44 : 70",
+  "const speed = (enemy.boss ? 44 : 70) * MONSTER_CHASE_SPEED_MULTIPLIER",
   "MAP_EDITOR_STORAGE_KEY",
   "MAP_EDITOR_CURRENT_FILE_STORAGE_KEY",
   "MAP_EDITOR_HANDLE_DB_NAME",
   "MapEditorFileDocument",
-  "MapEditorSpawnPlanData",
-  "MapEditorMonsterSpawnPoint",
-  "MapEditorBossGroup",
-  "aggroRadius",
-  "countMultiplierMin",
-  "countMultiplierMax",
+  "MapEditorZone",
+  "MapEditorZoneDraft",
+  "MAP_EDITOR_ZONE_TYPES",
   "MapEditorSpawnPlanTool",
-  "normalizeMapEditorSpawnPlans",
-  "createDefaultMapEditorMonsterSpawn",
-  "createDefaultMapEditorBossGroup",
-  "shiftMapEditorSpawnPlans",
+  "normalizeMapEditorZones",
+  "normalizeMapEditorZoneDraft",
+  "createMapEditorZone",
+  "shiftMapEditorZones",
   "data-spawnPlan-editor=\"true\"",
   "setMapEditorEditMode",
   "editMode ? editorCamera : player",
-  "spawnPlanTool === \"monster\"",
-  "spawnPlanTool === \"boss\"",
-  "createSpawnPlanFromContextMenu",
-  "MapEditorSpawnPlanOverlay",
-  "map-editor-spawnPlan-layer",
-  "map-editor-monster-spawn",
-  "map-editor-boss-group",
-  "map-editor-spawnPlan-aggro",
-  "map-editor-spawnPlan-aggro-radius",
+  "spawnPlanTool === \"zone\"",
+  "activeZoneDraft",
+  "zoneDrafts",
+  "confirmZoneDrafts",
+  "clearZoneDrafts",
+  "updateSelectedZoneType",
+  "deleteSelectedZone",
+  "MapEditorZoneOverlay",
+  "map-editor-zone-layer",
+  "map-editor-zone-main_room",
+  "map-editor-zone-boss_room",
   "data-spawnPlan-jump=\"true\"",
-  "mapEditorSpawnPlanSelectionKey",
-  "map-editor-context-menu",
-  "data-selected-spawnPlan=\"monster\"",
-  "data-selected-spawnPlan=\"boss\"",
-  "createAuthoredSpawnPlanEnemies",
-  "rollMapEditorMonsterSpawnCount",
+  "data-selected-spawnPlan=\"zone\"",
+  "mapEditorZoneStyle",
+  "mapEditorZoneRects",
+  "editorZones",
+  "rects:",
+  "zones:",
+  "createProceduralSpawnPlanEnemies",
   "RuntimeEncounterAggroSource",
   "triggeredEncounterSourceIds",
   "aggroLocked",
-  "sampleAuthoredSpawnPlanPositions",
   "createEnemySpatialIndex",
   "queryEnemySpatialIndex",
   "candidateEnemiesNear",
@@ -169,7 +167,6 @@ const requiredCode = [
   "ENEMY_CAMERA_VISIBLE_RANGE",
   "runtimeTier",
   "authoredSpawnPlanActive",
-  "spawnPlanWarnings",
   "ENEMY_SPATIAL_CHUNK_SIZE",
   "MAX_VISIBLE_ENEMY_DOM_NODES",
   "loadMapEditorState",
@@ -178,8 +175,10 @@ const requiredCode = [
   "DEFAULT_RUNTIME_MAP_ID",
   "createEditorRuntimeBattleMap",
   "EditorRuntimeMapBackground",
-  "editorSpawnPlans",
-  "loadRuntimeAuthoredSpawnPlanData(battleMap)",
+  "undoLastMapEditorEdit",
+  "pushMapEditorUndo",
+  "cloneMapEditorState",
+  "恢复 map_001",
   "saveMapEditorState",
   "normalizeMapEditorColliders",
   "createDefaultMapEditorColliders",
@@ -289,7 +288,7 @@ const requiredCode = [
   "bag-empty-cell",
   "repeat(12, var(--slot-size))",
   "--slot-size: 60px",
-  "workbench-frame.png",
+  "--geo-ui-bg-raised",
   "state.board.cells.flat().map",
   "boardBoxBoundaryClasses",
   "data-box-boundary",
@@ -780,10 +779,6 @@ if (/(^|[.\s"'`])counter($|[-_\s"'`:{.])/.test(app) || /\.counter\b/.test(css)) 
   throw new Error("浠嶅瓨鍦ㄥ凡瑕佹眰绉婚櫎鐨勫簳閮ㄦ垬鏂楁潯 UI锛烿ounter");
 }
 
-if (!existsSync(workbenchFramePath)) {
-  throw new Error("缂哄皯鐢熷浘搴曟璧勪骇 webapp/assets/workbench-frame.png锟?");
-}
-
 const obviousEnglishButtonText = [
   ">Start<",
   ">Fight<",
@@ -873,12 +868,20 @@ const abstractGeometryHudChecks = [
   [css, "--geo-ui-bg", "Phase 4 HUD skin must use shared geometric UI variables."],
   [css, ".combat-feed", "Phase 4 HUD skin must include combat log styling."],
   [css, ".skill-test-debug-toggles", "Phase 4 HUD skin must include debug text styling."],
+  [css, ".right-workbench", "Phase 4 UI skin must include workbench styling."],
+  [css, ".board-grid", "Phase 4 UI skin must include sudoku board styling."],
+  [css, ".gem-tooltip", "Phase 4 UI skin must include tooltip styling."],
+  [css, ".character-stat-icon", "Phase 4 UI skin must include geometric character stat icons."],
   [abstractGeometryRollback, "These changes are CSS-only skin changes", "HUD rollback record must state that this is CSS-only."],
   [abstractGeometryRollback, "must not be used to change player movement", "HUD rollback record must protect gameplay and state flow."]
 ];
 
 for (const [source, token, message] of abstractGeometryHudChecks) {
   if (!source.includes(token)) throw new Error(message);
+}
+
+if (/\.right-workbench\s*{[^}]*workbench-frame/s.test(css)) {
+  throw new Error("Phase 4 geometric workbench skin must not depend on the old workbench frame PNG.");
 }
 
 const damageRichTextChecks = [
@@ -963,11 +966,47 @@ const proceduralSpawnStaticChecks = [
   [mapSpawnRuntime, "预算不足", "Runtime must expose the budget filter reason in Chinese."],
   [mapSpawnRuntime, "区域规则不允许", "Runtime must expose the zone rule filter reason in Chinese."],
   [mapSpawnRuntime, "createSeededRandom", "Runtime must use stable seeded randomness."],
+  [mapSpawnRuntime, "max_non_boss_monster_varieties", "Runtime must support a per-map non-Boss monster variety cap."],
+  [mapSpawnRuntime, "max_boss_packs", "Runtime must support a per-map Boss pack cap."],
+  [mapSpawnRuntime, "max_magic_monsters_per_map", "Runtime must support a magic monster count cap."],
+  [mapSpawnRuntime, "selectMapMonsterVarieties", "Runtime must select a stable per-map monster variety pool."],
+  [mapSpawnRuntime, "ProceduralMapZone", "Runtime must support authored procedural map zones."],
+  [mapSpawnRuntime, "proceduralZoneContainsPoint", "Runtime must classify points by authored zones."],
+  [mapSpawnRuntime, "proceduralRectContainsPoint", "Runtime must support grouped rectangle zones."],
+  [mapSpawnRuntime, "pointInPolygon", "Runtime must support polygon zone hit tests."],
   [mapSpawnRuntime, "boss_room", "Runtime must support boss_room."],
   [mapSpawnRuntime, "large_room", "Runtime must support large_room."]
 ];
 
 for (const [source, token, message] of proceduralSpawnStaticChecks) {
+  if (!source.includes(token)) throw new Error(message);
+}
+
+const monsterPackCombatChecks = [
+  [app, "baseDamage?: number", "Runtime Enemy must expose monster base damage."],
+  [app, "damageType?: string", "Runtime Enemy must expose monster damage type."],
+  [app, "hitKind?: MonsterHitKind", "Runtime Enemy must expose monster hit kind."],
+  [app, "attackRange?: number", "Runtime Enemy must expose monster attack range."],
+  [app, "attackCadenceMs?: number", "Runtime Enemy must expose monster attack cadence."],
+  [app, "offenseModifiers?: MonsterOffenseModifiers", "Runtime Enemy must expose shared stat-id offense modifiers."],
+  [app, "const aggroLocked = Boolean(enemy.aggroLocked || (enemy.spawnPlanSourceId && triggeredSourceIds.has(enemy.spawnPlanSourceId)))", "Runtime aggro must lock every monster from a triggered source."],
+  [app, "triggeredEncounterSourceIds.current = new Set()", "Battle reset must clear triggered aggro sources."],
+  [app, "if (enemy.hp <= 0) return { ...enemy, runtimeTier: \"dead\" as const }", "Dead monsters must leave active aggro behavior."],
+  [app, "resolveMonsterHitAgainstPlayer", "Monster hits must resolve through player defensive stats."],
+  [app, "attack_block_chance_percent", "Monster incoming damage must reference player attack block."],
+  [app, "spell_block_chance_percent", "Monster incoming damage must reference player spell block."],
+  [app, "damage_mitigation_final_percent", "Monster incoming damage must reference player final mitigation."],
+  [app, "currentEnergyShield", "Monster incoming damage must reduce player energy shield before life."],
+  [app, "if (enemy.aggroLocked) return player", "Aggro-locked monsters must target the player directly at close range."],
+  [app, "!directCharge && playerDistance < ENEMY_PLAYER_BODY_SOFT_RADIUS", "Aggro-locked monsters must not apply player-body repulsion."],
+  [app, "MONSTER_CHASE_SPEED_MULTIPLIER = 2", "Monster chase speed must be doubled by a centralized multiplier."],
+  [app, "nextAttackReadyAtMs: canStartAttack ? nowMs + monsterAttackCadenceMs(enemy)", "Monster damage must use attack cadence rather than per-frame proximity damage."],
+  [mapSpawnRuntime, "monster_offense_defaults", "Procedural spawn runtime must accept monster offense defaults."],
+  [mapSpawnRuntime, "offense_modifiers", "Procedural spawn runtime must materialize offense modifiers."],
+  [mapSpawnRuntime, "mergeMonsterOffense", "Procedural spawn runtime must merge default and per-entry monster offense config."]
+];
+
+for (const [source, token, message] of monsterPackCombatChecks) {
   if (!source.includes(token)) throw new Error(message);
 }
 
@@ -980,9 +1019,22 @@ if (!Array.isArray(mapSpawnConfig.monster_packs) || mapSpawnConfig.monster_packs
 if (!mapSpawnConfig.monster_rarity_rules) {
   throw new Error("map_spawn_v1.json must define monster_rarity_rules.");
 }
-for (const packId of ["imp_small", "imp_mixed", "brute_guard", "boss_imp_overseer"]) {
+if (!mapSpawnConfig.monster_offense_defaults) {
+  throw new Error("map_spawn_v1.json must define monster_offense_defaults.");
+}
+for (const statId of ["damage_add_percent", "physical_damage_add_percent", "hit_damage_add_percent", "attack_damage_add_percent", "melee_damage_add_percent", "damage_final_percent", "hit_damage_final_percent", "resistance_penetration_percent"]) {
+  if (!(statId in (mapSpawnConfig.monster_offense_defaults.modifiers ?? {}))) {
+    throw new Error(`monster_offense_defaults missing shared stat id: ${statId}`);
+  }
+}
+for (const packId of ["geo_corridor_crawlers", "geo_room_shard_mix", "geo_guard_tri_crown", "geo_boss_king"]) {
   if (!mapSpawnConfig.monster_packs.some((pack) => pack.pack_id === packId)) {
     throw new Error(`map_spawn_v1.json missing monster pack: ${packId}`);
+  }
+}
+for (const monsterId of ["mon_100101", "mon_200101", "mon_300101", "mon_400101"]) {
+  if (!mapSpawnConfig.monster_packs.some((pack) => pack.entries.some((entry) => entry.monster_id === monsterId))) {
+    throw new Error(`map_spawn_v1.json missing geometry monster: ${monsterId}`);
   }
 }
 for (const zoneType of ["entrance", "corridor", "main_room", "large_room", "dead_end", "boss_room", "exit_area"]) {
@@ -1025,17 +1077,26 @@ function runProceduralSpawnRuntimeSmoke() {
       base_pack_budget: 14,
       min_distance_from_player_spawn: 160,
       min_distance_between_packs: 150,
-      max_active_packs: 6
+      max_active_packs: 6,
+      max_non_boss_monster_varieties: 24,
+      max_boss_packs: 1
     }],
     monster_rarity_rules: {
       ...mapSpawnConfig.monster_rarity_rules,
       normal_weight: 0,
       magic_weight: 100,
       rare_weight: 100,
+      max_magic_monsters_per_map: 24,
       max_rare_per_map: 2,
       max_magic_packs_per_map: 6,
       magic_allowed_zone_types: ["large_room", "boss_room"],
-      rare_allowed_zone_types: ["boss_room"]
+      rare_allowed_zone_types: ["boss_room"],
+      multipliers: {
+        normal: { life_multiplier: 1, damage_multiplier: 1 },
+        magic: { life_multiplier: 1.5, damage_multiplier: 1.2 },
+        rare: { life_multiplier: 2.5, damage_multiplier: 1.5 },
+        boss: { life_multiplier: 1, damage_multiplier: 1 }
+      }
     }
   };
   const result = generateProceduralMonsterSpawns(map, config, {
@@ -1044,6 +1105,12 @@ function runProceduralSpawnRuntimeSmoke() {
     maxCandidatePoints: 90
   });
   if (!result.enemies.length) throw new Error("procedural spawn smoke must create enemies.");
+  if (result.enemies.some((enemy) => !enemy.base_damage || !enemy.damage_type || !enemy.hit_kind || !enemy.attack_range || !enemy.attack_cadence_ms || !enemy.offense_modifiers)) {
+    throw new Error("procedural spawn enemies must include monster offense context.");
+  }
+  if (!result.enemies.every((enemy) => enemy.damage_type === "physical" && enemy.hit_kind === "attack")) {
+    throw new Error("procedural spawn enemies must inherit default physical melee offense.");
+  }
   if (result.debug.spawn_points.some((point) => point.accepted && point.zone_type === "entrance")) {
     throw new Error("entrance zone must not spawn monsters.");
   }
@@ -1070,6 +1137,43 @@ function runProceduralSpawnRuntimeSmoke() {
   }
   if (!result.enemies.some((enemy) => enemy.boss && enemy.zone_type === "boss_room")) {
     throw new Error("boss_room must generate a Boss.");
+  }
+  if (result.debug.boss_monster_count > 1) {
+    throw new Error("procedural spawn must limit Boss monsters to one by default.");
+  }
+  const limitedConfig = {
+    ...config,
+    map_spawn_profiles: [{
+      ...config.map_spawn_profiles[0],
+      base_pack_budget: 120,
+      min_distance_between_packs: 80,
+      max_active_packs: 40,
+      max_non_boss_monster_varieties: 4,
+      max_boss_packs: 1
+    }],
+    monster_rarity_rules: {
+      ...config.monster_rarity_rules,
+      max_magic_monsters_per_map: 8,
+      max_rare_per_map: 2
+    }
+  };
+  const limitedResult = generateProceduralMonsterSpawns(map, limitedConfig, {
+    seed: "smoke-procedural-spawn-variety-limit",
+    startId: 1000,
+    maxCandidatePoints: 120
+  });
+  const nonBossMonsterIds = new Set(limitedResult.enemies.filter((enemy) => !enemy.boss).map((enemy) => enemy.monster_id));
+  if (nonBossMonsterIds.size > limitedConfig.map_spawn_profiles[0].max_non_boss_monster_varieties) {
+    throw new Error("non-Boss monster variety count exceeded max_non_boss_monster_varieties.");
+  }
+  if (limitedResult.debug.magic_monster_count > limitedConfig.monster_rarity_rules.max_magic_monsters_per_map) {
+    throw new Error("magic monster count exceeded max_magic_monsters_per_map.");
+  }
+  if (limitedResult.debug.rare_monster_count > limitedConfig.monster_rarity_rules.max_rare_per_map) {
+    throw new Error("rare monster count exceeded max_rare_per_map.");
+  }
+  if (limitedResult.debug.boss_monster_count > limitedConfig.map_spawn_profiles[0].max_boss_packs) {
+    throw new Error("Boss monster count exceeded max_boss_packs.");
   }
   const reasons = new Set(result.debug.filtered_points.map((point) => point.filter_reason));
   for (const reason of ["入口区域不刷怪", "阻挡格", "怪物包距离过近"]) {
@@ -1124,6 +1228,18 @@ function createProceduralSmokeMap() {
     eliteSpawnPoints: [point(8, 3)],
     bossPoints: [point(10, 10)],
     exitPoints: [],
+    zones: [
+      { id: "smoke_entrance", zoneType: "entrance", shape: "rectangle", points: [{ x: 0, y: 0 }, { x: 3 * gridSize, y: 3 * gridSize }] },
+      { id: "smoke_large", zoneType: "large_room", shape: "circle", points: [point(8, 3), point(10, 3)] },
+      {
+        id: "smoke_main",
+        zoneType: "main_room",
+        shape: "rectangle",
+        points: [point(4, 4), point(7, 4), point(4, 6), point(7, 7)],
+        rects: [{ start: point(4, 4), end: point(7, 4) }, { start: point(4, 6), end: point(7, 7) }]
+      },
+      { id: "smoke_boss", zoneType: "boss_room", shape: "rectangle", points: [point(9, 9), point(11, 11)] }
+    ],
     interactionPoints: [],
     debugWarnings: []
   };

@@ -66,3 +66,22 @@ The map editor SHALL provide a list control for selecting authored encounter poi
 #### Scenario: Jump list does not modify map data
 - **WHEN** the user changes the selected encounter through the jump list
 - **THEN** the editor SHALL NOT change terrain tiles, spawn values, boss selections, or saved encounter data except for normal selection state
+
+### Requirement: Runtime pack-shared aggro lock
+Runtime encounter aggro SHALL treat each authored or procedural aggro source as shared hatred for all living monsters created from that source.
+
+#### Scenario: Source trigger locks whole pack
+- **WHEN** the player enters an encounter aggro source radius
+- **THEN** every living monster with that source id SHALL become aggro-locked
+
+#### Scenario: Aggro lock does not leash by distance
+- **WHEN** a monster has become aggro-locked
+- **THEN** moving the player outside the original aggro radius SHALL NOT clear that monster's aggro lock
+
+#### Scenario: Aggro lock resets on battle reset
+- **WHEN** a new battle starts or runtime enemies are recreated
+- **THEN** previous aggro source trigger state SHALL be cleared for the new battle
+
+#### Scenario: Dead monsters do not retain active aggro behavior
+- **WHEN** an aggro-locked monster dies
+- **THEN** that monster SHALL no longer chase or attack the player

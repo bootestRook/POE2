@@ -1,0 +1,511 @@
+[[monsters]]
+id = "mon_100101"
+numeric_id = 100101
+tier = "normal"
+group_numeric_id = 1001
+marker_id = "N-01"
+name_key = "monster.mon_100101.name"
+geometry_shape = "circle_ring"
+primary_color = "#9CA3AF"
+accent_color = "#D1D5DB"
+size_px = 18
+movement_kind = "normal"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_100102"
+numeric_id = 100102
+tier = "normal"
+group_numeric_id = 1001
+marker_id = "N-02"
+name_key = "monster.mon_100102.name"
+geometry_shape = "triangle"
+primary_color = "#B45309"
+accent_color = "#F59E0B"
+size_px = 19
+movement_kind = "normal"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_100103"
+numeric_id = 100103
+tier = "normal"
+group_numeric_id = 1001
+marker_id = "N-03"
+name_key = "monster.mon_100103.name"
+geometry_shape = "square_dot"
+primary_color = "#78716C"
+accent_color = "#E7E5E4"
+size_px = 20
+movement_kind = "normal_slow"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_100104"
+numeric_id = 100104
+tier = "normal"
+group_numeric_id = 1001
+marker_id = "N-04"
+name_key = "monster.mon_100104.name"
+geometry_shape = "diamond_tail"
+primary_color = "#64748B"
+accent_color = "#CBD5E1"
+size_px = 18
+movement_kind = "drift"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_100105"
+numeric_id = 100105
+tier = "normal"
+group_numeric_id = 1001
+marker_id = "N-05"
+name_key = "monster.mon_100105.name"
+geometry_shape = "double_triangle"
+primary_color = "#A16207"
+accent_color = "#FACC15"
+size_px = 20
+movement_kind = "step_dash"
+movement_interval_sec = 3.0
+movement_distance_px = 72
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_100106"
+numeric_id = 100106
+tier = "normal"
+group_numeric_id = 1001
+marker_id = "N-06"
+name_key = "monster.mon_100106.name"
+geometry_shape = "hex_eye"
+primary_color = "#52525B"
+accent_color = "#A1A1AA"
+size_px = 21
+movement_kind = "normal_pause"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_100107"
+numeric_id = 100107
+tier = "normal"
+group_numeric_id = 1001
+marker_id = "N-07"
+name_key = "monster.mon_100107.name"
+geometry_shape = "cluster"
+primary_color = "#71717A"
+accent_color = "#A3A3A3"
+size_px = 20
+movement_kind = "normal_desynced"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_100108"
+numeric_id = 100108
+tier = "normal"
+group_numeric_id = 1001
+marker_id = "N-08"
+name_key = "monster.mon_100108.name"
+geometry_shape = "needle_ghost"
+primary_color = "#7C2D12"
+accent_color = "#FB923C"
+size_px = 20
+movement_kind = "step_dash"
+movement_interval_sec = 4.0
+movement_distance_px = 96
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_200101"
+numeric_id = 200101
+tier = "magic"
+group_numeric_id = 2001
+marker_id = "M-01"
+name_key = "monster.mon_200101.name"
+geometry_shape = "circle_square"
+primary_color = "#38BDF8"
+accent_color = "#E0F2FE"
+size_px = 24
+movement_kind = "anchor_cast"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_200102"
+numeric_id = 200102
+tier = "magic"
+group_numeric_id = 2001
+marker_id = "M-02"
+name_key = "monster.mon_200102.name"
+geometry_shape = "tri_in_tri"
+primary_color = "#F97316"
+accent_color = "#FDE68A"
+size_px = 25
+movement_kind = "blink_short"
+movement_interval_sec = 5.0
+movement_distance_px = 110
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_200103"
+numeric_id = 200103
+tier = "magic"
+group_numeric_id = 2001
+marker_id = "M-03"
+name_key = "monster.mon_200103.name"
+geometry_shape = "crystal_cross"
+primary_color = "#67E8F9"
+accent_color = "#ECFEFF"
+size_px = 25
+movement_kind = "side_step"
+movement_interval_sec = 4.5
+movement_distance_px = 64
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_200104"
+numeric_id = 200104
+tier = "magic"
+group_numeric_id = 2001
+marker_id = "M-04"
+name_key = "monster.mon_200104.name"
+geometry_shape = "hex_core"
+primary_color = "#84CC16"
+accent_color = "#D9F99D"
+size_px = 24
+movement_kind = "side_step"
+movement_interval_sec = 4.0
+movement_distance_px = 72
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_200105"
+numeric_id = 200105
+tier = "magic"
+group_numeric_id = 2001
+marker_id = "M-05"
+name_key = "monster.mon_200105.name"
+geometry_shape = "broken_ring_bolt"
+primary_color = "#A78BFA"
+accent_color = "#F5D0FE"
+size_px = 25
+movement_kind = "blink_short"
+movement_interval_sec = 3.0
+movement_distance_px = 120
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_200106"
+numeric_id = 200106
+tier = "magic"
+group_numeric_id = 2001
+marker_id = "M-06"
+name_key = "monster.mon_200106.name"
+geometry_shape = "square_invtri"
+primary_color = "#DC2626"
+accent_color = "#FCA5A5"
+size_px = 26
+movement_kind = "anchor_cast"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_200107"
+numeric_id = 200107
+tier = "magic"
+group_numeric_id = 2001
+marker_id = "M-07"
+name_key = "monster.mon_200107.name"
+geometry_shape = "wind_wheel"
+primary_color = "#5EEAD4"
+accent_color = "#CCFBF1"
+size_px = 24
+movement_kind = "orbit"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_200108"
+numeric_id = 200108
+tier = "magic"
+group_numeric_id = 2001
+marker_id = "M-08"
+name_key = "monster.mon_200108.name"
+geometry_shape = "double_diamond"
+primary_color = "#818CF8"
+accent_color = "#C7D2FE"
+size_px = 27
+movement_kind = "blink_short"
+movement_interval_sec = 6.0
+movement_distance_px = 140
+fallback_unit_visual = "enemy_imp"
+
+[[monsters]]
+id = "mon_300101"
+numeric_id = 300101
+tier = "rare"
+group_numeric_id = 3001
+marker_id = "E-01"
+name_key = "monster.mon_300101.name"
+geometry_shape = "tri_crown"
+primary_color = "#F59E0B"
+accent_color = "#FEF3C7"
+size_px = 35
+movement_kind = "lunge"
+movement_interval_sec = 5.0
+movement_distance_px = 128
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_300102"
+numeric_id = 300102
+tier = "rare"
+group_numeric_id = 3001
+marker_id = "E-02"
+name_key = "monster.mon_300102.name"
+geometry_shape = "ring_square_corners"
+primary_color = "#60A5FA"
+accent_color = "#DBEAFE"
+size_px = 36
+movement_kind = "normal_slow"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_300103"
+numeric_id = 300103
+tier = "rare"
+group_numeric_id = 3001
+marker_id = "E-03"
+name_key = "monster.mon_300103.name"
+geometry_shape = "star_diamonds"
+primary_color = "#C084FC"
+accent_color = "#FAE8FF"
+size_px = 35
+movement_kind = "step_dash"
+movement_interval_sec = 4.0
+movement_distance_px = 112
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_300104"
+numeric_id = 300104
+tier = "rare"
+group_numeric_id = 3001
+marker_id = "E-04"
+name_key = "monster.mon_300104.name"
+geometry_shape = "hex_tri_layers"
+primary_color = "#65A30D"
+accent_color = "#ECFCCB"
+size_px = 38
+movement_kind = "anchor_cast"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_300105"
+numeric_id = 300105
+tier = "rare"
+group_numeric_id = 3001
+marker_id = "E-05"
+name_key = "monster.mon_300105.name"
+geometry_shape = "square_spikes"
+primary_color = "#991B1B"
+accent_color = "#F87171"
+size_px = 39
+movement_kind = "normal_slow"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_300106"
+numeric_id = 300106
+tier = "rare"
+group_numeric_id = 3001
+marker_id = "E-06"
+name_key = "monster.mon_300106.name"
+geometry_shape = "double_ring_eye"
+primary_color = "#22D3EE"
+accent_color = "#F0FDFA"
+size_px = 37
+movement_kind = "blink_short"
+movement_interval_sec = 6.0
+movement_distance_px = 150
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_300107"
+numeric_id = 300107
+tier = "rare"
+group_numeric_id = 3001
+marker_id = "E-07"
+name_key = "monster.mon_300107.name"
+geometry_shape = "obelisk"
+primary_color = "#A1A1AA"
+accent_color = "#F4F4F5"
+size_px = 41
+movement_kind = "normal_slow"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_300108"
+numeric_id = 300108
+tier = "rare"
+group_numeric_id = 3001
+marker_id = "E-08"
+name_key = "monster.mon_300108.name"
+geometry_shape = "twin_shadow"
+primary_color = "#6366F1"
+accent_color = "#EEF2FF"
+size_px = 36
+movement_kind = "phase_swap"
+movement_interval_sec = 5.0
+movement_distance_px = 120
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_400101"
+numeric_id = 400101
+tier = "boss"
+group_numeric_id = 4001
+marker_id = "B-01"
+name_key = "monster.mon_400101.name"
+geometry_shape = "boss_king"
+primary_color = "#FACC15"
+accent_color = "#FEFCE8"
+size_px = 50
+movement_kind = "lunge"
+movement_interval_sec = 8.0
+movement_distance_px = 160
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_400102"
+numeric_id = 400102
+tier = "boss"
+group_numeric_id = 4001
+marker_id = "B-02"
+name_key = "monster.mon_400102.name"
+geometry_shape = "boss_void"
+primary_color = "#38BDF8"
+accent_color = "#A78BFA"
+size_px = 53
+movement_kind = "blink_long"
+movement_interval_sec = 7.0
+movement_distance_px = 260
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_400103"
+numeric_id = 400103
+tier = "boss"
+group_numeric_id = 4001
+marker_id = "B-03"
+name_key = "monster.mon_400103.name"
+geometry_shape = "boss_pinwheel"
+primary_color = "#EF4444"
+accent_color = "#FDBA74"
+size_px = 55
+movement_kind = "lunge"
+movement_interval_sec = 6.0
+movement_distance_px = 190
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_400104"
+numeric_id = 400104
+tier = "boss"
+group_numeric_id = 4001
+marker_id = "B-04"
+name_key = "monster.mon_400104.name"
+geometry_shape = "boss_star_mother"
+primary_color = "#C084FC"
+accent_color = "#F5D0FE"
+size_px = 56
+movement_kind = "normal"
+movement_interval_sec = 0.0
+movement_distance_px = 0
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_400105"
+numeric_id = 400105
+tier = "boss"
+group_numeric_id = 4001
+marker_id = "B-05"
+name_key = "monster.mon_400105.name"
+geometry_shape = "boss_judicator"
+primary_color = "#94A3B8"
+accent_color = "#F8FAFC"
+size_px = 55
+movement_kind = "blink_long"
+movement_interval_sec = 10.0
+movement_distance_px = 220
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_400106"
+numeric_id = 400106
+tier = "boss"
+group_numeric_id = 4001
+marker_id = "B-06"
+name_key = "monster.mon_400106.name"
+geometry_shape = "boss_eclipse"
+primary_color = "#A3E635"
+accent_color = "#ECFCCB"
+size_px = 52
+movement_kind = "step_dash"
+movement_interval_sec = 5.0
+movement_distance_px = 130
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_400107"
+numeric_id = 400107
+tier = "boss"
+group_numeric_id = 4001
+marker_id = "B-07"
+name_key = "monster.mon_400107.name"
+geometry_shape = "boss_mirror"
+primary_color = "#818CF8"
+accent_color = "#C7D2FE"
+size_px = 53
+movement_kind = "phase_swap"
+movement_interval_sec = 9.0
+movement_distance_px = 180
+fallback_unit_visual = "enemy_brute"
+
+[[monsters]]
+id = "mon_400108"
+numeric_id = 400108
+tier = "boss"
+group_numeric_id = 4001
+marker_id = "B-08"
+name_key = "monster.mon_400108.name"
+geometry_shape = "boss_triad"
+primary_color = "#FB923C"
+accent_color = "#DC2626"
+size_px = 58
+movement_kind = "phase_step"
+movement_interval_sec = 3.0
+movement_distance_px = 160
+fallback_unit_visual = "enemy_brute"
