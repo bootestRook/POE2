@@ -12,7 +12,7 @@ from .skill_editor import SkillEditorService
 
 EXPECTED_PLAYER_DESCRIPTIONS = {
     "active_fire_bolt": "发射一枚火球，命中敌人造成火焰伤害。",
-    "active_ice_shards": "自动向最近敌人方向射出多枚冰霜冰棱，冰棱以扇形展开飞行，命中后造成冰霜伤害，并显示冰霜命中特效与伤害浮字。",
+    "active_ice_shards": "自动向最近敌人方向射出一枚冰霜冰棱，后续可通过投射物数量成长形成扇形散射，命中后造成冰霜伤害，并显示冰霜命中特效与伤害浮字。",
     "active_frost_nova": "自动以玩家自身为中心释放一圈向外扩散的冰霜新星，命中范围内敌人后造成冰霜伤害，并显示冰霜范围爆发特效与伤害浮字。",
     "active_puncture": "自动朝锁定敌人的方向发出一列地刺，命中矩形范围内敌人后造成物理伤害，并显示地刺命中特效与伤害浮字。",
     "active_lightning_chain": "自动向最近敌人释放闪电链，命中初始目标后，在一定半径内跳跃到附近未命中的敌人，造成多段闪电伤害，并显示连续电弧、命中特效与伤害浮字。",
@@ -163,6 +163,7 @@ def _report_checks(
     uses_orbit_chain = uses_module_chain and bool(orbit_spawn_events or orbit_tick_events)
     uses_chain = entry.get("behavior_template") == "chain"
     expected_damage_type = "lightning" if request.skill_id == "active_lightning_chain" else ("physical" if request.skill_id in {"active_puncture", "active_fungal_petards"} else ("cold" if request.skill_id in {"active_ice_shards", "active_frost_nova"} else "fire"))
+    base_projectile_count = int(arena_result.get("tested", {}).get("projectile_count", len(spawn_events)))
     life_reduced = any(monster["current_life"] < monster["max_life"] for monster in arena_result["monsters"])
     modifier_changed = (
         arena_result["baseline"]["final_damage"] != arena_result["tested"]["final_damage"]
@@ -182,8 +183,8 @@ def _report_checks(
         "uses_chain": uses_chain,
         "expected_damage_type": expected_damage_type,
         "has_projectile_spawn": bool(timeline_checks["has_projectile_spawn"]),
-        "has_multiple_projectile_spawn": request.skill_id != "active_ice_shards" or bool(timeline_checks.get("has_multiple_projectile_spawn")),
-        "fan_direction_passed": request.skill_id != "active_ice_shards" or bool(timeline_checks.get("fan_direction_passed")),
+        "has_multiple_projectile_spawn": request.skill_id != "active_ice_shards" or base_projectile_count <= 1 or bool(timeline_checks.get("has_multiple_projectile_spawn")),
+        "fan_direction_passed": request.skill_id != "active_ice_shards" or base_projectile_count <= 1 or bool(timeline_checks.get("fan_direction_passed")),
         "has_area_spawn": (not uses_area_nova) or bool(timeline_checks.get("has_area_spawn")),
         "area_center_passed": (not uses_area_nova) or bool(timeline_checks.get("area_center_passed")),
         "damage_after_or_at_area_hit": (not uses_area_nova) or bool(timeline_checks.get("damage_after_or_at_area_hit")),
@@ -584,6 +585,7 @@ def _parameter_variant_checks(
 
     angle_package = deepcopy(package)
     angle_params = angle_package["behavior"]["params"]
+    angle_params["projectile_count"] = max(3, int(angle_params.get("projectile_count", 1)))
     base_spread_angle = float(angle_params.get("spread_angle_deg", 0.0))
     base_angle_step = float(angle_params.get("angle_step", 0.0))
     angle_params["spread_angle_deg"] = (

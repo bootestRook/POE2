@@ -18,7 +18,7 @@ allowed_scaling_stats = [
   "attack_speed_add_percent",
   "cast_speed_add_percent",
   "skill_speed_final_percent",
-  "cooldown_reduction_percent",
+  "cooldown_recovery_add_percent",
   "added_cooldown_ms",
   "area_add_percent",
   "projectile_count_add",
@@ -67,7 +67,7 @@ chain_damage_add_percent = "additive"
 pierce_damage_add_percent = "additive"
 attack_speed_add_percent = "additive"
 cast_speed_add_percent = "additive"
-cooldown_reduction_percent = "additive"
+cooldown_recovery_add_percent = "additive"
 added_cooldown_ms = "additive"
 area_add_percent = "additive"
 projectile_count_add = "additive"
@@ -90,31 +90,31 @@ skill_speed_final_percent = "final"
 [[support_base_modifiers]]
 support_id = "support_fast_attack"
 stat = "attack_speed_add_percent"
-value = 15
+value = 10
 layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_fast_cast"
 stat = "cast_speed_add_percent"
-value = 15
+value = 10
 layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_skill_haste"
 stat = "skill_speed_final_percent"
-value = 8
+value = 5
 layer = "final"
 
 [[support_base_modifiers]]
 support_id = "support_cooldown_focus"
-stat = "cooldown_reduction_percent"
-value = 20
+stat = "cooldown_recovery_add_percent"
+value = 12
 layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_cooldown_focus"
 stat = "damage_final_percent"
-value = -5
+value = -6
 layer = "final"
 
 [[support_base_modifiers]]
@@ -126,7 +126,7 @@ layer = "final"
 [[support_base_modifiers]]
 support_id = "support_heavy_impact"
 stat = "added_cooldown_ms"
-value = 120
+value = 220
 layer = "additive"
 
 [[support_base_modifiers]]
@@ -138,7 +138,7 @@ layer = "additive"
 [[support_base_modifiers]]
 support_id = "support_wide_effect"
 stat = "added_cooldown_ms"
-value = 80
+value = 160
 layer = "additive"
 
 [[support_base_modifiers]]
@@ -198,7 +198,7 @@ layer = "additive"
 [[support_base_modifiers]]
 support_id = "support_extra_projectile"
 stat = "damage_final_percent"
-value = -10
+value = -18
 layer = "final"
 
 [[support_base_modifiers]]
@@ -210,7 +210,7 @@ layer = "additive"
 [[support_base_modifiers]]
 support_id = "support_shotgun"
 stat = "projectile_speed_add_percent"
-value = -20
+value = -28
 layer = "additive"
 
 [[support_base_modifiers]]
@@ -228,7 +228,7 @@ layer = "additive"
 [[support_base_modifiers]]
 support_id = "support_area_magnify"
 stat = "skill_speed_final_percent"
-value = -10
+value = -14
 layer = "final"
 
 [[support_base_modifiers]]
@@ -240,7 +240,7 @@ layer = "final"
 [[support_base_modifiers]]
 support_id = "support_overcharge"
 stat = "added_cooldown_ms"
-value = 160
+value = 300
 layer = "additive"
 
 [[support_base_modifiers]]
@@ -252,7 +252,7 @@ layer = "additive"
 [[support_base_modifiers]]
 support_id = "support_overkill"
 stat = "skill_speed_final_percent"
-value = -20
+value = -25
 layer = "final"
 
 [[support_base_modifiers]]

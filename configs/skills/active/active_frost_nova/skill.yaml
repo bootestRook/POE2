@@ -11,7 +11,11 @@ cast:
   mode: spell
   target_selector: self
   search_range: 340
-  cooldown_ms: 1100
+  cooldown_ms: 1800
+  release_interval_ms: 1200
+  base_cooldown_ms: 1800
+  trigger_interval_ms: 0
+  mana_cost: 12
   windup_ms: 0
   recovery_ms: 0
 behavior:
@@ -50,4 +54,4 @@ presentation:
   hit_stop_ms: 0
   camera_shake: 0
 preview:
-  show_fields: ["final_damage", "final_cooldown_ms", "damage_type", "speed_multiplier"]
+  show_fields: ["final_damage", "final_cooldown_ms", "actual_interval_ms", "mana_cost", "damage_type", "speed_multiplier"]

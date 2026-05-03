@@ -11,13 +11,17 @@ cast:
   mode: spell
   target_selector: nearest_enemy
   search_range: 380
-  cooldown_ms: 820
+  cooldown_ms: 1300
+  release_interval_ms: 1300
+  base_cooldown_ms: 0
+  trigger_interval_ms: 0
+  mana_cost: 7
   windup_ms: 0
   recovery_ms: 0
 behavior:
   template: projectile
   params:
-    projectile_count: 3
+    projectile_count: 1
     spread_angle_deg: 70
     angle_step: 35
     projectile_speed: 460
@@ -26,6 +30,9 @@ behavior:
     max_distance: 400
     hit_policy: first_hit
     collision_radius: 24
+    spawn_offset:
+      x: -10
+      y: -22
 hit:
   base_damage: 8
   can_crit: true
@@ -50,4 +57,4 @@ presentation:
   hit_stop_ms: 0
   camera_shake: 0
 preview:
-  show_fields: ["final_damage", "final_cooldown_ms", "projectile_count", "speed_multiplier"]
+  show_fields: ["final_damage", "actual_interval_ms", "mana_cost", "projectile_count", "speed_multiplier"]

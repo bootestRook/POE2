@@ -58,7 +58,7 @@ class SkillEditorTest(unittest.TestCase):
         self.assertEqual(fire_bolt["detail"]["damage_type"], "fire")
         self.assertEqual(fire_bolt["detail"]["damage_form"], "spell")
         self.assertEqual(fire_bolt["detail"]["tags"], ["spell", "fire", "projectile"])
-        self.assertEqual(fire_bolt["detail"]["cooldown_ms"], 850)
+        self.assertEqual(fire_bolt["detail"]["cooldown_ms"], 1250)
         self.assertEqual(fire_bolt["detail"]["base_damage"], 12)
         self.assertGreater(fire_bolt["package_data"]["behavior"]["params"]["projectile_speed"], 0)
 
@@ -74,7 +74,7 @@ class SkillEditorTest(unittest.TestCase):
         self.assertTrue(ice_shards["schema_status"]["is_valid"])
         self.assertEqual(ice_shards["detail"]["damage_type"], "cold")
         params = ice_shards["package_data"]["behavior"]["params"]
-        self.assertEqual(params["projectile_count"], 3)
+        self.assertEqual(params["projectile_count"], 1)
         for field in [
             "projectile_count",
             "projectile_speed",
@@ -277,7 +277,7 @@ class SkillEditorTest(unittest.TestCase):
 
         self.assertTrue(result["ok"], result["message_text"])
         preview = result["preview"]
-        self.assertGreater(preview["tested"]["final_damage"], preview["baseline"]["final_damage"])
+        self.assertGreater(preview["tested"]["preview_dps"], preview["baseline"]["preview_dps"])
         self.assertEqual(preview["relation_text"], "同行")
         self.assertTrue(preview["applied_modifiers"])
         self.assertFalse(preview["writes_real_data"])
@@ -298,7 +298,10 @@ class SkillEditorTest(unittest.TestCase):
 
         self.assertTrue(result["ok"], result["message_text"])
         preview = result["preview"]
-        self.assertGreater(preview["tested"]["final_damage"], preview["baseline"]["final_damage"])
+        self.assertGreater(
+            preview["tested"]["final_damage"] * preview["tested"]["projectile_count"],
+            preview["baseline"]["final_damage"] * preview["baseline"]["projectile_count"],
+        )
         self.assertGreater(preview["tested"]["projectile_count"], preview["baseline"]["projectile_count"])
         self.assertGreater(preview["tested"]["projectile_speed"], preview["baseline"]["projectile_speed"])
 
@@ -671,20 +674,23 @@ class SkillEditorTest(unittest.TestCase):
         self.assertTrue(dense["ok"], dense["message_text"])
         self.assertTrue(single["result"]["flight_no_damage_passed"])
         self.assertEqual(row["result"]["event_counts"]["projectile_spawn"], base_package["behavior"]["params"]["projectile_count"])
-        self.assertTrue(row["result"]["timeline_checks"]["has_multiple_projectile_spawn"])
-        self.assertTrue(row["result"]["timeline_checks"]["fan_direction_passed"])
-        self.assertGreaterEqual(len(row["result"]["hit_targets"]), 2)
-        self.assertGreaterEqual(len(dense["result"]["hit_targets"]), 2)
+        self.assertEqual(base_package["behavior"]["params"]["projectile_count"], 1)
+        self.assertFalse(row["result"]["timeline_checks"]["has_multiple_projectile_spawn"])
 
         more_projectiles = deepcopy(base_package)
         more_projectiles["behavior"]["params"]["projectile_count"] = 5
         count_result = service.run_test_arena({"skill_id": "active_ice_shards", "scene_id": "three_target_row", "package": more_projectiles})
         self.assertEqual(count_result["result"]["event_counts"]["projectile_spawn"], 5)
+        self.assertTrue(count_result["result"]["timeline_checks"]["has_multiple_projectile_spawn"])
+        self.assertTrue(count_result["result"]["timeline_checks"]["fan_direction_passed"])
+        self.assertGreaterEqual(len(count_result["result"]["hit_targets"]), 2)
 
         narrow = deepcopy(base_package)
         wide = deepcopy(base_package)
+        narrow["behavior"]["params"]["projectile_count"] = 3
         narrow["behavior"]["params"]["spread_angle_deg"] = 10
         narrow["behavior"]["params"]["angle_step"] = 5
+        wide["behavior"]["params"]["projectile_count"] = 3
         wide["behavior"]["params"]["spread_angle_deg"] = 40
         wide["behavior"]["params"]["angle_step"] = 20
         narrow_result = service.run_test_arena({"skill_id": "active_ice_shards", "scene_id": "three_target_row", "package": narrow})
@@ -798,7 +804,10 @@ class SkillEditorTest(unittest.TestCase):
 
         self.assertTrue(base["ok"], base["message_text"])
         self.assertTrue(modified["ok"], modified["message_text"])
-        self.assertGreater(modified["result"]["tested"]["final_damage"], base["result"]["tested"]["final_damage"])
+        self.assertGreater(
+            modified["result"]["tested"]["final_damage"] * modified["result"]["tested"]["projectile_count"],
+            base["result"]["tested"]["final_damage"] * base["result"]["tested"]["projectile_count"],
+        )
         self.assertGreater(modified["result"]["tested"]["projectile_count"], base["result"]["tested"]["projectile_count"])
         self.assertEqual(path.read_text(encoding="utf-8"), before)
         self.assertNotIn("random_affixes", str(modified))

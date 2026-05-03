@@ -11,23 +11,31 @@ cast:
   mode: spell
   target_selector: self
   search_range: 300
-  cooldown_ms: 1100
+  cooldown_ms: 2200
+  release_interval_ms: 1400
+  base_cooldown_ms: 2200
+  trigger_interval_ms: 220
+  mana_cost: 14
   windup_ms: 80
   recovery_ms: 120
 behavior:
   template: orbit_emitter
   params:
     orbit_center_policy: caster
-    duration_ms: 3200
-    tick_interval_ms: 380
-    orbit_radius: 150
-    orbit_speed_deg_per_sec: 60
+    duration_ms: 3600
+    tick_interval_ms: 180
+    orbit_radius: 118
+    orbit_speed_deg_per_sec: 160
     orb_count: 1
-    start_angle_deg: 0
+    start_angle_deg: -90
+    orbit_radius_cycle_enabled: false
+    orbit_radius_cycle_amplitude: 0
+    orbit_radius_cycle_period_ms: 1200
+    orbit_radius_cycle_phase_deg: 0
     tick_marker_id: lava_orb_tick
     spawn_vfx_key: skill_event.lava_orb.spawn
     tick_vfx_key: skill_event.lava_orb.tick
-modules: [{"id": "lava_orbit", "type": "orbit_emitter", "params": {"orbit_center_policy": "caster", "duration_ms": 3200, "tick_interval_ms": 380, "orbit_radius": 150, "orbit_speed_deg_per_sec": 60, "orb_count": 1, "start_angle_deg": 0, "tick_marker_id": "lava_orb_tick", "spawn_vfx_key": "skill_event.lava_orb.spawn", "tick_vfx_key": "skill_event.lava_orb.tick"}}, {"id": "lava_orb_damage_zone", "type": "damage_zone", "trigger": {"trigger_marker_id": "lava_orb_tick", "trigger_delay_ms": 0}, "params": {"shape": "circle", "origin_policy": "trigger_position", "facing_policy": "none", "radius": 68, "hit_at_ms": 0, "max_targets": 8, "status_chance_scale": 1, "vfx_key": "skill_event.lava_orb.hit", "ring_width": 28}}]
+modules: [{"id": "lava_orbit", "type": "orbit_emitter", "params": {"orbit_center_policy": "caster", "duration_ms": 3600, "tick_interval_ms": 180, "orbit_radius": 118, "orbit_speed_deg_per_sec": 160, "orb_count": 1, "start_angle_deg": -90, "orbit_radius_cycle_enabled": False, "orbit_radius_cycle_amplitude": 0, "orbit_radius_cycle_period_ms": 1200, "orbit_radius_cycle_phase_deg": 0, "tick_marker_id": "lava_orb_tick", "spawn_vfx_key": "skill_event.lava_orb.spawn", "tick_vfx_key": "skill_event.lava_orb.tick"}}, {"id": "lava_orb_damage_zone", "type": "damage_zone", "trigger": {"trigger_marker_id": "lava_orb_tick", "trigger_delay_ms": 0}, "params": {"shape": "circle", "origin_policy": "trigger_position", "facing_policy": "none", "radius": 52, "hit_at_ms": 0, "max_targets": 8, "status_chance_scale": 1, "vfx_key": "skill_event.lava_orb.hit", "ring_width": 20}}]
 hit:
   base_damage: 9
   can_crit: true
@@ -52,4 +60,4 @@ presentation:
   hit_stop_ms: 0
   camera_shake: 0
 preview:
-  show_fields: ["final_damage", "final_cooldown_ms", "damage_type", "speed_multiplier", "duration_ms", "tick_interval_ms", "orbit_radius", "orb_count", "radius"]
+  show_fields: ["final_damage", "final_cooldown_ms", "actual_interval_ms", "trigger_interval_ms", "mana_cost", "damage_type", "speed_multiplier", "duration_ms", "tick_interval_ms", "orbit_radius", "orb_count", "radius"]

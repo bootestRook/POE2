@@ -46,7 +46,7 @@ EXPRESSION_SUPPORT_STATS = frozenset(
         "attack_speed_add_percent",
         "cast_speed_add_percent",
         "skill_speed_final_percent",
-        "cooldown_reduction_percent",
+        "cooldown_recovery_add_percent",
         "added_cooldown_ms",
         "area_add_percent",
         "projectile_count_add",
@@ -302,7 +302,7 @@ def _profile_targets(profile: str, pov: CurrentPovMetrics) -> dict[str, Any]:
     base = {
         "search_range": _round_to_10(median + 80),
         "search_reason": "avoid whole-map auto targeting while reaching normal spawn pressure",
-        "cooldown_ms": 850,
+        "cooldown_ms": 1250,
         "cooldown_reason": "keep baseline auto-cast rhythm visible under current spawn cadence",
         "max_distance": _round_to_10(median + 100),
         "projectile_speed": 620,
@@ -323,19 +323,19 @@ def _profile_targets(profile: str, pov: CurrentPovMetrics) -> dict[str, Any]:
         "trigger_delay_ms": 320,
     }
     if profile == "fan_projectile":
-        base.update({"cooldown_ms": 820, "projectile_speed": 460, "projectile_count": 3, "spread_angle_deg": 70, "collision_radius": 22})
+        base.update({"cooldown_ms": 1300, "projectile_speed": 460, "projectile_count": 1, "spread_angle_deg": 70, "collision_radius": 22})
     elif profile == "long_pierce_projectile":
-        base.update({"search_range": 520, "max_distance": 520, "cooldown_ms": 900, "projectile_speed": 760, "collision_radius": 18})
+        base.update({"search_range": 520, "max_distance": 520, "cooldown_ms": 1350, "projectile_speed": 760, "collision_radius": 18})
     elif profile == "self_area":
-        base.update({"search_range": 340, "cooldown_ms": 1100, "radius": 340})
+        base.update({"search_range": 340, "cooldown_ms": 1800, "radius": 340})
     elif profile == "short_line_area":
-        base.update({"search_range": 320, "cooldown_ms": 700, "length": 260, "width": 72})
+        base.update({"search_range": 320, "cooldown_ms": 1150, "length": 260, "width": 72})
     elif profile == "chain":
-        base.update({"search_range": 380, "cooldown_ms": 950, "chain_radius": 165, "chain_delay_ms": 90})
+        base.update({"search_range": 380, "cooldown_ms": 1700, "chain_radius": 165, "chain_delay_ms": 90})
     elif profile == "orbit_area":
-        base.update({"search_range": 300, "cooldown_ms": 1050, "radius": 68, "duration_ms": 3200, "tick_interval_ms": 380, "orbit_radius": 150, "orb_count": 1, "trigger_delay_ms": 0})
+        base.update({"search_range": 300, "cooldown_ms": 2200, "radius": 68, "duration_ms": 3200, "tick_interval_ms": 380, "orbit_radius": 150, "orb_count": 1, "trigger_delay_ms": 0})
     elif profile == "delayed_area_projectile":
-        base.update({"search_range": 420, "max_distance": 420, "cooldown_ms": 1250, "projectile_speed": 620, "radius": 150, "travel_time_ms": 620, "trigger_delay_ms": 320})
+        base.update({"search_range": 420, "max_distance": 420, "cooldown_ms": 2400, "projectile_speed": 620, "radius": 150, "travel_time_ms": 620, "trigger_delay_ms": 320})
     return base
 
 
@@ -385,7 +385,7 @@ def _support_pressure(stat: str, value: float) -> str:
     magnitude = abs(value)
     if stat == "projectile_count_add":
         return "high visual density" if magnitude >= 2 else "moderate visual density"
-    if stat in {"skill_speed_final_percent", "cooldown_reduction_percent"}:
+    if stat in {"skill_speed_final_percent", "cooldown_recovery_add_percent"}:
         return "high cadence pressure" if magnitude >= 15 else "moderate cadence pressure"
     if stat == "added_cooldown_ms":
         return "slower cadence tradeoff" if value > 0 else "cadence accelerator"

@@ -11,7 +11,11 @@ cast:
   mode: attack
   target_selector: nearest_enemy
   search_range: 520
-  cooldown_ms: 850
+  cooldown_ms: 1350
+  release_interval_ms: 1350
+  base_cooldown_ms: 0
+  trigger_interval_ms: 0
+  mana_cost: 6
   windup_ms: 0
   recovery_ms: 0
 behavior:
@@ -62,4 +66,4 @@ presentation:
   hit_stop_ms: 0
   camera_shake: 0
 preview:
-  show_fields: ["final_damage", "final_cooldown_ms", "projectile_count", "speed_multiplier"]
+  show_fields: ["final_damage", "actual_interval_ms", "mana_cost", "projectile_count", "speed_multiplier"]

@@ -69,15 +69,14 @@ class SkillTestReportTest(unittest.TestCase):
         self.assertEqual(report.conclusion, "通过")
         self.assertIn("测试技能 ID：`active_ice_shards`", markdown)
         self.assertIn("behavior_template：`projectile`", markdown)
-        self.assertIn("自动向最近敌人方向射出多枚冰霜冰棱", markdown)
+        self.assertIn("自动向最近敌人方向射出一枚冰霜冰棱", markdown)
         self.assertIn("多枚 projectile_spawn：通过", markdown)
         self.assertIn("扇形方向：通过", markdown)
         self.assertIn("projectile_hit：通过", markdown)
         self.assertIn("damage_type 为 cold：通过", markdown)
         self.assertIn("projectile_count 修改后事件数量变化：通过", markdown)
         self.assertIn("spread_angle_deg 修改后方向变化：通过", markdown)
-        self.assertTrue(report.source_result["timeline_checks"]["has_multiple_projectile_spawn"])
-        self.assertTrue(report.source_result["timeline_checks"]["fan_direction_passed"])
+        self.assertFalse(report.source_result["timeline_checks"]["has_multiple_projectile_spawn"])
 
     def test_generate_frost_nova_report_from_dense_pack(self) -> None:
         report = generate_skill_test_report(

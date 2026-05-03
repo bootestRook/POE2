@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 import unittest
 from copy import deepcopy
+from dataclasses import replace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -652,8 +653,100 @@ class SkillEffectTest(unittest.TestCase):
             modifier for modifier in final_skill.applied_modifiers if modifier.stat == "cast_speed_add_percent"
         )
         self.assertEqual(cast_modifier.relation, "adjacent")
-        self.assertAlmostEqual(cast_modifier.value, 18.75)
-        self.assertAlmostEqual(final_skill.speed_multiplier, 1.1875)
+        self.assertAlmostEqual(cast_modifier.value, 12.5)
+        self.assertAlmostEqual(final_skill.speed_multiplier, 1.125)
+
+    def test_attack_skill_only_uses_attack_speed_for_release_interval(self) -> None:
+        inventory, board, calculator = self._fresh_calculator()
+        inventory.add_instance("active", "active_puncture")
+        board.mount_gem("active", 0, 0)
+
+        baseline = calculator.calculate_all()[0]
+        calculator.player_base_stats = {"attack_speed_add_percent": 100, "cast_speed_add_percent": 0}
+        attack_speed_skill = calculator.calculate_all()[0]
+        calculator.player_base_stats = {"attack_speed_add_percent": 0, "cast_speed_add_percent": 100}
+        cast_speed_skill = calculator.calculate_all()[0]
+
+        self.assertLess(attack_speed_skill.release_interval_ms, baseline.release_interval_ms)
+        self.assertEqual(cast_speed_skill.release_interval_ms, baseline.release_interval_ms)
+
+    def test_spell_skill_only_uses_cast_speed_for_release_interval(self) -> None:
+        inventory, board, calculator = self._fresh_calculator()
+        inventory.add_instance("active", "active_fire_bolt")
+        board.mount_gem("active", 0, 0)
+
+        baseline = calculator.calculate_all()[0]
+        calculator.player_base_stats = {"cast_speed_add_percent": 100, "attack_speed_add_percent": 0}
+        cast_speed_skill = calculator.calculate_all()[0]
+        calculator.player_base_stats = {"cast_speed_add_percent": 0, "attack_speed_add_percent": 100}
+        attack_speed_skill = calculator.calculate_all()[0]
+
+        self.assertLess(cast_speed_skill.release_interval_ms, baseline.release_interval_ms)
+        self.assertEqual(attack_speed_skill.release_interval_ms, baseline.release_interval_ms)
+
+    def test_cooldown_recovery_formula_does_not_reduce_to_zero(self) -> None:
+        inventory, board, calculator = self._fresh_calculator()
+        inventory.add_instance("active", "active_frost_nova")
+        board.mount_gem("active", 0, 0)
+        template = calculator.skill_templates["skill_frost_nova"]
+        calculator.skill_templates = {
+            **calculator.skill_templates,
+            "skill_frost_nova": replace(template, base_release_interval_ms=0, base_cooldown_ms=10000),
+        }
+        calculator.player_base_stats = {"cooldown_recovery_add_percent": 100, "added_cooldown_ms": 0}
+
+        final_skill = calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.final_cooldown_ms, 5000)
+        self.assertEqual(final_skill.actual_interval_ms, 5000)
+
+    def test_added_cooldown_is_applied_after_cooldown_recovery(self) -> None:
+        inventory, board, calculator = self._fresh_calculator()
+        inventory.add_instance("active", "active_frost_nova")
+        board.mount_gem("active", 0, 0)
+        template = calculator.skill_templates["skill_frost_nova"]
+        calculator.skill_templates = {
+            **calculator.skill_templates,
+            "skill_frost_nova": replace(template, base_release_interval_ms=0, base_cooldown_ms=10000),
+        }
+        calculator.player_base_stats = {"cooldown_recovery_add_percent": 100, "added_cooldown_ms": 1000}
+
+        final_skill = calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.final_cooldown_ms, 6000)
+        self.assertEqual(final_skill.actual_interval_ms, 6000)
+
+    def test_actual_interval_uses_slower_release_gate_or_cooldown(self) -> None:
+        inventory, board, calculator = self._fresh_calculator()
+        inventory.add_instance("active", "active_frost_nova")
+        board.mount_gem("active", 0, 0)
+        template = calculator.skill_templates["skill_frost_nova"]
+        calculator.skill_templates = {
+            **calculator.skill_templates,
+            "skill_frost_nova": replace(template, base_release_interval_ms=500, base_cooldown_ms=2000),
+        }
+
+        final_skill = calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.release_interval_ms, 500)
+        self.assertEqual(final_skill.final_cooldown_ms, 2000)
+        self.assertEqual(final_skill.actual_interval_ms, 2000)
+
+    def test_trigger_interval_is_not_affected_by_cooldown_recovery(self) -> None:
+        inventory, board, calculator = self._fresh_calculator()
+        inventory.add_instance("active", "active_frost_nova")
+        board.mount_gem("active", 0, 0)
+        template = calculator.skill_templates["skill_frost_nova"]
+        calculator.skill_templates = {
+            **calculator.skill_templates,
+            "skill_frost_nova": replace(template, trigger_interval_ms=500, base_release_interval_ms=0, base_cooldown_ms=1000),
+        }
+        calculator.player_base_stats = {"cooldown_recovery_add_percent": 100}
+
+        final_skill = calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.trigger_interval_ms, 500)
+        self.assertEqual(final_skill.final_cooldown_ms, 500)
 
     def test_same_source_target_stat_is_settled_once(self) -> None:
         self.inventory.add_instance("active", "active_fire_bolt")
@@ -688,10 +781,11 @@ class SkillEffectTest(unittest.TestCase):
         self.assertEqual(final_skill.base_gem_id, "active_ice_shards")
         self.assertEqual(final_skill.skill_package_id, "active_ice_shards")
         self.assertEqual(final_skill.behavior_template, "projectile")
-        self.assertEqual(final_skill.projectile_count, 4)
+        self.assertEqual(final_skill.projectile_count, 2)
         expected_spread_angle = load_skill_packages(self.config_root)["active_ice_shards"]["behavior"]["params"]["spread_angle_deg"]
         self.assertEqual(final_skill.runtime_params["spread_angle_deg"], expected_spread_angle)
-        self.assertGreater(final_skill.final_cooldown_ms, 0)
+        self.assertEqual(final_skill.final_cooldown_ms, 0)
+        self.assertGreater(final_skill.actual_interval_ms, 0)
         self.assertGreater(final_skill.area_multiplier, 0)
         self.assertGreater(final_skill.uses_per_second, 0)
         self.assertEqual(final_skill.hit_coverage_factor, 1)
