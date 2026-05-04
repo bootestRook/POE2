@@ -13,7 +13,7 @@ import type { MapSpawnV1Config, ProceduralSpawnDebugSummary, ProceduralSpawnRari
 import { getAnimationFrame, resolveDirection, resolveUnitAnimation, UnitAnimationContext, UnitAnimationFrame } from "./unitAnimation";
 import { BattleGeometryCanvas } from "./BattleGeometryCanvas";
 import type { BattleGeometrySnapshot } from "./battleGeometryRenderer";
-import { fallbackUnitVisualForMonster, resolveMonsterGeometryVisual } from "./monsterGeometryVisuals";
+import { fallbackUnitVisualForMonster, MONSTER_GEOMETRY_VISUALS, resolveMonsterGeometryVisual } from "./monsterGeometryVisuals";
 import {
   selectEnemyUnitType,
   UNIT_ANIMATION_ASSETS,
@@ -181,6 +181,7 @@ type SkillPackageData = {
       burst_interval_ms?: number;
       spread_angle_deg?: number;
       angle_step?: number;
+      random_angle_jitter_deg?: number;
       projectile_speed?: number;
       projectile_width?: number;
       projectile_height?: number;
@@ -225,6 +226,7 @@ type SkillPackageData = {
     hit_delay_ms?: number;
     hit_radius?: number;
     target_policy?: string;
+    secondary_hits?: SecondaryHitConfig[];
   };
   scaling: {
     additive_stats: string[];
@@ -663,6 +665,21 @@ type SkillEvent = {
   };
 };
 
+type SecondaryHitConfig = {
+  id?: string;
+  trigger?: string;
+  shape?: string;
+  placement?: string;
+  offset_distance?: number;
+  radius?: number;
+  base_damage?: number;
+  weapon_attack_percent?: number;
+  max_targets?: number;
+  delay_ms?: number;
+  vfx_key?: string;
+  reason_key?: string;
+};
+
 type AppState = {
   inventory: Gem[];
   board: {
@@ -730,6 +747,15 @@ type CharacterPanelView = {
   sections: CharacterPanelSectionView[];
 };
 
+type EnemyBuff = {
+  buffType: string;
+  polarity: "positive" | "negative";
+  remaining: number;
+  duration: number;
+  valuePercent: number;
+  sourceSkillId: string;
+};
+
 type Enemy = {
   id: number;
   x: number;
@@ -755,6 +781,9 @@ type Enemy = {
   offenseModifiers?: MonsterOffenseModifiers;
   aggroLocked?: boolean;
   runtimeTier?: EnemyRuntimeTier;
+  attackStartedAtMs?: number;
+  attackUntilMs?: number;
+  nextAttackReadyAtMs?: number;
   nextThinkAt?: number;
   engagementTier?: EnemyEngagementTier;
   engagementRing?: number;
@@ -763,6 +792,7 @@ type Enemy = {
   velocityY?: number;
   navTargetGridX?: number;
   navTargetGridY?: number;
+  activeBuffs?: EnemyBuff[];
 };
 
 type EncounterMonsterPalette = {
@@ -788,6 +818,18 @@ type FloatingText = {
   damageType: string;
   ttl: number;
   duration: number;
+};
+
+type PlayerBuff = {
+  id: number;
+  buffType: string;
+  skillId: string;
+  remaining: number;
+  duration: number;
+  remainingAmount: number;
+  absorbPercent: number;
+  excludeDamageOverTime: boolean;
+  vfxKey: string;
 };
 
 type FireBolt = {
@@ -945,6 +987,36 @@ type LavaOrbitRuntime = {
   vfxScale?: number;
 };
 
+type ThundercloudRuntime = {
+  kind: "thundercloud" | "caster_area";
+  skillInstanceId: string;
+  skillId: string;
+  skillName: string;
+  damageType: string;
+  finalDamage: number;
+  phase: "channeling" | "active";
+  channelElapsedMs: number;
+  channelDurationMs: number;
+  channelStacks: number;
+  cloudRemainingMs: number;
+  cloudDurationMs: number;
+  tickTimerMs: number;
+  tickIntervalMs: number;
+  radius: number;
+  slashRadius: number;
+  slashChancePercent: number;
+  slashDamageScale: number;
+  slashBoostRemainingMs: number;
+  channelTickDuringChannel: boolean;
+  maxTargets: number;
+  chainCount: number;
+  chainRadius: number;
+  vfxKey: string;
+  hitVfxKey: string;
+  segmentVfxKey: string;
+  vfxScale?: number;
+};
+
 type LavaOrbitVisual = {
   id: number;
   x: number;
@@ -976,6 +1048,14 @@ type RuntimePerfSummary = {
   scheduled_events: number;
   consumed_events_this_frame: number;
   dropped_frame_count: number;
+};
+
+type RuntimeBoundaryScanSummary = {
+  status: "idle" | "running" | "done";
+  tested: number;
+  passed: number;
+  failed: number;
+  failures: string[];
 };
 
 type ProjectileDamageTarget = {
@@ -1059,12 +1139,11 @@ type UnitVisualRuntime = {
 type EnemyVisualRuntime = UnitVisualRuntime & {
   lastX: number;
   lastY: number;
-  nextAttackReadyAtMs?: number;
 };
 
 type BattleRenderEntity =
   | { kind: "enemy"; id: number; x: number; y: number; hp: number; maxHp: number; lastDamagedAt?: number; monsterId?: string; spawnRarity?: ProceduralSpawnRarity; runtimeTier?: EnemyRuntimeTier; playerDistance: number; renderScale: number }
-  | { kind: "player"; id: "player"; x: number; y: number; hp: number; maxHp: number; renderScale: number };
+  | { kind: "player"; id: "player"; x: number; y: number; hp: number; maxHp: number; renderScale: number; guardActive: boolean };
 
 type BattleRenderItem =
   | BattleRenderEntity
@@ -1133,6 +1212,7 @@ const PLAYER_GEOMETRY_RADIUS = 18;
 const ENEMY_MELEE_ATTACK_DISTANCE = 42;
 const ENEMY_MELEE_ATTACK_RANGE_MAX = 120;
 const ENEMY_MELEE_CONTACT_GAP = 4;
+const ENEMY_MELEE_EDGE_CONTACT_TOLERANCE = 14;
 const ENEMY_ATTACK_VISUAL_DURATION_MS = 640;
 const ENEMY_ATTACK_VISUAL_COOLDOWN_MS = 520;
 const ENEMY_WALK_VISUAL_DEADZONE = 0.35;
@@ -1164,6 +1244,7 @@ const ENEMY_STEERING_ANGLE_OFFSETS = [0, 18, -18, 36, -36, 58, -58, 82, -82, 112
 const ENEMY_APPROACH_RING_RADIUS = 72;
 const ENEMY_APPROACH_SIDE_STEP = 24;
 const ENEMY_APPROACH_MAX_SIDE_OFFSET = 72;
+const ENEMY_MELEE_SLOT_ANGLE_STEP = 22.5 * Math.PI / 180;
 const ENEMY_CROWD_SCORE_RADIUS = 118;
 const ENEMY_CROWD_SLOT_PENALTY = 34;
 const ENEMY_WALL_CLEARANCE_RADIUS = 72;
@@ -3938,6 +4019,7 @@ function GameApp() {
   });
   const [enemies, setEnemies] = useState<Enemy[]>(() => skillEditorMode ? createSkillTestDummies(1, MAP_WIDTH / 2, MAP_HEIGHT / 2) : []);
   const [texts, setTexts] = useState<FloatingText[]>([]);
+  const [activePlayerBuffs, setActivePlayerBuffs] = useState<PlayerBuff[]>([]);
   const [bolts, setBolts] = useState<FireBolt[]>([]);
   const [areaNovas, setAreaNovas] = useState<AreaNova[]>([]);
   const [meleeArcs, setMeleeArcs] = useState<MeleeArcVfx[]>([]);
@@ -3960,6 +4042,13 @@ function GameApp() {
     consumed_events_this_frame: 0,
     dropped_frame_count: 0
   });
+  const [runtimeBoundaryScan, setRuntimeBoundaryScan] = useState<RuntimeBoundaryScanSummary>({
+    status: "idle",
+    tested: 0,
+    passed: 0,
+    failed: 0,
+    failures: []
+  });
   const [hoveredGemId, setHoveredGemId] = useState<string | null>(null);
   const [hoveredBoardCell, setHoveredBoardCell] = useState<string | null>(null);
   const [hoveredBagSlot, setHoveredBagSlot] = useState<number | null>(null);
@@ -3973,6 +4062,7 @@ function GameApp() {
   const lastFrame = useRef<number | null>(null);
   const nextEnemyId = useRef(skillEditorMode ? SKILL_TEST_DUMMY_OFFSETS.length + 1 : 1);
   const nextTextId = useRef(1);
+  const nextPlayerBuffId = useRef(1);
   const nextBoltId = useRef(1);
   const nextAreaNovaId = useRef(1);
   const nextMeleeArcId = useRef(1);
@@ -3983,6 +4073,8 @@ function GameApp() {
   const nextPromptId = useRef(1);
   const attackTimers = useRef<Record<string, number>>({});
   const scheduledSkillEvents = useRef<ScheduledSkillEvent[]>([]);
+  const onKillRecastCounts = useRef<Map<string, number>>(new Map());
+  const activeThunderclouds = useRef(new Map<string, ThundercloudRuntime>());
   const activeLavaOrbits = useRef(new Map<string, LavaOrbitRuntime>());
   const runtimePerf = useRef<RuntimePerfSummary>({
     frame_ms: 0,
@@ -4003,6 +4095,7 @@ function GameApp() {
   const triggeredEncounterSourceIds = useRef<Set<string>>(new Set());
   const encounterMonsterPalette = useRef<EncounterMonsterPalette>(createEncounterMonsterPalette());
   const playerStateRef = useRef(player);
+  const activePlayerBuffsRef = useRef<PlayerBuff[]>([]);
   const enemiesStateRef = useRef(enemies);
   const elapsedRef = useRef(0);
   const elapsedLastUiSync = useRef(0);
@@ -4011,6 +4104,35 @@ function GameApp() {
     const next = updater(playerStateRef.current);
     playerStateRef.current = next;
     setPlayer(next);
+  }
+
+  function setRuntimePlayerBuffs(next: PlayerBuff[]) {
+    activePlayerBuffsRef.current = next;
+    setActivePlayerBuffs(next);
+  }
+
+  function advancePlayerBuffs(dt: number) {
+    const next = activePlayerBuffsRef.current
+      .map((buff) => ({ ...buff, remaining: buff.remaining - dt }))
+      .filter((buff) => buff.remaining > 0 && buff.remainingAmount > 0);
+    setRuntimePlayerBuffs(next);
+  }
+
+  function advanceEnemyBuffs(dt: number) {
+    setEnemies((current) => {
+      let changed = false;
+      const next = current.map((enemy) => {
+        if (!enemy.activeBuffs?.length) return enemy;
+        const activeBuffs = enemy.activeBuffs
+          .map((buff) => ({ ...buff, remaining: buff.remaining - dt }))
+          .filter((buff) => buff.remaining > 0);
+        if (activeBuffs.length === enemy.activeBuffs.length && activeBuffs.every((buff, index) => buff === enemy.activeBuffs?.[index])) return enemy;
+        changed = true;
+        return { ...enemy, activeBuffs };
+      });
+      if (changed) enemiesStateRef.current = next;
+      return changed ? next : current;
+    });
   }
 
   useEffect(() => {
@@ -4173,6 +4295,20 @@ function GameApp() {
     enemiesStateRef.current = enemies;
   }, [enemies]);
 
+  useEffect(() => {
+    if (!battleMap || !runtimeDebugMonsterBoundaryTestEnabled()) return;
+    let cancelled = false;
+    setRuntimeBoundaryScan({ status: "running", tested: 0, passed: 0, failed: 0, failures: [] });
+    window.setTimeout(() => {
+      if (cancelled) return;
+      const summary = runRuntimeBoundaryMonsterAiScan(battleMap);
+      if (!cancelled) setRuntimeBoundaryScan(summary);
+    }, 50);
+    return () => {
+      cancelled = true;
+    };
+  }, [battleMap]);
+
   const activeSkills = state?.skill_preview ?? [];
 
   useEffect(() => {
@@ -4234,14 +4370,18 @@ function GameApp() {
     if (!skillEditorMode) {
       spawnTimer.current -= dt;
       let spawnEnemy = false;
-      if (!authoredSpawnPlanActive && spawnTimer.current <= 0) {
+      if (!authoredSpawnPlanActive && spawnTimer.current <= 0 && !runtimeDebugMonsterCornerTestEnabled()) {
         spawnTimer.current = Math.max(0.45, 1.2 - elapsedRef.current / 80);
         spawnEnemy = true;
       }
 
-      const attackLockedEnemyIds = currentEnemyAttackLockedIds(elapsedRef.current * 1000, enemiesStateRef.current, nextPlayer);
+      const nowMs = elapsedRef.current * 1000;
+      const attackLockedEnemyIds = currentEnemyAttackLockedIds(nowMs, enemiesStateRef.current, nextPlayer, battleMap);
       const movingEnemies = updateRuntimeEnemies(enemiesStateRef.current, nextPlayer, battleMap, dt, elapsedRef.current, authoredSpawnPlanActive, authoredAggroSources, triggeredEncounterSourceIds.current, attackLockedEnemyIds);
-      currentVisualEnemies = spawnEnemy ? [...movingEnemies, createEnemy(nextEnemyId.current++, nextPlayer.x, nextPlayer.y, battleMap, "normal", encounterMonsterPalette.current)] : movingEnemies;
+      currentVisualEnemies = applyRuntimeMonsterAttacks(
+        spawnEnemy ? [...movingEnemies, createEnemy(nextEnemyId.current++, nextPlayer.x, nextPlayer.y, battleMap, "normal", encounterMonsterPalette.current)] : movingEnemies,
+        nowMs
+      );
       enemiesStateRef.current = currentVisualEnemies;
       setEnemies(currentVisualEnemies);
     }
@@ -4252,11 +4392,18 @@ function GameApp() {
       for (const timerId of Object.keys(attackTimers.current)) {
         if (!activeIds.has(timerId)) delete attackTimers.current[timerId];
       }
+      for (const thundercloudId of Array.from(activeThunderclouds.current.keys())) {
+        if (!activeIds.has(thundercloudId)) activeThunderclouds.current.delete(thundercloudId);
+      }
       for (const orbitId of Array.from(activeLavaOrbits.current.keys())) {
         if (!activeIds.has(orbitId)) activeLavaOrbits.current.delete(orbitId);
       }
       for (const skill of activeSkills) {
         const timerId = skill.active_gem_instance_id;
+        if (isChannelledDamageZoneSkill(skill)) {
+          updateChannelledDamageZoneSkill(skill, currentVisualEnemies, dt);
+          continue;
+        }
         if (isLavaOrbitSkill(skill)) {
           updateLavaOrbitSkill(skill, currentVisualEnemies, dt);
           continue;
@@ -4274,6 +4421,8 @@ function GameApp() {
     }
 
     setTexts((current) => advanceRuntimeVisuals(current, dt, MAX_RUNTIME_FLOATING_TEXT));
+    advancePlayerBuffs(dt);
+    advanceEnemyBuffs(dt);
     setBolts((current) => advanceRuntimeVisuals(current, dt, MAX_RUNTIME_PROJECTILE_VISUALS));
     setAreaNovas((current) => advanceRuntimeVisuals(current, dt, MAX_RUNTIME_AREA_VFX));
     setMeleeArcs((current) => advanceRuntimeVisuals(current, dt, MAX_RUNTIME_AREA_VFX));
@@ -4324,66 +4473,128 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       const previous = enemyVisuals.current.get(enemy.id);
       const worldMovementVector = previous ? { x: enemy.x - previous.lastX, y: enemy.y - previous.lastY } : { x: currentPlayer.x - enemy.x, y: currentPlayer.y - enemy.y };
       const chaseVector = { x: currentPlayer.x - enemy.x, y: currentPlayer.y - enemy.y };
-      const canStartAttack = canEnemyStartAttackVisual(enemy, currentPlayer, previous, nowMs);
       const movementVector = Math.hypot(worldMovementVector.x, worldMovementVector.y) > ENEMY_WALK_VISUAL_DEADZONE
         ? chaseVector
         : { x: 0, y: 0 };
       const direction = resolveAnimationDirection(chaseVector, previous?.direction ?? "down");
-      if (canStartAttack) applyMonsterAttackHit(enemy);
       enemyVisuals.current.set(enemy.id, {
         direction,
         movementVector,
-        attackStartedAtMs: canStartAttack ? nowMs : previous?.attackStartedAtMs,
-        attackUntilMs: canStartAttack ? nowMs + ENEMY_ATTACK_VISUAL_DURATION_MS : previous?.attackUntilMs,
-        nextAttackReadyAtMs: canStartAttack ? nowMs + monsterAttackCadenceMs(enemy) : previous?.nextAttackReadyAtMs,
+        attackStartedAtMs: enemy.attackStartedAtMs,
+        attackUntilMs: enemy.attackUntilMs,
         lastX: enemy.x,
         lastY: enemy.y
       });
     }
   }
 
-  function applyMonsterAttackHit(enemy: Enemy) {
-    const currentPlayer = playerStateRef.current;
-    if (currentPlayer.hp <= 0) return;
-    const hit = resolveMonsterHitAgainstPlayer(enemy, currentPlayer, state?.player_stats);
-    if (hit.totalDamage <= 0) return;
-    const defeated = !skillEditorMode && hit.nextPlayer.hp <= 0;
-    setRuntimePlayer(() => hit.nextPlayer);
+  function applyRuntimeMonsterAttacks(currentEnemies: Enemy[], nowMs: number) {
+    let nextPlayer = playerStateRef.current;
+    let nextBuffs = activePlayerBuffsRef.current;
+    const hits: Array<{
+      hit: ReturnType<typeof resolveMonsterHitAgainstPlayer>;
+      playerPosition: { x: number; y: number };
+    }> = [];
+    const nextEnemies = currentEnemies.map((enemy) => {
+      if (nextPlayer.hp <= 0 || !canEnemyStartRuntimeAttack(enemy, nextPlayer, nowMs, battleMap)) return enemy;
+      const attackedEnemy = {
+        ...enemy,
+        attackStartedAtMs: nowMs,
+        attackUntilMs: nowMs + ENEMY_ATTACK_VISUAL_DURATION_MS,
+        nextAttackReadyAtMs: nowMs + monsterAttackCadenceMs(enemy),
+        velocityX: 0,
+        velocityY: 0
+      };
+      const hit = resolveMonsterHitAgainstPlayer(enemy, nextPlayer, state?.player_stats);
+      const guarded = applyGuardBuffsToMonsterHit(hit, nextPlayer, nextBuffs);
+      nextBuffs = guarded.nextBuffs;
+      if (guarded.hit.totalDamage <= 0) return attackedEnemy;
+      hits.push({ hit: guarded.hit, playerPosition: { x: nextPlayer.x, y: nextPlayer.y } });
+      nextPlayer = guarded.hit.nextPlayer;
+      return attackedEnemy;
+    });
+    if (hits.length === 0) {
+      if (nextBuffs !== activePlayerBuffsRef.current) setRuntimePlayerBuffs(nextBuffs);
+      return nextEnemies;
+    }
+
+    setRuntimePlayerBuffs(nextBuffs);
+    const defeated = !skillEditorMode && nextPlayer.hp <= 0;
+    setRuntimePlayer(() => nextPlayer);
     if (defeated) {
       setPlaying(false);
       setBagOpen(false);
       setGameFailureOpen(true);
       setNotice("游戏失败。玩家生命已归零。");
     }
-    const damageText = Math.max(1, Math.round(hit.totalDamage)).toString();
     setTexts((items) => capRuntimeVisualBudget([
       ...items,
-      {
+      ...hits.map(({ hit, playerPosition }) => ({
         id: nextTextId.current++,
-        x: currentPlayer.x,
-        y: currentPlayer.y - 42,
-        text: `-${damageText}`,
+        x: playerPosition.x,
+        y: playerPosition.y - 42,
+        text: `-${Math.max(1, Math.round(hit.totalDamage))}`,
         ttl: 0.8,
         duration: 0.8
-      }
+      }))
     ], MAX_RUNTIME_FLOATING_TEXT));
     setCombatLogs((logs) => [
       ...(defeated ? ["玩家生命归零，游戏失败。"] : []),
-      `怪物攻击造成 ${formatPreviewNumber(hit.totalDamage)} 点${damageTypeText(hit.damageType)}伤害。`,
+      ...hits.map(({ hit }) => `怪物攻击造成 ${formatPreviewNumber(hit.totalDamage)} 点${damageTypeText(hit.damageType)}伤害。`),
       ...logs
     ].slice(0, 8));
+    return nextEnemies;
   }
 
-  function currentEnemyAttackLockedIds(nowMs: number, currentEnemies: Enemy[] = [], currentPlayer?: { x: number; y: number }) {
-    const lockedIds = new Set<number>();
-    for (const [enemyId, visual] of enemyVisuals.current) {
-      if (visual.attackUntilMs !== undefined && nowMs < visual.attackUntilMs) lockedIds.add(enemyId);
-    }
-    if (currentPlayer) {
-      for (const enemy of currentEnemies) {
-        if (lockedIds.has(enemy.id)) continue;
-        if (canEnemyStartAttackVisual(enemy, currentPlayer, enemyVisuals.current.get(enemy.id), nowMs)) lockedIds.add(enemy.id);
+  function applyGuardBuffsToMonsterHit(
+    hit: ReturnType<typeof resolveMonsterHitAgainstPlayer>,
+    playerBeforeHit: PlayerRuntimeState,
+    buffs: PlayerBuff[]
+  ) {
+    let incoming = hit.totalDamage;
+    const nextBuffs: PlayerBuff[] = [];
+    for (const buff of buffs) {
+      if (buff.remaining <= 0 || buff.remainingAmount <= 0) continue;
+      if (buff.buffType !== "guard") {
+        nextBuffs.push(buff);
+        continue;
       }
+      const absorbed = Math.min(buff.remainingAmount, incoming * buff.absorbPercent / 100);
+      const nextBuff = { ...buff, remainingAmount: buff.remainingAmount - absorbed };
+      incoming = Math.max(0, incoming - absorbed);
+      if (nextBuff.remainingAmount > 0) nextBuffs.push(nextBuff);
+    }
+    const shieldDamage = Math.min(Math.max(0, playerBeforeHit.currentEnergyShield), incoming);
+    const lifeDamage = Math.max(0, incoming - shieldDamage);
+    return {
+      hit: {
+        ...hit,
+        totalDamage: incoming,
+        shieldDamage,
+        lifeDamage,
+        nextPlayer: {
+          ...playerBeforeHit,
+          currentEnergyShield: clamp(playerBeforeHit.currentEnergyShield - shieldDamage, 0, playerBeforeHit.maxEnergyShield),
+          hp: clamp(playerBeforeHit.hp - lifeDamage, 0, playerBeforeHit.maxHp)
+        }
+      },
+      nextBuffs
+    };
+  }
+
+  function currentEnemyAttackLockedIds(
+    nowMs: number,
+    currentEnemies: Enemy[] = [],
+    currentPlayer?: { x: number; y: number },
+    map?: BakedBattleMapData | null
+  ) {
+    const lockedIds = new Set<number>();
+    for (const enemy of currentEnemies) {
+      if (enemy.attackUntilMs !== undefined && nowMs < enemy.attackUntilMs) {
+        lockedIds.add(enemy.id);
+        continue;
+      }
+      if (currentPlayer && canEnemyStartRuntimeAttack(enemy, currentPlayer, nowMs, map)) lockedIds.add(enemy.id);
     }
     return lockedIds;
   }
@@ -4412,8 +4623,278 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     return true;
   }
 
+  function isChannelledDamageZoneSkill(skill: SkillPreview) {
+    return skill.behavior_template === "damage_zone" && Number(skill.runtime_params?.channel_max_stacks ?? 0) > 0;
+  }
+
   function isLavaOrbitSkill(skill: SkillPreview) {
-    return skill.skill_package_id === "active_lava_orb" || skillHasOrbitModuleChain(skill);
+    return skillHasOrbitModuleChain(skill);
+  }
+
+  function updateChannelledDamageZoneSkill(skill: SkillPreview, currentEnemies: Enemy[], dt: number) {
+    let cloud = activeThunderclouds.current.get(skill.active_gem_instance_id);
+    if (!cloud) {
+      if (!trySpendSkillMana(skill)) return;
+      cloud = createThundercloudRuntime(skill);
+      activeThunderclouds.current.set(skill.active_gem_instance_id, cloud);
+      setCombatLogs((logs) => [`${skill.name_text} 开始自动引导。`, ...logs].slice(0, 8));
+    }
+    cloud.slashBoostRemainingMs = Math.max(0, cloud.slashBoostRemainingMs - dt * 1000);
+
+    if (cloud.phase === "channeling") {
+      cloud.channelElapsedMs += dt * 1000;
+      if (cloud.channelTickDuringChannel) {
+        syncThundercloudZone(cloud);
+        cloud.tickTimerMs -= dt * 1000;
+        let tickGuard = 0;
+        while (cloud.tickTimerMs <= 0 && tickGuard < 8) {
+          cloud.tickTimerMs += cloud.tickIntervalMs;
+          resolveThundercloudTick(cloud, currentEnemies, false);
+          tickGuard += 1;
+        }
+      }
+      if (cloud.channelElapsedMs < cloud.channelDurationMs) return;
+      if (cloud.channelTickDuringChannel) {
+        resolveChannelMaxStackRelease(cloud, currentEnemies);
+        cloud.channelElapsedMs = 0;
+        cloud.tickTimerMs = Math.min(cloud.tickTimerMs, cloud.tickIntervalMs);
+        syncThundercloudZone(cloud);
+        return;
+      }
+      cloud.phase = "active";
+      cloud.cloudRemainingMs = cloud.cloudDurationMs;
+      cloud.tickTimerMs = 0;
+      setCombatLogs((logs) => [`${skill.name_text} 引导 ${cloud.channelStacks} 层完成，释放雷云。`, ...logs].slice(0, 8));
+    }
+
+    cloud.cloudRemainingMs -= dt * 1000;
+    if (cloud.cloudRemainingMs <= 0) {
+      activeThunderclouds.current.delete(skill.active_gem_instance_id);
+      setDamageZones((items) => items.filter((zone) => zone.zoneId !== thundercloudZoneId(cloud)));
+      return;
+    }
+
+    syncThundercloudZone(cloud);
+    cloud.tickTimerMs -= dt * 1000;
+    let tickGuard = 0;
+    while (cloud.tickTimerMs <= 0 && tickGuard < 8) {
+      cloud.tickTimerMs += cloud.tickIntervalMs;
+      resolveThundercloudTick(cloud, currentEnemies, false);
+      tickGuard += 1;
+    }
+  }
+
+  function createThundercloudRuntime(skill: SkillPreview): ThundercloudRuntime {
+    const params = skill.runtime_params ?? {};
+    const kind = skill.skill_package_id === "active_thundercloud" ? "thundercloud" : "caster_area";
+    const channelStacks = Math.max(1, Math.round(Number(params.channel_max_stacks ?? 5)));
+    const channelFrequencyCapStacks = Math.max(1, Math.round(Number(params.channel_frequency_cap_stacks ?? 9)));
+    const channelTimePerStackMs = Math.max(1, Math.round(Number(params.channel_time_per_stack_ms ?? skill.actual_interval_ms ?? skill.cast?.release_interval_ms ?? 333)));
+    const cloudDurationPerStackMs = Math.max(1, Math.round(Number(params.cloud_duration_per_stack_ms ?? 2500)));
+    const fastestTickIntervalMs = Math.max(1, Math.round(Number(params.tick_interval_ms ?? 333)));
+    const baseTickIntervalMs = Math.max(fastestTickIntervalMs, Math.round(Number(params.base_tick_interval_ms ?? fastestTickIntervalMs * 1.8)));
+    const frequencyProgress = clamp(channelStacks / channelFrequencyCapStacks, 0, 1);
+    const tickIntervalMs = Math.max(1, Math.round(baseTickIntervalMs + (fastestTickIntervalMs - baseTickIntervalMs) * frequencyProgress));
+    const vfxKey = String(params.zone_vfx_key ?? skill.presentation_keys?.vfx ?? skill.visual_effect);
+    const hitVfxKey = String(skill.presentation_keys?.hit_vfx_key ?? vfxKey);
+    return {
+      kind,
+      skillInstanceId: skill.active_gem_instance_id,
+      skillId: skill.skill_package_id ?? skill.skill_template_id,
+      skillName: skill.name_text,
+      damageType: skill.damage_type,
+      finalDamage: skill.final_damage,
+      phase: "channeling",
+      channelElapsedMs: 0,
+      channelDurationMs: channelStacks * channelTimePerStackMs,
+      channelStacks,
+      cloudRemainingMs: 0,
+      cloudDurationMs: Math.max(1, Math.round(Number(params.duration_ms ?? channelStacks * cloudDurationPerStackMs))),
+      tickTimerMs: 0,
+      tickIntervalMs,
+      radius: Math.max(1, Number(params.radius ?? skill.hit?.hit_radius ?? 110)),
+      slashRadius: Math.max(1, Number(params.slash_radius ?? params.radius ?? skill.hit?.hit_radius ?? 110)),
+      slashChancePercent: clamp(Number(params.slash_chance_percent ?? 0), 0, 100),
+      slashDamageScale: Math.max(0, Number(params.slash_damage_scale ?? 1)),
+      slashBoostRemainingMs: 0,
+      channelTickDuringChannel: Boolean(params.channel_tick_during_channel ?? false),
+      maxTargets: Math.max(1, Math.round(Number(params.max_targets ?? 3))),
+      chainCount: Math.max(0, Math.round(Number(params.chain_count ?? (kind === "thundercloud" ? 1 : 0)))),
+      chainRadius: Math.max(1, Number(params.chain_radius ?? params.radius ?? skill.hit?.hit_radius ?? 110)),
+      vfxKey,
+      hitVfxKey,
+      segmentVfxKey: String(params.segment_vfx_key ?? vfxKey),
+      vfxScale: skillPreviewVfxScale(skill)
+    };
+  }
+
+  function thundercloudZoneId(cloud: ThundercloudRuntime) {
+    return `${cloud.skillInstanceId}.thundercloud.zone`;
+  }
+
+  function thundercloudWorldPosition(cloud?: ThundercloudRuntime) {
+    const player = playerStateRef.current;
+    if (cloud?.kind === "caster_area") return { x: player.x, y: player.y };
+    return { x: player.x, y: player.y - 72 };
+  }
+
+  function syncThundercloudZone(cloud: ThundercloudRuntime) {
+    const position = thundercloudWorldPosition(cloud);
+    const slashBoostProgress = cloud.kind === "caster_area" ? clamp(cloud.slashBoostRemainingMs / 360, 0, 1) : 0;
+    const visualRadius = slashBoostProgress > 0
+      ? cloud.radius + (cloud.slashRadius - cloud.radius) * (0.36 + slashBoostProgress * 0.64)
+      : cloud.radius;
+    const duration = 0.28;
+    const zoneId = thundercloudZoneId(cloud);
+    const nextZone: DamageZoneVfx = {
+      id: nextDamageZoneId.current++,
+      x: position.x,
+      y: position.y,
+      shape: "circle",
+      radius: visualRadius,
+      length: visualRadius * 2,
+      width: visualRadius * 2,
+      directionX: 0,
+      directionY: 0,
+      ttl: duration,
+      duration,
+      damageType: cloud.damageType,
+      vfxKey: cloud.vfxKey,
+      zoneId,
+      skillId: cloud.skillId,
+      warning: slashBoostProgress > 0,
+      vfxScale: cloud.vfxScale
+    };
+    setDamageZones((items) => capRuntimeVisualBudget([
+      ...items.filter((zone) => zone.zoneId !== zoneId),
+      nextZone
+    ], MAX_RUNTIME_AREA_VFX));
+  }
+
+  function resolveThundercloudTick(cloud: ThundercloudRuntime, currentEnemies: Enemy[], isSlash: boolean) {
+    const playerPosition = playerStateRef.current;
+    const cloudPosition = thundercloudWorldPosition(cloud);
+    const hitRadius = isSlash ? cloud.slashRadius : cloud.radius;
+    const damageAmount = isSlash ? cloud.finalDamage * cloud.slashDamageScale : cloud.finalDamage;
+    const hitTargetIds = new Set<number>();
+    const chainSegmentsForTick: ChainSegmentVfx[] = [];
+    const hitVfxsForTick: HitVfx[] = [];
+    const textsForTick: FloatingText[] = [];
+    const damageEvents: SkillEvent[] = [];
+    const timestampMs = Math.round(elapsedRef.current * 1000);
+
+    const primaryTargets = candidateEnemiesNear(currentEnemies, playerPosition, hitRadius)
+      .filter((enemy) => enemy.hp > 0)
+      .map((enemy) => ({ enemy, distance: distance(enemy, playerPosition) }))
+      .filter((item) => item.distance <= hitRadius)
+      .sort((left, right) => left.distance - right.distance || left.enemy.id - right.enemy.id)
+      .slice(0, cloud.maxTargets)
+      .map((item) => item.enemy);
+
+    const addThundercloudHit = (target: Enemy, start: { x: number; y: number }, segmentIndex: number) => {
+      const targetPosition = { x: target.x, y: target.y };
+      hitTargetIds.add(target.id);
+      if (cloud.kind === "thundercloud") {
+        chainSegmentsForTick.push({
+          id: nextChainSegmentId.current++,
+          startX: start.x,
+          startY: start.y,
+          endX: targetPosition.x,
+          endY: targetPosition.y,
+          ttl: 0.18,
+          duration: 0.18,
+          damageType: cloud.damageType,
+          vfxKey: cloud.segmentVfxKey,
+          segmentIndex,
+          segmentId: `${cloud.skillInstanceId}.thundercloud.chain.${timestampMs}.${target.id}.${segmentIndex}`,
+          skillId: cloud.skillId,
+          vfxScale: cloud.vfxScale
+        });
+      }
+      damageEvents.push({
+        event_id: `${cloud.skillInstanceId}.thundercloud.damage.${timestampMs}.${target.id}.${segmentIndex}`,
+        type: "damage",
+        timestamp_ms: timestampMs,
+        source_entity: "player",
+        target_entity: String(target.id),
+        position: targetPosition,
+        direction: guideDirection(start, targetPosition),
+        delay_ms: 0,
+        duration_ms: 0,
+        amount: damageAmount,
+        damage_type: cloud.damageType,
+        skill_instance_id: cloud.skillInstanceId,
+        vfx_key: cloud.hitVfxKey,
+        sfx_key: "",
+        reason_key: "",
+        payload: {
+          skill_id: cloud.skillId,
+          skill_name: cloud.skillName,
+          cloud_world_position: cloudPosition,
+          target_world_position: targetPosition,
+          hit_world_position: targetPosition,
+          channel_stacks: cloud.channelStacks,
+          channel_release_kind: isSlash ? "max_stack_slash" : "tick"
+        }
+      });
+      if (cloud.kind === "thundercloud") {
+        hitVfxsForTick.push({
+          id: nextHitVfxId.current++,
+          x: targetPosition.x,
+          y: targetPosition.y,
+          targetId: target.id,
+          impactKind: "thundercloud_hit",
+          impactRadius: hitRadius,
+          ttl: 0.34,
+          duration: 0.34,
+          damageType: cloud.damageType,
+          vfxKey: cloud.hitVfxKey,
+          skillTemplateId: cloud.skillId,
+          shapeEffects: [],
+          vfxScale: normalizedVfxScale(cloud.vfxScale) * 0.72
+        });
+      }
+      textsForTick.push({
+        id: nextTextId.current++,
+        x: targetPosition.x,
+        y: targetPosition.y - 28,
+        text: damageNumberText(damageAmount),
+        damageType: cloud.damageType,
+        ttl: 0.8,
+        duration: 0.8
+      });
+    };
+
+    for (const primaryTarget of primaryTargets) {
+      if (hitTargetIds.has(primaryTarget.id)) continue;
+      let currentSource = cloudPosition;
+      let currentTarget: Enemy | null = primaryTarget;
+      for (let chainIndex = 0; currentTarget && chainIndex <= cloud.chainCount; chainIndex += 1) {
+        addThundercloudHit(currentTarget, currentSource, chainIndex);
+        currentSource = { x: currentTarget.x, y: currentTarget.y };
+        currentTarget = candidateEnemiesNear(currentEnemies, currentSource, cloud.chainRadius)
+          .filter((enemy) => enemy.hp > 0 && !hitTargetIds.has(enemy.id))
+          .map((enemy) => ({ enemy, distance: distance(enemy, currentSource) }))
+          .filter((item) => item.distance <= cloud.chainRadius)
+          .sort((left, right) => left.distance - right.distance || left.enemy.id - right.enemy.id)[0]?.enemy ?? null;
+      }
+    }
+
+    if (chainSegmentsForTick.length > 0) setChainSegments((items) => capRuntimeVisualBudget([...items, ...chainSegmentsForTick], MAX_RUNTIME_AREA_VFX));
+    if (hitVfxsForTick.length > 0) setHitVfxs((items) => capRuntimeVisualBudget([...items, ...hitVfxsForTick], MAX_RUNTIME_HIT_VFX));
+    if (textsForTick.length > 0) setTexts((items) => capRuntimeVisualBudget([...items, ...textsForTick], MAX_RUNTIME_FLOATING_TEXT));
+    if (damageEvents.length > 0) applyDamageEventBatch(damageEvents);
+  }
+
+  function resolveChannelMaxStackRelease(cloud: ThundercloudRuntime, currentEnemies: Enemy[]) {
+    if (cloud.slashChancePercent <= 0 || Math.random() * 100 >= cloud.slashChancePercent) {
+      setCombatLogs((logs) => [`${cloud.skillName} 引导 ${cloud.channelStacks} 层结束。`, ...logs].slice(0, 8));
+      return;
+    }
+    cloud.slashBoostRemainingMs = cloud.kind === "caster_area" ? 420 : cloud.slashBoostRemainingMs;
+    resolveThundercloudTick(cloud, currentEnemies, true);
+    syncThundercloudZone(cloud);
+    setCombatLogs((logs) => [`${cloud.skillName} 引导满层，释放斩击。`, ...logs].slice(0, 8));
   }
 
   function updateLavaOrbitSkill(skill: SkillPreview, currentEnemies: Enemy[], dt: number) {
@@ -4746,7 +5227,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     }
     if (skill.behavior_template === "player_nova") {
       const targets = selectPlayerNovaTargets(current, skill, caster);
-      if (targets.length === 0) return current;
+      if (targets.length === 0 && skill.runtime_params?.guard_absorb_amount === undefined) return current;
       const skillEvents = createPlayerNovaSkillEvents(skill, targets);
       if (!trySpendSkillMana(skill)) return current;
       consumeImmediateSkillEvents(skillEvents);
@@ -5080,7 +5561,12 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     const vfxScale = skillPreviewVfxScale(skill);
     const zoneId = `${skill.active_gem_instance_id}.${timestampMs}.damage_zone.1`;
     const selectedTargets = targets.slice(0, maxTargets);
-    const durationMs = Math.max(hitAtMs, shape === "circle" ? expandDurationMs : 0);
+    const configuredDurationMs = Math.max(0, Math.round(Number(runtimeParams.duration_ms ?? 0)));
+    const tickIntervalMs = Math.max(0, Math.round(Number(runtimeParams.tick_interval_ms ?? 0)));
+    const durationMs = Math.max(hitAtMs, shape === "circle" ? expandDurationMs : 0, configuredDurationMs);
+    const tickTimes = tickIntervalMs > 0 && durationMs > 0
+      ? damageZoneTickTimes(durationMs, tickIntervalMs)
+      : [hitAtMs];
     const zonePayload = {
       zone_id: zoneId,
       skill_id: skill.skill_package_id ?? skill.skill_template_id,
@@ -5100,6 +5586,8 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       duration_ms: durationMs,
       expand_duration_ms: shape === "circle" ? expandDurationMs : 0,
       hit_at_ms: hitAtMs,
+      tick_interval_ms: tickIntervalMs,
+      tick_count: tickTimes.length,
       max_targets: maxTargets,
       damage_type: skill.damage_type,
       vfx_key: vfxKey,
@@ -5143,17 +5631,69 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         reason_key: "",
         payload: zonePayload
       },
-      ...selectedTargets.flatMap((target, index) => {
+      ...tickTimes.flatMap((tickAtMs, tickIndex) => selectedTargets.flatMap((target, index) => {
         const targetPosition = { x: target.x, y: target.y };
-        const hitPayload = { ...zonePayload, target_world_position: targetPosition, hit_world_position: targetPosition, target_distance: distance(targetPosition, origin) };
+        const hitPayload = { ...zonePayload, tick_index: tickIndex + 1, tick_time_ms: tickAtMs, target_world_position: targetPosition, hit_world_position: targetPosition, target_distance: distance(targetPosition, origin), damage_components: { [skill.damage_type]: skill.final_damage } };
         const targetBase = { ...base, target_entity: String(target.id), direction: guideDirection(origin, targetPosition) };
         return [
-          { ...targetBase, event_id: `${skill.active_gem_instance_id}.${target.id}.damage.${index}.${timestampMs}`, type: "damage" as const, timestamp_ms: timestampMs + hitAtMs, position: targetPosition, delay_ms: hitAtMs, duration_ms: 0, amount: skill.final_damage, vfx_key: hitVfxKey, reason_key: reasonKey, payload: hitPayload },
-          { ...targetBase, event_id: `${skill.active_gem_instance_id}.${target.id}.hit_vfx.${index}.${timestampMs}`, type: "hit_vfx" as const, timestamp_ms: timestampMs + hitAtMs, position: targetPosition, delay_ms: hitAtMs, duration_ms: FIRE_BOLT_IMPACT_DURATION_MS, amount: null, vfx_key: hitVfxKey, reason_key: reasonKey, payload: hitPayload },
-          { ...targetBase, event_id: `${skill.active_gem_instance_id}.${target.id}.floating_text.${index}.${timestampMs}`, type: "floating_text" as const, timestamp_ms: timestampMs + hitAtMs, position: { x: target.x, y: target.y - 28 }, delay_ms: hitAtMs, duration_ms: 800, amount: skill.final_damage, vfx_key: hitVfxKey, reason_key: floatingKey, payload: { ...hitPayload, text: `${Math.round(skill.final_damage)}点${damageTypeText(skill.damage_type)}伤害` } }
+          { ...targetBase, event_id: `${skill.active_gem_instance_id}.${target.id}.damage.${tickIndex}.${index}.${timestampMs}`, type: "damage" as const, timestamp_ms: timestampMs + tickAtMs, position: targetPosition, delay_ms: tickAtMs, duration_ms: 0, amount: skill.final_damage, vfx_key: hitVfxKey, reason_key: reasonKey, payload: hitPayload },
+          { ...targetBase, event_id: `${skill.active_gem_instance_id}.${target.id}.hit_vfx.${tickIndex}.${index}.${timestampMs}`, type: "hit_vfx" as const, timestamp_ms: timestampMs + tickAtMs, position: targetPosition, delay_ms: tickAtMs, duration_ms: FIRE_BOLT_IMPACT_DURATION_MS, amount: null, vfx_key: hitVfxKey, reason_key: reasonKey, payload: hitPayload },
+          { ...targetBase, event_id: `${skill.active_gem_instance_id}.${target.id}.floating_text.${tickIndex}.${index}.${timestampMs}`, type: "floating_text" as const, timestamp_ms: timestampMs + tickAtMs, position: { x: target.x, y: target.y - 28 }, delay_ms: tickAtMs, duration_ms: 800, amount: skill.final_damage, vfx_key: hitVfxKey, reason_key: floatingKey, payload: { ...hitPayload, text: `${Math.round(skill.final_damage)}点${damageTypeText(skill.damage_type)}伤害` } },
+          ...statusApplyEventsForSkill(skill, targetBase, targetPosition, hitPayload, timestampMs, tickAtMs, tickIndex, index)
         ];
-      })
+      }))
     ];
+  }
+
+  function damageZoneTickTimes(durationMs: number, tickIntervalMs: number) {
+    if (durationMs <= 0 || tickIntervalMs <= 0 || tickIntervalMs > durationMs) return [];
+    const ticks: number[] = [];
+    for (let timestamp = tickIntervalMs; timestamp <= durationMs; timestamp += tickIntervalMs) {
+      ticks.push(timestamp);
+    }
+    return ticks;
+  }
+
+  function statusApplyEventsForSkill(
+    skill: SkillPreview,
+    targetBase: Omit<SkillEvent, "event_id" | "type" | "timestamp_ms" | "position" | "delay_ms" | "duration_ms" | "amount" | "vfx_key" | "reason_key" | "payload">,
+    targetPosition: { x: number; y: number },
+    hitPayload: Record<string, unknown>,
+    timestampMs: number,
+    tickAtMs: number,
+    tickIndex: number,
+    targetIndex: number
+  ): SkillEvent[] {
+    const ailments = Array.isArray((skill.hit as Record<string, unknown> | undefined)?.ailments)
+      ? (skill.hit as Record<string, unknown>).ailments as Record<string, unknown>[]
+      : [];
+    return ailments.map((ailment, ailmentIndex) => {
+      const statusType = String(ailment.type ?? "");
+      const durationMs = Math.max(0, Number(ailment.duration_ms ?? 0));
+      return {
+        ...targetBase,
+        event_id: `${skill.active_gem_instance_id}.status_apply.${tickIndex}.${targetIndex}.${ailmentIndex}.${timestampMs}`,
+        type: "status_apply" as const,
+        timestamp_ms: timestampMs + tickAtMs,
+        position: targetPosition,
+        delay_ms: tickAtMs,
+        duration_ms: durationMs,
+        amount: null,
+        vfx_key: skill.presentation_keys?.hit_vfx_key ?? skill.presentation_keys?.vfx ?? skill.visual_effect,
+        reason_key: "",
+        payload: {
+          ...hitPayload,
+          status_type: statusType,
+          source_damage_type: String(ailment.source_damage_type ?? skill.damage_type),
+          chance_percent: Number(ailment.chance_percent ?? 100),
+          duration_ms: durationMs,
+          base_value: Number(ailment.base_value ?? 0),
+          effect_per_stack: Number(ailment.effect_per_stack ?? 0),
+          max_stacks: Number(ailment.max_stacks ?? 1),
+          threshold: Number(ailment.threshold ?? 0)
+        }
+      };
+    });
   }
 
   function createMeleeArcSkillEvents(skill: SkillPreview, targets: Enemy[]): SkillEvent[] {
@@ -5394,6 +5934,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     const sfxKey = skill.presentation_keys?.sfx ?? "";
     const reasonKey = skill.presentation_keys?.screen_feedback ?? "";
     const floatingKey = skill.presentation_keys?.floating_text ?? "";
+    const vfxScale = skillPreviewVfxScale(skill);
     const timestampMs = Math.round(elapsedRef.current * 1000);
     const areaId = `${skill.active_gem_instance_id}.${timestampMs}.area.1`;
     const primaryTarget = targets[0];
@@ -5423,9 +5964,12 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       center_policy: String(runtimeParams.center_policy ?? "player_center"),
       damage_falloff_by_distance: String(runtimeParams.damage_falloff_by_distance ?? "none"),
       status_chance_scale: Number(runtimeParams.status_chance_scale ?? 1),
+      max_targets: Math.max(1, Math.round(Number(runtimeParams.max_targets ?? (targets.length || 1)))),
+      on_kill_recast_chance_percent: Number(runtimeParams.on_kill_recast_chance_percent ?? 0),
+      on_kill_recast_max_per_area: Math.max(1, Math.round(Number(runtimeParams.on_kill_recast_max_per_area ?? 1))),
       skill_name: skill.name_text
     };
-    return [
+    const events: SkillEvent[] = [
       {
         ...base,
         event_id: `${skill.active_gem_instance_id}.area_spawn.${timestampMs}`,
@@ -5437,7 +5981,37 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         vfx_key: vfxKey,
         reason_key: "",
         payload: areaPayload
-      },
+      }
+    ];
+    if (runtimeParams.guard_absorb_amount !== undefined) {
+      const guardDurationMs = Math.max(0, Math.round(Number(runtimeParams.guard_duration_ms ?? expandDurationMs)));
+      events.push({
+        ...base,
+        event_id: `${skill.active_gem_instance_id}.buff_apply.${timestampMs}`,
+        type: "buff_apply" as const,
+        target_entity: "player",
+        position: center,
+        delay_ms: 0,
+        duration_ms: guardDurationMs,
+        amount: Math.max(0, Number(runtimeParams.guard_absorb_amount ?? 0)),
+        vfx_key: vfxKey,
+        reason_key: "skill_event.guard.buff_apply",
+        payload: {
+          skill_id: skill.skill_package_id ?? skill.skill_template_id,
+          buff_type: "guard",
+          absorb_percent: Math.max(0, Number(runtimeParams.guard_absorb_percent ?? 0)),
+          absorb_amount: Math.max(0, Number(runtimeParams.guard_absorb_amount ?? 0)),
+          duration_ms: guardDurationMs,
+          exclude_damage_over_time: Boolean(runtimeParams.guard_exclude_damage_over_time ?? false),
+          vfx_key: vfxKey,
+          vfx_scale: vfxScale,
+          skill_name: skill.name_text
+        }
+      });
+      return events;
+    }
+    return [
+      ...events,
       ...targets.flatMap((target, index) => {
         const targetPosition = { x: target.x, y: target.y };
         const dx = target.x - center.x;
@@ -5511,12 +6085,17 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     const burstIntervalMs = Math.max(0, Math.round(Number(runtimeParams.burst_interval_ms ?? 0)));
     const spreadAngleDeg = projectileSpreadAngleDeg(skill.behavior_template, runtimeParams);
     const angleStepDeg = projectileAngleStepDeg(skill.behavior_template, runtimeParams);
+    const randomAngleJitterDeg = Math.max(0, Number(runtimeParams.random_angle_jitter_deg ?? 0));
     const perProjectileDamageScale = 1;
     const caster = playerStateRef.current;
+    const timestampMs = Math.round(elapsedRef.current * 1000);
+    const damageType = forcedElementDamageType(skill, timestampMs);
     const baseLaunch = createFireBoltProjectileLaunch(skill, caster, target, 0);
     const minDurationMs = Number(runtimeParams.min_duration_ms ?? 0);
     const maxDurationMs = optionalNumber(runtimeParams.max_duration_ms);
     const hitPolicy = String(runtimeParams.hit_policy ?? "first_hit");
+    const targetPolicy = String(runtimeParams.target_policy ?? "nearest_enemy");
+    const tracksDirectTargets = targetPolicy === "random_enemy" || targetPolicy === "nearest_unique_enemy";
     const pierceCount = Math.max(0, Math.round(Number(runtimeParams.pierce_count ?? 0)));
     const isPiercingProjectile = pierceCount > 0;
     const farthestTarget = damageTargets.reduce((farthest, item) => (
@@ -5538,10 +6117,16 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     const reasonKey = skill.presentation_keys?.screen_feedback ?? "";
     const floatingKey = skill.presentation_keys?.floating_text ?? "skill_event.fire_bolt.floating_text";
     const vfxScale = skillPreviewVfxScale(skill);
-    const projectileDirections = projectileSpreadDirections(direction, projectileCount, spreadAngleDeg, angleStepDeg);
+    const projectileTargetByIndex = Array.from({ length: projectileCount }, (_, index) => (
+      damageTargets.find((item) => item.projectileIndex === index)?.enemy ?? target
+    ));
+    const projectileDirections = tracksDirectTargets
+      ? projectileTargetByIndex.map((projectileTarget) => rotateDirection(guideDirection(start, projectileTarget), randomAngleOffset(randomAngleJitterDeg)))
+      : projectileSpreadDirections(direction, projectileCount, spreadAngleDeg, angleStepDeg);
     const projectileSpawns = projectileDirections.map((projectileDirection, index) => {
       const spawnWorldPosition = start;
-      const laneEnd = {
+      const projectileTarget = projectileTargetByIndex[index] ?? target;
+      const laneEnd = tracksDirectTargets ? { x: projectileTarget.x, y: projectileTarget.y } : {
         x: spawnWorldPosition.x + projectileDirection.x * visualLength,
         y: spawnWorldPosition.y + projectileDirection.y * visualLength
       };
@@ -5550,17 +6135,17 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         x: projectileDirection.x * projectileSpeed,
         y: projectileDirection.y * projectileSpeed
       };
-      const projectileId = `${skill.active_gem_instance_id}.${Math.round(elapsedRef.current * 1000)}.projectile.${index + 1}`;
+      const projectileId = `${skill.active_gem_instance_id}.${timestampMs}.projectile.${index + 1}`;
       return {
-        timestamp_ms: Math.round(elapsedRef.current * 1000) + shotDelayMs,
+        timestamp_ms: timestampMs + shotDelayMs,
         source_entity: "player",
-        target_entity: String(target.id),
+        target_entity: String(projectileTarget.id),
         direction: projectileDirection,
-        damage_type: skill.damage_type,
+        damage_type: damageType,
         skill_instance_id: skill.active_gem_instance_id,
         vfx_key: projectileVfxKey,
         sfx_key: sfxKey,
-        event_id: `${skill.active_gem_instance_id}.${target.id}.projectile_spawn.${index + 1}.${Math.round(elapsedRef.current * 1000)}`,
+        event_id: `${skill.active_gem_instance_id}.${target.id}.projectile_spawn.${index + 1}.${timestampMs}`,
         type: "projectile_spawn" as const,
         position: spawnWorldPosition,
         delay_ms: shotDelayMs,
@@ -5570,7 +6155,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         payload: {
           end_position: laneEnd,
           spawn_world_position: spawnWorldPosition,
-          target_world_position: target,
+          target_world_position: projectileTarget,
           direction_world: projectileDirection,
           velocity_world: velocityWorld,
           projectile_id: projectileId,
@@ -5582,6 +6167,8 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           burst_interval_ms: burstIntervalMs,
           spread_angle_deg: spreadAngleDeg,
           angle_step: angleStepDeg,
+          random_angle_jitter_deg: randomAngleJitterDeg,
+          spawn_policy: tracksDirectTargets ? "caster_current_position" : "cast_snapshot",
           vfx_scale: vfxScale,
           pierce_remaining: pierceCount,
           projectile_speed: projectileSpeed,
@@ -5589,18 +6176,21 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           projectile_height: Number(runtimeParams.projectile_height ?? 24),
           impact_radius: Number(runtimeParams.impact_radius ?? skill.hit?.hit_radius ?? 18),
           lifetime_ms: durationMs,
-          expire_time_ms: Math.round(elapsedRef.current * 1000) + shotDelayMs + durationMs,
+          expire_time_ms: timestampMs + shotDelayMs + durationMs,
           expire_world_position: laneEnd,
+          damage_type: damageType,
+          forced_element_type: damageType !== skill.damage_type ? damageType : undefined,
+          forced_element_source: damageType !== skill.damage_type ? "cast_random_choice" : undefined,
           skill_name: skill.name_text
         }
       };
     });
     const base = {
-      timestamp_ms: Math.round(elapsedRef.current * 1000),
+      timestamp_ms: timestampMs,
       source_entity: "player",
       target_entity: String(target.id),
       direction,
-      damage_type: skill.damage_type,
+      damage_type: damageType,
       skill_instance_id: skill.active_gem_instance_id,
       vfx_key: projectileVfxKey,
       sfx_key: sfxKey
@@ -5611,11 +6201,11 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         const projectileDirection = projectileDirections[projectileIndex] ?? direction;
         const hitMetrics = projectileLineMetrics(start, projectileDirection, damageTarget);
         const hitDistance = projectileImpactDistance(hitMetrics, damageTarget);
-        const hitEnd = {
+        const hitEnd = tracksDirectTargets ? { x: damageTarget.x, y: damageTarget.y } : {
           x: start.x + projectileDirection.x * hitDistance,
           y: start.y + projectileDirection.y * hitDistance
         };
-        const projectileEnd = {
+        const projectileEnd = tracksDirectTargets ? { x: damageTarget.x, y: damageTarget.y } : {
           x: start.x + projectileDirection.x * visualLength,
           y: start.y + projectileDirection.y * visualLength
         };
@@ -5654,10 +6244,16 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
           impact_kind: pierceRemaining > 0 ? "projectile_hit_continue" : "projectile_final_impact",
           hit_policy: hitPolicy,
           pierce_count: pierceCount,
+          target_policy: targetPolicy,
+          random_angle_jitter_deg: randomAngleJitterDeg,
           shape_effects: skill.shape_effects ?? [],
-          vfx_scale: vfxScale
+          vfx_scale: vfxScale,
+          damage_type: damageType,
+          damage_components: { [damageType]: damageAmount },
+          forced_element_type: damageType,
+          forced_element_source: "cast_random_choice"
         };
-        return [
+        const eventsForHit: SkillEvent[] = [
           {
             ...targetBase,
             event_id: `${skill.active_gem_instance_id}.${damageTarget.id}.p${projectileIndex + 1}.projectile_hit.${hitIndex}.${base.timestamp_ms}`,
@@ -5706,8 +6302,401 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
             duration_ms: 800,
             amount: damageAmount,
             reason_key: floatingKey,
-            payload: { ...hitPayload, text: `${Math.round(damageAmount)}点${damageTypeText(skill.damage_type)}伤害` }
+            payload: { ...hitPayload, text: `${Math.round(damageAmount)}点${damageTypeText(damageType)}伤害` }
           }
+        ];
+        const splitProjectileCount = Math.max(0, Math.round(Number(runtimeParams.split_projectile_count ?? 0)));
+        const splitDamageMultiplier = Math.max(0, Number(runtimeParams.split_projectile_damage_multiplier ?? 0));
+        if (splitProjectileCount > 0 && splitDamageMultiplier > 0) {
+          const splitAngleStepDeg = Math.max(0, Number(runtimeParams.split_projectile_angle_step_deg ?? 25));
+          const splitSpeed = Math.max(1, Number(runtimeParams.split_projectile_speed ?? projectileSpeed));
+          const splitMaxDistance = Math.max(1, Number(runtimeParams.split_projectile_max_distance ?? runtimeParams.max_distance ?? visualLength));
+          const splitPierceCount = Math.max(0, Math.round(Number(runtimeParams.split_projectile_pierce_count ?? 0)));
+          const splitCollisionRadius = Math.max(0, Number(runtimeParams.split_projectile_collision_radius ?? runtimeParams.collision_radius ?? 0));
+          const splitMaxHits = splitPierceCount > 0 ? splitPierceCount + 1 : 1;
+          const splitSpreadAngleDeg = splitAngleStepDeg * Math.max(0, splitProjectileCount - 1);
+          const splitDirections = projectileSpreadDirections(projectileDirection, splitProjectileCount, splitSpreadAngleDeg, splitAngleStepDeg);
+          const splitSpawnDelayMs = totalDelayMs;
+          const splitDurationMs = clampProjectileDuration(Math.round((splitMaxDistance / splitSpeed) * 1000), minDurationMs, maxDurationMs);
+          const splitDamageAmount = skill.final_damage * splitDamageMultiplier;
+          for (const [splitIndex, splitDirection] of splitDirections.entries()) {
+            const splitProjectileId = `${hitPayload.projectile_id}.split.${splitIndex + 1}`;
+            const splitEnd = {
+              x: hitEnd.x + splitDirection.x * splitMaxDistance,
+              y: hitEnd.y + splitDirection.y * splitMaxDistance
+            };
+            const splitCommonPayload = {
+              skill_name: skill.name_text,
+              projectile_id: splitProjectileId,
+              parent_projectile_id: hitPayload.projectile_id,
+              trigger_event_id: eventsForHit[0].event_id,
+              skill_id: skill.skill_package_id ?? skill.skill_template_id,
+              split_projectile: true,
+              split_projectile_index: splitIndex + 1,
+              split_projectile_count: splitProjectileCount,
+              projectile_index: splitIndex + 1,
+              projectile_count: splitProjectileCount,
+              spawn_world_position: hitEnd,
+              vfx_spawn_world_position: hitEnd,
+              direction_world: splitDirection,
+              vfx_direction_world: splitDirection,
+              velocity_world: { x: splitDirection.x * splitSpeed, y: splitDirection.y * splitSpeed },
+              end_position: splitEnd,
+              expire_world_position: splitEnd,
+              expire_time_ms: base.timestamp_ms + splitSpawnDelayMs + splitDurationMs,
+              lifetime_ms: splitDurationMs,
+              projectile_speed: splitSpeed,
+              projectile_width: Number(runtimeParams.projectile_width ?? 38) * 0.72,
+              projectile_height: Number(runtimeParams.projectile_height ?? 24) * 0.72,
+              impact_radius: Number(runtimeParams.impact_radius ?? skill.hit?.hit_radius ?? 18) * 0.72,
+              pierce_count: splitPierceCount,
+              pierce_remaining: splitPierceCount,
+              local_spread_angle: splitDirections.length === 1 ? 0 : (splitIndex - (splitDirections.length - 1) / 2) * splitAngleStepDeg,
+              fan_angle: splitSpreadAngleDeg,
+              angle_step: splitAngleStepDeg,
+              damage_multiplier: splitDamageMultiplier,
+              target_policy: "projectile_hit_fission",
+              damage_type: damageType,
+              vfx_scale: vfxScale * 0.72
+            };
+            eventsForHit.push({
+              ...targetBase,
+              target_entity: String(damageTarget.id),
+              event_id: `${hitPayload.projectile_id}.split.${splitIndex + 1}.projectile_spawn`,
+              type: "projectile_spawn",
+              timestamp_ms: base.timestamp_ms + splitSpawnDelayMs,
+              position: hitEnd,
+              direction: splitDirection,
+              delay_ms: splitSpawnDelayMs,
+              duration_ms: splitDurationMs,
+              amount: null,
+              reason_key: "",
+              vfx_key: projectileVfxKey,
+              payload: splitCommonPayload
+            });
+            const splitCandidates = enemiesStateRef.current
+              .filter((enemy) => enemy.hp > 0 && enemy.id !== damageTarget.id)
+              .map((enemy) => ({ enemy, metrics: projectileLineMetrics(hitEnd, splitDirection, enemy) }))
+              .filter(({ metrics }) => metrics.forward >= 0 && metrics.forward <= splitMaxDistance);
+            const splitLineTargets = splitCandidates
+              .filter(({ metrics }) => metrics.perpendicular <= splitCollisionRadius)
+              .sort((a, b) => a.metrics.forward - b.metrics.forward);
+            const splitSelected = splitLineTargets.slice(0, splitMaxHits);
+            if (splitSelected.length < splitMaxHits && splitMaxHits > 1) {
+              const selectedIds = new Set(splitSelected.map(({ enemy }) => enemy.id));
+              const assistTargets = splitCandidates
+                .filter(({ enemy, metrics }) => !selectedIds.has(enemy.id) && metrics.perpendicular <= splitCollisionRadius * 3)
+                .sort((a, b) => a.metrics.perpendicular - b.metrics.perpendicular || a.metrics.forward - b.metrics.forward);
+              splitSelected.push(...assistTargets.slice(0, splitMaxHits - splitSelected.length));
+            }
+            for (const [splitHitIndex, splitTarget] of splitSelected.entries()) {
+              const splitHitDistance = projectileImpactDistance(splitTarget.metrics, splitTarget.enemy);
+              const splitHitPosition = {
+                x: hitEnd.x + splitDirection.x * splitHitDistance,
+                y: hitEnd.y + splitDirection.y * splitHitDistance
+              };
+              const splitHitDelayMs = splitSpawnDelayMs + clampProjectileDuration(Math.round((splitHitDistance / splitSpeed) * 1000), minDurationMs, maxDurationMs);
+              const splitPierceRemaining = Math.max(0, splitMaxHits - splitHitIndex - 1);
+              const splitHitPayload = {
+                ...splitCommonPayload,
+                target_world_position: { x: splitTarget.enemy.x, y: splitTarget.enemy.y },
+                impact_world_position: splitHitPosition,
+                hit_world_position: splitHitPosition,
+                pierce_remaining: splitPierceRemaining,
+                projectile_continues: splitPierceRemaining > 0,
+                impact_kind: splitPierceRemaining > 0 ? "projectile_hit_continue" : "projectile_final_impact",
+                damage_components: { [damageType]: splitDamageAmount }
+              };
+              const splitTargetBase = {
+                ...targetBase,
+                target_entity: String(splitTarget.enemy.id),
+                direction: splitDirection
+              };
+              eventsForHit.push(
+                {
+                  ...splitTargetBase,
+                  event_id: `${splitProjectileId}.${splitTarget.enemy.id}.projectile_hit.${splitHitIndex}`,
+                  type: "projectile_hit",
+                  timestamp_ms: base.timestamp_ms + splitHitDelayMs,
+                  position: splitHitPosition,
+                  delay_ms: splitHitDelayMs,
+                  duration_ms: 0,
+                  amount: null,
+                  reason_key: reasonKey,
+                  vfx_key: hitVfxKey,
+                  payload: splitHitPayload
+                },
+                {
+                  ...splitTargetBase,
+                  event_id: `${splitProjectileId}.${splitTarget.enemy.id}.damage.${splitHitIndex}`,
+                  type: "damage",
+                  timestamp_ms: base.timestamp_ms + splitHitDelayMs,
+                  position: splitHitPosition,
+                  delay_ms: splitHitDelayMs,
+                  duration_ms: 0,
+                  amount: splitDamageAmount,
+                  reason_key: reasonKey,
+                  vfx_key: hitVfxKey,
+                  payload: splitHitPayload
+                },
+                {
+                  ...splitTargetBase,
+                  event_id: `${splitProjectileId}.${splitTarget.enemy.id}.hit_vfx.${splitHitIndex}`,
+                  type: "hit_vfx",
+                  timestamp_ms: base.timestamp_ms + splitHitDelayMs,
+                  position: splitHitPosition,
+                  delay_ms: splitHitDelayMs,
+                  duration_ms: FIRE_BOLT_IMPACT_DURATION_MS,
+                  amount: null,
+                  reason_key: reasonKey,
+                  vfx_key: hitVfxKey,
+                  payload: splitHitPayload
+                },
+                {
+                  ...splitTargetBase,
+                  event_id: `${splitProjectileId}.${splitTarget.enemy.id}.floating_text.${splitHitIndex}`,
+                  type: "floating_text",
+                  timestamp_ms: base.timestamp_ms + splitHitDelayMs,
+                  position: { x: splitHitPosition.x, y: splitHitPosition.y - 28 },
+                  delay_ms: splitHitDelayMs,
+                  duration_ms: 800,
+                  amount: splitDamageAmount,
+                  reason_key: floatingKey,
+                  vfx_key: hitVfxKey,
+                  payload: { ...splitHitPayload, text: `${Math.round(splitDamageAmount)}点${damageTypeText(damageType)}伤害` }
+                }
+              );
+            }
+          }
+        }
+        const secondaryHits = Array.isArray(skill.hit?.secondary_hits) ? skill.hit.secondary_hits : [];
+        for (const [secondaryIndex, secondary] of secondaryHits.entries()) {
+          if (!["on_projectile_hit", "on_hit"].includes(String(secondary.trigger ?? "on_projectile_hit"))) continue;
+          const shape = String(secondary.shape ?? "circle") === "rectangle" ? "rectangle" : "circle";
+          if (shape !== "circle") continue;
+          const offsetDistance = Math.max(0, Number(secondary.offset_distance ?? 0));
+          const secondaryPosition = secondary.placement === "behind_target"
+            ? {
+              x: hitEnd.x + projectileDirection.x * offsetDistance,
+              y: hitEnd.y + projectileDirection.y * offsetDistance
+            }
+            : { ...hitEnd };
+          const radius = Math.max(1, Number(secondary.radius ?? skill.hit?.hit_radius ?? runtimeParams.impact_radius ?? 36));
+          const maxTargets = Math.max(1, Math.round(Number(secondary.max_targets ?? 1)));
+          const secondaryDelayMs = Math.max(0, Math.round(Number(secondary.delay_ms ?? 0)));
+          const secondaryTotalDelayMs = totalDelayMs + secondaryDelayMs;
+          const primaryBaseDamage = Math.max(0, Number(skill.hit?.base_damage ?? skill.final_damage));
+          const secondaryBaseDamage = Math.max(0, Number(secondary.base_damage ?? 0));
+          const amountScale = primaryBaseDamage > 0 ? secondaryBaseDamage / primaryBaseDamage : 0;
+          if (amountScale <= 0) continue;
+          const secondaryAmount = skill.final_damage * amountScale;
+          const secondaryId = secondary.id ?? `secondary_${secondaryIndex + 1}`;
+          const zoneId = `${skill.active_gem_instance_id}.${base.timestamp_ms}.secondary.${secondaryIndex + 1}.p${projectileIndex + 1}.${hitIndex}`;
+          const secondaryVfxKey = String(secondary.vfx_key ?? hitVfxKey);
+          const secondaryReasonKey = String(secondary.reason_key ?? reasonKey);
+          const secondaryTargets = enemiesStateRef.current
+            .filter((enemy) => enemy.hp > 0)
+            .map((enemy) => ({ enemy, distance: distance(enemy, secondaryPosition) }))
+            .filter((item) => item.distance <= radius)
+            .sort((left, right) => left.distance - right.distance)
+            .slice(0, maxTargets);
+          const secondaryPayload = {
+            ...hitPayload,
+            secondary_hit_id: secondaryId,
+            zone_id: zoneId,
+            shape,
+            origin: secondaryPosition,
+            origin_world_position: secondaryPosition,
+            center: secondaryPosition,
+            center_world_position: secondaryPosition,
+            radius,
+            max_targets: maxTargets,
+            damage_amount: secondaryAmount,
+            hit_at_ms: secondaryDelayMs,
+            placement: secondary.placement ?? "target",
+            offset_distance: offsetDistance,
+            vfx_key: secondaryVfxKey
+          };
+          eventsForHit.push({
+            ...targetBase,
+            event_id: `${zoneId}.damage_zone`,
+            type: "damage_zone",
+            timestamp_ms: base.timestamp_ms + secondaryTotalDelayMs,
+            position: secondaryPosition,
+            delay_ms: secondaryTotalDelayMs,
+            duration_ms: 260,
+            amount: null,
+            reason_key: secondaryReasonKey,
+            vfx_key: secondaryVfxKey,
+            payload: secondaryPayload
+          });
+          if (secondaryTargets.length > 0) {
+            eventsForHit.push({
+              ...targetBase,
+              target_entity: "",
+              event_id: `${zoneId}.hit_vfx`,
+              type: "hit_vfx",
+              timestamp_ms: base.timestamp_ms + secondaryTotalDelayMs,
+              position: secondaryPosition,
+              delay_ms: secondaryTotalDelayMs,
+              duration_ms: FIRE_BOLT_IMPACT_DURATION_MS,
+              amount: null,
+              reason_key: secondaryReasonKey,
+              vfx_key: secondaryVfxKey,
+              payload: {
+                ...secondaryPayload,
+                impact_world_position: secondaryPosition,
+                hit_world_position: secondaryPosition,
+                impact_kind: "secondary_hit"
+              }
+            });
+          }
+          for (const [secondaryTargetIndex, item] of secondaryTargets.entries()) {
+            const targetPosition = { x: item.enemy.x, y: item.enemy.y };
+            const perTargetPayload = {
+              ...secondaryPayload,
+              target_world_position: targetPosition,
+              hit_world_position: targetPosition,
+              target_distance: item.distance
+            };
+            const perTargetBase = {
+              ...targetBase,
+              target_entity: String(item.enemy.id),
+              direction: guideDirection(secondaryPosition, targetPosition)
+            };
+            eventsForHit.push(
+              {
+                ...perTargetBase,
+                event_id: `${zoneId}.${item.enemy.id}.damage.${secondaryTargetIndex}`,
+                type: "damage",
+                timestamp_ms: base.timestamp_ms + secondaryTotalDelayMs,
+                position: targetPosition,
+                delay_ms: secondaryTotalDelayMs,
+                duration_ms: 0,
+                amount: secondaryAmount,
+                reason_key: secondaryReasonKey,
+                vfx_key: secondaryVfxKey,
+                payload: perTargetPayload
+              },
+              {
+                ...perTargetBase,
+                event_id: `${zoneId}.${item.enemy.id}.floating_text.${secondaryTargetIndex}`,
+                type: "floating_text",
+                timestamp_ms: base.timestamp_ms + secondaryTotalDelayMs,
+                position: { x: targetPosition.x, y: targetPosition.y - 28 },
+                delay_ms: secondaryTotalDelayMs,
+                duration_ms: 800,
+                amount: secondaryAmount,
+                reason_key: floatingKey,
+                vfx_key: secondaryVfxKey,
+                payload: { ...perTargetPayload, text: `${Math.round(secondaryAmount)}点${damageTypeText(damageType)}伤害` }
+              }
+            );
+          }
+        }
+        return eventsForHit;
+      })
+    ];
+  }
+
+  function createPlayerNovaKillRecastEvents(triggerEvent: SkillEvent, defeated: Enemy, liveEnemies: Enemy[]): SkillEvent[] {
+    const payload = triggerEvent.payload ?? {};
+    const chancePercent = Math.max(0, Number(payload.on_kill_recast_chance_percent ?? 0));
+    const sourceAreaId = typeof payload.area_id === "string" ? payload.area_id : "";
+    if (chancePercent <= 0 || !sourceAreaId) return [];
+    const maxPerArea = Math.max(1, Math.round(Number(payload.on_kill_recast_max_per_area ?? 1)));
+    const currentCount = onKillRecastCounts.current.get(sourceAreaId) ?? 0;
+    if (currentCount >= maxPerArea) return [];
+    if ((stableStringHash(`${triggerEvent.event_id}:kill_recast`) % 10000) / 100 >= chancePercent) return [];
+    const recastIndex = currentCount + 1;
+    onKillRecastCounts.current.set(sourceAreaId, recastIndex);
+
+    const center = { x: defeated.x, y: defeated.y };
+    const radius = Math.max(1, Number(payload.radius ?? 120));
+    const ringWidth = Math.max(1, Number(payload.ring_width ?? 48));
+    const expandDurationMs = Math.max(0, Math.round(Number(payload.expand_duration_ms ?? payload.duration_ms ?? 0)));
+    const hitAtMs = Math.min(expandDurationMs || Number(payload.hit_at_ms ?? 0), Math.max(0, Math.round(Number(payload.hit_at_ms ?? 0))));
+    const maxTargets = Math.max(1, Math.round(Number(payload.max_targets ?? (liveEnemies.length || 1))));
+    const areaId = `${triggerEvent.event_id}.kill_recast.area.${recastIndex}`;
+    const skillId = typeof payload.skill_id === "string" ? payload.skill_id : triggerEvent.skill_instance_id;
+    const skillName = typeof payload.skill_name === "string" ? payload.skill_name : skillId;
+    const damageAmount = Number(triggerEvent.amount ?? 0);
+    const vfxScale = normalizedVfxScale(payload.vfx_scale);
+    const selectedTargets = candidateEnemiesNear(liveEnemies, center, radius)
+      .filter((enemy) => enemy.id !== defeated.id && enemy.hp > 0)
+      .map((enemy) => ({ enemy, distance: distance(enemy, center) }))
+      .filter((item) => item.distance <= radius)
+      .sort((left, right) => left.distance - right.distance)
+      .slice(0, maxTargets);
+    const areaPayload = {
+      ...payload,
+      area_id: areaId,
+      source_area_id: sourceAreaId,
+      skill_id: skillId,
+      center,
+      center_world_position: center,
+      radius,
+      ring_width: ringWidth,
+      duration_ms: expandDurationMs,
+      expand_duration_ms: expandDurationMs,
+      hit_at_ms: hitAtMs,
+      damage_type: triggerEvent.damage_type,
+      vfx_key: triggerEvent.vfx_key,
+      vfx_scale: vfxScale,
+      center_policy: "kill_position",
+      max_targets: maxTargets,
+      hit_target_count: selectedTargets.length,
+      on_kill_recast_chance_percent: chancePercent,
+      on_kill_recast_max_per_area: maxPerArea,
+      trigger_event_id: triggerEvent.event_id,
+      trigger_event_type: triggerEvent.type,
+      defeated_target: String(defeated.id),
+      kill_position: center,
+      effect: "on_kill_recast",
+      skill_name: skillName
+    };
+    const base = {
+      timestamp_ms: triggerEvent.timestamp_ms,
+      source_entity: triggerEvent.source_entity,
+      target_entity: String(defeated.id),
+      direction: { x: 0, y: 0 },
+      damage_type: triggerEvent.damage_type,
+      skill_instance_id: triggerEvent.skill_instance_id,
+      sfx_key: triggerEvent.sfx_key
+    };
+    return [
+      {
+        ...base,
+        event_id: areaId,
+        type: "area_spawn" as const,
+        position: center,
+        delay_ms: 0,
+        duration_ms: expandDurationMs,
+        amount: null,
+        vfx_key: triggerEvent.vfx_key,
+        reason_key: `${skillId}.kill_recast.area`,
+        payload: areaPayload
+      },
+      ...selectedTargets.flatMap(({ enemy, distance: targetDistance }, index) => {
+        const targetPosition = { x: enemy.x, y: enemy.y };
+        const direction = guideDirection(center, targetPosition);
+        const hitPayload = {
+          ...areaPayload,
+          target_world_position: targetPosition,
+          hit_world_position: targetPosition,
+          target_distance: targetDistance
+        };
+        const targetBase = {
+          ...base,
+          target_entity: String(enemy.id),
+          direction,
+          timestamp_ms: triggerEvent.timestamp_ms + hitAtMs,
+          delay_ms: hitAtMs
+        };
+        return [
+          { ...targetBase, event_id: `${areaId}.${enemy.id}.damage.${index}`, type: "damage" as const, position: targetPosition, duration_ms: 0, amount: damageAmount, vfx_key: triggerEvent.vfx_key, reason_key: triggerEvent.reason_key, payload: hitPayload },
+          { ...targetBase, event_id: `${areaId}.${enemy.id}.hit_vfx.${index}`, type: "hit_vfx" as const, position: targetPosition, duration_ms: 420, amount: null, vfx_key: triggerEvent.vfx_key, reason_key: triggerEvent.reason_key, payload: hitPayload },
+          { ...targetBase, event_id: `${areaId}.${enemy.id}.floating_text.${index}`, type: "floating_text" as const, position: { x: enemy.x, y: enemy.y - 28 }, duration_ms: 800, amount: damageAmount, vfx_key: triggerEvent.vfx_key, reason_key: String(payload.floating_text ?? ""), payload: { ...hitPayload, text: `${Math.round(damageAmount)}点${damageTypeText(triggerEvent.damage_type)}伤害` } }
         ];
       })
     ];
@@ -5735,6 +6724,13 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
 
   function consumeSkillEvent(event: SkillEvent) {
     consumeSkillEventBatch([event]);
+  }
+
+  function projectileSpawnPositionForEvent(event: SkillEvent) {
+    if (event.payload?.spawn_policy === "caster_current_position") {
+      return { x: playerStateRef.current.x, y: playerStateRef.current.y };
+    }
+    return event.position;
   }
 
   function liveOrbitCenter(payload: Record<string, unknown>, fallback: { x: number; y: number }) {
@@ -5795,6 +6791,39 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     const damageEvents: SkillEvent[] = [];
 
     for (const event of events) {
+      if (event.type === "buff_apply") {
+        const payload = event.payload ?? {};
+        const buffType = String(payload.buff_type ?? "");
+        if (buffType) {
+          const duration = Math.max(0.3, event.duration_ms / 1000);
+          const skillId = String(payload.skill_id ?? event.skill_instance_id);
+          const nextBuff: PlayerBuff = {
+            id: nextPlayerBuffId.current++,
+            buffType,
+            skillId,
+            remaining: duration,
+            duration,
+            remainingAmount: Math.max(0, Number(event.amount ?? payload.absorb_amount ?? 0)),
+            absorbPercent: Math.max(0, Number(payload.absorb_percent ?? 0)),
+            excludeDamageOverTime: Boolean(payload.exclude_damage_over_time ?? false),
+            vfxKey: event.vfx_key
+          };
+          setRuntimePlayerBuffs([
+            ...activePlayerBuffsRef.current.filter((buff) => !(buff.buffType === nextBuff.buffType && buff.skillId === nextBuff.skillId)),
+            nextBuff
+          ]);
+          nextTexts.push({
+            id: nextTextId.current++,
+            x: playerStateRef.current.x,
+            y: playerStateRef.current.y - 52,
+            text: buffType === "guard" ? "石肤术" : "增益",
+            damageType: "guard",
+            ttl: 0.9,
+            duration: 0.9
+          });
+        }
+        continue;
+      }
       if (event.type === "chain_segment") {
         const payload = event.payload ?? {};
         const start = (payload.start_position ?? event.position) as { x?: number; y?: number };
@@ -6002,18 +7031,31 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         continue;
       }
       if (event.type === "projectile_spawn") {
-        const endPosition = event.payload?.expire_world_position ?? event.payload?.end_position ?? event.position;
-        const velocityWorld = event.payload?.velocity_world as { x?: number; y?: number } | undefined;
+        const spawnPosition = projectileSpawnPositionForEvent(event);
+        const targetPosition = pointFromUnknown(event.payload?.target_world_position);
+        const jitterDeg = Number(event.payload?.random_angle_jitter_deg ?? 0);
+        const directionWorld = targetPosition
+          ? rotateDirection(guideDirection(spawnPosition, targetPosition), randomAngleOffset(jitterDeg))
+          : ((event.payload?.direction_world as { x?: number; y?: number } | undefined) ?? event.direction);
+        const velocityPayload = event.payload?.velocity_world as { x?: number; y?: number } | undefined;
+        const projectileSpeed = Number(event.payload?.projectile_speed ?? Math.hypot(velocityPayload?.x ?? 0, velocityPayload?.y ?? 0));
+        const velocityWorld = {
+          x: directionWorld.x * projectileSpeed,
+          y: directionWorld.y * projectileSpeed
+        };
+        const endPosition = targetPosition && event.payload?.spawn_policy === "caster_current_position"
+          ? targetPosition
+          : event.payload?.expire_world_position ?? event.payload?.end_position ?? event.position;
         const lifetimeMs = Number(event.payload?.lifetime_ms ?? event.duration_ms);
         const aliveDuration = Math.max(0.001, lifetimeMs / 1000);
         nextBolts.push({
           id: nextBoltId.current++,
-          x: event.position.x,
-          y: event.position.y,
+          x: spawnPosition.x,
+          y: spawnPosition.y,
           targetX: endPosition.x,
           targetY: endPosition.y,
-          directionX: (event.payload?.direction_world as { x?: number; y?: number } | undefined)?.x ?? event.direction.x,
-          directionY: (event.payload?.direction_world as { x?: number; y?: number } | undefined)?.y ?? event.direction.y,
+          directionX: directionWorld.x,
+          directionY: directionWorld.y,
           velocityX: velocityWorld?.x,
           velocityY: velocityWorld?.y,
           projectileId: typeof event.payload?.projectile_id === "string" ? event.payload.projectile_id : event.event_id,
@@ -6045,6 +7087,10 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       }
       if (event.type === "damage") {
         damageEvents.push(event);
+        continue;
+      }
+      if (event.type === "status_apply") {
+        applyEnemyStatusBuff(event);
         continue;
       }
       if (event.type === "hit_vfx") {
@@ -6122,14 +7168,61 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     }
   }
 
+  function applyEnemyStatusBuff(event: SkillEvent) {
+    const targetId = Number(event.target_entity);
+    if (!Number.isFinite(targetId)) return;
+    const payload = event.payload ?? {};
+    const statusType = String(payload.status_type ?? "");
+    const buffType = enemyStatusBuffType(statusType);
+    if (!buffType) return;
+    const duration = Math.max(0.1, Number(payload.duration_ms ?? event.duration_ms ?? 0) / 1000);
+    const valuePercent = Math.max(0, Number(payload.effect_per_stack ?? payload.base_value ?? 0));
+    const sourceSkillId = String(payload.skill_id ?? event.skill_instance_id);
+    const nextBuff: EnemyBuff = {
+      buffType,
+      polarity: "negative",
+      remaining: duration,
+      duration,
+      valuePercent,
+      sourceSkillId
+    };
+    setEnemies((current) => {
+      const next = current.map((enemy) => {
+        if (enemy.id !== targetId) return enemy;
+        const activeBuffs = [
+          ...(enemy.activeBuffs ?? []).filter((buff) => !(buff.buffType === nextBuff.buffType && buff.sourceSkillId === nextBuff.sourceSkillId)),
+          nextBuff
+        ];
+        return { ...enemy, activeBuffs };
+      });
+      enemiesStateRef.current = next;
+      return next;
+    });
+  }
+
   function applyDamageEventBatch(events: SkillEvent[]) {
     const damageByTarget = new Map<number, number>();
+    const enemyById = new Map(enemiesStateRef.current.map((enemy) => [enemy.id, enemy]));
+    const remainingHp = new Map(enemiesStateRef.current.map((enemy) => [enemy.id, enemy.hp]));
+    const killedTriggers: { event: SkillEvent; enemy: Enemy }[] = [];
     for (const event of events) {
       const targetId = Number(event.target_entity);
       if (!Number.isFinite(targetId)) continue;
-      damageByTarget.set(targetId, (damageByTarget.get(targetId) ?? 0) + Number(event.amount ?? 0));
+      const enemy = enemyById.get(targetId);
+      const damage = enemy ? damageEventAmountAgainstEnemy(event, enemy) : Number(event.amount ?? 0);
+      damageByTarget.set(targetId, (damageByTarget.get(targetId) ?? 0) + damage);
+      if (!enemy || damage <= 0) continue;
+      const before = remainingHp.get(targetId) ?? enemy.hp;
+      const after = before - damage;
+      if (before > 0 && after <= 0) {
+        killedTriggers.push({ event, enemy });
+      }
+      remainingHp.set(targetId, after);
     }
     if (damageByTarget.size === 0) return;
+    const liveEnemiesAfterDamage = enemiesStateRef.current
+      .map((enemy) => ({ ...enemy, hp: remainingHp.get(enemy.id) ?? enemy.hp }))
+      .filter((enemy) => enemy.hp > 0);
     let killed = 0;
     setEnemies((current) => {
       const next = current
@@ -6149,9 +7242,53 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       setKills((value) => value + killed);
       setCombatLogs((logs) => [`${skillName} 击杀 ${killed} 个怪物。`, ...logs].slice(0, 8));
     }
+    const recastEvents = killedTriggers.flatMap(({ event, enemy }) => createPlayerNovaKillRecastEvents(event, enemy, liveEnemiesAfterDamage));
+    if (recastEvents.length > 0) {
+      consumeImmediateSkillEvents(recastEvents);
+      for (const event of recastEvents) {
+        if (event.delay_ms > 0) {
+          scheduledSkillEvents.current.push({ event, remaining: event.delay_ms / 1000 });
+        }
+      }
+    }
   }
 
   function consumeSkillEventLegacy(event: SkillEvent) {
+    if (event.type === "buff_apply") {
+      const payload = event.payload ?? {};
+      const buffType = String(payload.buff_type ?? "");
+      if (!buffType) return;
+      const duration = Math.max(0.3, event.duration_ms / 1000);
+      const skillId = String(payload.skill_id ?? event.skill_instance_id);
+      const nextBuff: PlayerBuff = {
+        id: nextPlayerBuffId.current++,
+        buffType,
+        skillId,
+        remaining: duration,
+        duration,
+        remainingAmount: Math.max(0, Number(event.amount ?? payload.absorb_amount ?? 0)),
+        absorbPercent: Math.max(0, Number(payload.absorb_percent ?? 0)),
+        excludeDamageOverTime: Boolean(payload.exclude_damage_over_time ?? false),
+        vfxKey: event.vfx_key
+      };
+      setRuntimePlayerBuffs([
+        ...activePlayerBuffsRef.current.filter((buff) => !(buff.buffType === nextBuff.buffType && buff.skillId === nextBuff.skillId)),
+        nextBuff
+      ]);
+      setTexts((items) => [
+        ...items,
+        {
+          id: nextTextId.current++,
+          x: playerStateRef.current.x,
+          y: playerStateRef.current.y - 52,
+          text: buffType === "guard" ? "石肤术" : "增益",
+          damageType: "guard",
+          ttl: 0.9,
+          duration: 0.9
+        }
+      ]);
+      return;
+    }
     if (event.type === "chain_segment") {
       const payload = event.payload ?? {};
       const start = (payload.start_position ?? event.position) as { x?: number; y?: number };
@@ -6534,6 +7671,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     enemiesStateRef.current = [];
     setEnemies([]);
     setTexts([]);
+    setRuntimePlayerBuffs([]);
     setBolts([]);
     setAreaNovas([]);
     setMeleeArcs([]);
@@ -6549,6 +7687,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     spawnTimer.current = 0;
     attackTimers.current = {};
     scheduledSkillEvents.current = [];
+    onKillRecastCounts.current.clear();
     activeLavaOrbits.current.clear();
     enemyVisuals.current = new Map();
     playerVisual.current = { direction: "down", movementVector: { x: 0, y: 0 } };
@@ -6563,6 +7702,20 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     }
     if (!battleMap) {
       setNotice("地图资源仍在加载，请稍候。");
+      return;
+    }
+    if (runtimeDebugMonsterCornerTestEnabled()) {
+      const challengeSpawn = runtimeDebugCornerPlayerSpawn(battleMap);
+      const nextEncounterPalette = createEncounterMonsterPalette();
+      encounterMonsterPalette.current = nextEncounterPalette;
+      resetBattleRuntimeForChallenge(challengeSpawn);
+      const debugEnemies = createRuntimeDebugCornerEnemies(challengeSpawn, battleMap, nextEncounterPalette);
+      enemiesStateRef.current = debugEnemies;
+      setEnemies(debugEnemies);
+      setGameFailureOpen(false);
+      setPlaying(true);
+      setCombatLogs(["边缘角落怪物 AI 测试开始。玩家静止，怪物应直接贴近并按节奏攻击。"]);
+      setNotice(`${battleMap.displayName} 边缘角落怪物 AI 测试中。`);
       return;
     }
     const challengeSpawn = battleMap.playerSpawn;
@@ -6688,9 +7841,16 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
   const visibleEnemies = selectRenderableEnemies(enemies, player);
   const anchoredHitVfxs = anchorHitVfxsToTargets(hitVfxs, enemies);
   const activeBossEnemy = visibleEnemies.find((enemy) => enemy.boss && enemy.hp > 0) ?? null;
-  const sortedRenderItems = createBattleRenderItems(player, visibleEnemies, bolts, anchoredHitVfxs, runtimeUsesEditorMap ? MAP_EDITOR_PLAYER_RENDER_SCALE : UNIT_RENDER_SCALE);
+  const guardActive = activePlayerBuffs.some((buff) => buff.buffType === "guard" && buff.remaining > 0 && buff.remainingAmount > 0);
+  const sortedRenderItems = createBattleRenderItems(player, visibleEnemies, bolts, anchoredHitVfxs, runtimeUsesEditorMap ? MAP_EDITOR_PLAYER_RENDER_SCALE : UNIT_RENDER_SCALE, guardActive);
   const animationNowMs = elapsed * 1000;
   const battleAnimationContexts = createBattleAnimationContexts(playerVisual.current, enemyVisuals.current, visibleEnemies, player, animationNowMs, statNumber(state.player_stats?.move_speed, 1));
+  const runtimeDebugCornerSummary = runtimeDebugMonsterCornerTestEnabled()
+    ? runtimeDebugMonsterCornerSummary(enemies, player)
+    : null;
+  const runtimeBoundaryScanLine = runtimeDebugMonsterBoundaryTestEnabled()
+    ? runtimeBoundaryMonsterScanLine(runtimeBoundaryScan)
+    : null;
   const terrainWidth = battleMap?.meta.world_width ?? MAP_VISUAL_WIDTH;
   const terrainHeight = battleMap?.meta.world_height ?? MAP_VISUAL_HEIGHT;
   const battleGeometrySnapshot: BattleGeometrySnapshot = {
@@ -6706,7 +7866,8 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     } : undefined,
     player: {
       ...player,
-      moving: Math.hypot(playerVisual.current.movementVector.x, playerVisual.current.movementVector.y) > 0.001
+      moving: Math.hypot(playerVisual.current.movementVector.x, playerVisual.current.movementVector.y) > 0.001,
+      guardActive
     },
     enemies: visibleEnemies.map((enemy) => ({
       id: enemy.id,
@@ -6776,6 +7937,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         vfxKey: zone.vfxKey,
         warning: zone.warning,
         hitAtMs: zone.hitAtMs,
+        elapsedMs: elapsedRef.current * 1000,
         ttl: zone.ttl,
         duration: zone.duration
       })),
@@ -6876,6 +8038,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
               .map((item, index) => renderBattleRenderItem(item, index, battleAnimationContexts))}
           </div>
           <div className="battle-effect-layer">
+            <PlayerBuffLayer buffs={activePlayerBuffs} player={player} />
             {skillEditorMode && (
               <SkillRuntimeGuideLayer
                 skills={activeSkills}
@@ -6976,10 +8139,16 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       )}
 
       <section className="combat-feed" aria-label="战斗日志">
+        {runtimeBoundaryScanLine && <p>{runtimeBoundaryScanLine}</p>}
+        {runtimeDebugCornerSummary && <p>{runtimeDebugCornerSummary}</p>}
         {combatLogs.map((log, index) => <p key={index}>{log}</p>)}
       </section>
 
-      <PlayerResourceHud state={state} player={player} inventoryMode={bagOpen} />
+      <PlayerResourceHud
+        state={state}
+        player={player}
+        inventoryMode={bagOpen}
+      />
 
       {bagOpen && (
         <section className="inventory-overlay" aria-label="背包界面">
@@ -7140,7 +8309,15 @@ function regeneratePlayerResources(player: PlayerRuntimeState, stats: AppState["
   };
 }
 
-function PlayerResourceHud({ state, player, inventoryMode }: { state: AppState; player: PlayerRuntimeState; inventoryMode: boolean }) {
+function PlayerResourceHud({
+  state,
+  player,
+  inventoryMode
+}: {
+  state: AppState;
+  player: PlayerRuntimeState;
+  inventoryMode: boolean;
+}) {
   const maxLife = Math.max(0, player.maxHp);
   const currentLife = clamp(player.hp, 0, maxLife);
   const maxShield = Math.max(0, player.maxEnergyShield);
@@ -7150,7 +8327,15 @@ function PlayerResourceHud({ state, player, inventoryMode }: { state: AppState; 
 
   return (
     <aside className={`player-resource-hud${inventoryMode ? " inventory-mode" : ""}`} aria-label="玩家资源">
-      <ResourceOrb kind="life" label="生命" current={currentLife} max={maxLife} secondaryLabel="护盾" secondaryCurrent={currentShield} secondaryMax={maxShield} />
+      <ResourceOrb
+        kind="life"
+        label="生命"
+        current={currentLife}
+        max={maxLife}
+        secondaryLabel="护盾"
+        secondaryCurrent={currentShield}
+        secondaryMax={maxShield}
+      />
       <ResourceOrb kind="mana" label="魔力" current={currentMana} max={maxMana} />
     </aside>
   );
@@ -8050,7 +9235,7 @@ function SkillEditorPanel({
   const [modifierPreview, setModifierPreview] = useState<SkillEditorModifierPreview | null>(null);
   const [modifierMessage, setModifierMessage] = useState("");
   const [modifierPreviewing, setModifierPreviewing] = useState(false);
-  const [arenaSkillId, setArenaSkillId] = useState("active_fire_bolt");
+  const [arenaSkillId, setArenaSkillId] = useState("active_split_firebolt");
   const [arenaSceneId, setArenaSceneId] = useState(editor.test_arena.scenes[0]?.scene_id ?? "single_dummy");
   const [arenaUseModifierStack, setArenaUseModifierStack] = useState(false);
   const [arenaResult, setArenaResult] = useState<SkillTestArenaResult | null>(null);
@@ -8112,6 +9297,7 @@ function SkillEditorPanel({
       "burst_interval_ms",
       "spread_angle_deg",
       "angle_step",
+      "random_angle_jitter_deg",
       "projectile_speed",
       "projectile_width",
       "projectile_height",
@@ -8346,6 +9532,7 @@ function SkillEditorPanel({
       if (params.max_duration_ms !== undefined) requireIntegerAtLeast(params.max_duration_ms, "最长生命周期", 1, errors);
       if (params.spread_angle_deg !== undefined) requireNumberRange(params.spread_angle_deg, "散射角度", 0, 180, errors);
       if (params.angle_step !== undefined) requireNumberRange(params.angle_step, "角度间隔", 0, 90, errors);
+      if (params.random_angle_jitter_deg !== undefined) requireNumberRange(params.random_angle_jitter_deg, "随机角度偏移", 0, 45, errors);
       if (params.hit_policy !== undefined && !editor.options.hit_policies.some((option) => option.value === params.hit_policy)) {
         errors.push("命中后行为必须使用已有选项。");
       }
@@ -9115,6 +10302,7 @@ function SkillEditorPanel({
                             <NumberInput label="投射物数量" value={numberValue(projectileParams?.projectile_count, 1)} min={1} integer disabled={!canEdit} onChange={(value) => updateDraft((next) => { next.behavior.params.projectile_count = value; })} />
                             <NumberInput label="连发间隔毫秒" value={numberValue(projectileParams?.burst_interval_ms, 0)} min={0} integer disabled={!canEdit} onChange={(value) => updateDraft((next) => { next.behavior.params.burst_interval_ms = value; })} />
                             <NumberInput label="散射角度" value={numberValue(projectileParams?.spread_angle_deg, 0)} min={0} disabled={!canEdit} onChange={(value) => updateDraft((next) => { next.behavior.params.spread_angle_deg = value; })} />
+                            <NumberInput label="随机角度偏移" value={numberValue(projectileParams?.random_angle_jitter_deg, 0)} min={0} max={45} disabled={!canEdit} onChange={(value) => updateDraft((next) => { next.behavior.params.random_angle_jitter_deg = value; })} />
                             <NumberInput label="投射物速度" value={numberValue(projectileParams?.projectile_speed, 1)} min={1} disabled={!canEdit} onChange={(value) => updateDraft((next) => { next.behavior.params.projectile_speed = value; })} />
                             <NumberInput label="投射物宽度" value={numberValue(projectileParams?.projectile_width, 1)} min={1} disabled={!canEdit} onChange={(value) => updateDraft((next) => { next.behavior.params.projectile_width = value; })} />
                             <NumberInput label="投射物高度" value={numberValue(projectileParams?.projectile_height, 1)} min={1} disabled={!canEdit} onChange={(value) => updateDraft((next) => { next.behavior.params.projectile_height = value; })} />
@@ -9662,7 +10850,7 @@ function ProjectileParameterPanel({
             <SelectInput label="轨迹" value={String(projectileModuleParams.trajectory ?? "linear")} options={[{ value: "linear", text: "linear" }, { value: "ballistic", text: "ballistic" }]} disabled={!canEdit} onChange={(value) => updateModuleParam(projectileModuleIndex, "trajectory", value)} />
             <NumberInput label="飞行时间毫秒" value={numberValue(projectileModuleParams.travel_time_ms, 1)} min={1} integer disabled={!canEdit} onChange={(value) => updateModuleParam(projectileModuleIndex, "travel_time_ms", value)} />
             <NumberInput label="抛物线高度" value={numberValue(projectileModuleParams.arc_height, 0)} min={0} disabled={!canEdit} onChange={(value) => updateModuleParam(projectileModuleIndex, "arc_height", value)} />
-            <SelectInput label="目标规则" value={String(projectileModuleParams.target_policy ?? "target_position")} options={[{ value: "nearest_enemy", text: "nearest_enemy" }, { value: "locked_target", text: "locked_target" }, { value: "target_position", text: "target_position" }]} disabled={!canEdit} onChange={(value) => updateModuleParam(projectileModuleIndex, "target_policy", value)} />
+            <SelectInput label="目标规则" value={String(projectileModuleParams.target_policy ?? "target_position")} options={[{ value: "nearest_enemy", text: "nearest_enemy" }, { value: "random_enemy", text: "random_enemy" }, { value: "nearest_unique_enemy", text: "nearest_unique_enemy" }, { value: "target_position", text: "target_position" }]} disabled={!canEdit} onChange={(value) => updateModuleParam(projectileModuleIndex, "target_policy", value)} />
             <TextInput label="落地标识" value={String(projectileModuleParams.impact_marker_id ?? "")} disabled={!canEdit} onChange={(value) => updateModuleParam(projectileModuleIndex, "impact_marker_id", value)} />
             <NumberInput label="投射物速度" value={numberValue(projectileModuleParams.projectile_speed, 1)} min={1} disabled={!canEdit} onChange={(value) => updateModuleParam(projectileModuleIndex, "projectile_speed", value)} />
             <NumberInput label="投射物宽度" value={numberValue(projectileModuleParams.projectile_width, 1)} min={1} disabled={!canEdit} onChange={(value) => updateModuleParam(projectileModuleIndex, "projectile_width", value)} />
@@ -9888,6 +11076,7 @@ function ProjectileParameterPanel({
           <NumberInput label="连发间隔毫秒" value={numberValue(params.burst_interval_ms, 0)} min={0} integer disabled={!canEdit} onChange={(value) => updateDraft((next) => { next.behavior.params.burst_interval_ms = value; })} />
           <NumberInput label="扇形角度" value={numberValue(params.spread_angle_deg, 0)} min={0} max={180} disabled={!canEdit} onChange={(value) => updateDraft((next) => { next.behavior.params.spread_angle_deg = value; })} />
           <NumberInput label="角度间隔" value={numberValue(params.angle_step, 0)} min={0} max={90} disabled={!canEdit} onChange={(value) => updateDraft((next) => { next.behavior.params.angle_step = value; })} />
+          <NumberInput label="随机角度偏移" value={numberValue(params.random_angle_jitter_deg, 0)} min={0} max={45} disabled={!canEdit} onChange={(value) => updateDraft((next) => { next.behavior.params.random_angle_jitter_deg = value; })} />
         </div>
       </EditorSection>
       <EditorSection title="运动">
@@ -10605,6 +11794,8 @@ type EnemySpatialIndex = {
   chunks: Map<string, Enemy[]>;
 };
 
+const ENEMY_SPATIAL_INDEX_CACHE = new WeakMap<Enemy[], EnemySpatialIndex>();
+
 type EnemyNavigationContext = {
   map: BakedBattleMapData;
   width: number;
@@ -10729,7 +11920,12 @@ function enemySpatialChunkKey(x: number, y: number, chunkSize: number) {
 }
 
 function candidateEnemiesNear(enemies: Enemy[], center: { x: number; y: number }, radius: number) {
-  return queryEnemySpatialIndex(createEnemySpatialIndex(enemies), center, radius);
+  let spatialIndex = ENEMY_SPATIAL_INDEX_CACHE.get(enemies);
+  if (!spatialIndex) {
+    spatialIndex = createEnemySpatialIndex(enemies);
+    ENEMY_SPATIAL_INDEX_CACHE.set(enemies, spatialIndex);
+  }
+  return queryEnemySpatialIndex(spatialIndex, center, radius);
 }
 
 function createEnemyNavigationContext(enemies: Enemy[], player: { x: number; y: number }, map: BakedBattleMapData | null): EnemyNavigationContext | null {
@@ -10801,7 +11997,7 @@ function createEnemyNavigationContext(enemies: Enemy[], player: { x: number; y: 
 function enemyNavigationTargetCells(map: BakedBattleMapData, player: { x: number; y: number }) {
   const center = enemyWorldToGrid(map, player);
   const result: { gridX: number; gridY: number }[] = [];
-  if (enemyGridWalkable(map, center.gridX, center.gridY)) result.push(center);
+  if (enemyGridWalkable(map, center.gridX, center.gridY)) return [center];
   for (let y = -ENEMY_NAVIGATION_TARGET_RADIUS_CELLS; y <= ENEMY_NAVIGATION_TARGET_RADIUS_CELLS; y += 1) {
     for (let x = -ENEMY_NAVIGATION_TARGET_RADIUS_CELLS; x <= ENEMY_NAVIGATION_TARGET_RADIUS_CELLS; x += 1) {
       const distanceCells = Math.hypot(x, y);
@@ -10916,11 +12112,12 @@ function updateRuntimeEnemies(
     const spatialIndex = createEnemySpatialIndex(movingCurrent);
     const navigation = createEnemyNavigationContext(movingCurrent, player, map);
     return separateOverlappingEnemies(
-      movingCurrent.map((enemy) => (
-        attackLockedEnemyIds.has(enemy.id)
-          ? freezeAttackingEnemy(enemy, "active")
-          : moveEnemyTowardPlayer(enemy, player, map, dt, "active", spatialIndex, navigation)
-      )),
+      movingCurrent.map((enemy) => {
+        const survivalEnemy = { ...enemy, aggroLocked: true };
+        return attackLockedEnemyIds.has(enemy.id)
+          ? freezeAttackingEnemy(survivalEnemy, "active")
+          : moveEnemyTowardPlayer(survivalEnemy, player, map, dt, "active", spatialIndex, navigation);
+      }),
       map,
       attackLockedEnemyIds,
       player
@@ -10981,8 +12178,13 @@ function resetEnemyEngagement(enemy: Enemy): Enemy {
 
 function monsterAttackRange(enemy: Enemy) {
   const configuredRange = Math.max(1, enemy.attackRange ?? ENEMY_MELEE_ATTACK_DISTANCE);
-  if (configuredRange > ENEMY_MELEE_ATTACK_RANGE_MAX) return configuredRange;
-  return meleeContactAttackRange(enemy);
+  return Math.max(configuredRange, meleeContactAttackRange(enemy));
+}
+
+function monsterMeleeReachRange(enemy: Enemy) {
+  const configuredRange = Math.max(1, enemy.attackRange ?? ENEMY_MELEE_ATTACK_DISTANCE);
+  if (configuredRange > ENEMY_MELEE_ATTACK_RANGE_MAX) return monsterAttackRange(enemy);
+  return monsterAttackRange(enemy) + ENEMY_MELEE_EDGE_CONTACT_TOLERANCE;
 }
 
 function meleeContactAttackRange(enemy: Enemy) {
@@ -11072,16 +12274,30 @@ function playerResistancePercent(stats: AppState["player_stats"] | undefined, da
   return 0;
 }
 
-function canEnemyStartAttackVisual(
+function canEnemyStartRuntimeAttack(
   enemy: Enemy,
   player: { x: number; y: number },
-  previous: EnemyVisualRuntime | undefined,
-  nowMs: number
+  nowMs: number,
+  map?: BakedBattleMapData | null
 ) {
-  const attackActive = previous?.attackUntilMs !== undefined && nowMs < previous.attackUntilMs;
-  if (attackActive || nowMs < (previous?.nextAttackReadyAtMs ?? 0)) return false;
+  const attackActive = enemy.attackUntilMs !== undefined && nowMs < enemy.attackUntilMs;
+  if (attackActive || nowMs < (enemy.nextAttackReadyAtMs ?? 0)) return false;
   if (enemy.authored && !enemy.aggroLocked) return false;
-  return distance(enemy, player) <= monsterAttackRange(enemy);
+  return canEnemyReachPlayerForMelee(enemy, player, map);
+}
+
+function canEnemyReachPlayerForMelee(
+  enemy: Enemy,
+  player: { x: number; y: number },
+  map?: BakedBattleMapData | null
+) {
+  if (distance(enemy, player) > monsterMeleeReachRange(enemy)) return false;
+  if (!map) return true;
+  const enemyCell = enemyWorldToGrid(map, enemy);
+  const playerCell = enemyWorldToGrid(map, player);
+  if (enemyCell.gridX === playerCell.gridX && enemyCell.gridY === playerCell.gridY) return true;
+  if (enemyCanStepGrid(map, enemyCell.gridX, enemyCell.gridY, playerCell.gridX, playerCell.gridY)) return true;
+  return enemyHasWalkableLine(map, enemy, player);
 }
 
 function freezeAttackingEnemy(enemy: Enemy, runtimeTier: EnemyRuntimeTier): Enemy {
@@ -11130,7 +12346,7 @@ function moveEnemyTowardPlayer(
     ? { x: dx / length, y: dy / length }
     : { x: Math.cos(fallbackAngle), y: Math.sin(fallbackAngle) };
   const steering = directCharge
-    ? steerEnemyDirectChargeCrowd(enemy, desired, spatialIndex)
+    ? { x: 0, y: 0, speedScale: 1, active: false }
     : steerEnemySwarm(enemy, desired, spatialIndex);
   const playerRepelPressure = !directCharge && playerDistance < ENEMY_PLAYER_BODY_SOFT_RADIUS
     ? (ENEMY_PLAYER_BODY_SOFT_RADIUS - playerDistance) / ENEMY_PLAYER_BODY_SOFT_RADIUS
@@ -11147,15 +12363,21 @@ function moveEnemyTowardPlayer(
     x: targetDirection.x * speed * steering.speedScale,
     y: targetDirection.y * speed * steering.speedScale
   };
-  const nextVelocity = {
-    x: previousVelocity.x + (targetVelocity.x - previousVelocity.x) * ENEMY_SWARM_VELOCITY_LERP,
-    y: previousVelocity.y + (targetVelocity.y - previousVelocity.y) * ENEMY_SWARM_VELOCITY_LERP
-  };
+  const nextVelocity = directCharge
+    ? targetVelocity
+    : {
+      x: previousVelocity.x + (targetVelocity.x - previousVelocity.x) * ENEMY_SWARM_VELOCITY_LERP,
+      y: previousVelocity.y + (targetVelocity.y - previousVelocity.y) * ENEMY_SWARM_VELOCITY_LERP
+    };
   const velocityLength = Math.hypot(nextVelocity.x, nextVelocity.y);
   const clampedVelocity = velocityLength > speed
     ? { x: nextVelocity.x / velocityLength * speed, y: nextVelocity.y / velocityLength * speed }
     : nextVelocity;
-  const stepDistance = Math.min(Math.hypot(clampedVelocity.x, clampedVelocity.y) * dt, Math.max(0, playerDistance - attackRange));
+  const approachTargetIsPlayer = distance(approachTarget, player) <= 0.001;
+  const remainingApproachDistance = approachTargetIsPlayer
+    ? playerDistance - attackRange
+    : distance(enemy, approachTarget);
+  const stepDistance = Math.min(Math.hypot(clampedVelocity.x, clampedVelocity.y) * dt, Math.max(0, remainingApproachDistance));
   const direction = normalizeMoveVector(clampedVelocity);
   const retreatingFromPlayer = !directCharge && playerRepelPressure > 0.02
     && direction.x * fromPlayer.x + direction.y * fromPlayer.y > 0.25;
@@ -11197,11 +12419,15 @@ function resolveEnemyDirectChargeMove(
   const directResolved = resolveWalkableMove(map, enemy, directNext);
   const directMovedDistance = distance(enemy, directResolved);
   const directCrowdPenalty = enemyCrowdMovePenalty(enemy, directResolved, spatialIndex);
+  const currentDistance = distance(enemy, target);
+  const directProgress = currentDistance - distance(directResolved, target);
+  if (directProgress > 0.001 && isMapPointWalkable(map, directNext.x, directNext.y)) {
+    return directResolved;
+  }
   if (directMovedDistance > stepDistance * 0.75 && directCrowdPenalty <= 0.001 && isMapPointWalkable(map, directNext.x, directNext.y)) {
     return directResolved;
   }
 
-  const currentDistance = distance(enemy, target);
   const baseAngle = Math.atan2(direction.y, direction.x);
   const laneSign = enemyLaneSign(enemy);
   let bestPosition = directResolved;
@@ -11244,8 +12470,12 @@ function enemyNavigationMoveTarget(
   if (!enemy.aggroLocked && playerDistance <= ENEMY_APPROACH_RING_RADIUS * 1.8) {
     return approachTarget;
   }
-  if (enemy.aggroLocked && playerDistance <= directAttackDistance && enemyHasWalkableLine(map, enemy, approachTarget)) {
-    return approachTarget;
+  if (enemy.aggroLocked && playerDistance <= directAttackDistance * 1.35) {
+    const occupancyTarget = enemyReachableMeleeOccupancyTarget(map, enemy, player);
+    if (occupancyTarget) return occupancyTarget;
+    if (enemyHasWalkableLine(map, enemy, approachTarget)) return approachTarget;
+    const contactTarget = enemyLineReachablePlayerContactTarget(map, enemy, player);
+    if (contactTarget) return contactTarget;
   }
 
   const cell = enemyWorldToGrid(map, enemy);
@@ -11325,6 +12555,56 @@ function enemyHasWalkableLine(map: BakedBattleMapData, from: { x: number; y: num
     if (!isMapPointWalkable(map, from.x + dx * ratio, from.y + dy * ratio)) return false;
   }
   return true;
+}
+
+function enemyLineReachablePlayerContactTarget(
+  map: BakedBattleMapData,
+  enemy: Enemy,
+  player: { x: number; y: number }
+) {
+  const center = enemyWorldToGrid(map, player);
+  let best: ({ x: number; y: number; gridX: number; gridY: number; score: number } | null) = null;
+  const maxCells = Math.max(2, ENEMY_NAVIGATION_TARGET_RADIUS_CELLS);
+  for (let y = -maxCells; y <= maxCells; y += 1) {
+    for (let x = -maxCells; x <= maxCells; x += 1) {
+      const cellDistance = Math.hypot(x, y);
+      if (cellDistance < 1 || cellDistance > maxCells) continue;
+      const gridX = center.gridX + x;
+      const gridY = center.gridY + y;
+      if (!enemyGridWalkable(map, gridX, gridY)) continue;
+      const target = { ...enemyGridCenter(map, gridX, gridY), gridX, gridY };
+      if (!enemyHasWalkableLine(map, enemy, target)) continue;
+      const playerDistance = distance(target, player);
+      const enemyDistance = distance(enemy, target);
+      const score = playerDistance * 1.6 + enemyDistance + enemyGridWallCost(map, gridX, gridY) * map.meta.grid_size * 0.35;
+      if (!best || score < best.score) best = { ...target, score };
+    }
+  }
+
+  function enemyStatusBuffType(statusType: string) {
+    if (statusType === "frostbite") return "cold_damage_taken_increase";
+    if (statusType === "numbed") return "lightning_damage_taken_increase";
+    return "";
+  }
+
+  function damageEventAmountAgainstEnemy(event: SkillEvent, enemy: Enemy) {
+    const components = event.payload?.damage_components;
+    if (components && typeof components === "object" && !Array.isArray(components)) {
+      return Object.entries(components as Record<string, unknown>).reduce((total, [damageType, value]) => {
+        return total + scaledDamageAgainstEnemy(damageType, Number(value ?? 0), enemy);
+      }, 0);
+    }
+    return scaledDamageAgainstEnemy(event.damage_type, Number(event.amount ?? 0), enemy);
+  }
+
+  function scaledDamageAgainstEnemy(damageType: string, amount: number, enemy: Enemy) {
+    if (damageType !== "cold" || amount <= 0) return Math.max(0, amount);
+    const takenIncrease = (enemy.activeBuffs ?? [])
+      .filter((buff) => buff.polarity === "negative" && buff.buffType === "cold_damage_taken_increase" && buff.remaining > 0)
+      .reduce((total, buff) => total + buff.valuePercent, 0);
+    return Math.max(0, amount) * (1 + takenIncrease / 100);
+  }
+  return best ? { x: best.x, y: best.y, gridX: best.gridX, gridY: best.gridY } : null;
 }
 
 function enemyNavigationCandidateScore(navigation: EnemyNavigationContext, gridX: number, gridY: number, laneSign: number, directionX: number, directionY: number) {
@@ -11639,7 +12919,8 @@ function separateOverlappingEnemies(
   const spatialIndex = createEnemySpatialIndex(enemies, ENEMY_SPATIAL_CHUNK_SIZE);
   return enemies.map((enemy) => {
     if (enemy.hp <= 0 || enemy.runtimeTier === "dead") return enemy;
-    if (lockedEnemyIds.has(enemy.id)) return enemy;
+    const attackLocked = lockedEnemyIds.has(enemy.id);
+    if (attackLocked && !chaseTarget) return enemy;
     const radius = enemyCollisionRadius(enemy);
     const neighbors = queryEnemySpatialIndex(spatialIndex, enemy, radius + ENEMY_BOSS_COLLISION_RADIUS);
     let pushX = 0;
@@ -11671,13 +12952,36 @@ function separateOverlappingEnemies(
     }
     const adjustedPushLength = Math.hypot(pushX, pushY);
     if (adjustedPushLength <= 0.001) return enemy;
-    const scale = Math.min(ENEMY_COLLISION_MAX_PUSH, adjustedPushLength) / adjustedPushLength;
+    const maxPush = attackLocked ? ENEMY_COLLISION_MAX_PUSH * 0.45 : ENEMY_COLLISION_MAX_PUSH;
+    const scale = Math.min(maxPush, adjustedPushLength) / adjustedPushLength;
     const nextPosition = resolveWalkableMove(map, enemy, {
       x: enemy.x + pushX * scale,
       y: enemy.y + pushY * scale
     });
-    return { ...enemy, x: nextPosition.x, y: nextPosition.y };
+    const occupiedPosition = chaseTarget && enemy.aggroLocked
+      ? resolveEnemyPlayerBodyOccupancyFloor(map, enemy, nextPosition, chaseTarget)
+      : nextPosition;
+    return { ...enemy, x: occupiedPosition.x, y: occupiedPosition.y };
   });
+}
+
+function resolveEnemyPlayerBodyOccupancyFloor(
+  map: BakedBattleMapData | null,
+  enemy: Enemy,
+  position: { x: number; y: number },
+  player: { x: number; y: number }
+) {
+  const minimumDistance = Math.max(1, PLAYER_GEOMETRY_RADIUS + enemyVisualRadius(enemy) - 2);
+  const currentDistance = distance(position, player);
+  if (currentDistance >= minimumDistance) return position;
+  const angle = currentDistance > 0.001
+    ? Math.atan2(position.y - player.y, position.x - player.x)
+    : ((enemy.id * 137) % 360) * Math.PI / 180;
+  const corrected = {
+    x: player.x + Math.cos(angle) * minimumDistance,
+    y: player.y + Math.sin(angle) * minimumDistance
+  };
+  return isMapPointWalkable(map, corrected.x, corrected.y) ? corrected : position;
 }
 
 function enemyCollisionRadius(enemy: Enemy) {
@@ -11705,6 +13009,7 @@ function selectProjectileTargets(enemies: Enemy[], skill: SkillPreview, player: 
   );
   const pierceCount = Math.max(0, Math.round(Number(runtimeParams.pierce_count ?? 0)));
   const hitPolicy = String(runtimeParams.hit_policy ?? "first_hit");
+  const targetPolicy = String(runtimeParams.target_policy ?? "nearest_enemy");
   const maxHitsPerProjectile = pierceCount > 0 ? pierceCount + 1 : 1;
   const projectileCount = Math.max(1, Math.round(Number(runtimeParams.projectile_count ?? skill.projectile_count ?? 1)));
   const spreadAngleDeg = projectileSpreadAngleDeg(skill.behavior_template, runtimeParams);
@@ -11714,6 +13019,24 @@ function selectProjectileTargets(enemies: Enemy[], skill: SkillPreview, player: 
     .filter((enemy) => enemy.hp > 0 && distance(enemy, source) <= searchRange)
     .sort((a, b) => distance(a, source) - distance(b, source))[0];
   if (!firstTarget) return [];
+  if (targetPolicy === "random_enemy") {
+    const randomCandidates = sourceCandidates.filter((enemy) => enemy.hp > 0 && distance(enemy, source) <= maxDistance);
+    const pool = randomCandidates.length > 0 ? randomCandidates : [firstTarget];
+    return Array.from({ length: projectileCount }, (_, projectileIndex) => ({
+      enemy: pool[Math.floor(Math.random() * pool.length)] ?? firstTarget,
+      projectileIndex
+    }));
+  }
+  if (targetPolicy === "nearest_unique_enemy") {
+    const pool = sourceCandidates
+      .filter((enemy) => enemy.hp > 0 && distance(enemy, source) <= maxDistance)
+      .sort((a, b) => distance(a, source) - distance(b, source) || a.id - b.id);
+    const selected = pool.length > 0 ? pool : [firstTarget];
+    return Array.from({ length: projectileCount }, (_, projectileIndex) => ({
+      enemy: selected[projectileIndex % selected.length] ?? firstTarget,
+      projectileIndex
+    }));
+  }
   const baseDirection = guideDirection(source, firstTarget);
   const result: ProjectileDamageTarget[] = [];
   for (const [projectileIndex, direction] of projectileSpreadDirections(baseDirection, projectileCount, spreadAngleDeg, angleStepDeg).entries()) {
@@ -11995,6 +13318,11 @@ function rotateDirection(direction: { x: number; y: number }, angleDeg: number) 
   };
 }
 
+function randomAngleOffset(maxDegrees: number) {
+  if (maxDegrees <= 0) return 0;
+  return (Math.random() * 2 - 1) * maxDegrees;
+}
+
 function removeItemsFromInventorySlots(slots: (string | null)[], instanceIds: string[]) {
   const idSet = new Set(instanceIds.filter(Boolean));
   return slots.map((slotInstanceId) => (slotInstanceId && idSet.has(slotInstanceId) ? null : slotInstanceId));
@@ -12097,7 +13425,7 @@ function createBattleRenderEntities(player: { x: number; y: number; hp: number; 
       playerDistance: distance(enemy, player),
       renderScale
     })),
-    { kind: "player" as const, id: "player" as const, x: player.x, y: player.y, hp: player.hp, maxHp: player.maxHp, renderScale }
+    { kind: "player" as const, id: "player" as const, x: player.x, y: player.y, hp: player.hp, maxHp: player.maxHp, renderScale, guardActive: false }
   ].sort(compareBattleRenderEntities);
 }
 
@@ -12106,10 +13434,11 @@ function createBattleRenderItems(
   enemies: Enemy[],
   bolts: FireBolt[],
   hitVfxs: HitVfx[],
-  renderScale = UNIT_RENDER_SCALE
+  renderScale = UNIT_RENDER_SCALE,
+  guardActive = false
 ): BattleRenderItem[] {
   return [
-    ...createBattleRenderEntities(player, enemies, renderScale),
+    ...createBattleRenderEntities(player, enemies, renderScale).map((entity) => entity.kind === "player" ? { ...entity, guardActive } : entity),
     ...bolts.map((bolt) => {
       const point = fireBoltWorldPoint(bolt);
       return { kind: "fire-bolt" as const, id: bolt.id, x: point.x, y: point.y, bolt };
@@ -12244,7 +13573,7 @@ function renderBattleEntity(entity: BattleRenderEntity, depthIndex: number, anim
     return (
       <div
         key="player"
-        className="player unit-visual unit-visual-player"
+        className={`player unit-visual unit-visual-player${entity.guardActive ? " unit-visual-player-guarded" : ""}`}
         style={battleUnitStyle(entity, animationFrame, depthIndex, entity.renderScale)}
         data-animation-state={animationFrame.animation.state}
         data-animation-direction={animationFrame.animation.direction}
@@ -12616,13 +13945,31 @@ function damageTypeText(damageType: string) {
   return text[damageType] ?? "技能";
 }
 
+function forcedElementDamageType(skill: SkillPreview, timestampMs: number) {
+  const values = skill.runtime_params?.forced_element_types;
+  if (!Array.isArray(values)) return skill.damage_type;
+  const elements = values
+    .map((value) => String(value))
+    .filter((value) => value === "fire" || value === "cold" || value === "lightning");
+  if (elements.length === 0) return skill.damage_type;
+  return elements[stableStringHash(`${skill.active_gem_instance_id}:${timestampMs}`) % elements.length];
+}
+
+function stableStringHash(seed: string) {
+  let value = 0;
+  for (const char of seed) {
+    value = (Math.imul(value, 131) + char.charCodeAt(0)) >>> 0;
+  }
+  return value;
+}
+
 type ProjectileVfxKind = "fire_bolt" | "ice_shards" | "penetrating_shot";
 
 function projectileVfxKind(value: string | undefined): ProjectileVfxKind | null {
   const token = cssToken(value);
   if (token.includes("fire_bolt") || token.includes("skill_event_fire_bolt")) return "fire_bolt";
-  if (token.includes("ice_shards") || token.includes("skill_ice_shards") || token.includes("active_ice_shards")) return "ice_shards";
-  if (token.includes("penetrating_shot") || token.includes("skill_penetrating_shot") || token.includes("active_penetrating_shot")) return "penetrating_shot";
+  if (token.includes("ice_shards") || token.includes("ice_shot") || token.includes("skill_ice_shards") || token.includes("active_ice_shot")) return "ice_shards";
+  if (token.includes("penetrating_shot") || token.includes("skill_penetrating_shot") || token.includes("active_lightning_shot")) return "penetrating_shot";
   return null;
 }
 
@@ -13233,6 +14580,7 @@ function SkillRuntimeGuideLayer({
         cast={guidePackage?.cast ?? skill?.cast ?? {}}
         hitRadius={guidePackage?.hit.hit_radius ?? skill?.hit?.hit_radius}
         damageType={guidePackage?.classification.damage_type ?? skill?.damage_type ?? "physical"}
+        vfxKey={String(runtimeParams.zone_vfx_key ?? guidePackage?.presentation.vfx ?? skill?.presentation_keys?.vfx ?? skill?.visual_effect ?? "")}
         player={player}
         enemies={enemies}
         originPolicy={String(runtimeParams.origin_policy ?? "caster")}
@@ -13247,6 +14595,7 @@ function SkillRuntimeGuideLayer({
         cast={guidePackage?.cast ?? skill?.cast ?? {}}
         hitRadius={guidePackage?.hit.hit_radius ?? skill?.hit?.hit_radius}
         damageType={guidePackage?.classification.damage_type ?? skill?.damage_type ?? "physical"}
+        vfxKey={String(moduleChainDamageZone.params.zone_vfx_key ?? moduleChainDamageZone.params.vfx_key ?? guidePackage?.presentation.vfx ?? skill?.presentation_keys?.vfx ?? skill?.visual_effect ?? "")}
         player={player}
         enemies={enemies}
         originPolicy={String(moduleChainDamageZone.params.origin_policy ?? "trigger_position")}
@@ -13390,6 +14739,7 @@ function DamageZoneRuntimeGuide({
   cast,
   hitRadius,
   damageType,
+  vfxKey,
   player,
   enemies,
   originPolicy,
@@ -13399,6 +14749,7 @@ function DamageZoneRuntimeGuide({
   cast: Partial<SkillPackageData["cast"]>;
   hitRadius?: number;
   damageType: string;
+  vfxKey: string;
   player: { x: number; y: number };
   enemies: Enemy[];
   originPolicy: string;
@@ -13428,6 +14779,7 @@ function DamageZoneRuntimeGuide({
   const length = Math.max(1, Number(params.length ?? hitRadius ?? searchRange));
   const width = Math.max(1, Number(params.width ?? 96));
   const rectangleAngle = worldDirectionToBattleScreenAngle(direction, origin);
+  const guideVisual = damageZoneGuideVisual(shape, vfxKey);
   const rangeLabel = shape === "rectangle"
     ? `damage_zone 矩形范围：长 ${formatPreviewNumber(length)}，宽 ${formatPreviewNumber(width)}`
     : `damage_zone 圆形范围：半径 ${formatPreviewNumber(radius)}`;
@@ -13459,7 +14811,7 @@ function DamageZoneRuntimeGuide({
         </>
       )}
       <div
-        className={`runtime-damage-zone-range runtime-damage-zone-range-${shape} damage-zone-${damageType}`}
+        className={`runtime-damage-zone-range runtime-damage-zone-geometry-${shape} runtime-damage-zone-guide-${guideVisual} damage-zone-${damageType} runtime-damage-zone-range-${cssToken(vfxKey)}`}
         title={rangeLabel}
         style={{
           left: originVisual.x,
@@ -13468,7 +14820,8 @@ function DamageZoneRuntimeGuide({
           height: shape === "circle" ? radius * 2 * DIMETRIC_GROUND_EFFECT_Y_SCALE : width,
           transform: shape === "circle"
             ? "translate(-50%, -50%)"
-            : `translate(0, -50%) rotate(${rectangleAngle}rad)`
+            : `translate(0, -50%) rotate(${rectangleAngle}rad)`,
+          ["--whirlwind-angle" as string]: `${Date.now() * 0.36}deg`
         }}
         data-zone-shape={shape}
         data-zone-radius={shape === "circle" ? radius : undefined}
@@ -13496,6 +14849,14 @@ function DamageZoneRuntimeGuide({
       )}
     </div>
   );
+}
+
+type DamageZoneGuideVisual = "circle" | "rectangle" | "whirlwind";
+
+function damageZoneGuideVisual(shape: "circle" | "rectangle", vfxKey: string): DamageZoneGuideVisual {
+  const token = cssToken(vfxKey);
+  if (token.includes("whirlwind")) return "whirlwind";
+  return shape;
 }
 
 function FireBoltAlignmentDebug({
@@ -13592,7 +14953,7 @@ function DamageZoneLayer({ zones }: { zones: DamageZoneVfx[] }) {
         return (
           <div
             key={zone.id}
-            className={`damage-zone-vfx damage-zone-vfx-${zone.shape} damage-zone-${zone.damageType} ${zone.warning ? "damage-zone-vfx-warning" : ""}`}
+            className={`damage-zone-vfx damage-zone-vfx-${zone.shape} damage-zone-${zone.damageType} damage-zone-vfx-${cssToken(zone.vfxKey)} ${zone.warning ? "damage-zone-vfx-warning" : ""}`}
             style={{
               left: `${position.x}px`,
               top: `${position.y}px`,
@@ -13604,6 +14965,7 @@ function DamageZoneLayer({ zones }: { zones: DamageZoneVfx[] }) {
               opacity: zone.warning ? Math.max(0.2, 0.65 - progress * 0.35) : Math.max(0, 1 - progress * 0.75),
               zIndex: BATTLE_ENTITY_Z_INDEX_BASE - 2,
               ["--damage-zone-fill-scale" as string]: fillProgress,
+              ["--whirlwind-angle" as string]: `${elapsedMs * 0.72}deg`,
             }}
             data-skill-event={zone.warning ? "damage_zone_prime" : "damage_zone"}
             data-vfx-key={zone.vfxKey}
@@ -13653,6 +15015,34 @@ function AreaNovaLayer({ novas }: { novas: AreaNova[] }) {
         );
       })}
     </>
+  );
+}
+
+function PlayerBuffLayer({ buffs, player }: { buffs: PlayerBuff[]; player: PlayerRuntimeState }) {
+  const guard = buffs.find((buff) => buff.buffType === "guard");
+  if (!guard) return null;
+  const visualPoint = projectBattleWorldToScreen(player.x, player.y);
+  const progress = clamp(1 - guard.remaining / Math.max(0.001, guard.duration), 0, 1);
+  const opacity = clamp(0.38 + guard.remaining / Math.max(0.001, guard.duration) * 0.44, 0.25, 0.88);
+  const amountScale = clamp(guard.remainingAmount / Math.max(1, guard.remainingAmount + 60), 0.55, 1);
+  const labelOpacity = progress < 0.24 ? clamp(1 - progress / 0.24, 0, 1) : 0;
+  return (
+    <div
+      className="player-buff-shield player-buff-shield-guard"
+      style={{
+        left: visualPoint.x,
+        top: visualPoint.y - 24,
+        opacity,
+        transform: `translate(-50%, -50%) scale(${amountScale + Math.sin(progress * Math.PI * 4) * 0.035})`
+      }}
+      data-skill-event="buff_apply"
+      data-buff-type={guard.buffType}
+      data-vfx-key={guard.vfxKey}
+      data-remaining-amount={Math.round(guard.remainingAmount)}
+      aria-hidden="true"
+    >
+      <span className="player-buff-label" style={{ opacity: labelOpacity }}>石肤术</span>
+    </div>
   );
 }
 
@@ -13751,7 +15141,7 @@ function cssToken(value: string | undefined) {
 function visualTone(value: string | undefined) {
   const token = cssToken(value);
   if (token.includes("ice") || token.includes("frost")) return "cold";
-  if (token.includes("lightning")) return "lightning";
+  if (token.includes("lightning") || token.includes("thundercloud")) return "lightning";
   if (token.includes("puncture") || token.includes("shot")) return "physical";
   if (token.includes("fungal") || token.includes("spore")) return "spore";
   if (token.includes("vitality")) return "vitality";
@@ -13780,6 +15170,7 @@ function createEnemy(
       monsterId: spawnKind === "elite" ? "enemy_brute" : "enemy_imp",
       ...encounterMonsterPaletteFields(palette),
       ...offense,
+      aggroLocked: true,
       runtimeTier: "active"
     };
   }
@@ -13797,8 +15188,215 @@ function createEnemy(
     monsterId: spawnKind === "elite" ? "enemy_brute" : "enemy_imp",
     ...encounterMonsterPaletteFields(palette),
     ...offense,
+    aggroLocked: true,
     runtimeTier: "active"
   };
+}
+
+function runtimeDebugMonsterCornerTestEnabled() {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("debugMonsterCorner") === "1";
+}
+
+function runtimeDebugMonsterBoundaryTestEnabled() {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("debugMonsterBoundary") === "1";
+}
+
+function runtimeDebugCornerPlayerSpawn(map: BakedBattleMapData) {
+  return nearestRuntimeWalkablePoint(map, {
+    x: map.meta.world_width - map.meta.grid_size * 1.5,
+    y: map.meta.grid_size * 1.5
+  });
+}
+
+function createRuntimeDebugCornerEnemies(
+  player: { x: number; y: number },
+  map: BakedBattleMapData,
+  palette?: EncounterMonsterPalette
+): Enemy[] {
+  const offense = defaultMonsterOffense(8);
+  const candidates = map.walkablePoints
+    .map((point) => ({ point, distance: distance(point, player) }))
+    .filter(({ point, distance: pointDistance }) => (
+      pointDistance >= 86
+      && pointDistance <= 180
+      && enemyHasWalkableLine(map, point, player)
+    ))
+    .sort((left, right) => left.distance - right.distance);
+  const fallbackOffsets = [
+    { x: 0, y: 112 },
+    { x: -64, y: 112 },
+    { x: 64, y: 112 },
+    { x: -104, y: 142 },
+    { x: 104, y: 142 },
+    { x: 0, y: 164 }
+  ];
+  const monsterIds = [
+    "mon_100103",
+    "mon_200103",
+    "mon_300102",
+    "mon_400101",
+    "enemy_imp",
+    "enemy_brute"
+  ];
+  return fallbackOffsets.map((offset, index) => {
+    const spawn = candidates[index]?.point ?? nearestRuntimeWalkablePoint(map, { x: player.x + offset.x, y: player.y + offset.y });
+    return {
+      id: 90_000 + index,
+      x: spawn.x,
+      y: spawn.y,
+      hp: 32,
+      maxHp: 32,
+      monsterId: monsterIds[index % monsterIds.length],
+      ...encounterMonsterPaletteFields(palette),
+      ...offense,
+      aggroLocked: true,
+      runtimeTier: "active"
+    };
+  });
+}
+
+function runtimeDebugMonsterCornerSummary(enemies: Enemy[], player: { x: number; y: number }) {
+  const alive = enemies.filter((enemy) => enemy.hp > 0);
+  const nearest = alive
+    .map((enemy) => ({
+      monsterId: enemy.monsterId ?? "enemy",
+      distance: Math.round(distance(enemy, player)),
+      x: Math.round(enemy.x),
+      y: Math.round(enemy.y)
+    }))
+    .sort((left, right) => left.distance - right.distance)
+    .slice(0, 6)
+    .map((enemy) => `${enemy.monsterId}:${enemy.distance}@${enemy.x},${enemy.y}`);
+  return `角落AI调试：玩家 ${Math.round(player.x)},${Math.round(player.y)}；怪物 ${alive.length}，距离 ${nearest.join(" | ") || "无"}`;
+}
+
+function runtimeDebugMonsterDistances(enemies: Enemy[], player: { x: number; y: number }) {
+  return enemies
+    .filter((enemy) => enemy.hp > 0)
+    .map((enemy) => Math.round(distance(enemy, player)))
+    .sort((left, right) => left - right)
+    .slice(0, 6);
+}
+
+function runtimeBoundaryMonsterScanLine(summary: RuntimeBoundaryScanSummary) {
+  if (summary.status === "running") return "前端全边界AI扫描：运行中...";
+  const failureText = summary.failures.length > 0 ? `；失败样本 ${summary.failures.slice(0, 3).join(" | ")}` : "";
+  return `前端全边界AI扫描：${summary.passed}/${summary.tested} 通过，失败 ${summary.failed}${failureText}`;
+}
+
+function runRuntimeBoundaryMonsterAiScan(map: BakedBattleMapData): RuntimeBoundaryScanSummary {
+  const boundaryPoints = map.walkablePoints.filter((point) => runtimeBoundaryPointTouchesWall(map, point.gridX, point.gridY));
+  const monsterIds = runtimeBoundaryMonsterIds();
+  let passed = 0;
+  let failed = 0;
+  const failures: string[] = [];
+  for (const point of boundaryPoints) {
+    const player = { x: point.x, y: point.y };
+    const navigation = createEnemyNavigationContext([], player, map);
+    const candidates = runtimeBoundaryEnemyCandidates(map, player).slice(0, 12);
+    for (const monsterId of monsterIds) {
+      const ok = candidates.some((spawn, index) => {
+        const enemy: Enemy = {
+          id: 810_000 + index,
+          x: spawn.x,
+          y: spawn.y,
+          hp: 32,
+          maxHp: 32,
+          monsterId,
+          ...defaultMonsterOffense(8),
+          aggroLocked: true,
+          runtimeTier: "active"
+        };
+        const target = enemyNavigationMoveTarget(enemy, player, map, navigation);
+        if (distance(target, player) <= monsterMeleeReachRange(enemy)) {
+          const contactEnemy = { ...enemy, x: target.x, y: target.y };
+          return enemyHasWalkableLine(map, enemy, target) && canEnemyReachPlayerForMelee(contactEnemy, player, map);
+        }
+        if ("gridX" in target && "gridY" in target && navigation) {
+          const enemyCell = enemyWorldToGrid(map, enemy);
+          const currentIndex = enemyGridIndex(navigation, enemyCell.gridX, enemyCell.gridY);
+          const targetIndex = enemyGridIndex(navigation, target.gridX, target.gridY);
+          return navigation.field[targetIndex] < navigation.field[currentIndex];
+        }
+        return false;
+      });
+      if (ok) {
+        passed += 1;
+      } else {
+        failed += 1;
+        if (failures.length < 20) failures.push(`${monsterId}@${point.gridX},${point.gridY}`);
+      }
+    }
+  }
+  return { status: "done", tested: passed + failed, passed, failed, failures };
+}
+
+function runtimeBoundaryMonsterIds() {
+  return ["enemy_imp", "enemy_brute", ...Object.keys(MONSTER_GEOMETRY_VISUALS)];
+}
+
+function runtimeBoundaryPointTouchesWall(map: BakedBattleMapData, gridX: number, gridY: number) {
+  if (!enemyGridWalkable(map, gridX, gridY)) return false;
+  return [
+    { x: 1, y: 0 },
+    { x: -1, y: 0 },
+    { x: 0, y: 1 },
+    { x: 0, y: -1 }
+  ].some((direction) => !enemyGridWalkable(map, gridX + direction.x, gridY + direction.y));
+}
+
+function runtimeBoundaryEnemyCandidates(map: BakedBattleMapData, player: { x: number; y: number }) {
+  return map.walkablePoints
+    .map((point) => ({ point, distance: distance(point, player) }))
+    .filter(({ distance: pointDistance }) => pointDistance >= map.meta.grid_size * 2 && pointDistance <= map.meta.grid_size * 6)
+    .sort((left, right) => left.distance - right.distance)
+    .map(({ point }) => point);
+}
+
+function nearestRuntimeWalkablePoint(map: BakedBattleMapData, target: { x: number; y: number }) {
+  let best = map.walkablePoints[0] ?? { x: target.x, y: target.y, gridX: 0, gridY: 0 };
+  let bestDistance = distance(best, target);
+  for (const point of map.walkablePoints) {
+    const pointDistance = distance(point, target);
+    if (pointDistance < bestDistance) {
+      best = point;
+      bestDistance = pointDistance;
+    }
+  }
+  return best;
+}
+
+function enemyReachableMeleeOccupancyTarget(
+  map: BakedBattleMapData,
+  enemy: Enemy,
+  player: { x: number; y: number }
+) {
+  const baseAngle = Math.atan2(enemy.y - player.y, enemy.x - player.x);
+  const preferredAngle = baseAngle + ((((enemy.id * 137) % 7) - 3) * ENEMY_MELEE_SLOT_ANGLE_STEP);
+  const slotDistance = Math.max(
+    PLAYER_GEOMETRY_RADIUS + enemyVisualRadius(enemy) - 2,
+    monsterAttackRange(enemy) - ENEMY_MELEE_EDGE_CONTACT_TOLERANCE * 0.5
+  );
+  let best: ({ x: number; y: number; gridX: number; gridY: number; score: number } | null) = null;
+  for (let index = 0; index < 16; index += 1) {
+    const angle = baseAngle + (index - 7.5) * ENEMY_MELEE_SLOT_ANGLE_STEP;
+    const target = {
+      x: player.x + Math.cos(angle) * slotDistance,
+      y: player.y + Math.sin(angle) * slotDistance
+    };
+    if (!isMapPointWalkable(map, target.x, target.y)) continue;
+    if (!enemyHasWalkableLine(map, enemy, target)) continue;
+    const candidateEnemy = { ...enemy, x: target.x, y: target.y };
+    if (!canEnemyReachPlayerForMelee(candidateEnemy, player, map)) continue;
+    const grid = enemyWorldToGrid(map, target);
+    const enemyDistance = distance(enemy, target);
+    const angleDelta = Math.abs(Math.atan2(Math.sin(angle - preferredAngle), Math.cos(angle - preferredAngle)));
+    const score = enemyDistance + angleDelta * 18 + enemyGridWallCost(map, grid.gridX, grid.gridY) * map.meta.grid_size * 0.2;
+    if (!best || score < best.score) best = { ...target, ...grid, score };
+  }
+  return best;
 }
 
 function defaultMonsterOffense(baseDamage: number): Pick<Enemy, "baseDamage" | "damageType" | "hitKind" | "attackRange" | "attackCadenceMs" | "offenseModifiers" | "damageMultiplier"> {

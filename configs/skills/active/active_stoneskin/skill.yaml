@@ -182,7 +182,7 @@ display:
   name_key: "gem.active_stoneskin.name"
   description_key: "gem.active_stoneskin.description"
 classification:
-  tags: ["spell", "area"]
+  tags: ["spell", "guard"]
   damage_type: "physical"
   damage_form: "spell"
 cast:
@@ -207,6 +207,10 @@ behavior:
     damage_falloff_by_distance: "none"
     ring_width: 1
     status_chance_scale: 0
+    guard_absorb_percent: 70
+    guard_absorb_amount: 150
+    guard_duration_ms: 6000
+    guard_exclude_damage_over_time: true
 hit:
   base_damage: 0
   can_crit: false
@@ -218,7 +222,7 @@ hit:
 scaling:
   additive_stats: ["damage_add_percent", "physical_damage_add_percent", "cast_speed_add_percent"]
   final_stats: ["damage_final_percent", "skill_speed_final_percent"]
-  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add", "area_add_percent"]
+  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add"]
 presentation:
   vfx: "skill_event.stoneskin.vfx"
   cast_vfx_key: "skill_event.stoneskin.vfx"

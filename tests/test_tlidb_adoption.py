@@ -18,7 +18,7 @@ from liufang.config import (
 )
 from liufang.gem_board import SudokuGemBoard
 from liufang.inventory import GemInventory
-from liufang.combat import CombatSession, Player, Position
+from liufang.combat import CombatSession, Monster, Player, Position, SkillCooldown
 from liufang.presentation import PresentationService
 from liufang.skill_effects import SkillEffectCalculator
 
@@ -64,6 +64,7 @@ class TlidbAdoptionTest(unittest.TestCase):
         high_skill = self.calculator(high_inventory, high_board).calculate_for_active(high)
 
         self.assertLess(low_skill.base_damage, high_skill.base_damage)
+        self.assertEqual(low_skill.base_damage, 84.25)
         self.assertEqual(high_skill.base_damage, 842.5)
 
     def test_support_routes_through_sudoku_relation(self) -> None:
@@ -165,6 +166,39 @@ class TlidbAdoptionTest(unittest.TestCase):
         self.assertEqual(session._skill_release_skip_reason(final_skill), "combat.skip.defensive_threshold")
         session.player.current_life = 50
         self.assertEqual(session._skill_release_skip_reason(final_skill), "")
+
+    def test_stoneskin_release_creates_absorbing_player_buff(self) -> None:
+        inventory = GemInventory(self.definitions)
+        active = inventory.add_instance("active", "active_stoneskin", level=20)
+        board = SudokuGemBoard(load_board_rules(self.config_root), inventory)
+        board.mount_gem("active", 0, 0)
+        final_skill = self.calculator(inventory, board).calculate_for_active(active)
+
+        session = CombatSession(
+            player=Player(
+                "player",
+                current_life=50,
+                max_life=100,
+                position=Position(0, 0),
+                item_interaction_reach=1,
+                current_mana=15,
+                max_mana=15,
+            ),
+            monsters=[],
+            dropped_gems=[],
+            elapsed_ms=0,
+            active_skill_instances=(final_skill,),
+            inventory=inventory,
+            loot_runtime=None,
+        )
+        session.monsters.append(Monster("monster_1", 100, 100, Position(100, 0)))
+        session._cooldowns = {"active": SkillCooldown(final_skill, 0)}
+
+        session.tick(1)
+
+        self.assertEqual(len(session.player.buffs), 1)
+        self.assertEqual(session.player.buffs[0].buff_type, "guard")
+        self.assertEqual(session.player.take_hit(100, avoidable=False), 30)
 
     def test_player_facing_gem_level_is_limited_to_twenty(self) -> None:
         inventory = GemInventory(self.definitions)

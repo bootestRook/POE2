@@ -110,6 +110,7 @@ export type BattleGeometrySnapshot = {
     hp: number;
     maxHp: number;
     moving: boolean;
+    guardActive?: boolean;
   };
   enemies: ReadonlyArray<BattleGeometryEnemy>;
   projectiles: ReadonlyArray<BattleGeometryProjectile>;
@@ -188,18 +189,32 @@ function drawPlayerMarker(context: CanvasRenderingContext2D, snapshot: BattleGeo
   const scale = screenStableScale(snapshot);
   const radius = tokens.geometry.playerRadius * scale;
   const { x, y } = snapshot.player;
+  const guardActive = Boolean(snapshot.player.guardActive);
+  const guardPulse = 0.5 + 0.5 * Math.sin(snapshot.timeMs / 140);
 
   context.save();
   context.translate(x, y);
   context.rotate(rotation);
+
+  if (guardActive) {
+    context.save();
+    context.shadowColor = "rgba(255, 210, 64, 0.95)";
+    context.shadowBlur = 18 * scale;
+    context.strokeStyle = "rgba(255, 218, 74, 0.88)";
+    context.lineWidth = (5 + guardPulse * 1.4) * scale;
+    regularPolygonPath(context, 0, 0, radius * (1.28 + guardPulse * 0.08), 3, 0);
+    context.stroke();
+    context.restore();
+  }
+
   context.fillStyle = tokens.color.white;
-  context.strokeStyle = tokens.color.blue;
-  context.lineWidth = 3 * scale;
+  context.strokeStyle = guardActive ? "rgba(255, 218, 74, 0.98)" : tokens.color.blue;
+  context.lineWidth = (guardActive ? 4.5 : 3) * scale;
   regularPolygonPath(context, 0, 0, radius, 3, 0);
   context.fill();
   context.stroke();
 
-  context.fillStyle = tokens.color.blue;
+  context.fillStyle = guardActive ? "#FFE690" : tokens.color.blue;
   circlePath(context, 0, 0, 4.5 * scale);
   context.fill();
   context.restore();
@@ -639,9 +654,13 @@ function drawAreaMarkers(context: CanvasRenderingContext2D, snapshot: BattleGeom
     context.lineWidth = 2;
 
     if (area.kind === "chain" && area.startX !== undefined && area.startY !== undefined && area.endX !== undefined && area.endY !== undefined) {
-      context.lineWidth = 2.5;
-      line(context, area.startX, area.startY, area.endX, area.endY);
-      drawChainNodes(context, area, color, progress);
+      if (skillEffectFamily(area.vfxKey || area.damageType) === "thundercloud") {
+        drawThundercloudChainSegment(context, area, color, progress);
+      } else {
+        context.lineWidth = 2.5;
+        line(context, area.startX, area.startY, area.endX, area.endY);
+        drawChainNodes(context, area, color, progress);
+      }
     } else if (area.x !== undefined && area.y !== undefined) {
       const radius = Math.max(1, area.radius ?? Math.max(area.width ?? 1, area.height ?? 1) * 0.5);
       if (area.kind === "lava-orbit") {
@@ -682,6 +701,8 @@ function drawHitMarkers(context: CanvasRenderingContext2D, snapshot: BattleGeome
       drawIceHitMarker(context, radius, color, progress, stableScale);
     } else if (family === "penetrating_shot") {
       drawPierceHitMarker(context, radius, color, progress, stableScale);
+    } else if (family === "thundercloud") {
+      drawThundercloudHitMarker(context, radius, color, progress, stableScale);
     } else if (family === "lightning_chain") {
       drawLightningHitMarker(context, radius, color, progress, stableScale);
     } else if (family === "ground_spike") {
@@ -699,10 +720,12 @@ function drawHitMarkers(context: CanvasRenderingContext2D, snapshot: BattleGeome
   context.globalAlpha = 1;
 }
 
-type SkillEffectFamily = "fire_bolt" | "ice_shards" | "frost_nova" | "penetrating_shot" | "lightning_chain" | "ground_spike" | "fungal_petards" | "lava_orb";
+type SkillEffectFamily = "fire_bolt" | "ice_shards" | "frost_nova" | "penetrating_shot" | "lightning_chain" | "thundercloud" | "whirlwind" | "ground_spike" | "fungal_petards" | "lava_orb";
 
 function skillEffectFamily(token: string | undefined): SkillEffectFamily {
   const value = (token || "").toLowerCase();
+  if (value.includes("thundercloud")) return "thundercloud";
+  if (value.includes("whirlwind")) return "whirlwind";
   if (value.includes("lava_orb") || value.includes("lava")) return "lava_orb";
   if (value.includes("ice_shards") || value.includes("ice")) return "ice_shards";
   if (value.includes("frost_nova") || value.includes("frost")) return "frost_nova";
@@ -871,6 +894,43 @@ function drawLightningHitMarker(context: CanvasRenderingContext2D, radius: numbe
   }
   context.globalAlpha = Math.max(0, 0.52 - progress * 0.34);
   regularPolygonPath(context, 0, 0, radius * 0.42, 4, Math.PI / 4);
+  context.fill();
+}
+
+function drawThundercloudHitMarker(context: CanvasRenderingContext2D, radius: number, color: string, progress: number, scale: number) {
+  const strikeHeight = Math.max(22 * scale, radius * 1.25);
+  const strikeWidth = Math.max(7 * scale, radius * 0.22);
+  const fade = Math.max(0, 1 - progress);
+  context.shadowColor = "#DFFBFF";
+  context.shadowBlur = 14 * scale;
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.lineWidth = Math.max(2, 2.4 * scale);
+  context.globalAlpha = 0.78 * fade + 0.12;
+  context.strokeStyle = "#EAFDFF";
+  context.beginPath();
+  context.moveTo(-strikeWidth * 0.45, -strikeHeight * 0.58);
+  context.lineTo(strikeWidth * 0.32, -strikeHeight * 0.18);
+  context.lineTo(-strikeWidth * 0.1, -strikeHeight * 0.18);
+  context.lineTo(strikeWidth * 0.45, strikeHeight * 0.34);
+  context.stroke();
+
+  context.strokeStyle = color;
+  context.lineWidth = Math.max(1.4, 1.8 * scale);
+  context.globalAlpha = 0.48 * fade;
+  for (const side of [-1, 1]) {
+    context.beginPath();
+    context.moveTo(side * strikeWidth * 0.2, -strikeHeight * 0.05);
+    context.lineTo(side * strikeWidth * 1.05, strikeHeight * 0.15);
+    context.lineTo(side * strikeWidth * 0.54, strikeHeight * 0.32);
+    context.stroke();
+  }
+
+  context.shadowBlur = 8 * scale;
+  context.globalAlpha = 0.34 * fade;
+  context.fillStyle = "#B8F7FF";
+  context.beginPath();
+  context.ellipse(0, strikeHeight * 0.42, strikeWidth * (1.35 + progress * 0.75), strikeWidth * 0.42, 0, 0, Math.PI * 2);
   context.fill();
 }
 
@@ -1062,6 +1122,14 @@ function drawDamageZoneCircle(context: CanvasRenderingContext2D, area: BattleGeo
     drawLavaOrbZone(context, area, radius, color, progress);
     return;
   }
+  if (family === "thundercloud") {
+    drawThundercloudZone(context, area, radius, color, progress);
+    return;
+  }
+  if (family === "whirlwind") {
+    drawWhirlwindZone(context, area, radius, color);
+    return;
+  }
 
   context.save();
   context.translate(area.x, area.y);
@@ -1084,6 +1152,138 @@ function drawDamageZoneCircle(context: CanvasRenderingContext2D, area: BattleGeo
   if (family === "frost_nova") {
     drawFrostNovaZonePattern(context, radius, color, fillProgress, area.warning);
   }
+  context.restore();
+}
+
+function drawWhirlwindZone(context: CanvasRenderingContext2D, area: BattleGeometryArea, radius: number, color: string) {
+  if (area.x === undefined || area.y === undefined) return;
+  const elapsedMs = Math.max(0, area.elapsedMs ?? (area.duration - area.ttl) * 1000);
+  const spin = elapsedMs / 82;
+  const boost = area.warning ? 1 : 0;
+  const coreRadius = radius * (0.44 + boost * 0.08);
+  const outerRadius = radius * (0.78 + boost * 0.08);
+
+  context.save();
+  context.translate(area.x, area.y);
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.shadowColor = "rgba(255, 238, 192, 0.9)";
+  context.shadowBlur = 15 + boost * 12;
+
+  const dustGradient = context.createRadialGradient(0, 0, radius * 0.08, 0, 0, radius * 0.58);
+  dustGradient.addColorStop(0, "rgba(255, 246, 220, 0.24)");
+  dustGradient.addColorStop(0.46, "rgba(198, 178, 138, 0.12)");
+  dustGradient.addColorStop(1, "rgba(198, 178, 138, 0)");
+  context.globalAlpha = 0.34 + boost * 0.12;
+  context.fillStyle = dustGradient;
+  context.beginPath();
+  context.ellipse(0, 2, radius * 0.48, radius * 0.2, 0, 0, Math.PI * 2);
+  context.fill();
+
+  context.globalAlpha = 0.92;
+  for (let band = 0; band < 6; band += 1) {
+    const t = band / 6;
+    const bandAngle = spin + band * Math.PI * 0.74;
+    const bandRadius = coreRadius + (outerRadius - coreRadius) * (0.2 + t * 0.72);
+    const verticalScale = 0.34 + t * 0.08;
+    const lineWidth = Math.max(5, radius * (0.075 - t * 0.004)) * (1 + boost * 0.26);
+    const alpha = (0.84 - t * 0.055) * (1 + boost * 0.12);
+    const bandColor = band % 2 === 0 ? "rgba(255, 250, 224, 0.94)" : "rgba(224, 211, 176, 0.68)";
+    drawWhirlwindSweep(context, bandRadius, verticalScale, bandAngle, lineWidth, bandColor, alpha);
+  }
+
+  context.shadowBlur = 18 + boost * 10;
+  for (let edge = 0; edge < 3; edge += 1) {
+    const edgeAngle = -spin * 1.16 + edge * Math.PI * 0.86;
+    drawWhirlwindSweep(
+      context,
+      outerRadius * (0.82 + edge * 0.08),
+      0.24 + edge * 0.035,
+      edgeAngle,
+      Math.max(3.2, radius * 0.038),
+      edge === 1 ? color : "rgba(185, 42, 36, 0.82)",
+      0.66 + boost * 0.24
+    );
+  }
+
+  context.restore();
+}
+
+function drawWhirlwindSweep(
+  context: CanvasRenderingContext2D,
+  radius: number,
+  verticalScale: number,
+  angle: number,
+  lineWidth: number,
+  color: string,
+  alpha: number,
+) {
+  context.save();
+  context.rotate(angle);
+  context.scale(1, verticalScale);
+  context.globalAlpha *= alpha;
+  context.strokeStyle = color;
+  context.lineWidth = lineWidth;
+  context.beginPath();
+  context.arc(0, 0, radius, -0.1, Math.PI * 0.86);
+  context.stroke();
+
+  context.globalAlpha *= 0.55;
+  context.strokeStyle = "rgba(255, 255, 238, 0.88)";
+  context.lineWidth = Math.max(1, lineWidth * 0.34);
+  context.beginPath();
+  context.arc(0, 0, radius * 0.98, Math.PI * 0.22, Math.PI * 0.62);
+  context.stroke();
+  context.restore();
+}
+
+function drawThundercloudZone(context: CanvasRenderingContext2D, area: BattleGeometryArea, radius: number, color: string, progress: number) {
+  if (area.x === undefined || area.y === undefined) return;
+  const elapsedMs = Math.max(0, (area.duration - area.ttl) * 1000);
+  const hover = Math.sin(elapsedMs / 180) * 3;
+  const cloudWidth = Math.max(42, radius * 0.92);
+  const cloudHeight = Math.max(22, radius * 0.34);
+  const cloudY = -radius * 0.42 + hover;
+  const flash = pulse(progress * 2.7 + elapsedMs / 520);
+
+  context.save();
+  context.translate(area.x, area.y);
+  context.shadowColor = color;
+  context.shadowBlur = 18;
+  context.lineCap = "round";
+  context.lineJoin = "round";
+
+  const lobes = [
+    { x: -0.34, y: 0.1, rx: 0.3, ry: 0.45, fill: "rgba(24, 32, 52, 0.94)" },
+    { x: -0.1, y: -0.12, rx: 0.34, ry: 0.58, fill: "rgba(58, 76, 105, 0.95)" },
+    { x: 0.2, y: 0.08, rx: 0.36, ry: 0.5, fill: "rgba(18, 24, 42, 0.96)" },
+    { x: 0.45, y: -0.04, rx: 0.24, ry: 0.4, fill: "rgba(78, 101, 132, 0.86)" }
+  ];
+  for (const lobe of lobes) {
+    context.fillStyle = lobe.fill;
+    context.strokeStyle = "rgba(190, 245, 255, 0.18)";
+    context.lineWidth = 1.2;
+    context.globalAlpha = 0.92;
+    context.beginPath();
+    context.ellipse(lobe.x * cloudWidth, cloudY + lobe.y * cloudHeight, lobe.rx * cloudWidth, lobe.ry * cloudHeight, 0, 0, Math.PI * 2);
+    context.fill();
+    context.stroke();
+  }
+
+  context.globalAlpha = 0.3 + flash * 0.34;
+  context.strokeStyle = "#EAFDFF";
+  context.lineWidth = 2.2;
+  drawJaggedBolt(context, -cloudWidth * 0.14, cloudY + cloudHeight * 0.18, -cloudWidth * 0.02, -radius * 0.02, radius * 0.055);
+  context.strokeStyle = color;
+  context.globalAlpha = 0.22 + flash * 0.28;
+  context.lineWidth = 1.6;
+  drawJaggedBolt(context, cloudWidth * 0.18, cloudY + cloudHeight * 0.08, cloudWidth * 0.08, radius * 0.1, radius * 0.045);
+
+  context.globalAlpha = 0.12 + flash * 0.08;
+  context.fillStyle = "#B8F7FF";
+  context.beginPath();
+  context.ellipse(0, cloudY + cloudHeight * 0.2, cloudWidth * 0.42, cloudHeight * 0.2, 0, 0, Math.PI * 2);
+  context.fill();
   context.restore();
 }
 
@@ -1166,6 +1366,46 @@ function drawChainNodes(context: CanvasRenderingContext2D, area: BattleGeometryA
     regularPolygonPath(context, x, y, 4 + pulse(progress + t) * 2, 4, Math.PI / 4);
     context.fill();
   }
+}
+
+function drawThundercloudChainSegment(context: CanvasRenderingContext2D, area: BattleGeometryArea, color: string, progress: number) {
+  if (area.startX === undefined || area.startY === undefined || area.endX === undefined || area.endY === undefined) return;
+  const dx = area.endX - area.startX;
+  const dy = area.endY - area.startY;
+  const length = Math.max(1, Math.hypot(dx, dy));
+  const nx = -dy / length;
+  const ny = dx / length;
+  const amplitude = Math.min(16, Math.max(5, length * 0.08));
+  const points: Array<{ x: number; y: number }> = [];
+  for (let index = 0; index <= 6; index += 1) {
+    const t = index / 6;
+    const jitter = index === 0 || index === 6 ? 0 : (index % 2 === 0 ? 1 : -1) * amplitude * (0.7 + 0.3 * pulse(progress + index * 0.13));
+    points.push({
+      x: area.startX + dx * t + nx * jitter,
+      y: area.startY + dy * t + ny * jitter
+    });
+  }
+
+  context.save();
+  context.strokeStyle = "#EAFDFF";
+  context.shadowColor = color;
+  context.shadowBlur = 12;
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.lineWidth = 2.1;
+  context.globalAlpha *= 0.72;
+  polyline(context, points);
+  context.stroke();
+
+  context.strokeStyle = color;
+  context.lineWidth = 1.2;
+  context.globalAlpha *= 0.72;
+  for (let index = 1; index < points.length - 1; index += 2) {
+    const branch = points[index];
+    const sign = index % 4 === 1 ? 1 : -1;
+    line(context, branch.x, branch.y, branch.x + nx * amplitude * sign, branch.y + ny * amplitude * sign);
+  }
+  context.restore();
 }
 
 function drawHealthArc(
@@ -1329,6 +1569,34 @@ function line(context: CanvasRenderingContext2D, x1: number, y1: number, x2: num
   context.beginPath();
   context.moveTo(x1, y1);
   context.lineTo(x2, y2);
+  context.stroke();
+}
+
+function polyline(context: CanvasRenderingContext2D, points: ReadonlyArray<{ x: number; y: number }>) {
+  if (points.length === 0) return;
+  context.beginPath();
+  context.moveTo(points[0].x, points[0].y);
+  for (const point of points.slice(1)) {
+    context.lineTo(point.x, point.y);
+  }
+}
+
+function drawJaggedBolt(context: CanvasRenderingContext2D, startX: number, startY: number, endX: number, endY: number, amplitude: number) {
+  const dx = endX - startX;
+  const dy = endY - startY;
+  const length = Math.max(1, Math.hypot(dx, dy));
+  const nx = -dy / length;
+  const ny = dx / length;
+  const points: Array<{ x: number; y: number }> = [];
+  for (let index = 0; index <= 4; index += 1) {
+    const t = index / 4;
+    const jitter = index === 0 || index === 4 ? 0 : (index % 2 === 0 ? 1 : -1) * amplitude;
+    points.push({
+      x: startX + dx * t + nx * jitter,
+      y: startY + dy * t + ny * jitter
+    });
+  }
+  polyline(context, points);
   context.stroke();
 }
 

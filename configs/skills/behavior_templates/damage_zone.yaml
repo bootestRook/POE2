@@ -1,12 +1,12 @@
 id: damage_zone
-allowed_params: ["shape", "origin_policy", "facing_policy", "hit_at_ms", "max_targets", "status_chance_scale", "zone_vfx_key", "vfx_key", "radius", "length", "width", "angle_offset_deg", "expand_duration_ms", "ring_width", "trigger_marker_id", "trigger_delay_ms"]
+allowed_params: ["shape", "origin_policy", "facing_policy", "hit_at_ms", "max_targets", "status_chance_scale", "zone_vfx_key", "vfx_key", "radius", "length", "width", "angle_offset_deg", "expand_duration_ms", "ring_width", "duration_ms", "tick_interval_ms", "channel_max_stacks", "channel_time_per_stack_ms", "channel_frequency_cap_stacks", "cloud_duration_per_stack_ms", "base_tick_interval_ms", "channel_tick_during_channel", "slash_chance_percent", "slash_damage_scale", "slash_radius", "channel_move_speed_multiplier", "knockback_policy", "knockback_interval_ms", "aggravation_value", "aggravation_cooldown_ms", "dot_damage_bonus_per_10_aggravation_percent", "trigger_marker_id", "trigger_delay_ms", "chain_count", "chain_radius", "segment_vfx_key"]
 param_constraints:
   shape:
     type: string
     enum: ["circle", "rectangle"]
   origin_policy:
     type: string
-    enum: ["caster", "trigger_position"]
+    enum: ["caster", "target_position", "trigger_position"]
   facing_policy:
     type: string
     enum: ["none", "nearest_target", "locked_or_nearest_target"]
@@ -43,12 +43,71 @@ param_constraints:
   ring_width:
     type: number
     minimum: 1
+  duration_ms:
+    type: integer
+    minimum: 1
+  tick_interval_ms:
+    type: integer
+    minimum: 1
+  channel_max_stacks:
+    type: integer
+    minimum: 1
+  channel_time_per_stack_ms:
+    type: integer
+    minimum: 1
+  channel_frequency_cap_stacks:
+    type: integer
+    minimum: 1
+  cloud_duration_per_stack_ms:
+    type: integer
+    minimum: 1
+  base_tick_interval_ms:
+    type: integer
+    minimum: 1
+  channel_tick_during_channel:
+    type: boolean
+  slash_chance_percent:
+    type: number
+    minimum: 0
+    maximum: 100
+  slash_damage_scale:
+    type: number
+    minimum: 0
+  slash_radius:
+    type: number
+    minimum: 1
+  channel_move_speed_multiplier:
+    type: number
+    minimum: 0
+  knockback_policy:
+    type: string
+    enum: ["reverse"]
+  knockback_interval_ms:
+    type: integer
+    minimum: 1
+  aggravation_value:
+    type: number
+    minimum: 0
+  aggravation_cooldown_ms:
+    type: integer
+    minimum: 0
+  dot_damage_bonus_per_10_aggravation_percent:
+    type: number
+    minimum: 0
   trigger_marker_id:
     type: string
     pattern: "^[a-z][a-z0-9_]*$"
   trigger_delay_ms:
     type: integer
     minimum: 0
+  chain_count:
+    type: integer
+    minimum: 0
+  chain_radius:
+    type: number
+    minimum: 1
+  segment_vfx_key:
+    type: key
 shape_param_sets:
   circle:
     required: ["radius"]

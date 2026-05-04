@@ -22,10 +22,13 @@ class V1RequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
-        if parsed.path == "/api/state":
-            self._send_json(self.api.state())
-            return
-        self._serve_static(parsed.path)
+        try:
+            if parsed.path == "/api/state":
+                self._send_json(self.api.state())
+                return
+            self._serve_static(parsed.path)
+        except Exception as exc:
+            self._send_json({"error": str(exc)}, status=400)
 
     def do_POST(self) -> None:
         parsed = urlparse(self.path)

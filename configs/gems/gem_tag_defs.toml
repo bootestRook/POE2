@@ -119,6 +119,18 @@ display_name_key = "tag.summon.name"
 category = "source"
 
 [[tags]]
+id = "channel"
+name_key = "tag.channel.name"
+display_name_key = "tag.channel.name"
+category = "mechanic"
+
+[[tags]]
+id = "slash"
+name_key = "tag.slash.name"
+display_name_key = "tag.slash.name"
+category = "mechanic"
+
+[[tags]]
 id = "physical"
 name_key = "tag.physical.name"
 display_name_key = "tag.physical.name"
@@ -158,6 +170,24 @@ category = "behavior"
 id = "area"
 name_key = "tag.area.name"
 display_name_key = "tag.area.name"
+category = "behavior"
+
+[[tags]]
+id = "bombardment"
+name_key = "tag.bombardment.name"
+display_name_key = "tag.bombardment.name"
+category = "behavior"
+
+[[tags]]
+id = "intelligence"
+name_key = "tag.intelligence.name"
+display_name_key = "tag.intelligence.name"
+category = "attribute"
+
+[[tags]]
+id = "guard"
+name_key = "tag.guard.name"
+display_name_key = "tag.guard.name"
 category = "behavior"
 
 [[tags]]
@@ -201,54 +231,6 @@ id = "trap_or_mine"
 name_key = "tag.trap_or_mine.name"
 display_name_key = "tag.trap_or_mine.name"
 category = "behavior"
-
-[[tags]]
-id = "skill_fire_bolt"
-name_key = "tag.skill_fire_bolt.name"
-display_name_key = "tag.skill_fire_bolt.name"
-category = "skill_identity"
-
-[[tags]]
-id = "skill_ice_shards"
-name_key = "tag.skill_ice_shards.name"
-display_name_key = "tag.skill_ice_shards.name"
-category = "skill_identity"
-
-[[tags]]
-id = "skill_lightning_chain"
-name_key = "tag.skill_lightning_chain.name"
-display_name_key = "tag.skill_lightning_chain.name"
-category = "skill_identity"
-
-[[tags]]
-id = "skill_frost_nova"
-name_key = "tag.skill_frost_nova.name"
-display_name_key = "tag.skill_frost_nova.name"
-category = "skill_identity"
-
-[[tags]]
-id = "skill_puncture"
-name_key = "tag.skill_puncture.name"
-display_name_key = "tag.skill_puncture.name"
-category = "skill_identity"
-
-[[tags]]
-id = "skill_penetrating_shot"
-name_key = "tag.skill_penetrating_shot.name"
-display_name_key = "tag.skill_penetrating_shot.name"
-category = "skill_identity"
-
-[[tags]]
-id = "skill_lava_orb"
-name_key = "tag.skill_lava_orb.name"
-display_name_key = "tag.skill_lava_orb.name"
-category = "skill_identity"
-
-[[tags]]
-id = "skill_fungal_petards"
-name_key = "tag.skill_fungal_petards.name"
-display_name_key = "tag.skill_fungal_petards.name"
-category = "skill_identity"
 
 [[tags]]
 id = "support_damage"
