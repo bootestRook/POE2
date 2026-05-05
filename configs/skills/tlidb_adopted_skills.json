@@ -6,11 +6,11 @@
   ],
   "counts": {
     "active": 16,
-    "support": 30,
+    "support": 37,
     "passive": 9,
     "board_conduits": 3,
-    "tlidb_content_total": 55,
-    "total_with_conduits": 58
+    "tlidb_content_total": 62,
+    "total_with_conduits": 65
   },
   "active": [
     {
@@ -295,7 +295,7 @@
     {
       "id": "support_lightning_to_cold",
       "tlidb_id": "Lightning_to_Cold",
-      "name": "闪电转冰冷",
+      "name": "闪电转冰霜",
       "gem_kind": "support",
       "category": "damage_type_enhancer",
       "product_status": "product",
@@ -313,7 +313,7 @@
     {
       "id": "support_added_cold_damage",
       "tlidb_id": "Added_Cold_Damage",
-      "name": "附加冰冷伤害",
+      "name": "附加冰霜伤害",
       "gem_kind": "support",
       "category": "damage_type_enhancer",
       "product_status": "product",
@@ -331,7 +331,7 @@
     {
       "id": "support_added_erosion_damage",
       "tlidb_id": "Added_Erosion_Damage",
-      "name": "附加腐蚀伤害",
+      "name": "附加混沌伤害",
       "gem_kind": "support",
       "category": "damage_type_enhancer",
       "product_status": "product",
@@ -444,6 +444,69 @@
       "category": "skill_shape_modifier",
       "product_status": "product",
       "source_ref": "tlidb_skills/skills_for_ai.jsonl#Raging_Slash"
+    },
+    {
+      "id": "support_nova_shot",
+      "tlidb_id": "Nova_Shot",
+      "name": "坠星射击",
+      "gem_kind": "support",
+      "category": "skill_shape_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Nova_Shot"
+    },
+    {
+      "id": "support_precision_strike",
+      "tlidb_id": "Precision_Strike",
+      "name": "精确打击",
+      "gem_kind": "support",
+      "category": "skill_shape_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Precision_Strike"
+    },
+    {
+      "id": "support_steamroll",
+      "tlidb_id": "Steamroll",
+      "name": "碾压",
+      "gem_kind": "support",
+      "category": "skill_shape_modifier",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Steamroll"
+    },
+    {
+      "id": "support_extended_duration",
+      "tlidb_id": "Extended_Duration",
+      "name": "持续时间延长",
+      "gem_kind": "support",
+      "category": "utility_support",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Extended_Duration"
+    },
+    {
+      "id": "support_enhanced_ailment",
+      "tlidb_id": "Enhanced_Ailment",
+      "name": "强化异常",
+      "gem_kind": "support",
+      "category": "utility_support",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Enhanced_Ailment"
+    },
+    {
+      "id": "support_quick_mobility",
+      "tlidb_id": "Quick_Mobility",
+      "name": "急速位移",
+      "gem_kind": "support",
+      "category": "utility_support",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Quick_Mobility"
+    },
+    {
+      "id": "support_utility_cooldown_reduction",
+      "tlidb_id": "Cooldown_Reduction",
+      "name": "加速冷却",
+      "gem_kind": "support",
+      "category": "utility_support",
+      "product_status": "product",
+      "source_ref": "tlidb_skills/skills_for_ai.jsonl#Cooldown_Reduction"
     }
   ],
   "passive": [

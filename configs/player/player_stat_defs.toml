@@ -53,6 +53,15 @@ runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
+id = "life_return_percent"
+name_key = "stat.life_return_percent.name"
+category = "recovery"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
 id = "max_mana"
 name_key = "stat.max_mana.name"
 category = "resource"
@@ -125,10 +134,82 @@ runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
+id = "energy_shield_charge_speed_add_percent"
+name_key = "stat.energy_shield_charge_speed_add_percent.name"
+category = "energy_shield"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "energy_shield_charge_speed_final_percent"
+name_key = "stat.energy_shield_charge_speed_final_percent.name"
+category = "energy_shield"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
 id = "energy_shield_charge_delay_ms"
 name_key = "stat.energy_shield_charge_delay_ms.name"
 category = "energy_shield"
 value_type = "integer"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "energy_shield_charge_interval_percent"
+name_key = "stat.energy_shield_charge_interval_percent.name"
+category = "energy_shield"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "energy_shield_charge_interval_add_percent"
+name_key = "stat.energy_shield_charge_interval_add_percent.name"
+category = "energy_shield"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "energy_shield_charge_interval_final_percent"
+name_key = "stat.energy_shield_charge_interval_final_percent.name"
+category = "energy_shield"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "energy_shield_charge_delay_add_percent"
+name_key = "stat.energy_shield_charge_delay_add_percent.name"
+category = "energy_shield"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "energy_shield_charge_delay_final_percent"
+name_key = "stat.energy_shield_charge_delay_final_percent.name"
+category = "energy_shield"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "shield_return_percent"
+name_key = "stat.shield_return_percent.name"
+category = "energy_shield"
+value_type = "percent"
 v1_status = "V1_ACTIVE"
 runtime_effective = true
 affix_spawn_enabled_v1 = false
@@ -253,6 +334,15 @@ affix_spawn_enabled_v1 = false
 [[stats]]
 id = "ailment_damage_add_percent"
 name_key = "stat.ailment_damage_add_percent.name"
+category = "damage_form"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "ailment_damage_deepen_percent"
+name_key = "stat.ailment_damage_deepen_percent.name"
 category = "damage_form"
 value_type = "percent"
 v1_status = "V1_ACTIVE"
@@ -476,6 +566,69 @@ runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
+id = "conversion_physical_to_chaos_percent"
+name_key = "stat.conversion_physical_to_chaos_percent.name"
+category = "conversion"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "conversion_lightning_to_cold_percent"
+name_key = "stat.conversion_lightning_to_cold_percent.name"
+category = "conversion"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "conversion_lightning_to_fire_percent"
+name_key = "stat.conversion_lightning_to_fire_percent.name"
+category = "conversion"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "conversion_lightning_to_chaos_percent"
+name_key = "stat.conversion_lightning_to_chaos_percent.name"
+category = "conversion"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "conversion_cold_to_fire_percent"
+name_key = "stat.conversion_cold_to_fire_percent.name"
+category = "conversion"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "conversion_cold_to_chaos_percent"
+name_key = "stat.conversion_cold_to_chaos_percent.name"
+category = "conversion"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "conversion_fire_to_chaos_percent"
+name_key = "stat.conversion_fire_to_chaos_percent.name"
+category = "conversion"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
 id = "attack_speed_add_percent"
 name_key = "stat.attack_speed_add_percent.name"
 category = "speed"
@@ -620,6 +773,15 @@ runtime_effective = true
 affix_spawn_enabled_v1 = true
 
 [[stats]]
+id = "prevent_elemental_ailments"
+name_key = "stat.prevent_elemental_ailments.name"
+category = "status"
+value_type = "boolean"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
 id = "area_add_percent"
 name_key = "stat.area_add_percent.name"
 category = "behavior"
@@ -627,6 +789,42 @@ value_type = "percent"
 v1_status = "V1_ACTIVE"
 runtime_effective = true
 affix_spawn_enabled_v1 = true
+
+[[stats]]
+id = "slash_chance_add_percent"
+name_key = "stat.slash_chance_add_percent.name"
+category = "behavior"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "continuous_attack_chance_percent"
+name_key = "stat.continuous_attack_chance_percent.name"
+category = "behavior"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "continuous_attack_damage_step_percent"
+name_key = "stat.continuous_attack_damage_step_percent.name"
+category = "behavior"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "continuous_attack_damage_step_final_percent"
+name_key = "stat.continuous_attack_damage_step_final_percent.name"
+category = "behavior"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
 
 [[stats]]
 id = "area_final_percent"
@@ -647,6 +845,24 @@ runtime_effective = true
 affix_spawn_enabled_v1 = true
 
 [[stats]]
+id = "split_projectile_chance_percent"
+name_key = "stat.split_projectile_chance_percent.name"
+category = "behavior"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "split_projectile_count_add"
+name_key = "stat.split_projectile_count_add.name"
+category = "behavior"
+value_type = "integer"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
 id = "projectile_spread_angle_add"
 name_key = "stat.projectile_spread_angle_add.name"
 category = "behavior"
@@ -665,6 +881,15 @@ runtime_effective = true
 affix_spawn_enabled_v1 = true
 
 [[stats]]
+id = "bounce_count_add"
+name_key = "stat.bounce_count_add.name"
+category = "behavior"
+value_type = "integer"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
 id = "pierce_count_add"
 name_key = "stat.pierce_count_add.name"
 category = "behavior"
@@ -678,6 +903,24 @@ id = "duration_add_percent"
 name_key = "stat.duration_add_percent.name"
 category = "behavior"
 value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "guard_trigger_count"
+name_key = "stat.guard_trigger_count.name"
+category = "buff"
+value_type = "integer"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "guard_internal_cooldown_ms"
+name_key = "stat.guard_internal_cooldown_ms.name"
+category = "buff"
+value_type = "integer"
 v1_status = "V1_ACTIVE"
 runtime_effective = true
 affix_spawn_enabled_v1 = false
@@ -1046,6 +1289,51 @@ affix_spawn_enabled_v1 = false
 id = "adjacent_bonus_final_percent"
 name_key = "stat.adjacent_bonus_final_percent.name"
 category = "sudoku_relation"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "channel_min_stacks_add"
+name_key = "stat.channel_min_stacks_add.name"
+category = "behavior"
+value_type = "integer"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "knockback_chance_percent"
+name_key = "stat.knockback_chance_percent.name"
+category = "behavior"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "knockback_distance_add_percent"
+name_key = "stat.knockback_distance_add_percent.name"
+category = "behavior"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "deterioration_chance_add_percent"
+name_key = "stat.deterioration_chance_add_percent.name"
+category = "status"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = false
+
+[[stats]]
+id = "deterioration_extra_stack_chance_percent"
+name_key = "stat.deterioration_extra_stack_chance_percent.name"
+category = "status"
 value_type = "percent"
 v1_status = "V1_ACTIVE"
 runtime_effective = true

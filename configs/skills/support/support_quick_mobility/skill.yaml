@@ -1,0 +1,71 @@
+id: "support_quick_mobility"
+sort_order: 34
+name_key: "gem.support_quick_mobility.name"
+description_key: "gem.support_quick_mobility.description"
+category: "utility_support"
+gem_type: "gem_type_8"
+gem_kind: "support"
+sudoku_digit: 8
+source_values:
+  source: "tlidb"
+  tlidb_id: "Quick_Mobility"
+  display_level: 20
+  raw_lines: ["辅助位移技能。", "被辅助技能 10.5% 攻击和施法速度 (Lv1:21/2) (Lv21:41/2) (Lv41:61/2)", "被辅助技能 20.5% 冷却回复速度 (Lv1:41/2) (Lv21:61/2) (Lv41:81/2)", "被辅助技能 10.5% 攻击和施法速度 (Lv1:21/2) (Lv21:41/2) (Lv41:61/2)", "被辅助技能 20.5% 冷却回复速度 (Lv1:41/2) (Lv21:61/2) (Lv41:81/2)"]
+  parsed_values:
+    attack_speed_add_percent: 10.5
+    cast_speed_add_percent: 10.5
+    cooldown_recovery_add_percent: 20.5
+  anchors:
+    attack_speed_add_percent:
+      20: 10.5
+    cast_speed_add_percent:
+      20: 10.5
+    cooldown_recovery_add_percent:
+      20: 20.5
+level_table:
+  levels:
+    1: { attack_speed_add_percent: 10.5, cast_speed_add_percent: 10.5, cooldown_recovery_add_percent: 20.5 }
+    2: { attack_speed_add_percent: 11, cast_speed_add_percent: 11, cooldown_recovery_add_percent: 21 }
+    3: { attack_speed_add_percent: 11.5, cast_speed_add_percent: 11.5, cooldown_recovery_add_percent: 21.5 }
+    4: { attack_speed_add_percent: 12, cast_speed_add_percent: 12, cooldown_recovery_add_percent: 22 }
+    5: { attack_speed_add_percent: 12.5, cast_speed_add_percent: 12.5, cooldown_recovery_add_percent: 22.5 }
+    6: { attack_speed_add_percent: 13, cast_speed_add_percent: 13, cooldown_recovery_add_percent: 23 }
+    7: { attack_speed_add_percent: 13.5, cast_speed_add_percent: 13.5, cooldown_recovery_add_percent: 23.5 }
+    8: { attack_speed_add_percent: 14, cast_speed_add_percent: 14, cooldown_recovery_add_percent: 24 }
+    9: { attack_speed_add_percent: 14.5, cast_speed_add_percent: 14.5, cooldown_recovery_add_percent: 24.5 }
+    10: { attack_speed_add_percent: 15, cast_speed_add_percent: 15, cooldown_recovery_add_percent: 25 }
+    11: { attack_speed_add_percent: 15.5, cast_speed_add_percent: 15.5, cooldown_recovery_add_percent: 25.5 }
+    12: { attack_speed_add_percent: 16, cast_speed_add_percent: 16, cooldown_recovery_add_percent: 26 }
+    13: { attack_speed_add_percent: 16.5, cast_speed_add_percent: 16.5, cooldown_recovery_add_percent: 26.5 }
+    14: { attack_speed_add_percent: 17, cast_speed_add_percent: 17, cooldown_recovery_add_percent: 27 }
+    15: { attack_speed_add_percent: 17.5, cast_speed_add_percent: 17.5, cooldown_recovery_add_percent: 27.5 }
+    16: { attack_speed_add_percent: 18, cast_speed_add_percent: 18, cooldown_recovery_add_percent: 28 }
+    17: { attack_speed_add_percent: 18.5, cast_speed_add_percent: 18.5, cooldown_recovery_add_percent: 28.5 }
+    18: { attack_speed_add_percent: 19, cast_speed_add_percent: 19, cooldown_recovery_add_percent: 29 }
+    19: { attack_speed_add_percent: 19.5, cast_speed_add_percent: 19.5, cooldown_recovery_add_percent: 29.5 }
+    20: { attack_speed_add_percent: 20, cast_speed_add_percent: 20, cooldown_recovery_add_percent: 30 }
+    21: { attack_speed_add_percent: 20.5, cast_speed_add_percent: 20.5, cooldown_recovery_add_percent: 30.5 }
+    22: { attack_speed_add_percent: 21, cast_speed_add_percent: 21, cooldown_recovery_add_percent: 31 }
+    23: { attack_speed_add_percent: 21.5, cast_speed_add_percent: 21.5, cooldown_recovery_add_percent: 31.5 }
+    24: { attack_speed_add_percent: 22, cast_speed_add_percent: 22, cooldown_recovery_add_percent: 32 }
+    25: { attack_speed_add_percent: 22.5, cast_speed_add_percent: 22.5, cooldown_recovery_add_percent: 32.5 }
+    26: { attack_speed_add_percent: 23, cast_speed_add_percent: 23, cooldown_recovery_add_percent: 33 }
+    27: { attack_speed_add_percent: 23.5, cast_speed_add_percent: 23.5, cooldown_recovery_add_percent: 33.5 }
+    28: { attack_speed_add_percent: 24, cast_speed_add_percent: 24, cooldown_recovery_add_percent: 34 }
+    29: { attack_speed_add_percent: 24.5, cast_speed_add_percent: 24.5, cooldown_recovery_add_percent: 34.5 }
+    30: { attack_speed_add_percent: 25, cast_speed_add_percent: 25, cooldown_recovery_add_percent: 35 }
+    31: { attack_speed_add_percent: 25.5, cast_speed_add_percent: 25.5, cooldown_recovery_add_percent: 35.5 }
+    32: { attack_speed_add_percent: 26, cast_speed_add_percent: 26, cooldown_recovery_add_percent: 36 }
+    33: { attack_speed_add_percent: 26.5, cast_speed_add_percent: 26.5, cooldown_recovery_add_percent: 36.5 }
+    34: { attack_speed_add_percent: 27, cast_speed_add_percent: 27, cooldown_recovery_add_percent: 37 }
+    35: { attack_speed_add_percent: 27.5, cast_speed_add_percent: 27.5, cooldown_recovery_add_percent: 37.5 }
+    36: { attack_speed_add_percent: 28, cast_speed_add_percent: 28, cooldown_recovery_add_percent: 38 }
+    37: { attack_speed_add_percent: 28.5, cast_speed_add_percent: 28.5, cooldown_recovery_add_percent: 38.5 }
+    38: { attack_speed_add_percent: 29, cast_speed_add_percent: 29, cooldown_recovery_add_percent: 39 }
+    39: { attack_speed_add_percent: 29.5, cast_speed_add_percent: 29.5, cooldown_recovery_add_percent: 39.5 }
+    40: { attack_speed_add_percent: 30, cast_speed_add_percent: 30, cooldown_recovery_add_percent: 40 }
+tags: ["gem", "support_gem", "loot_gem", "gem_type_8", "support_utility", "support_speed", "support_cooldown"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["movement"]
+effect_stats: ["attack_speed_add_percent", "cast_speed_add_percent", "cooldown_recovery_add_percent"]

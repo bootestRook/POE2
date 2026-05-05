@@ -1,0 +1,68 @@
+id: "support_enhanced_ailment"
+sort_order: 33
+name_key: "gem.support_enhanced_ailment.name"
+description_key: "gem.support_enhanced_ailment.description"
+category: "utility_support"
+gem_type: "gem_type_8"
+gem_kind: "support"
+sudoku_digit: 8
+source_values:
+  source: "tlidb"
+  tlidb_id: "Enhanced_Ailment"
+  display_level: 20
+  raw_lines: ["辅助击中敌人的技能。", "被辅助技能 +40% 几率造成伤害型异常状态", "被辅助技能额外 0.3% 异常伤害 (Lv1:3/10) (Lv21:63/10) (Lv41:83/10)", "被辅助技能 +40% 几率造成伤害型异常状态", "被辅助技能额外 0.3% 异常伤害 (Lv1:3/10) (Lv21:63/10) (Lv41:83/10)"]
+  parsed_values:
+    status_chance_add_percent: 40
+    ailment_damage_add_percent: 0.3
+  anchors:
+    status_chance_add_percent:
+      20: 40
+    ailment_damage_add_percent:
+      20: 0.3
+level_table:
+  levels:
+    1: { status_chance_add_percent: 40, ailment_damage_add_percent: 0.3 }
+    2: { status_chance_add_percent: 40, ailment_damage_add_percent: 0.6 }
+    3: { status_chance_add_percent: 40, ailment_damage_add_percent: 0.9 }
+    4: { status_chance_add_percent: 40, ailment_damage_add_percent: 1.2 }
+    5: { status_chance_add_percent: 40, ailment_damage_add_percent: 1.5 }
+    6: { status_chance_add_percent: 40, ailment_damage_add_percent: 1.8 }
+    7: { status_chance_add_percent: 40, ailment_damage_add_percent: 2.1 }
+    8: { status_chance_add_percent: 40, ailment_damage_add_percent: 2.4 }
+    9: { status_chance_add_percent: 40, ailment_damage_add_percent: 2.7 }
+    10: { status_chance_add_percent: 40, ailment_damage_add_percent: 3 }
+    11: { status_chance_add_percent: 40, ailment_damage_add_percent: 3.3 }
+    12: { status_chance_add_percent: 40, ailment_damage_add_percent: 3.6 }
+    13: { status_chance_add_percent: 40, ailment_damage_add_percent: 3.9 }
+    14: { status_chance_add_percent: 40, ailment_damage_add_percent: 4.2 }
+    15: { status_chance_add_percent: 40, ailment_damage_add_percent: 4.5 }
+    16: { status_chance_add_percent: 40, ailment_damage_add_percent: 4.8 }
+    17: { status_chance_add_percent: 40, ailment_damage_add_percent: 5.1 }
+    18: { status_chance_add_percent: 40, ailment_damage_add_percent: 5.4 }
+    19: { status_chance_add_percent: 40, ailment_damage_add_percent: 5.7 }
+    20: { status_chance_add_percent: 40, ailment_damage_add_percent: 6 }
+    21: { status_chance_add_percent: 40, ailment_damage_add_percent: 6.3 }
+    22: { status_chance_add_percent: 40, ailment_damage_add_percent: 6.4 }
+    23: { status_chance_add_percent: 40, ailment_damage_add_percent: 6.5 }
+    24: { status_chance_add_percent: 40, ailment_damage_add_percent: 6.6 }
+    25: { status_chance_add_percent: 40, ailment_damage_add_percent: 6.7 }
+    26: { status_chance_add_percent: 40, ailment_damage_add_percent: 6.8 }
+    27: { status_chance_add_percent: 40, ailment_damage_add_percent: 6.9 }
+    28: { status_chance_add_percent: 40, ailment_damage_add_percent: 7 }
+    29: { status_chance_add_percent: 40, ailment_damage_add_percent: 7.1 }
+    30: { status_chance_add_percent: 40, ailment_damage_add_percent: 7.2 }
+    31: { status_chance_add_percent: 40, ailment_damage_add_percent: 7.3 }
+    32: { status_chance_add_percent: 40, ailment_damage_add_percent: 7.4 }
+    33: { status_chance_add_percent: 40, ailment_damage_add_percent: 7.5 }
+    34: { status_chance_add_percent: 40, ailment_damage_add_percent: 7.6 }
+    35: { status_chance_add_percent: 40, ailment_damage_add_percent: 7.7 }
+    36: { status_chance_add_percent: 40, ailment_damage_add_percent: 7.8 }
+    37: { status_chance_add_percent: 40, ailment_damage_add_percent: 7.9 }
+    38: { status_chance_add_percent: 40, ailment_damage_add_percent: 8 }
+    39: { status_chance_add_percent: 40, ailment_damage_add_percent: 8.1 }
+    40: { status_chance_add_percent: 40, ailment_damage_add_percent: 8.2 }
+tags: ["gem", "support_gem", "loot_gem", "gem_type_8", "support_utility", "support_status"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["attack", "spell"]
+effect_stats: ["status_chance_add_percent", "ailment_damage_add_percent"]

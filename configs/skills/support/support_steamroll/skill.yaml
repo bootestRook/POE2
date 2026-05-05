@@ -1,0 +1,191 @@
+id: "support_steamroll"
+sort_order: 32
+name_key: "gem.support_steamroll.name"
+description_key: "gem.support_steamroll.description"
+category: "skill_shape_modifier"
+gem_type: "gem_type_7"
+gem_kind: "support"
+sudoku_digit: 7
+source_values:
+  source: "tlidb"
+  tlidb_id: "Steamroll"
+  display_level: 20
+  raw_lines: ["辅助近战攻击技能。", "被辅助技能额外 +31% 近战伤害 (Lv1:31) (Lv21:41) (Lv41:51)", "被辅助技能额外 +31% 异常伤害 (Lv1:31) (Lv21:41) (Lv41:51)", "被辅助技能 -15% 攻击速度", "被辅助技能额外 +31% 近战伤害 (Lv1:31) (Lv21:41) (Lv41:51)", "被辅助技能额外 +31% 异常伤害 (Lv1:31) (Lv21:41) (Lv41:51)", "被辅助技能 -15% 攻击速度"]
+  parsed_values:
+    melee_damage_add_percent: 31
+    ailment_damage_add_percent: 31
+    attack_speed_add_percent: -15
+  anchors:
+    melee_damage_add_percent:
+      20: 31
+    ailment_damage_add_percent:
+      20: 31
+    attack_speed_add_percent:
+      20: -15
+level_table:
+  levels:
+    1:
+      melee_damage_add_percent: 31
+      ailment_damage_add_percent: 31
+      attack_speed_add_percent: 31
+    2:
+      melee_damage_add_percent: 31.5
+      ailment_damage_add_percent: 31.5
+      attack_speed_add_percent: 31.5
+    3:
+      melee_damage_add_percent: 32
+      ailment_damage_add_percent: 32
+      attack_speed_add_percent: 32
+    4:
+      melee_damage_add_percent: 32.5
+      ailment_damage_add_percent: 32.5
+      attack_speed_add_percent: 32.5
+    5:
+      melee_damage_add_percent: 33
+      ailment_damage_add_percent: 33
+      attack_speed_add_percent: 33
+    6:
+      melee_damage_add_percent: 33.5
+      ailment_damage_add_percent: 33.5
+      attack_speed_add_percent: 33.5
+    7:
+      melee_damage_add_percent: 34
+      ailment_damage_add_percent: 34
+      attack_speed_add_percent: 34
+    8:
+      melee_damage_add_percent: 34.5
+      ailment_damage_add_percent: 34.5
+      attack_speed_add_percent: 34.5
+    9:
+      melee_damage_add_percent: 35
+      ailment_damage_add_percent: 35
+      attack_speed_add_percent: 35
+    10:
+      melee_damage_add_percent: 35.5
+      ailment_damage_add_percent: 35.5
+      attack_speed_add_percent: 35.5
+    11:
+      melee_damage_add_percent: 36
+      ailment_damage_add_percent: 36
+      attack_speed_add_percent: 36
+    12:
+      melee_damage_add_percent: 36.5
+      ailment_damage_add_percent: 36.5
+      attack_speed_add_percent: 36.5
+    13:
+      melee_damage_add_percent: 37
+      ailment_damage_add_percent: 37
+      attack_speed_add_percent: 37
+    14:
+      melee_damage_add_percent: 37.5
+      ailment_damage_add_percent: 37.5
+      attack_speed_add_percent: 37.5
+    15:
+      melee_damage_add_percent: 38
+      ailment_damage_add_percent: 38
+      attack_speed_add_percent: 38
+    16:
+      melee_damage_add_percent: 38.5
+      ailment_damage_add_percent: 38.5
+      attack_speed_add_percent: 38.5
+    17:
+      melee_damage_add_percent: 39
+      ailment_damage_add_percent: 39
+      attack_speed_add_percent: 39
+    18:
+      melee_damage_add_percent: 39.5
+      ailment_damage_add_percent: 39.5
+      attack_speed_add_percent: 39.5
+    19:
+      melee_damage_add_percent: 40
+      ailment_damage_add_percent: 40
+      attack_speed_add_percent: 40
+    20:
+      melee_damage_add_percent: 40.5
+      ailment_damage_add_percent: 40.5
+      attack_speed_add_percent: 40.5
+    21:
+      melee_damage_add_percent: 41
+      ailment_damage_add_percent: 41
+      attack_speed_add_percent: 41
+    22:
+      melee_damage_add_percent: 41.5
+      ailment_damage_add_percent: 41.5
+      attack_speed_add_percent: 41.5
+    23:
+      melee_damage_add_percent: 42
+      ailment_damage_add_percent: 42
+      attack_speed_add_percent: 42
+    24:
+      melee_damage_add_percent: 42.5
+      ailment_damage_add_percent: 42.5
+      attack_speed_add_percent: 42.5
+    25:
+      melee_damage_add_percent: 43
+      ailment_damage_add_percent: 43
+      attack_speed_add_percent: 43
+    26:
+      melee_damage_add_percent: 43.5
+      ailment_damage_add_percent: 43.5
+      attack_speed_add_percent: 43.5
+    27:
+      melee_damage_add_percent: 44
+      ailment_damage_add_percent: 44
+      attack_speed_add_percent: 44
+    28:
+      melee_damage_add_percent: 44.5
+      ailment_damage_add_percent: 44.5
+      attack_speed_add_percent: 44.5
+    29:
+      melee_damage_add_percent: 45
+      ailment_damage_add_percent: 45
+      attack_speed_add_percent: 45
+    30:
+      melee_damage_add_percent: 45.5
+      ailment_damage_add_percent: 45.5
+      attack_speed_add_percent: 45.5
+    31:
+      melee_damage_add_percent: 46
+      ailment_damage_add_percent: 46
+      attack_speed_add_percent: 46
+    32:
+      melee_damage_add_percent: 46.5
+      ailment_damage_add_percent: 46.5
+      attack_speed_add_percent: 46.5
+    33:
+      melee_damage_add_percent: 47
+      ailment_damage_add_percent: 47
+      attack_speed_add_percent: 47
+    34:
+      melee_damage_add_percent: 47.5
+      ailment_damage_add_percent: 47.5
+      attack_speed_add_percent: 47.5
+    35:
+      melee_damage_add_percent: 48
+      ailment_damage_add_percent: 48
+      attack_speed_add_percent: 48
+    36:
+      melee_damage_add_percent: 48.5
+      ailment_damage_add_percent: 48.5
+      attack_speed_add_percent: 48.5
+    37:
+      melee_damage_add_percent: 49
+      ailment_damage_add_percent: 49
+      attack_speed_add_percent: 49
+    38:
+      melee_damage_add_percent: 49.5
+      ailment_damage_add_percent: 49.5
+      attack_speed_add_percent: 49.5
+    39:
+      melee_damage_add_percent: 50
+      ailment_damage_add_percent: 50
+      attack_speed_add_percent: 50
+    40:
+      melee_damage_add_percent: 50.5
+      ailment_damage_add_percent: 50.5
+      attack_speed_add_percent: 50.5
+tags: ["gem", "support_gem", "loot_gem", "gem_type_7", "support_shape", "support_melee", "support_area"]
+apply_filter:
+  target_kinds: ["active_skill"]
+  tags_all: ["melee", "area"]
+effect_stats: ["melee_damage_add_percent", "ailment_damage_add_percent", "attack_speed_add_percent"]

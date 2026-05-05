@@ -2,9 +2,9 @@ id: "passive_magical_source"
 sort_order: 8
 name_key: "gem.passive_magical_source.name"
 description_key: "gem.passive_magical_source.description"
-gem_type: "gem_type_2"
+gem_type: "gem_type_8"
 gem_kind: "passive_skill"
-sudoku_digit: 2
+sudoku_digit: 8
 visual_effect: "passive_magical_source"
 source_values:
   source: "tlidb"
@@ -98,7 +98,7 @@ level_table:
       max_mana: 54.75
     40:
       max_mana: 55.0
-tags: ["gem", "passive_skill_gem", "loot_gem", "gem_type_2", "aura", "spell"]
+tags: ["gem", "passive_skill_gem", "loot_gem", "gem_type_8", "aura", "spell"]
 apply_filter:
   target_kinds: ["active_skill"]
   tags_any: ["spell"]

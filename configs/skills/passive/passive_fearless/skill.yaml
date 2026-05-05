@@ -2,9 +2,9 @@ id: "passive_fearless"
 sort_order: 3
 name_key: "gem.passive_fearless.name"
 description_key: "gem.passive_fearless.description"
-gem_type: "gem_type_2"
+gem_type: "gem_type_8"
 gem_kind: "passive_skill"
-sudoku_digit: 2
+sudoku_digit: 8
 visual_effect: "passive_fearless"
 source_values:
   source: "tlidb"
@@ -98,7 +98,7 @@ level_table:
       crit_rating: 66.8
     40:
       crit_rating: 67.1
-tags: ["gem", "passive_skill_gem", "loot_gem", "gem_type_2", "aura", "melee"]
+tags: ["gem", "passive_skill_gem", "loot_gem", "gem_type_8", "aura", "melee"]
 apply_filter:
   target_kinds: ["active_skill"]
   tags_any: ["melee"]

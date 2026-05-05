@@ -113,6 +113,18 @@ display_name_key = "tag.bow.name"
 category = "source"
 
 [[tags]]
+id = "gun"
+name_key = "tag.gun.name"
+display_name_key = "tag.gun.name"
+category = "source"
+
+[[tags]]
+id = "cannon"
+name_key = "tag.cannon.name"
+display_name_key = "tag.cannon.name"
+category = "source"
+
+[[tags]]
 id = "summon"
 name_key = "tag.summon.name"
 display_name_key = "tag.summon.name"
@@ -185,6 +197,12 @@ display_name_key = "tag.intelligence.name"
 category = "attribute"
 
 [[tags]]
+id = "dexterity"
+name_key = "tag.dexterity.name"
+display_name_key = "tag.dexterity.name"
+category = "attribute"
+
+[[tags]]
 id = "guard"
 name_key = "tag.guard.name"
 display_name_key = "tag.guard.name"
@@ -221,9 +239,21 @@ display_name_key = "tag.dot.name"
 category = "behavior"
 
 [[tags]]
+id = "ground"
+name_key = "tag.ground.name"
+display_name_key = "tag.ground.name"
+category = "behavior"
+
+[[tags]]
 id = "aura"
 name_key = "tag.aura.name"
 display_name_key = "tag.aura.name"
+category = "behavior"
+
+[[tags]]
+id = "movement"
+name_key = "tag.movement.name"
+display_name_key = "tag.movement.name"
 category = "behavior"
 
 [[tags]]
@@ -275,6 +305,12 @@ display_name_key = "tag.support_status.name"
 category = "support"
 
 [[tags]]
+id = "support_channel"
+name_key = "tag.support_channel.name"
+display_name_key = "tag.support_channel.name"
+category = "support"
+
+[[tags]]
 id = "support_level"
 name_key = "tag.support_level.name"
 display_name_key = "tag.support_level.name"
@@ -296,6 +332,12 @@ category = "support"
 id = "support_shape"
 name_key = "tag.support_shape.name"
 display_name_key = "tag.support_shape.name"
+category = "support"
+
+[[tags]]
+id = "support_utility"
+name_key = "tag.support_utility.name"
+display_name_key = "tag.support_utility.name"
 category = "support"
 
 [[tags]]

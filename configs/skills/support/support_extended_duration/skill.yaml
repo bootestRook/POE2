@@ -1,0 +1,65 @@
+id: "support_extended_duration"
+sort_order: 32
+name_key: "gem.support_extended_duration.name"
+description_key: "gem.support_extended_duration.description"
+category: "utility_support"
+gem_type: "gem_type_8"
+gem_kind: "support"
+sudoku_digit: 8
+source_values:
+  source: "tlidb"
+  tlidb_id: "Extended_Duration"
+  display_level: 20
+  raw_lines: ["辅助持续技能。", "被辅助技能 +13% 持续时间 (Lv1:13) (Lv21:23) (Lv41:33)", "被辅助技能 +13% 持续时间 (Lv1:13) (Lv21:23) (Lv41:33)"]
+  parsed_values:
+    duration_add_percent: 13
+  anchors:
+    duration_add_percent:
+      20: 13
+level_table:
+  levels:
+    1: { duration_add_percent: 13 }
+    2: { duration_add_percent: 13.5 }
+    3: { duration_add_percent: 14 }
+    4: { duration_add_percent: 14.5 }
+    5: { duration_add_percent: 15 }
+    6: { duration_add_percent: 15.5 }
+    7: { duration_add_percent: 16 }
+    8: { duration_add_percent: 16.5 }
+    9: { duration_add_percent: 17 }
+    10: { duration_add_percent: 17.5 }
+    11: { duration_add_percent: 18 }
+    12: { duration_add_percent: 18.5 }
+    13: { duration_add_percent: 19 }
+    14: { duration_add_percent: 19.5 }
+    15: { duration_add_percent: 20 }
+    16: { duration_add_percent: 20.5 }
+    17: { duration_add_percent: 21 }
+    18: { duration_add_percent: 21.5 }
+    19: { duration_add_percent: 22 }
+    20: { duration_add_percent: 22.5 }
+    21: { duration_add_percent: 23 }
+    22: { duration_add_percent: 23.5 }
+    23: { duration_add_percent: 24 }
+    24: { duration_add_percent: 24.5 }
+    25: { duration_add_percent: 25 }
+    26: { duration_add_percent: 25.5 }
+    27: { duration_add_percent: 26 }
+    28: { duration_add_percent: 26.5 }
+    29: { duration_add_percent: 27 }
+    30: { duration_add_percent: 27.5 }
+    31: { duration_add_percent: 28 }
+    32: { duration_add_percent: 28.5 }
+    33: { duration_add_percent: 29 }
+    34: { duration_add_percent: 29.5 }
+    35: { duration_add_percent: 30 }
+    36: { duration_add_percent: 30.5 }
+    37: { duration_add_percent: 31 }
+    38: { duration_add_percent: 31.5 }
+    39: { duration_add_percent: 32 }
+    40: { duration_add_percent: 32.5 }
+tags: ["gem", "support_gem", "loot_gem", "gem_type_8", "support_utility"]
+apply_filter:
+  target_kinds: ["active_skill", "passive_skill"]
+  tags_any: ["dot"]
+effect_stats: ["duration_add_percent"]

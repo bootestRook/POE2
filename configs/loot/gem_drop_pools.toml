@@ -32,6 +32,7 @@ entries = [
   { tag = "gem_type_5", weight = 160 },
   { tag = "gem_type_6", weight = 140 },
   { tag = "gem_type_7", weight = 80 },
+  { tag = "gem_type_8", weight = 100 },
   { tag = "gem_type_9", weight = 100 },
 ]
 

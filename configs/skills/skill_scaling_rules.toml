@@ -22,8 +22,11 @@ allowed_scaling_stats = [
   "added_cooldown_ms",
   "area_add_percent",
   "projectile_count_add",
+  "split_projectile_chance_percent",
+  "split_projectile_count_add",
   "projectile_speed_add_percent",
   "chain_count_add",
+  "bounce_count_add",
   "pierce_count_add",
   "base_crit_chance_percent",
   "crit_chance_add_percent",
@@ -33,7 +36,70 @@ allowed_scaling_stats = [
   "derived_crit_chance_percent",
   "derived_crit_damage_percent",
   "cannot_crit",
+  "prevent_elemental_ailments",
   "status_chance_add_percent",
+  "ailment_damage_add_percent",
+  "ignite_stacks_add",
+  "ignite_duration_add_percent",
+  "ignite_damage_bonus_per_stack_percent",
+  "ignite_damage_bonus_max_percent",
+  "added_base_ignite_damage_per_second",
+  "aggravation_value_add",
+  "aggravation_effect_add_percent",
+  "frostbite_max_value_add",
+  "numbed_effect_add_percent",
+  "ailment_duration_add_percent",
+  "ailment_damage_deepen_percent",
+  "added_base_ailment_damage_per_second",
+  "added_base_trauma_damage_per_second",
+  "trauma_duration_add_percent",
+  "damage_add_percent_per_27_attributes",
+  "damage_add_percent_per_12_attributes",
+  "active_gem_level_add",
+  "attack_skill_level_add",
+  "spell_skill_level_add",
+  "support_gem_level_add",
+  "double_damage_chance_percent",
+  "deterioration_chance_add_percent",
+  "deterioration_extra_stack_chance_percent",
+  "deterioration_damage_add_percent",
+  "deterioration_duration_add_percent",
+  "physical_skill_level_add",
+  "physical_skill_level_add",
+  "fire_skill_level_add",
+  "cold_skill_level_add",
+  "lightning_skill_level_add",
+  "chaos_skill_level_add",
+  "core_skill_level_add",
+  "cull_threshold_percent",
+  "movement_skill_cooldown_recovery_add_percent",
+  "armor_reduction_penetration_percent",
+  "slash_chance_add_percent",
+  "continuous_attack_chance_percent",
+  "continuous_attack_damage_step_percent",
+  "channel_max_stacks_add",
+  "channel_min_stacks_add",
+  "energy_blessing_damage_per_stack_percent",
+  "guard_trigger_count",
+  "guard_internal_cooldown_ms",
+  "knockback_chance_percent",
+  "knockback_distance_add_percent",
+  "added_fire_damage",
+  "added_physical_damage",
+  "added_cold_damage",
+  "added_lightning_damage",
+  "added_chaos_damage",
+  "added_fire_damage_from_physical_percent",
+  "conversion_physical_to_lightning_percent",
+  "conversion_physical_to_cold_percent",
+  "conversion_physical_to_fire_percent",
+  "conversion_physical_to_chaos_percent",
+  "conversion_lightning_to_cold_percent",
+  "conversion_lightning_to_fire_percent",
+  "conversion_lightning_to_chaos_percent",
+  "conversion_cold_to_fire_percent",
+  "conversion_cold_to_chaos_percent",
+  "conversion_fire_to_chaos_percent",
   "physical_damage_add_percent",
   "fire_damage_add_percent",
   "cold_damage_add_percent",
@@ -45,6 +111,7 @@ allowed_scaling_stats = [
   "target_power_row",
   "target_power_column",
   "target_power_box",
+  "weapon_attack_base_damage",
 ]
 
 [stat_layers]
@@ -54,7 +121,16 @@ max_mana = "additive"
 dot_damage_add_percent = "additive"
 duration_add_percent = "additive"
 ignite_chance_add_percent = "additive"
+conversion_physical_to_lightning_percent = "additive"
+conversion_physical_to_cold_percent = "additive"
 conversion_physical_to_fire_percent = "additive"
+conversion_physical_to_chaos_percent = "additive"
+conversion_lightning_to_cold_percent = "additive"
+conversion_lightning_to_fire_percent = "additive"
+conversion_lightning_to_chaos_percent = "additive"
+conversion_cold_to_fire_percent = "additive"
+conversion_cold_to_chaos_percent = "additive"
+conversion_fire_to_chaos_percent = "additive"
 damage_add_percent = "additive"
 hit_damage_add_percent = "additive"
 all_damage_type_add_percent = "additive"
@@ -78,8 +154,11 @@ cooldown_recovery_add_percent = "additive"
 added_cooldown_ms = "additive"
 area_add_percent = "additive"
 projectile_count_add = "additive"
+split_projectile_chance_percent = "additive"
+split_projectile_count_add = "additive"
 projectile_speed_add_percent = "additive"
 chain_count_add = "additive"
+bounce_count_add = "additive"
 pierce_count_add = "additive"
 base_crit_chance_percent = "additive"
 crit_chance_add_percent = "additive"
@@ -89,469 +168,75 @@ crit_damage_add_percent = "additive"
 derived_crit_chance_percent = "additive"
 derived_crit_damage_percent = "additive"
 cannot_crit = "additive"
+prevent_elemental_ailments = "additive"
 status_chance_add_percent = "additive"
+ailment_damage_add_percent = "additive"
+ignite_stacks_add = "additive"
+ignite_duration_add_percent = "additive"
+ignite_damage_bonus_per_stack_percent = "additive"
+ignite_damage_bonus_max_percent = "additive"
+added_base_ignite_damage_per_second = "additive"
+aggravation_value_add = "additive"
+aggravation_effect_add_percent = "additive"
+frostbite_max_value_add = "additive"
+numbed_effect_add_percent = "additive"
+ailment_duration_add_percent = "additive"
+ailment_damage_deepen_percent = "additive"
+added_base_ailment_damage_per_second = "additive"
+added_base_trauma_damage_per_second = "additive"
+trauma_duration_add_percent = "additive"
+damage_add_percent_per_27_attributes = "additive"
+damage_add_percent_per_12_attributes = "additive"
+active_gem_level_add = "additive"
+attack_skill_level_add = "additive"
+spell_skill_level_add = "additive"
+support_gem_level_add = "additive"
+double_damage_chance_percent = "additive"
+deterioration_chance_add_percent = "additive"
+deterioration_extra_stack_chance_percent = "additive"
+deterioration_damage_add_percent = "additive"
+deterioration_duration_add_percent = "additive"
+physical_skill_level_add = "additive"
+fire_skill_level_add = "additive"
+cold_skill_level_add = "additive"
+lightning_skill_level_add = "additive"
+chaos_skill_level_add = "additive"
+core_skill_level_add = "additive"
+cull_threshold_percent = "additive"
+movement_skill_cooldown_recovery_add_percent = "additive"
+armor_reduction_penetration_percent = "additive"
+slash_chance_add_percent = "additive"
+continuous_attack_chance_percent = "additive"
+continuous_attack_damage_step_percent = "additive"
+channel_max_stacks_add = "additive"
+channel_min_stacks_add = "additive"
+energy_blessing_damage_per_stack_percent = "additive"
+guard_trigger_count = "additive"
+guard_internal_cooldown_ms = "additive"
+knockback_chance_percent = "additive"
+knockback_distance_add_percent = "additive"
+added_fire_damage = "additive"
+added_physical_damage = "additive"
+added_cold_damage = "additive"
+added_lightning_damage = "additive"
+added_chaos_damage = "additive"
+added_fire_damage_from_physical_percent = "additive"
 damage_final_percent = "final"
 hit_damage_final_percent = "final"
 skill_speed_final_percent = "final"
-
-[[support_base_modifiers]]
-support_id = "support_fast_attack"
-stat = "attack_speed_add_percent"
-value = 10
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fast_cast"
-stat = "cast_speed_add_percent"
-value = 10
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_skill_haste"
-stat = "skill_speed_final_percent"
-value = 5
-layer = "final"
-
-[[support_base_modifiers]]
-support_id = "support_cooldown_focus"
-stat = "cooldown_recovery_add_percent"
-value = 12
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_cooldown_focus"
-stat = "damage_final_percent"
-value = -6
-layer = "final"
-
-[[support_base_modifiers]]
-support_id = "support_heavy_impact"
-stat = "damage_final_percent"
-value = 18
-layer = "final"
-
-[[support_base_modifiers]]
-support_id = "support_heavy_impact"
-stat = "added_cooldown_ms"
-value = 220
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_wide_effect"
-stat = "area_add_percent"
-value = 20
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_wide_effect"
-stat = "added_cooldown_ms"
-value = 160
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_stable_output"
-stat = "damage_final_percent"
-value = 12
-layer = "final"
-
-[[support_base_modifiers]]
-support_id = "support_stable_output"
-stat = "cannot_crit"
-value = 1
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_precision"
-stat = "crit_rating"
-value = 160
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_precision"
-stat = "projectile_speed_add_percent"
-value = -8
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_physical_mastery"
-stat = "physical_damage_add_percent"
-value = 18
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fire_mastery"
-stat = "fire_damage_add_percent"
-value = 18
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_cold_mastery"
-stat = "cold_damage_add_percent"
-value = 18
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_lightning_mastery"
-stat = "lightning_damage_add_percent"
-value = 18
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_extra_projectile"
-stat = "projectile_count_add"
-value = 1
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_extra_projectile"
-stat = "damage_final_percent"
-value = -18
-layer = "final"
-
-[[support_base_modifiers]]
-support_id = "support_shotgun"
-stat = "projectile_count_add"
-value = 2
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_shotgun"
-stat = "projectile_speed_add_percent"
-value = -28
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_projectile_speed"
-stat = "projectile_speed_add_percent"
-value = 25
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_area_magnify"
-stat = "area_add_percent"
-value = 25
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_area_magnify"
-stat = "skill_speed_final_percent"
-value = -14
-layer = "final"
-
-[[support_base_modifiers]]
-support_id = "support_overcharge"
-stat = "damage_final_percent"
-value = 25
-layer = "final"
-
-[[support_base_modifiers]]
-support_id = "support_overcharge"
-stat = "added_cooldown_ms"
-value = 300
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_overkill"
-stat = "damage_add_percent"
-value = 35
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_overkill"
-stat = "skill_speed_final_percent"
-value = -25
-layer = "final"
-
-[[support_base_modifiers]]
-support_id = "support_critical_burst"
-stat = "crit_damage_rating"
-value = 300
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_critical_burst"
-stat = "crit_rating"
-value = -80
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_elemental_level"
-stat = "damage_add_percent"
-value = 12
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_attack_spell_level"
-stat = "damage_add_percent"
-value = 10
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_projectile_level"
-stat = "projectile_speed_add_percent"
-value = 18
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fire_bolt_fork"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fire_bolt_nova"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fire_bolt_rain"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fire_bolt_lance"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fire_bolt_orbit"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_ice_shards_fan"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_ice_shards_storm"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_ice_shards_mirror"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_ice_shards_wall"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_ice_shards_freeze_burst"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_lightning_chain_fork"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_lightning_chain_storm"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_lightning_chain_ball"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_lightning_chain_nova"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_lightning_chain_beam"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_frost_nova_double_ring"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_frost_nova_mist"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_frost_nova_spikes"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_frost_nova_pulse"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_frost_nova_glacier"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_puncture_arc"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_puncture_dash"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_puncture_spin"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_puncture_bleed_burst"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_puncture_shadow_combo"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_penetrating_shot_multi"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_penetrating_shot_blast"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_penetrating_shot_ricochet"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_penetrating_shot_chain"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_penetrating_shot_fan"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_lava_orb_double"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_lava_orb_volcano"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_lava_orb_nova"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_lava_orb_trail"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_lava_orb_gravity"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fungal_petards_cloud"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fungal_petards_cluster"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fungal_petards_chain_burst"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fungal_petards_decoy"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[support_base_modifiers]]
-support_id = "support_fungal_petards_shock_spore"
-stat = "damage_add_percent"
-value = 0
-layer = "additive"
-
-[[conduit_amplifiers]]
-support_id = "support_row_conduit"
-relation = "same_row"
-multiplier = 1.25
-
-[[conduit_amplifiers]]
-support_id = "support_column_conduit"
-relation = "same_column"
-multiplier = 1.25
-
-[[conduit_amplifiers]]
-support_id = "support_box_conduit"
-relation = "same_box"
-multiplier = 1.25
+weapon_attack_base_damage = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_multistrike"
-stat = "damage_final_percent"
+stat = "continuous_attack_chance_percent"
+value = 101
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_multistrike"
+stat = "continuous_attack_damage_step_percent"
 value = 27
-layer = "final"
+layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_quick_decision"
@@ -590,6 +275,18 @@ value = 4
 layer = "final"
 
 [[support_base_modifiers]]
+support_id = "support_channel_preparation"
+stat = "channel_min_stacks_add"
+value = 2
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_overload"
+stat = "energy_blessing_damage_per_stack_percent"
+value = 3.05
+layer = "additive"
+
+[[support_base_modifiers]]
 support_id = "support_control_spell"
 stat = "crit_rating"
 value = -100
@@ -602,16 +299,22 @@ value = 28
 layer = "final"
 
 [[support_base_modifiers]]
-support_id = "support_overload"
-stat = "damage_final_percent"
-value = 24.4
-layer = "final"
-
-[[support_base_modifiers]]
 support_id = "support_melee_knockback"
 stat = "damage_final_percent"
 value = 15.5
 layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_melee_knockback"
+stat = "knockback_chance_percent"
+value = 20
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_melee_knockback"
+stat = "knockback_distance_add_percent"
+value = 40
+layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_high_voltage"
@@ -633,7 +336,19 @@ layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_additional_ignite"
-stat = "fire_damage_add_percent"
+stat = "ignite_stacks_add"
+value = 1
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_additional_ignite"
+stat = "ignite_damage_bonus_per_stack_percent"
+value = 2.7
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_additional_ignite"
+stat = "ignite_damage_bonus_max_percent"
 value = 10.8
 layer = "additive"
 
@@ -645,38 +360,44 @@ layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_physical_to_fire"
-stat = "fire_damage_add_percent"
+stat = "added_fire_damage_from_physical_percent"
 value = 15.5
 layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_lightning_to_cold"
-stat = "cold_damage_add_percent"
-value = 5.5
+stat = "conversion_lightning_to_cold_percent"
+value = 50
 layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_added_fire_damage"
-stat = "fire_damage_add_percent"
+stat = "added_fire_damage"
 value = 104
 layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_added_cold_damage"
-stat = "cold_damage_add_percent"
+stat = "added_cold_damage"
 value = 104
 layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_added_lightning_damage"
-stat = "lightning_damage_add_percent"
+stat = "added_lightning_damage"
 value = 104
 layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_added_erosion_damage"
-stat = "chaos_damage_add_percent"
+stat = "added_chaos_damage"
 value = 104
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_lightning_to_cold"
+stat = "lightning_damage_add_percent"
+value = 5.5
 layer = "additive"
 
 [[support_base_modifiers]]
@@ -687,7 +408,7 @@ layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_elemental_fusion"
-stat = "cannot_crit"
+stat = "prevent_elemental_ailments"
 value = 1
 layer = "additive"
 
@@ -699,7 +420,13 @@ layer = "additive"
 
 [[support_base_modifiers]]
 support_id = "support_improved_corrosion"
-stat = "chaos_damage_add_percent"
+stat = "deterioration_extra_stack_chance_percent"
+value = 23
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_improved_corrosion"
+stat = "deterioration_chance_add_percent"
 value = 15
 layer = "additive"
 
@@ -717,7 +444,13 @@ layer = "final"
 
 [[support_base_modifiers]]
 support_id = "support_projectile_split"
-stat = "projectile_count_add"
+stat = "split_projectile_chance_percent"
+value = 50
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_projectile_split"
+stat = "split_projectile_count_add"
 value = 2
 layer = "additive"
 
@@ -741,7 +474,7 @@ layer = "final"
 
 [[support_base_modifiers]]
 support_id = "support_jump"
-stat = "chain_count_add"
+stat = "bounce_count_add"
 value = 2
 layer = "additive"
 
@@ -782,6 +515,18 @@ value = 15.5
 layer = "final"
 
 [[support_base_modifiers]]
+support_id = "support_guard"
+stat = "guard_trigger_count"
+value = 5
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_guard"
+stat = "guard_internal_cooldown_ms"
+value = 6000
+layer = "additive"
+
+[[support_base_modifiers]]
 support_id = "support_slow_projectile"
 stat = "projectile_speed_add_percent"
 value = -30
@@ -795,6 +540,123 @@ layer = "final"
 
 [[support_base_modifiers]]
 support_id = "support_raging_slash"
-stat = "status_chance_add_percent"
+stat = "slash_chance_add_percent"
 value = 21
 layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_nova_shot"
+stat = "damage_final_percent"
+value = 17.5
+layer = "final"
+
+[[support_base_modifiers]]
+support_id = "support_nova_shot"
+stat = "area_add_percent"
+value = -15
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_nova_shot"
+stat = "projectile_speed_add_percent"
+value = 15
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_precision_strike"
+stat = "area_add_percent"
+value = -30
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_precision_strike"
+stat = "area_damage_add_percent"
+value = 11.5
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_precision_strike"
+stat = "ailment_damage_add_percent"
+value = 11.5
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_precision_strike"
+stat = "attack_speed_add_percent"
+value = 10
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_steamroll"
+stat = "melee_damage_add_percent"
+value = 31
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_steamroll"
+stat = "ailment_damage_add_percent"
+value = 31
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_steamroll"
+stat = "attack_speed_add_percent"
+value = -15
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_extended_duration"
+stat = "duration_add_percent"
+value = 13
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_enhanced_ailment"
+stat = "status_chance_add_percent"
+value = 40
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_enhanced_ailment"
+stat = "ailment_damage_add_percent"
+value = 0.3
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_quick_mobility"
+stat = "attack_speed_add_percent"
+value = 10.5
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_quick_mobility"
+stat = "cast_speed_add_percent"
+value = 10.5
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_quick_mobility"
+stat = "cooldown_recovery_add_percent"
+value = 20.5
+layer = "additive"
+
+[[support_base_modifiers]]
+support_id = "support_utility_cooldown_reduction"
+stat = "cooldown_recovery_add_percent"
+value = 13
+layer = "additive"
+
+[[conduit_amplifiers]]
+support_id = "support_row_conduit"
+relation = "same_row"
+multiplier = 1.25
+
+[[conduit_amplifiers]]
+support_id = "support_column_conduit"
+relation = "same_column"
+multiplier = 1.25
+
+[[conduit_amplifiers]]
+support_id = "support_box_conduit"
+relation = "same_box"
+multiplier = 1.25

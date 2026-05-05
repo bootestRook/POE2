@@ -41,19 +41,8 @@ EXPECTED_FILES = [
     "monsters/monster_groups.toml",
     "localization/zh_cn.toml",
 ]
-EXPECTED_SKILL_PACKAGE_FILES = [
+EXPECTED_CORE_SKILL_PACKAGE_FILES = [
     "skills/schema/skill.schema.json",
-    "skills/active/active_fire_bolt/skill.yaml",
-    "skills/active/active_ice_shards/skill.yaml",
-    "skills/active/active_lightning_chain/skill.yaml",
-    "skills/active/active_penetrating_shot/skill.yaml",
-    "skills/active/active_frost_nova/skill.yaml",
-    "skills/active/active_puncture/skill.yaml",
-    "skills/active/active_fungal_petards/skill.yaml",
-    "skills/active/active_lava_orb/skill.yaml",
-    "skills/passive/passive_fire_focus/skill.yaml",
-    "skills/passive/passive_vitality/skill.yaml",
-    "skills/passive/passive_swift_gathering/skill.yaml",
     "skills/behavior_templates/projectile.yaml",
     "skills/behavior_templates/chain.yaml",
     "skills/behavior_templates/player_nova.yaml",
@@ -61,6 +50,31 @@ EXPECTED_SKILL_PACKAGE_FILES = [
     "skills/behavior_templates/damage_zone.yaml",
     "skills/behavior_templates/orbit_emitter.yaml",
 ]
+
+
+def expected_skill_package_files() -> list[str]:
+    files = list(EXPECTED_CORE_SKILL_PACKAGE_FILES)
+    files.extend(
+        f"skills/active/{entry['id']}/skill.yaml"
+        for entry in adopted_entries(CONFIGS, "active")
+        if isinstance(entry.get("id"), str)
+    )
+    files.extend(
+        f"skills/passive/{entry['id']}/skill.yaml"
+        for entry in adopted_entries(CONFIGS, "passive")
+        if isinstance(entry.get("id"), str)
+    )
+    files.extend(
+        f"skills/support/{entry['id']}/skill.yaml"
+        for entry in adopted_entries(CONFIGS, "support")
+        if isinstance(entry.get("id"), str)
+    )
+    files.extend(
+        f"skills/support/{entry['id']}/skill.yaml"
+        for entry in adopted_entries(CONFIGS, "board_conduits")
+        if isinstance(entry.get("id"), str)
+    )
+    return files
 
 REQUIRED_STATS = {
     "strength",
@@ -113,6 +127,13 @@ REQUIRED_STATS = {
     "conversion_physical_to_fire_percent",
     "conversion_physical_to_cold_percent",
     "conversion_physical_to_lightning_percent",
+    "conversion_physical_to_chaos_percent",
+    "conversion_lightning_to_cold_percent",
+    "conversion_lightning_to_fire_percent",
+    "conversion_lightning_to_chaos_percent",
+    "conversion_cold_to_fire_percent",
+    "conversion_cold_to_chaos_percent",
+    "conversion_fire_to_chaos_percent",
     "attack_speed_add_percent",
     "cast_speed_add_percent",
     "skill_speed_final_percent",
@@ -138,6 +159,7 @@ REQUIRED_STATS = {
     "skill_effect_frequency_add_percent",
     "explosion_radius_add_percent",
     "status_chance_add_percent",
+    "slash_chance_add_percent",
     "ignite_chance_add_percent",
     "frostbite_chance_add_percent",
     "shock_chance_add_percent",
@@ -271,6 +293,8 @@ REQUIRED_TAGS = {
     "ranged",
     "bow",
     "summon",
+    "channel",
+    "slash",
     "physical",
     "fire",
     "cold",
@@ -284,14 +308,6 @@ REQUIRED_TAGS = {
     "dot",
     "aura",
     "trap_or_mine",
-    "skill_fire_bolt",
-    "skill_ice_shards",
-    "skill_lightning_chain",
-    "skill_frost_nova",
-    "skill_puncture",
-    "skill_penetrating_shot",
-    "skill_lava_orb",
-    "skill_fungal_petards",
     "support_damage",
     "support_speed",
     "support_cooldown",
@@ -476,8 +492,18 @@ REQUIRED_SUPPORT_TLIDB_IDS_BY_CATEGORY = {
         "Guard",
         "Slow_Projectile",
     },
-    "skill_level": set(),
-    "skill_shape_modifier": {"Raging_Slash"},
+    "utility_support": {
+        "Extended_Duration",
+        "Enhanced_Ailment",
+        "Quick_Mobility",
+        "Cooldown_Reduction",
+    },
+    "skill_shape_modifier": {
+        "Raging_Slash",
+        "Nova_Shot",
+        "Precision_Strike",
+        "Steamroll",
+    },
     "board_conduit": set(),
 }
 REQUIRED_BOARD_CONDUITS = {
@@ -516,6 +542,7 @@ FORBIDDEN_CONFIG_IDS = {
     "class",
     "profession",
 }
+ATTRIBUTE_TAG_IDS = frozenset({"strength", "dexterity", "intelligence"})
 FORBIDDEN_ACTIVE_STAT_IDS = {
     "cooldown_reduction_percent",
 }
@@ -561,8 +588,13 @@ def validate_tlidb_manifest(errors: list[str]) -> None:
     board_entries = adopted_entries(CONFIGS, "board_conduits")
     if len(active_entries) != 16:
         errors.append("TLIDB manifest must contain 16 active skills")
-    if len(support_entries) != 30:
-        errors.append("TLIDB manifest must contain 30 TLIDB support skills")
+    expected_support_count = sum(
+        len(ids)
+        for category, ids in REQUIRED_SUPPORT_TLIDB_IDS_BY_CATEGORY.items()
+        if category != "board_conduit"
+    )
+    if len(support_entries) != expected_support_count:
+        errors.append(f"TLIDB manifest must contain {expected_support_count} TLIDB support skills")
     if len(passive_entries) != 9:
         errors.append("TLIDB manifest must contain 9 passive/aura skills")
     if len(board_entries) != 3:
@@ -917,6 +949,8 @@ def gem_definition_entry(definition: GemDefinition) -> dict[str, Any]:
 
 def check_forbidden_config_entries(value: Any, path: str, errors: list[str]) -> None:
     if isinstance(value, dict):
+        if _is_allowed_attribute_tag(value, path):
+            return
         for key, nested in value.items():
             check_forbidden_config_entries(nested, f"{path}.{key}", errors)
         return
@@ -939,6 +973,14 @@ def check_forbidden_config_entries(value: Any, path: str, errors: list[str]) -> 
             errors.append(f"{path}: forbidden V1 config entry '{value}' contains '{forbidden}'")
 
 
+def _is_allowed_attribute_tag(value: dict[str, Any], path: str) -> bool:
+    return (
+        path.startswith("configs/gems/gem_tag_defs.toml.tags[")
+        and value.get("category") == "attribute"
+        and value.get("id") in ATTRIBUTE_TAG_IDS
+    )
+
+
 def validate() -> list[str]:
     errors: list[str] = []
 
@@ -948,7 +990,7 @@ def validate() -> list[str]:
     for relative in EXPECTED_FILES:
         if not (CONFIGS / relative).is_file():
             errors.append(f"missing required config file: configs/{relative}")
-    for relative in EXPECTED_SKILL_PACKAGE_FILES:
+    for relative in expected_skill_package_files():
         if not (CONFIGS / relative).is_file():
             errors.append(f"missing required skill package file: configs/{relative}")
 
@@ -1129,7 +1171,8 @@ def validate() -> list[str]:
 
     tags = items(data.get("gems/gem_tag_defs.toml", {}), "tags")
     tag_ids = unique_ids(tags, "gem tags", errors)
-    missing_tags = sorted(REQUIRED_TAGS - tag_ids)
+    manifest_skill_tags = set(required_active_gems().values())
+    missing_tags = sorted((REQUIRED_TAGS | manifest_skill_tags) - tag_ids)
     extra_required_context = sorted(tag_ids - REQUIRED_TAGS)
     if missing_tags:
         errors.append(f"gem tags missing required ids: {', '.join(missing_tags)}")
@@ -1341,7 +1384,7 @@ def validate() -> list[str]:
     required_support_by_category = required_support_gems()
     required_support_ids = set().union(*required_support_by_category.values())
     if support_gem_ids != required_support_ids:
-        errors.append("support gems must match the 30 TLIDB supports plus 3 board conduits exactly")
+        errors.append("support gems must match the adopted TLIDB supports plus 3 board conduits exactly")
     category_counts: dict[str, int] = {}
     for gem in support_gems:
         context = f"support_gems:{gem.get('id', '<unknown>')}"
@@ -1374,7 +1417,11 @@ def validate() -> list[str]:
         if not isinstance(effect_stats, list) or not effect_stats:
             errors.append(f"{context}: support gem must declare effect_stats")
         elif isinstance(effect_stats, list):
-            for stat in effect_stats:
+            for stat_entry in effect_stats:
+                stat = stat_entry.get("stat") if isinstance(stat_entry, dict) else stat_entry
+                if not isinstance(stat, str):
+                    errors.append(f"{context}: effect stat must be a string or object with stat")
+                    continue
                 if stat not in legal_stat_ids:
                     errors.append(f"{context}: unknown effect stat '{stat}'")
                 if stat in FORBIDDEN_ACTIVE_STAT_IDS:

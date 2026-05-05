@@ -36,7 +36,7 @@ v1_role = "reserved_support"
 [[gem_types]]
 id = "gem_type_8"
 name_key = "gem_type.8.name"
-v1_role = "skill_level_support"
+v1_role = "utility_support"
 
 [[gem_types]]
 id = "gem_type_9"

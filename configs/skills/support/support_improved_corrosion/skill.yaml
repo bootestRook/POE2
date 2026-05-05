@@ -12,94 +12,63 @@ source_values:
   display_level: 20
   raw_lines: ["辅助击中敌人的技能。", "被辅助技能 +23% 几率额外造成 1 层凋零 (Lv1:23) (Lv21:33) (Lv41:39)", "被辅助技能 +15% 凋零几率", "被辅助技能 +23% 几率额外造成 1 层凋零 (Lv1:23) (Lv21:33) (Lv41:39)", "被辅助技能 +15% 凋零几率"]
   parsed_values:
-    chaos_damage_add_percent: 15
+    deterioration_extra_stack_chance_percent: 23
+    deterioration_chance_add_percent: 15
   anchors:
-    chaos_damage_add_percent:
+    deterioration_extra_stack_chance_percent:
+      20: 23
+    deterioration_chance_add_percent:
       20: 15
 level_table:
   levels:
-    1:
-      chaos_damage_add_percent: 1.5
-    2:
-      chaos_damage_add_percent: 2.21
-    3:
-      chaos_damage_add_percent: 2.92
-    4:
-      chaos_damage_add_percent: 3.63
-    5:
-      chaos_damage_add_percent: 4.34
-    6:
-      chaos_damage_add_percent: 5.05
-    7:
-      chaos_damage_add_percent: 5.76
-    8:
-      chaos_damage_add_percent: 6.47
-    9:
-      chaos_damage_add_percent: 7.18
-    10:
-      chaos_damage_add_percent: 7.89
-    11:
-      chaos_damage_add_percent: 8.61
-    12:
-      chaos_damage_add_percent: 9.32
-    13:
-      chaos_damage_add_percent: 10.03
-    14:
-      chaos_damage_add_percent: 10.74
-    15:
-      chaos_damage_add_percent: 11.45
-    16:
-      chaos_damage_add_percent: 12.16
-    17:
-      chaos_damage_add_percent: 12.87
-    18:
-      chaos_damage_add_percent: 13.58
-    19:
-      chaos_damage_add_percent: 14.29
-    20:
-      chaos_damage_add_percent: 15.0
-    21:
-      chaos_damage_add_percent: 15.07
-    22:
-      chaos_damage_add_percent: 15.15
-    23:
-      chaos_damage_add_percent: 15.22
-    24:
-      chaos_damage_add_percent: 15.3
-    25:
-      chaos_damage_add_percent: 15.37
-    26:
-      chaos_damage_add_percent: 15.45
-    27:
-      chaos_damage_add_percent: 15.52
-    28:
-      chaos_damage_add_percent: 15.6
-    29:
-      chaos_damage_add_percent: 15.67
-    30:
-      chaos_damage_add_percent: 15.75
-    31:
-      chaos_damage_add_percent: 15.82
-    32:
-      chaos_damage_add_percent: 15.9
-    33:
-      chaos_damage_add_percent: 15.97
-    34:
-      chaos_damage_add_percent: 16.05
-    35:
-      chaos_damage_add_percent: 16.12
-    36:
-      chaos_damage_add_percent: 16.2
-    37:
-      chaos_damage_add_percent: 16.27
-    38:
-      chaos_damage_add_percent: 16.35
-    39:
-      chaos_damage_add_percent: 16.43
-    40:
-      chaos_damage_add_percent: 16.5
+    1: { deterioration_extra_stack_chance_percent: 23, deterioration_chance_add_percent: 15 }
+    2: { deterioration_extra_stack_chance_percent: 23.5, deterioration_chance_add_percent: 15 }
+    3: { deterioration_extra_stack_chance_percent: 24, deterioration_chance_add_percent: 15 }
+    4: { deterioration_extra_stack_chance_percent: 24.5, deterioration_chance_add_percent: 15 }
+    5: { deterioration_extra_stack_chance_percent: 25, deterioration_chance_add_percent: 15 }
+    6: { deterioration_extra_stack_chance_percent: 25.5, deterioration_chance_add_percent: 15 }
+    7: { deterioration_extra_stack_chance_percent: 26, deterioration_chance_add_percent: 15 }
+    8: { deterioration_extra_stack_chance_percent: 26.5, deterioration_chance_add_percent: 15 }
+    9: { deterioration_extra_stack_chance_percent: 27, deterioration_chance_add_percent: 15 }
+    10: { deterioration_extra_stack_chance_percent: 27.5, deterioration_chance_add_percent: 15 }
+    11: { deterioration_extra_stack_chance_percent: 28, deterioration_chance_add_percent: 15 }
+    12: { deterioration_extra_stack_chance_percent: 28.5, deterioration_chance_add_percent: 15 }
+    13: { deterioration_extra_stack_chance_percent: 29, deterioration_chance_add_percent: 15 }
+    14: { deterioration_extra_stack_chance_percent: 29.5, deterioration_chance_add_percent: 15 }
+    15: { deterioration_extra_stack_chance_percent: 30, deterioration_chance_add_percent: 15 }
+    16: { deterioration_extra_stack_chance_percent: 30.5, deterioration_chance_add_percent: 15 }
+    17: { deterioration_extra_stack_chance_percent: 31, deterioration_chance_add_percent: 15 }
+    18: { deterioration_extra_stack_chance_percent: 31.5, deterioration_chance_add_percent: 15 }
+    19: { deterioration_extra_stack_chance_percent: 32, deterioration_chance_add_percent: 15 }
+    20: { deterioration_extra_stack_chance_percent: 32.5, deterioration_chance_add_percent: 15 }
+    21: { deterioration_extra_stack_chance_percent: 33, deterioration_chance_add_percent: 15 }
+    22: { deterioration_extra_stack_chance_percent: 33.3, deterioration_chance_add_percent: 15 }
+    23: { deterioration_extra_stack_chance_percent: 33.6, deterioration_chance_add_percent: 15 }
+    24: { deterioration_extra_stack_chance_percent: 33.9, deterioration_chance_add_percent: 15 }
+    25: { deterioration_extra_stack_chance_percent: 34.2, deterioration_chance_add_percent: 15 }
+    26: { deterioration_extra_stack_chance_percent: 34.5, deterioration_chance_add_percent: 15 }
+    27: { deterioration_extra_stack_chance_percent: 34.8, deterioration_chance_add_percent: 15 }
+    28: { deterioration_extra_stack_chance_percent: 35.1, deterioration_chance_add_percent: 15 }
+    29: { deterioration_extra_stack_chance_percent: 35.4, deterioration_chance_add_percent: 15 }
+    30: { deterioration_extra_stack_chance_percent: 35.7, deterioration_chance_add_percent: 15 }
+    31: { deterioration_extra_stack_chance_percent: 36, deterioration_chance_add_percent: 15 }
+    32: { deterioration_extra_stack_chance_percent: 36.3, deterioration_chance_add_percent: 15 }
+    33: { deterioration_extra_stack_chance_percent: 36.6, deterioration_chance_add_percent: 15 }
+    34: { deterioration_extra_stack_chance_percent: 36.9, deterioration_chance_add_percent: 15 }
+    35: { deterioration_extra_stack_chance_percent: 37.2, deterioration_chance_add_percent: 15 }
+    36: { deterioration_extra_stack_chance_percent: 37.5, deterioration_chance_add_percent: 15 }
+    37: { deterioration_extra_stack_chance_percent: 37.8, deterioration_chance_add_percent: 15 }
+    38: { deterioration_extra_stack_chance_percent: 38.1, deterioration_chance_add_percent: 15 }
+    39: { deterioration_extra_stack_chance_percent: 38.4, deterioration_chance_add_percent: 15 }
+    40: { deterioration_extra_stack_chance_percent: 38.7, deterioration_chance_add_percent: 15 }
 tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage", "support_status"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["chaos"]
-effect_stats: ["chaos_damage_add_percent"]
+effect_stats:
+  - stat: "deterioration_extra_stack_chance_percent"
+    value: 23
+    layer: "additive"
+  - stat: "deterioration_chance_add_percent"
+    value: 15
+    layer: "additive"

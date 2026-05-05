@@ -3,103 +3,196 @@ sort_order: 8
 name_key: "gem.support_melee_knockback.name"
 description_key: "gem.support_melee_knockback.description"
 category: "general_skill_modifier"
-gem_type: "gem_type_3"
+gem_type: "gem_type_8"
 gem_kind: "support"
-sudoku_digit: 3
+sudoku_digit: 8
 source_values:
   source: "tlidb"
   tlidb_id: "Melee_Knockback"
   display_level: 20
   raw_lines: ["辅助近战攻击技能。", "被辅助技能 +20% 几率造成击退 (Lv1:20) (Lv21:40) (Lv41:60)", "被辅助技能额外 15.5% 伤害 (Lv1:31/2) (Lv21:51/2) (Lv41:71/2)", "被辅助技能 +40% 击退距离 (Lv1:40) (Lv21:60) (Lv41:80)", "被辅助技能 +20% 几率造成击退 (Lv1:20) (Lv21:40) (Lv41:60)", "被辅助技能额外 15.5% 伤害 (Lv1:31/2) (Lv21:51/2) (Lv41:71/2)", "被辅助技能 +40% 击退距离 (Lv1:40) (Lv21:60) (Lv41:80)"]
   parsed_values:
+    knockback_chance_percent: 20
     damage_final_percent: 15.5
+    knockback_distance_add_percent: 40
   anchors:
+    knockback_chance_percent: 20
     damage_final_percent:
       20: 15.5
+    knockback_distance_add_percent: 40
 level_table:
   levels:
     1:
-      damage_final_percent: 1.55
-    2:
-      damage_final_percent: 2.28
-    3:
-      damage_final_percent: 3.02
-    4:
-      damage_final_percent: 3.75
-    5:
-      damage_final_percent: 4.49
-    6:
-      damage_final_percent: 5.22
-    7:
-      damage_final_percent: 5.96
-    8:
-      damage_final_percent: 6.69
-    9:
-      damage_final_percent: 7.42
-    10:
-      damage_final_percent: 8.16
-    11:
-      damage_final_percent: 8.89
-    12:
-      damage_final_percent: 9.63
-    13:
-      damage_final_percent: 10.36
-    14:
-      damage_final_percent: 11.09
-    15:
-      damage_final_percent: 11.83
-    16:
-      damage_final_percent: 12.56
-    17:
-      damage_final_percent: 13.3
-    18:
-      damage_final_percent: 14.03
-    19:
-      damage_final_percent: 14.77
-    20:
+      knockback_chance_percent: 20
       damage_final_percent: 15.5
+      knockback_distance_add_percent: 40
+    2:
+      knockback_chance_percent: 21
+      damage_final_percent: 16
+      knockback_distance_add_percent: 41
+    3:
+      knockback_chance_percent: 22
+      damage_final_percent: 16.5
+      knockback_distance_add_percent: 42
+    4:
+      knockback_chance_percent: 23
+      damage_final_percent: 17
+      knockback_distance_add_percent: 43
+    5:
+      knockback_chance_percent: 24
+      damage_final_percent: 17.5
+      knockback_distance_add_percent: 44
+    6:
+      knockback_chance_percent: 25
+      damage_final_percent: 18
+      knockback_distance_add_percent: 45
+    7:
+      knockback_chance_percent: 26
+      damage_final_percent: 18.5
+      knockback_distance_add_percent: 46
+    8:
+      knockback_chance_percent: 27
+      damage_final_percent: 19
+      knockback_distance_add_percent: 47
+    9:
+      knockback_chance_percent: 28
+      damage_final_percent: 19.5
+      knockback_distance_add_percent: 48
+    10:
+      knockback_chance_percent: 29
+      damage_final_percent: 20
+      knockback_distance_add_percent: 49
+    11:
+      knockback_chance_percent: 30
+      damage_final_percent: 20.5
+      knockback_distance_add_percent: 50
+    12:
+      knockback_chance_percent: 31
+      damage_final_percent: 21
+      knockback_distance_add_percent: 51
+    13:
+      knockback_chance_percent: 32
+      damage_final_percent: 21.5
+      knockback_distance_add_percent: 52
+    14:
+      knockback_chance_percent: 33
+      damage_final_percent: 22
+      knockback_distance_add_percent: 53
+    15:
+      knockback_chance_percent: 34
+      damage_final_percent: 22.5
+      knockback_distance_add_percent: 54
+    16:
+      knockback_chance_percent: 35
+      damage_final_percent: 23
+      knockback_distance_add_percent: 55
+    17:
+      knockback_chance_percent: 36
+      damage_final_percent: 23.5
+      knockback_distance_add_percent: 56
+    18:
+      knockback_chance_percent: 37
+      damage_final_percent: 24
+      knockback_distance_add_percent: 57
+    19:
+      knockback_chance_percent: 38
+      damage_final_percent: 24.5
+      knockback_distance_add_percent: 58
+    20:
+      knockback_chance_percent: 39
+      damage_final_percent: 25
+      knockback_distance_add_percent: 59
     21:
-      damage_final_percent: 15.58
+      knockback_chance_percent: 40
+      damage_final_percent: 25.5
+      knockback_distance_add_percent: 60
     22:
-      damage_final_percent: 15.65
+      knockback_chance_percent: 41
+      damage_final_percent: 26
+      knockback_distance_add_percent: 61
     23:
-      damage_final_percent: 15.73
+      knockback_chance_percent: 42
+      damage_final_percent: 26.5
+      knockback_distance_add_percent: 62
     24:
-      damage_final_percent: 15.81
+      knockback_chance_percent: 43
+      damage_final_percent: 27
+      knockback_distance_add_percent: 63
     25:
-      damage_final_percent: 15.89
+      knockback_chance_percent: 44
+      damage_final_percent: 27.5
+      knockback_distance_add_percent: 64
     26:
-      damage_final_percent: 15.96
+      knockback_chance_percent: 45
+      damage_final_percent: 28
+      knockback_distance_add_percent: 65
     27:
-      damage_final_percent: 16.04
+      knockback_chance_percent: 46
+      damage_final_percent: 28.5
+      knockback_distance_add_percent: 66
     28:
-      damage_final_percent: 16.12
+      knockback_chance_percent: 47
+      damage_final_percent: 29
+      knockback_distance_add_percent: 67
     29:
-      damage_final_percent: 16.2
+      knockback_chance_percent: 48
+      damage_final_percent: 29.5
+      knockback_distance_add_percent: 68
     30:
-      damage_final_percent: 16.28
+      knockback_chance_percent: 49
+      damage_final_percent: 30
+      knockback_distance_add_percent: 69
     31:
-      damage_final_percent: 16.35
+      knockback_chance_percent: 50
+      damage_final_percent: 30.5
+      knockback_distance_add_percent: 70
     32:
-      damage_final_percent: 16.43
+      knockback_chance_percent: 51
+      damage_final_percent: 31
+      knockback_distance_add_percent: 71
     33:
-      damage_final_percent: 16.51
+      knockback_chance_percent: 52
+      damage_final_percent: 31.5
+      knockback_distance_add_percent: 72
     34:
-      damage_final_percent: 16.59
+      knockback_chance_percent: 53
+      damage_final_percent: 32
+      knockback_distance_add_percent: 73
     35:
-      damage_final_percent: 16.66
+      knockback_chance_percent: 54
+      damage_final_percent: 32.5
+      knockback_distance_add_percent: 74
     36:
-      damage_final_percent: 16.74
+      knockback_chance_percent: 55
+      damage_final_percent: 33
+      knockback_distance_add_percent: 75
     37:
-      damage_final_percent: 16.82
+      knockback_chance_percent: 56
+      damage_final_percent: 33.5
+      knockback_distance_add_percent: 76
     38:
-      damage_final_percent: 16.89
+      knockback_chance_percent: 57
+      damage_final_percent: 34
+      knockback_distance_add_percent: 77
     39:
-      damage_final_percent: 16.97
+      knockback_chance_percent: 58
+      damage_final_percent: 34.5
+      knockback_distance_add_percent: 78
     40:
-      damage_final_percent: 17.05
-tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_damage"]
+      knockback_chance_percent: 59
+      damage_final_percent: 35
+      knockback_distance_add_percent: 79
+tags: ["gem", "support_gem", "loot_gem", "gem_type_8", "support_damage"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["melee"]
-effect_stats: ["damage_final_percent"]
+effect_stats:
+  - stat: "knockback_chance_percent"
+    value: 20
+    layer: "additive"
+  - stat: "damage_final_percent"
+    value: 15.5
+    layer: "final"
+  - stat: "knockback_distance_add_percent"
+    value: 40
+    layer: "additive"
