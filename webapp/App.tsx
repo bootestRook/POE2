@@ -1735,7 +1735,10 @@ function applyFrontendEquipmentSkillModifiers(
   const skillStats = { ...(skill.skill_stats ?? {}) };
   for (const modifier of modifiers) {
     if (modifier.kind === "runtime_hook") continue;
-    skillStats[modifier.stat] = Number(skillStats[modifier.stat] ?? 0) + modifier.value;
+    const stat = modifier.reason_key === "modifier.equipment_affix"
+      ? frontendEquipmentAttackAddedDamageStat(modifier) || modifier.stat
+      : modifier.stat;
+    skillStats[stat] = Number(skillStats[stat] ?? 0) + modifier.value;
   }
   const tags = new Set(gem.tags.map((tag) => tag.id ?? tag.text));
   const damageType = skill.damage_type;
@@ -1756,7 +1759,15 @@ function applyFrontendEquipmentSkillModifiers(
   addFrontendDamageComponent(baseComponents, "cold", statValue(skillStats, "added_cold_damage") * addedDamageEffectiveness);
   addFrontendDamageComponent(baseComponents, "lightning", statValue(skillStats, "added_lightning_damage") * addedDamageEffectiveness);
   addFrontendDamageComponent(baseComponents, "chaos", statValue(skillStats, "added_chaos_damage") * addedDamageEffectiveness);
-  if (tags.has("attack")) addFrontendDamageComponent(baseComponents, "physical", statValue(skillStats, "weapon_attack_base_damage"));
+  if (tags.has("attack")) {
+    addFrontendDamageComponent(baseComponents, damageType, statValue(skillStats, "equipment_attack_added_damage") * addedDamageEffectiveness);
+    addFrontendDamageComponent(baseComponents, "physical", statValue(skillStats, "equipment_attack_added_physical_damage") * addedDamageEffectiveness);
+    addFrontendDamageComponent(baseComponents, "fire", statValue(skillStats, "equipment_attack_added_fire_damage") * addedDamageEffectiveness);
+    addFrontendDamageComponent(baseComponents, "cold", statValue(skillStats, "equipment_attack_added_cold_damage") * addedDamageEffectiveness);
+    addFrontendDamageComponent(baseComponents, "lightning", statValue(skillStats, "equipment_attack_added_lightning_damage") * addedDamageEffectiveness);
+    addFrontendDamageComponent(baseComponents, "chaos", statValue(skillStats, "equipment_attack_added_chaos_damage") * addedDamageEffectiveness);
+    addFrontendDamageComponent(baseComponents, "physical", statValue(skillStats, "weapon_attack_base_damage"));
+  }
   const convertedComponents = convertFrontendDamageComponents(baseComponents, frontendDamageConversions(skill));
   const finalDamageComponents = Object.fromEntries(Object.entries(convertedComponents)
     .map(([componentType, componentAmount]) => [
@@ -1840,6 +1851,13 @@ function applyFrontendEquipmentSkillModifiers(
     runtime_params: runtimeParams,
     applied_modifiers: [...(skill.applied_modifiers ?? []), ...appliedModifiers],
   };
+}
+
+function frontendEquipmentAttackAddedDamageStat(modifier: FrontendEquipmentStatModifier) {
+  if (modifier.kind !== "damage_stat") return "";
+  if (modifier.stat === "added_damage") return "equipment_attack_added_damage";
+  const match = modifier.stat.match(/^added_(physical|fire|cold|lightning|chaos)_damage$/);
+  return match ? `equipment_attack_added_${match[1]}_damage` : "";
 }
 
 function attributeScaledDamageAddPercent(skillStats: Record<string, number | boolean>) {

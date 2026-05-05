@@ -168,6 +168,9 @@ def test_frontend_equipment_runtime_consumes_recent_affix_effects() -> None:
         "final_damage_components",
         "damagePayloadComponents(skill, amount, damageType, skill.hit as Record<string, unknown>)",
         "floatingTextDamageComponents",
+        "frontendEquipmentAttackAddedDamageStat",
+        "equipment_attack_added_lightning_damage",
+        "modifier.reason_key === \"modifier.equipment_affix\"",
     ]:
         assert token in source
     for token in [
