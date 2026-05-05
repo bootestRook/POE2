@@ -52,6 +52,8 @@ export type FrontendEquipmentStatModifier = {
   kind: string;
   stat: string;
   value: number;
+  value_min?: number | null;
+  value_max?: number | null;
   reason_key: string;
   runtime_hook?: string;
   payload?: Record<string, unknown> | null;
@@ -235,6 +237,8 @@ export function frontendEquipmentStatModifiers(item: FrontendEquipmentItem): Fro
         kind: operation.kind,
         stat: operation.stat || operation.runtime_hook,
         value: operation.value,
+        value_min: operation.value_min,
+        value_max: operation.value_max,
         reason_key: "modifier.equipment_affix",
         runtime_hook: operation.runtime_hook,
         payload: operation.payload,
@@ -314,7 +318,7 @@ function localFrontendEquipmentStatModifiers(item: FrontendEquipmentItem): Front
   let localPhysicalPercent = 0;
   let localAddedPhysical = 0;
   let localEnergyShieldPercent = 0;
-  const localAddedDamage: Record<string, number> = {};
+  const localAddedDamage: Record<string, { value: number; value_min: number | null; value_max: number | null }> = {};
   for (const operation of baseOperations) {
     addLocalDamageOperation(operation, localAddedDamage, false);
   }
@@ -336,25 +340,57 @@ function localFrontendEquipmentStatModifiers(item: FrontendEquipmentItem): Front
   if (armor > 0) modifiers.push(frontendEquipmentModifier(item.base_affix.source_modifier_id, "player_stat", "armor", armor));
   if (evasion > 0) modifiers.push(frontendEquipmentModifier(item.base_affix.source_modifier_id, "player_stat", "evasion", evasion));
   if (energyShield > 0) modifiers.push(frontendEquipmentModifier(item.base_affix.source_modifier_id, "player_stat", "max_energy_shield", energyShield));
-  for (const [damageType, value] of Object.entries(localAddedDamage)) {
-    if (value > 0) modifiers.push(frontendEquipmentModifier(item.base_affix.source_modifier_id, "damage_stat", `added_${damageType}_damage`, value));
+  for (const [damageType, roll] of Object.entries(localAddedDamage)) {
+    if (roll.value > 0) {
+      modifiers.push(frontendEquipmentModifier(
+        item.base_affix.source_modifier_id,
+        "damage_stat",
+        `added_${damageType}_damage`,
+        roll.value,
+        roll.value_min,
+        roll.value_max,
+      ));
+    }
   }
   return modifiers;
 }
 
-function addLocalDamageOperation(operation: FrontendEquipmentEffectOperation, localAddedDamage: Record<string, number>, includePhysical: boolean) {
+function addLocalDamageOperation(
+  operation: FrontendEquipmentEffectOperation,
+  localAddedDamage: Record<string, { value: number; value_min: number | null; value_max: number | null }>,
+  includePhysical: boolean
+) {
   if (!operation.stat.startsWith("local_added_") || !operation.stat.endsWith("_damage")) return;
   const damageType = operation.stat.replace(/^local_added_/, "").replace(/_damage$/, "");
   if (!includePhysical && damageType === "physical") return;
-  localAddedDamage[damageType] = (localAddedDamage[damageType] ?? 0) + operation.value;
+  const current = localAddedDamage[damageType] ?? { value: 0, value_min: 0, value_max: 0 };
+  localAddedDamage[damageType] = {
+    value: current.value + operation.value,
+    value_min: frontendNullableSum(current.value_min, operation.value_min ?? operation.value),
+    value_max: frontendNullableSum(current.value_max, operation.value_max ?? operation.value),
+  };
 }
 
-function frontendEquipmentModifier(sourceModifierId: string, kind: string, stat: string, value: number): FrontendEquipmentStatModifier {
+function frontendNullableSum(left: number | null, right: number | null) {
+  if (left === null && right === null) return null;
+  return Number(left ?? 0) + Number(right ?? 0);
+}
+
+function frontendEquipmentModifier(
+  sourceModifierId: string,
+  kind: string,
+  stat: string,
+  value: number,
+  valueMin: number | null = null,
+  valueMax: number | null = null
+): FrontendEquipmentStatModifier {
   return {
     source_modifier_id: sourceModifierId,
     kind,
     stat,
     value,
+    value_min: valueMin,
+    value_max: valueMax,
     reason_key: "modifier.equipment_affix",
   };
 }
@@ -445,23 +481,75 @@ function weightedChoice(candidates: FrontendEquipmentAffixDefinition[], rng: Fro
 }
 
 function rollDefinition(definition: FrontendEquipmentAffixDefinition, rng: FrontendSeedRandom): FrontendEquipmentAffixRoll {
+  const rolledEffect = rollEffect(definition.effect, rng);
   return {
     affix_id: definition.affix_id,
     source_modifier_id: definition.source_modifier_id,
     library: definition.library,
     gen: definition.gen,
     tier: definition.tier,
-    effect: rollEffectText(definition.effect, rng),
+    effect: rolledEffect.text,
     family_id: definition.family_id,
-    operations: definition.operations ?? [],
+    operations: rollEffectOperations(definition.effect, definition.operations ?? [], rolledEffect.ranges),
   };
 }
 
-function rollEffectText(effect: string, rng: FrontendSeedRandom) {
-  return effect.replace(
-    /\((-?\d+(?:\.\d+)?)\s*[–-]\s*(-?\d+(?:\.\d+)?)\)|(?<![\d.])(-?\d+(?:\.\d+)?)\s*[–-]\s*(-?\d+(?:\.\d+)?)(?![\d.])/g,
-    (_match, groupMin, groupMax, plainMin, plainMax) => rollRangeNumberText(groupMin ?? plainMin, groupMax ?? plainMax, rng)
+type RolledEffectRange = {
+  index: number;
+  value: number;
+};
+
+const EFFECT_RANGE_PATTERN = /\((-?\d+(?:\.\d+)?)\s*[\u2013\u2014-]\s*(-?\d+(?:\.\d+)?)\)|(?<![\d.])(-?\d+(?:\.\d+)?)\s*[\u2013\u2014-]\s*(-?\d+(?:\.\d+)?)(?![\d.])/g;
+
+function rollEffect(effect: string, rng: FrontendSeedRandom) {
+  const ranges: RolledEffectRange[] = [];
+  const text = effect.replace(
+    EFFECT_RANGE_PATTERN,
+    (match, groupMin, groupMax, plainMin, plainMax, offset) => {
+      const rolled = rollRangeNumberText(groupMin ?? plainMin, groupMax ?? plainMax, rng);
+      ranges.push({ index: Number(offset), value: rolled.value });
+      return match.startsWith("(") ? `(${rolled.text})` : rolled.text;
+    }
   );
+  return { text, ranges };
+}
+
+function rollEffectOperations(
+  effect: string,
+  operations: FrontendEquipmentEffectOperation[],
+  ranges: RolledEffectRange[]
+): FrontendEquipmentEffectOperation[] {
+  if (ranges.length === 0) return operations;
+  return operations.map((operation) => {
+    if (operation.value_min === null && operation.value_max === null) return operation;
+    const values = rolledValuesForSourceText(effect, ranges, operation.source_text);
+    if (values.length === 0) return operation;
+    if (values.length === 1) {
+      return {
+        ...operation,
+        value: values[0],
+        value_min: values[0],
+        value_max: values[0],
+      };
+    }
+    const minimum = Math.min(...values);
+    const maximum = Math.max(...values);
+    return {
+      ...operation,
+      value: (minimum + maximum) / 2,
+      value_min: minimum,
+      value_max: maximum,
+    };
+  });
+}
+
+function rolledValuesForSourceText(effect: string, ranges: RolledEffectRange[], sourceText: string) {
+  const sourceIndex = sourceText ? effect.indexOf(sourceText) : -1;
+  if (sourceIndex < 0) return ranges.map((range) => range.value);
+  const sourceEnd = sourceIndex + sourceText.length;
+  return ranges
+    .filter((range) => range.index >= sourceIndex && range.index < sourceEnd)
+    .map((range) => range.value);
 }
 
 function rollRangeNumberText(minimumText: string, maximumText: string, rng: FrontendSeedRandom) {
@@ -470,7 +558,10 @@ function rollRangeNumberText(minimumText: string, maximumText: string, rng: Fron
   if (minimum > maximum) [minimum, maximum] = [maximum, minimum];
   const decimalPlaces = Math.max(countDecimalPlaces(minimumText), countDecimalPlaces(maximumText));
   const value = decimalPlaces === 0 ? rng.nextInt(Math.round(minimum), Math.round(maximum)) : minimum + rng.nextFloat() * (maximum - minimum);
-  return decimalPlaces === 0 ? String(Math.round(value)) : value.toFixed(decimalPlaces);
+  return {
+    text: decimalPlaces === 0 ? String(Math.round(value)) : value.toFixed(decimalPlaces),
+    value: decimalPlaces === 0 ? Math.round(value) : Number(value.toFixed(decimalPlaces)),
+  };
 }
 
 function countDecimalPlaces(value: string) {
