@@ -75,18 +75,18 @@ def report_to_markdown(report: dict[str, Any]) -> str:
 
 
 def _fire_bolt_support_passive_case(config_root: Path) -> dict[str, Any]:
-    baseline_api = _setup_api(config_root, [("active_fire_bolt", "probe_fire_active", 0, 0)])
+    baseline_api = _setup_api(config_root, [("active_split_firebolt", "probe_fire_active", 0, 0)])
     combo_api = _setup_api(
         config_root,
         [
-            ("active_fire_bolt", "probe_fire_active", 0, 0),
-            ("support_extra_projectile", "probe_extra_projectile", 0, 1),
-            ("support_fire_mastery", "probe_fire_mastery", 1, 0),
-            ("passive_fire_focus", "probe_fire_focus", 1, 1),
+            ("active_split_firebolt", "probe_fire_active", 0, 0),
+            ("support_multiple_projectiles", "probe_extra_projectile", 0, 1),
+            ("support_added_fire_damage", "probe_fire_mastery", 1, 0),
+            ("passive_weapon_amplification", "probe_fire_focus", 1, 1),
         ],
     )
-    baseline = _final_skill(baseline_api, "active_fire_bolt")
-    combo = _final_skill(combo_api, "active_fire_bolt")
+    baseline = _final_skill(baseline_api, "active_split_firebolt")
+    combo = _final_skill(combo_api, "active_split_firebolt")
     event_counts = _runtime_event_counts(combo)
     checks = {
         "projectile_count_changed": combo.projectile_count > baseline.projectile_count,
@@ -104,21 +104,21 @@ def _fire_bolt_support_passive_case(config_root: Path) -> dict[str, Any]:
 
 
 def _frost_nova_area_cooldown_case(config_root: Path) -> dict[str, Any]:
-    baseline_api = _setup_api(config_root, [("active_frost_nova", "probe_nova_active", 0, 0)])
+    baseline_api = _setup_api(config_root, [("active_ring_of_ice", "probe_nova_active", 0, 0)])
     combo_api = _setup_api(
         config_root,
         [
-            ("active_frost_nova", "probe_nova_active", 0, 0),
-            ("support_area_magnify", "probe_area_magnify", 0, 1),
-            ("support_cooldown_focus", "probe_cooldown_focus", 3, 0),
+            ("active_ring_of_ice", "probe_nova_active", 0, 0),
+            ("support_increased_area", "probe_area_magnify", 0, 1),
+            ("support_cooldown_reduction", "probe_cooldown_focus", 3, 0),
         ],
     )
-    baseline = _final_skill(baseline_api, "active_frost_nova")
-    combo = _final_skill(combo_api, "active_frost_nova")
+    baseline = _final_skill(baseline_api, "active_ring_of_ice")
+    combo = _final_skill(combo_api, "active_ring_of_ice")
     checks = {
         "area_radius_increased": _runtime_value(combo, "radius") > _runtime_value(baseline, "radius"),
-        "area_support_applied": _has_modifier(combo, "support_area_magnify", "area_add_percent"),
-        "cooldown_focus_applied": _has_modifier(combo, "support_cooldown_focus", "cooldown_recovery_add_percent"),
+        "area_support_applied": _has_modifier(combo, "support_increased_area", "area_add_percent"),
+        "cooldown_focus_applied": _has_modifier(combo, "support_cooldown_reduction", "cooldown_recovery_add_percent"),
     }
     observations: list[str] = []
     if combo.actual_interval_ms >= baseline.actual_interval_ms:
@@ -139,20 +139,20 @@ def _same_row_conduit_case(config_root: Path) -> dict[str, Any]:
     baseline_api = _setup_api(
         config_root,
         [
-            ("active_fire_bolt", "probe_fire_active", 0, 0),
-            ("support_fire_mastery", "probe_fire_mastery", 0, 3),
+            ("active_split_firebolt", "probe_fire_active", 0, 0),
+            ("support_added_fire_damage", "probe_fire_mastery", 0, 3),
         ],
     )
     combo_api = _setup_api(
         config_root,
         [
-            ("active_fire_bolt", "probe_fire_active", 0, 0),
-            ("support_fire_mastery", "probe_fire_mastery", 0, 3),
+            ("active_split_firebolt", "probe_fire_active", 0, 0),
+            ("support_added_fire_damage", "probe_fire_mastery", 0, 3),
             ("support_row_conduit", "probe_row_conduit", 0, 4),
         ],
     )
-    baseline = _final_skill(baseline_api, "active_fire_bolt")
-    combo = _final_skill(combo_api, "active_fire_bolt")
+    baseline = _final_skill(baseline_api, "active_split_firebolt")
+    combo = _final_skill(combo_api, "active_split_firebolt")
     conduit_modifiers = [
         modifier for modifier in combo.applied_modifiers
         if modifier.applied and modifier.stat == "conduit_multiplier"
@@ -178,9 +178,9 @@ def _self_stat_passive_case(config_root: Path) -> dict[str, Any]:
     api = _setup_api(
         config_root,
         [
-            ("active_fire_bolt", "probe_fire_active", 0, 0),
-            ("passive_vitality", "probe_vitality", 0, 1),
-            ("passive_swift_gathering", "probe_swift", 0, 2),
+            ("active_split_firebolt", "probe_fire_active", 0, 0),
+            ("passive_rejuvenation", "probe_vitality", 0, 1),
+            ("passive_fearless", "probe_swift", 0, 2),
         ],
     )
     player_stats = api.state()["player_stats"]

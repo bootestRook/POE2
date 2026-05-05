@@ -19,85 +19,85 @@ source_values:
 level_table:
   levels:
     1:
-      crit_damage_add_percent: 2.6
+      crit_damage_add_percent: 26
     2:
-      crit_damage_add_percent: 3.83
+      crit_damage_add_percent: 26.5
     3:
-      crit_damage_add_percent: 5.06
+      crit_damage_add_percent: 27
     4:
-      crit_damage_add_percent: 6.29
+      crit_damage_add_percent: 27.5
     5:
-      crit_damage_add_percent: 7.53
+      crit_damage_add_percent: 28
     6:
-      crit_damage_add_percent: 8.76
+      crit_damage_add_percent: 28.5
     7:
-      crit_damage_add_percent: 9.99
+      crit_damage_add_percent: 29
     8:
-      crit_damage_add_percent: 11.22
+      crit_damage_add_percent: 29.5
     9:
-      crit_damage_add_percent: 12.45
+      crit_damage_add_percent: 30
     10:
-      crit_damage_add_percent: 13.68
+      crit_damage_add_percent: 30.5
     11:
-      crit_damage_add_percent: 14.92
+      crit_damage_add_percent: 31
     12:
-      crit_damage_add_percent: 16.15
+      crit_damage_add_percent: 31.5
     13:
-      crit_damage_add_percent: 17.38
+      crit_damage_add_percent: 32
     14:
-      crit_damage_add_percent: 18.61
+      crit_damage_add_percent: 32.5
     15:
-      crit_damage_add_percent: 19.84
+      crit_damage_add_percent: 33
     16:
-      crit_damage_add_percent: 21.07
+      crit_damage_add_percent: 33.5
     17:
-      crit_damage_add_percent: 22.31
+      crit_damage_add_percent: 34
     18:
-      crit_damage_add_percent: 23.54
+      crit_damage_add_percent: 34.5
     19:
-      crit_damage_add_percent: 24.77
+      crit_damage_add_percent: 35
     20:
-      crit_damage_add_percent: 26.0
+      crit_damage_add_percent: 35.5
     21:
-      crit_damage_add_percent: 26.13
+      crit_damage_add_percent: 36
     22:
-      crit_damage_add_percent: 26.26
+      crit_damage_add_percent: 36.5
     23:
-      crit_damage_add_percent: 26.39
+      crit_damage_add_percent: 37
     24:
-      crit_damage_add_percent: 26.52
+      crit_damage_add_percent: 37.5
     25:
-      crit_damage_add_percent: 26.65
+      crit_damage_add_percent: 38
     26:
-      crit_damage_add_percent: 26.78
+      crit_damage_add_percent: 38.5
     27:
-      crit_damage_add_percent: 26.91
+      crit_damage_add_percent: 39
     28:
-      crit_damage_add_percent: 27.04
+      crit_damage_add_percent: 39.5
     29:
-      crit_damage_add_percent: 27.17
+      crit_damage_add_percent: 40
     30:
-      crit_damage_add_percent: 27.3
+      crit_damage_add_percent: 40.5
     31:
-      crit_damage_add_percent: 27.43
+      crit_damage_add_percent: 41
     32:
-      crit_damage_add_percent: 27.56
+      crit_damage_add_percent: 41.5
     33:
-      crit_damage_add_percent: 27.69
+      crit_damage_add_percent: 42
     34:
-      crit_damage_add_percent: 27.82
+      crit_damage_add_percent: 42.5
     35:
-      crit_damage_add_percent: 27.95
+      crit_damage_add_percent: 43
     36:
-      crit_damage_add_percent: 28.08
+      crit_damage_add_percent: 43.5
     37:
-      crit_damage_add_percent: 28.21
+      crit_damage_add_percent: 44
     38:
-      crit_damage_add_percent: 28.34
+      crit_damage_add_percent: 44.5
     39:
-      crit_damage_add_percent: 28.47
+      crit_damage_add_percent: 45
     40:
-      crit_damage_add_percent: 28.6
+      crit_damage_add_percent: 45.5
 tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_crit"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]

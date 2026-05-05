@@ -191,6 +191,15 @@ formatter = "number"
 order = 20
 
 [[rows]]
+id = "life_return_percent"
+section_id = "life"
+stat_id = "life_return_percent"
+icon_text = "?"
+tone = "life"
+formatter = "percent"
+order = 30
+
+[[rows]]
 id = "max_mana"
 section_id = "mana"
 stat_id = "max_mana"
@@ -234,6 +243,15 @@ icon_text = "?"
 tone = "shield"
 formatter = "seconds_from_ms"
 order = 30
+
+[[rows]]
+id = "shield_return_percent"
+section_id = "energy_shield"
+stat_id = "shield_return_percent"
+icon_text = "?"
+tone = "shield"
+formatter = "percent"
+order = 40
 
 [[rows]]
 id = "armor_add_percent"
@@ -340,7 +358,7 @@ section_id = "mobility"
 stat_id = "move_speed"
 icon_text = "?"
 tone = "evasion"
-formatter = "multiplier"
+formatter = "number"
 order = 10
 
 [[rows]]

@@ -202,22 +202,31 @@ behavior:
     projectile_count: 1
     spread_angle_deg: 0
     projectile_speed: 620
-    projectile_width: 56
-    projectile_height: 40
+    projectile_width: 64
+    projectile_height: 64
     max_distance: 420
     hit_policy: "first_hit"
-    pierce_count: 1
-    collision_radius: 18
+    pierce_count: 0
+    collision_radius: 32
     spawn_offset:
-      x: -14
-      y: -20
+      x: 0
+      y: 0
     projectile_radius: 14
     impact_radius: 36
     max_targets: 1
     min_duration_ms: 80
     max_duration_ms: 2200
+    split_projectile_count: 3
+    split_projectile_angle_step_deg: 25
+    split_projectile_damage_multiplier: 0.5
+    split_projectile_pierce_count: 1
+    split_projectile_speed: 620
+    split_projectile_max_distance: 320
+    split_projectile_width: 40
+    split_projectile_height: 29
+    split_projectile_collision_radius: 16
 hit:
-  base_damage: 842.5
+  base_damage: 84.25
   can_crit: true
   can_apply_status: true
   damage_timing: "on_projectile_hit"

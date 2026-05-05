@@ -5,18 +5,21 @@ source_values:
   source: "tlidb"
   tlidb_id: "Blizzard"
   display_level: 20
-  raw_lines: ["释放该技能在指定位置落下 3 波暴风雪，造成 203-303 法术冰冷伤害。", "该技能击中时对敌人施加减益：额外 10% 受到的冰冷伤害，持续 6 秒。", "暴风雪：", "造成 203-303 法术冰冷伤害", "基础落下 1 波暴风雪", "该技能 +2 总波次", "额外 +10% 受到的冰冷伤害"]
+  raw_lines: ["释放该技能在指定位置落下 3 波暴风雪，造成 203-303 法术冰霜伤害。", "该技能击中时对敌人施加减益：额外 10% 受到的冰霜伤害，持续 6 秒。", "暴风雪：", "造成 203-303 法术冰霜伤害", "基础落下 1 波暴风雪", "该技能 +2 总波次", "额外 +10% 受到的冰霜伤害"]
   parsed_values:
-    base_damage: 253
+    base_damage: 3.5
+    level_20_base_damage: 253
+    added_damage_effectiveness_percent: 47
     mana_cost: 8
     release_interval_ms: 900
   anchors:
     base_damage:
+      1: 3.5
       20: 253
 level_table:
   levels:
     1:
-      base_damage: 25.3
+      base_damage: 3.5
       mana_cost: 8
       release_interval_ms: 900
     2:
@@ -182,16 +185,16 @@ display:
   name_key: "gem.active_blizzard.name"
   description_key: "gem.active_blizzard.description"
 classification:
-  tags: ["spell", "cold", "area"]
+  tags: ["spell", "cold", "area", "bombardment", "intelligence"]
   damage_type: "cold"
   damage_form: "spell"
 cast:
   mode: "spell"
   target_selector: "nearest_enemy"
-  search_range: 420
+  search_range: 630
   cooldown_ms: 0
   release_interval_ms: 900
-  base_cooldown_ms: 0
+  base_cooldown_ms: 2000
   trigger_interval_ms: 0
   mana_cost: 8
   windup_ms: 0
@@ -200,17 +203,25 @@ behavior:
   template: "damage_zone"
   params:
     shape: "circle"
-    origin_policy: "caster"
+    origin_policy: "target_position"
     facing_policy: "none"
     hit_at_ms: 240
     max_targets: 8
     status_chance_scale: 1
-    zone_vfx_key: "skill_event.frost_nova.vfx"
+    zone_vfx_key: "skill_event.blizzard.vfx"
     radius: 120
     expand_duration_ms: 180
     ring_width: 80
+    duration_ms: 420
+    max_hits: 8
+    max_hits_per_target: 1
+    wave_count: 3
+    wave_interval_ms: 300
+    target_lock_policy: "nearest_unique_enemy"
+    impact_marker_policy: "target_lock"
 hit:
-  base_damage: 253
+  base_damage: 3.5
+  ailments: [{"type": "frostbite", "source_damage_type": "cold", "chance_percent": 100, "duration_ms": 6000, "base_value": 10, "max_stacks": 1, "effect_per_stack": 10, "threshold": 0}]
   can_crit: true
   can_apply_status: true
   damage_timing: "on_damage_zone_hit"

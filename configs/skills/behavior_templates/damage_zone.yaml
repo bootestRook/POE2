@@ -1,5 +1,5 @@
 id: damage_zone
-allowed_params: ["shape", "origin_policy", "facing_policy", "hit_at_ms", "max_targets", "status_chance_scale", "zone_vfx_key", "vfx_key", "radius", "length", "width", "angle_offset_deg", "expand_duration_ms", "ring_width", "duration_ms", "tick_interval_ms", "channel_max_stacks", "channel_time_per_stack_ms", "channel_frequency_cap_stacks", "cloud_duration_per_stack_ms", "base_tick_interval_ms", "channel_tick_during_channel", "slash_chance_percent", "slash_damage_scale", "slash_radius", "channel_move_speed_multiplier", "knockback_policy", "knockback_interval_ms", "aggravation_value", "aggravation_cooldown_ms", "dot_damage_bonus_per_10_aggravation_percent", "trigger_marker_id", "trigger_delay_ms", "chain_count", "chain_radius", "segment_vfx_key"]
+allowed_params: ["shape", "origin_policy", "facing_policy", "hit_at_ms", "max_targets", "max_hits", "max_hits_per_target", "status_chance_scale", "zone_vfx_key", "vfx_key", "radius", "length", "width", "angle_offset_deg", "expand_duration_ms", "ring_width", "duration_ms", "tick_interval_ms", "damage_amount", "emit_hit_vfx", "suppress_hit_vfx", "wave_count", "wave_interval_ms", "target_lock_policy", "impact_marker_policy", "channel_max_stacks", "channel_time_per_stack_ms", "channel_frequency_cap_stacks", "cloud_duration_per_stack_ms", "base_tick_interval_ms", "channel_tick_during_channel", "slash_chance_percent", "slash_damage_scale", "slash_radius", "channel_move_speed_multiplier", "knockback_policy", "knockback_interval_ms", "knockback_distance", "aggravation_value", "aggravation_cooldown_ms", "dot_damage_bonus_per_10_aggravation_percent", "trigger_marker_id", "trigger_delay_ms", "chain_count", "chain_radius", "segment_vfx_key"]
 param_constraints:
   shape:
     type: string
@@ -14,6 +14,12 @@ param_constraints:
     type: integer
     minimum: 0
   max_targets:
+    type: integer
+    minimum: 1
+  max_hits:
+    type: integer
+    minimum: 1
+  max_hits_per_target:
     type: integer
     minimum: 1
   status_chance_scale:
@@ -49,6 +55,25 @@ param_constraints:
   tick_interval_ms:
     type: integer
     minimum: 1
+  damage_amount:
+    type: number
+    minimum: 0
+  emit_hit_vfx:
+    type: boolean
+  suppress_hit_vfx:
+    type: boolean
+  wave_count:
+    type: integer
+    minimum: 1
+  wave_interval_ms:
+    type: integer
+    minimum: 0
+  target_lock_policy:
+    type: string
+    enum: ["nearest_unique_enemy", "random_unique_enemy"]
+  impact_marker_policy:
+    type: string
+    enum: ["target_lock"]
   channel_max_stacks:
     type: integer
     minimum: 1
@@ -84,6 +109,9 @@ param_constraints:
     enum: ["reverse"]
   knockback_interval_ms:
     type: integer
+    minimum: 1
+  knockback_distance:
+    type: number
     minimum: 1
   aggravation_value:
     type: number

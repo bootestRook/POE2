@@ -37,6 +37,11 @@ export type ProceduralBattleMapData = {
   bossPoints: ProceduralMapPoint[];
   exitPoints: ProceduralMapPoint[];
   zones?: ProceduralMapZone[];
+  map_modifiers?: MapRuntimeModifiers;
+};
+
+export type MapRuntimeModifiers = {
+  monster_life_multiplier?: number;
 };
 
 export type ProceduralMapZone = {
@@ -231,6 +236,7 @@ export function generateProceduralMonsterSpawns(
   const candidates = collectSpawnCandidates(map, profile, maxCandidatePoints, rng);
   const packsById = new Map(config.monster_packs.map((pack) => [pack.pack_id, pack]));
   const monsterBaseStats = resolveMonsterBaseStats(config);
+  const mapMonsterLifeMultiplier = positiveMultiplier(map.map_modifiers?.monster_life_multiplier);
   const debugPoints: ProceduralSpawnPointDebug[] = [];
   const filteredPoints: ProceduralSpawnPointDebug[] = [];
   const enemies: ProceduralMonsterInstance[] = [];
@@ -273,7 +279,7 @@ export function generateProceduralMonsterSpawns(
     }
 
     const aggroSourceId = `proc_${acceptedPackCount + 1}_${candidate.zone_type}`;
-    const packMonsters = instantiatePack(candidate, pack, map, config.monster_rarity_rules, config.monster_offense_defaults, monsterBaseStats, rarityState, varietyState, aggroSourceId, nextId, rng);
+    const packMonsters = instantiatePack(candidate, pack, map, config.monster_rarity_rules, config.monster_offense_defaults, monsterBaseStats, mapMonsterLifeMultiplier, rarityState, varietyState, aggroSourceId, nextId, rng);
     if (packMonsters.length === 0) {
       const rejected: ProceduralSpawnPointDebug = { ...baseDebug, monster_pack_id: pack.pack_id, filter_reason: "不可行走" };
       debugPoints.push(rejected);
@@ -541,6 +547,7 @@ function instantiatePack(
   rarityRules: MonsterRarityRules,
   offenseDefaults: MonsterOffenseConfig | undefined,
   monsterBaseStats: Map<string, { base_life: number; base_attack: number }>,
+  mapMonsterLifeMultiplier: number,
   rarityState: MutableRarityState,
   varietyState: MutableVarietyState,
   aggroSourceId: string,
@@ -568,7 +575,7 @@ function instantiatePack(
       const baseStats = monsterBaseStats.get(entry.monster_id) ?? legacyMonsterBaseStats(entry);
       const entryLifeMultiplier = positiveMultiplier(entry.life_multiplier);
       const entryDamageMultiplier = positiveMultiplier(entry.damage_multiplier);
-      const lifeMultiplier = multiplier.life_multiplier * entryLifeMultiplier;
+      const lifeMultiplier = multiplier.life_multiplier * entryLifeMultiplier * mapMonsterLifeMultiplier;
       const damageMultiplier = multiplier.damage_multiplier * entryDamageMultiplier;
       const offense = mergeMonsterOffense(offenseDefaults, entry.offense);
       monsters.push({

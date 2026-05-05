@@ -19,85 +19,85 @@ source_values:
 level_table:
   levels:
     1:
-      cold_damage_add_percent: 1.03
-    2:
-      cold_damage_add_percent: 1.52
-    3:
-      cold_damage_add_percent: 2.01
-    4:
-      cold_damage_add_percent: 2.49
-    5:
-      cold_damage_add_percent: 2.98
-    6:
-      cold_damage_add_percent: 3.47
-    7:
-      cold_damage_add_percent: 3.96
-    8:
-      cold_damage_add_percent: 4.45
-    9:
-      cold_damage_add_percent: 4.93
-    10:
-      cold_damage_add_percent: 5.42
-    11:
-      cold_damage_add_percent: 5.91
-    12:
-      cold_damage_add_percent: 6.4
-    13:
-      cold_damage_add_percent: 6.88
-    14:
-      cold_damage_add_percent: 7.37
-    15:
-      cold_damage_add_percent: 7.86
-    16:
-      cold_damage_add_percent: 8.35
-    17:
-      cold_damage_add_percent: 8.84
-    18:
-      cold_damage_add_percent: 9.32
-    19:
-      cold_damage_add_percent: 9.81
-    20:
       cold_damage_add_percent: 10.3
+    2:
+      cold_damage_add_percent: 10.6
+    3:
+      cold_damage_add_percent: 10.9
+    4:
+      cold_damage_add_percent: 11.2
+    5:
+      cold_damage_add_percent: 11.5
+    6:
+      cold_damage_add_percent: 11.8
+    7:
+      cold_damage_add_percent: 12.1
+    8:
+      cold_damage_add_percent: 12.4
+    9:
+      cold_damage_add_percent: 12.7
+    10:
+      cold_damage_add_percent: 13
+    11:
+      cold_damage_add_percent: 13.3
+    12:
+      cold_damage_add_percent: 13.6
+    13:
+      cold_damage_add_percent: 13.9
+    14:
+      cold_damage_add_percent: 14.2
+    15:
+      cold_damage_add_percent: 14.5
+    16:
+      cold_damage_add_percent: 14.8
+    17:
+      cold_damage_add_percent: 15.1
+    18:
+      cold_damage_add_percent: 15.4
+    19:
+      cold_damage_add_percent: 15.7
+    20:
+      cold_damage_add_percent: 16
     21:
-      cold_damage_add_percent: 10.35
+      cold_damage_add_percent: 16.3
     22:
-      cold_damage_add_percent: 10.4
+      cold_damage_add_percent: 16.4
     23:
-      cold_damage_add_percent: 10.45
+      cold_damage_add_percent: 16.5
     24:
-      cold_damage_add_percent: 10.51
+      cold_damage_add_percent: 16.6
     25:
-      cold_damage_add_percent: 10.56
+      cold_damage_add_percent: 16.7
     26:
-      cold_damage_add_percent: 10.61
+      cold_damage_add_percent: 16.8
     27:
-      cold_damage_add_percent: 10.66
+      cold_damage_add_percent: 16.9
     28:
-      cold_damage_add_percent: 10.71
+      cold_damage_add_percent: 17
     29:
-      cold_damage_add_percent: 10.76
+      cold_damage_add_percent: 17.1
     30:
-      cold_damage_add_percent: 10.82
+      cold_damage_add_percent: 17.2
     31:
-      cold_damage_add_percent: 10.87
+      cold_damage_add_percent: 17.3
     32:
-      cold_damage_add_percent: 10.92
+      cold_damage_add_percent: 17.4
     33:
-      cold_damage_add_percent: 10.97
+      cold_damage_add_percent: 17.5
     34:
-      cold_damage_add_percent: 11.02
+      cold_damage_add_percent: 17.6
     35:
-      cold_damage_add_percent: 11.07
+      cold_damage_add_percent: 17.7
     36:
-      cold_damage_add_percent: 11.12
+      cold_damage_add_percent: 17.8
     37:
-      cold_damage_add_percent: 11.18
+      cold_damage_add_percent: 17.9
     38:
-      cold_damage_add_percent: 11.23
+      cold_damage_add_percent: 18
     39:
-      cold_damage_add_percent: 11.28
+      cold_damage_add_percent: 18.1
     40:
-      cold_damage_add_percent: 11.33
+      cold_damage_add_percent: 18.2
 tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage", "support_status"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]

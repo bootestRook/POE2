@@ -11,3 +11,15 @@ apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["active_skill_gem", "passive_skill_gem"]
 effect_stats: ["source_power_box", "target_power_box"]
+level_table:
+  levels:
+    1:
+      skill_level_add: 1
+    2:
+      skill_level_add: 2
+    3:
+      skill_level_add: 3
+    4:
+      skill_level_add: 4
+    5:
+      skill_level_add: 5

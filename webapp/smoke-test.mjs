@@ -5,7 +5,7 @@ import { createRequire } from "node:module";
 
 const root = process.cwd();
 const require = createRequire(import.meta.url);
-const app = readFileSync(join(root, "webapp", "App.tsx"), "utf8");
+const app = readFileSync(join(root, "webapp", "App.tsx"), "utf8").replace(/\r\n/g, "\n");
 const css = readFileSync(join(root, "webapp", "styles.css"), "utf8");
 const mapSpawnRuntime = readFileSync(join(root, "webapp", "mapSpawnRuntime.ts"), "utf8");
 const mapSpawnConfig = JSON.parse(readFileSync(join(root, "configs", "monsters", "map_spawn_v1.json"), "utf8"));
@@ -22,7 +22,9 @@ const state = loadCurrentState();
 const localization = readFileSync(join(root, "configs", "localization", "zh_cn.toml"), "utf8");
 const skillEditorAdapter = readFileSync(join(root, "src", "liufang", "skill_editor.py"), "utf8");
 const webApi = readFileSync(join(root, "src", "liufang", "web_api.py"), "utf8");
-const skillEditorRunner = readFileSync(join(root, "skillEditor_run.bat"), "utf8");
+const webappServer = readFileSync(join(root, "tools", "webapp_server.py"), "utf8");
+const skillEditorRunnerPath = join(root, "skillEditor_run.bat");
+const skillEditorRunner = existsSync(skillEditorRunnerPath) ? readFileSync(skillEditorRunnerPath, "utf8") : "";
 const unitAnimationRuntime = readFileSync(join(root, "webapp", "unitAnimation.ts"), "utf8");
 const unitAssets = readFileSync(join(root, "webapp", "unitAssets.ts"), "utf8");
 const unitAnimationManifest = JSON.parse(readFileSync(join(root, "assets", "battle", "units", "manifests", "unit-animations-manifest.json"), "utf8"));
@@ -50,6 +52,25 @@ function pngSize(path) {
     width: data.readUInt32BE(16),
     height: data.readUInt32BE(20)
   };
+}
+
+function functionBody(source, functionName) {
+  const signature = new RegExp(`function ${functionName}[\\s\\S]*?\\) \\{`);
+  const match = signature.exec(source);
+  const start = match?.index ?? -1;
+  if (start < 0) throw new Error(`Missing function: ${functionName}`);
+  const open = start + match[0].length - 1;
+  if (open < 0) throw new Error(`Missing function body: ${functionName}`);
+  let depth = 0;
+  for (let index = open; index < source.length; index += 1) {
+    const char = source[index];
+    if (char === "{") depth += 1;
+    if (char === "}") {
+      depth -= 1;
+      if (depth === 0) return source.slice(open + 1, index);
+    }
+  }
+  throw new Error(`Unclosed function body: ${functionName}`);
 }
 
 const requiredText = [
@@ -87,11 +108,74 @@ for (const requiredRuntimeManaCode of [
   "Number(skill.actual_interval_ms ?? skill.final_cooldown_ms ?? 0)",
   "function trySpendSkillMana(skill: SkillPreview)",
   "currentMana: clamp(current.currentMana - cost, 0, current.maxMana)",
-  "if (!trySpendSkillMana(skill)) return current"
+  "if (!trySpendSkillMana(skill)) return false"
 ]) {
   if (!app.includes(requiredRuntimeManaCode)) {
     throw new Error(`Frontend skill runtime must spend mana and use actual release interval: ${requiredRuntimeManaCode}`);
   }
+}
+
+const projectileImpactHandler = app.slice(
+  app.indexOf('if (event.type === "projectile_impact")'),
+  app.indexOf('if (event.type === "melee_arc")')
+);
+if (!projectileImpactHandler.includes("targetId: hitVfxTargetId(event)")) {
+  throw new Error("Projectile impact hit VFX must carry targetId so it anchors to the hit target center.");
+}
+const anchorHitVfxBody = functionBody(app, "anchorHitVfxsToTargets");
+if (!anchorHitVfxBody.includes("return { ...vfx, x: target.x, y: target.y };")) {
+  throw new Error("Hit VFX anchoring must use the current target center.");
+}
+if (anchorHitVfxBody.includes("target.hp <= 0")) {
+  throw new Error("Hit VFX anchoring must not skip an existing target because of hp state.");
+}
+const advanceEnemyBuffsBody = functionBody(app, "advanceEnemyBuffs");
+if (!advanceEnemyBuffsBody.includes("shouldRetainEnemyForGameplayOrDamageFlash(enemy, elapsedRef.current)")) {
+  throw new Error("Enemy DoT kills must retain the target briefly for damage flash and anchored hit feedback.");
+}
+if (!advanceEnemyBuffsBody.includes("if (enemy.hp <= 0)")) {
+  throw new Error("Enemy DoT runtime must skip already-dead retained targets.");
+}
+if (!advanceEnemyBuffsBody.includes("activeBuffs: hp <= 0 ? [] : activeBuffs")) {
+  throw new Error("Enemy DoT kills must clear status buffs after the lethal tick.");
+}
+const consumeSkillEventBatchBody = functionBody(app, "consumeSkillEventBatch");
+if (!consumeSkillEventBatchBody.includes("projectileTargetFollowupKey(event)")) {
+  throw new Error("Projectile follow-up suppression must be scoped by projectile and target, not projectile id alone.");
+}
+if (consumeSkillEventBatchBody.includes("nextHp <= 0) deadProjectileHits.add(projectileId)")) {
+  throw new Error("A projectile's own lethal damage must not suppress its hit VFX or floating text follow-ups.");
+}
+const applyDamageEventBatchBody = functionBody(app, "applyDamageEventBatch");
+if (!applyDamageEventBatchBody.includes("enemiesStateRef.current = liveEnemiesAfterDamage;")) {
+  throw new Error("Runtime damage application must update the canonical enemy ref synchronously.");
+}
+if (!applyDamageEventBatchBody.includes("setEnemies(liveEnemiesAfterDamage);")) {
+  throw new Error("Runtime damage React state must mirror the canonical post-damage enemy snapshot.");
+}
+const applyEnemyStatusBuffBody = functionBody(app, "applyEnemyStatusBuff");
+if (!applyEnemyStatusBuffBody.includes("const next = enemiesStateRef.current.map")) {
+  throw new Error("Enemy status buff application must derive from the canonical enemy ref synchronously.");
+}
+if (!applyEnemyStatusBuffBody.includes("enemiesStateRef.current = next;")) {
+  throw new Error("Enemy status buff application must update the canonical enemy ref before later event batch damage.");
+}
+if (!applyEnemyStatusBuffBody.includes("setEnemies(next);")) {
+  throw new Error("Enemy status buff React state must mirror the canonical post-status snapshot.");
+}
+const battleGeometrySnapshotEnemies = app.slice(
+  app.indexOf("enemies: visibleEnemies.map((enemy) => ({"),
+  app.indexOf("projectiles: bolts.map((bolt) => ({")
+);
+if (!battleGeometrySnapshotEnemies.includes("lastDamagedAt: enemy.lastDamagedAt")) {
+  throw new Error("Canvas battle geometry enemies must receive lastDamagedAt for damage flash.");
+}
+const renderBattleEntityBody = functionBody(app, "renderBattleEntity");
+if (!renderBattleEntityBody.includes("enemyHitFlashAmount(entity.lastDamagedAt")) {
+  throw new Error("DOM enemy rendering must derive white hit flash from lastDamagedAt.");
+}
+if (!app.includes("const ENEMY_DAMAGE_FLASH_SECONDS = 0.22")) {
+  throw new Error("Enemy damage flash duration must stay short and explicit.");
 }
 
 const requiredCode = [
@@ -181,6 +265,11 @@ const requiredCode = [
   "authoredSpawnPlanActive",
   "ENEMY_SPATIAL_CHUNK_SIZE",
   "MAX_VISIBLE_ENEMY_DOM_NODES",
+  "MAX_RUNTIME_SIMULATED_ENEMIES",
+  "RUNTIME_MIN_FRAME_MS",
+  "createRuntimeEnemyNavigationContext",
+  "runtimeEnemySimulationIds",
+  "nearest.length < MAX_VISIBLE_ENEMY_DOM_NODES",
   "loadMapEditorState",
   "map001Document",
   "EDITOR_RUNTIME_MAP_ID",
@@ -278,12 +367,7 @@ const requiredCode = [
   "consumed_events_this_frame",
   "dropped_frame_count",
   "consumeSkillEventBatch",
-  "createProjectileSkillEvents",
   "consumeSkillEvent",
-  "createMeleeArcSkillEvents",
-  "createChainSkillEvents",
-  "createDamageZoneSkillEvents",
-  "selectChainTargets",
   "projectile_spawn",
   "chain_segment",
   "melee_arc",
@@ -332,6 +416,130 @@ for (const text of requiredCode) {
   if (![app, css, battleGeometryRenderer, battleGeometryCanvas, mapTileRenderer, mapTileVisuals].some((source) => source.includes(text))) {
     if (isNonAsciiCheck(text)) continue;
     throw new Error(`缂哄皯 WebApp 浜や簰鎴栨牱寮忚兘鍔涳細${text}`);
+  }
+}
+
+if (app.includes("runtime-damage-zone-range-${shape}")) {
+  throw new Error("DamageZoneRuntimeGuide must not use geometry shape as the visual guide class.");
+}
+
+const playableReleaseBody = functionBody(app, "hitEnemies");
+for (const forbidden of [
+  "hitEnemiesWithSkillEvents",
+  "createModuleChainSkillEvents",
+  "createOrbitModuleChainSkillEvents",
+  "createDamageZoneSkillEvents",
+  "createChainSkillEvents",
+  "createProjectileSkillEvents",
+  "selectChainTargets",
+  "selectProjectileTargets"
+]) {
+  if (playableReleaseBody.includes(forbidden)) {
+    throw new Error(`Playable WebApp battle must not keep legacy generated skill mirrors: ${forbidden}`);
+  }
+}
+for (const forbiddenBackendGameplay of [
+  "/" + "api/runtime/skill-events",
+  "/" + "api/combat/tick",
+  "requestRuntime" + "SkillEvents",
+  "request" + "State(",
+  "runServer" + "Combat",
+  "backend" + "Canonical"
+]) {
+  if (app.includes(forbiddenBackendGameplay)) {
+    throw new Error(`Playable WebApp must be client-only for normal play: ${forbiddenBackendGameplay}`);
+  }
+}
+
+const stepGameBody = functionBody(app, "stepGame");
+for (const forbidden of [
+  "updateChannelledDamageZoneSkill(skill, currentVisualEnemies, dt)",
+  "updateLavaOrbitSkill(skill, currentVisualEnemies, dt)"
+]) {
+  if (stepGameBody.includes(forbidden)) {
+    throw new Error(`Playable WebApp battle must not keep obsolete frontend-local tick mirror: ${forbidden}`);
+  }
+}
+
+for (const text of [
+  "MAX_RUNTIME_PROCEDURAL_PACK_BUDGET",
+  "MAX_RUNTIME_PROCEDURAL_PACKS",
+  "base_pack_budget: Math.min(profile.base_pack_budget",
+  "max_active_packs: Math.min(profile.max_active_packs"
+]) {
+  if (app.includes(text)) {
+    throw new Error(`WebApp must not override map spawn config for runtime performance: ${text}`);
+  }
+}
+for (const text of [
+  "damageZoneGuideVisual(shape, vfxKey)",
+  "runtime-damage-zone-geometry-${shape}",
+  "runtime-damage-zone-guide-${guideVisual}",
+  "if (token.includes(\"whirlwind\")) return \"whirlwind\";"
+]) {
+  if (!app.includes(text)) {
+    throw new Error(`DamageZoneRuntimeGuide missing guide visual separation: ${text}`);
+  }
+}
+for (const text of [
+  ".runtime-damage-zone-guide-circle",
+  ".runtime-damage-zone-guide-rectangle",
+  ".runtime-damage-zone-guide-whirlwind"
+]) {
+  if (!css.includes(text)) {
+    throw new Error(`Damage zone runtime guide CSS missing semantic guide class: ${text}`);
+  }
+}
+if (css.includes(".runtime-damage-zone-range-skill_event_whirlwind_vfx.runtime-damage-zone-range-circle")) {
+  throw new Error("Whirlwind runtime guide must not override the default circle range class.");
+}
+for (const text of [
+  "const ENEMY_SPATIAL_INDEX_CACHE = new WeakMap<Enemy[], EnemySpatialIndex>();",
+  "ENEMY_SPATIAL_INDEX_CACHE.get(enemies)",
+  "ENEMY_SPATIAL_INDEX_CACHE.set(enemies, spatialIndex)"
+]) {
+  if (!app.includes(text)) {
+    throw new Error(`Runtime hit target queries must reuse the per-enemy-array spatial index: ${text}`);
+  }
+}
+
+if (!app.includes("shapeEffects: (vfx.shapeEffects ?? []).map((effect) => effect.id)")) {
+  throw new Error("Canvas hit VFX snapshot must tolerate hits without optional shapeEffects.");
+}
+for (const text of [
+  "const runtimeLastStepError = useRef<string | null>(null);",
+  "console.error(\"[runtime] stepGame failed\", error);",
+  "setCombatLogs((logs) => [`运行时错误：${message}`, ...logs].slice(0, 8));"
+]) {
+  if (!app.includes(text)) {
+    throw new Error(`Runtime game loop must surface stepGame failures without stopping rAF: ${text}`);
+  }
+}
+if (functionBody(app, "enemyLineReachablePlayerContactTarget").includes("function damageEventAmountAgainstEnemy")) {
+  throw new Error("Runtime damage helpers must stay module-scoped, not nested inside enemy navigation helpers.");
+}
+for (const text of [
+  "function playerAttachedAreaKey(event: SkillEvent)",
+  "payload.origin_policy === \"caster\" && typeof payload.zone_id === \"string\"",
+  "return `${event.skill_instance_id}.caster.${phase}`;",
+  "followPlayer: Boolean(playerAttachedPosition)",
+  "x: zone.followPlayer ? player.x : zone.x",
+  "channel_move_speed_multiplier",
+  "buffType: \"channel_move_speed\"",
+  "playerMovementSpeedMultiplier()",
+  "player-buff-channel-move-speed"
+]) {
+  if (!app.includes(text)) {
+    throw new Error(`Caster-attached damage zones must stay anchored to the live player center: ${text}`);
+  }
+}
+for (const forbidden of [
+  "function activeDamageZoneTickEvents",
+  "playerAttachedAreaDamageEvents",
+  "orbitHitTargets"
+]) {
+  if (app.includes(forbidden)) {
+    throw new Error(`Playable WebApp battle must not generate damage-zone hit events locally: ${forbidden}`);
   }
 }
 
@@ -399,7 +607,8 @@ const bakedMapChecks = [
   [app, "\u5730\u56fe\u8c03\u8bd5", "missing map debug toggle"],
   [app, "BakedMapBackground", "missing baked map background renderer"],
   [app, "MapDebugOverlay", "missing map debug overlay"],
-  [app, "createEnemy(nextEnemyId.current++, challengeSpawn.x, challengeSpawn.y, battleMap", "enemy spawning not connected to map points"],
+  [app, "createProceduralSpawnPlanEnemies(battleMap", "playable map run must create frontend-owned monsters"],
+  [app, "setEnemies(spawnPlan.enemies)", "playable map run must install frontend-owned monsters"],
   [css, ".map-debug-walkable", "missing walkable debug style"],
   [css, ".map-debug-blocker", "missing blocker debug style"],
   [css, ".map-debug-marker-player", "missing player spawn debug marker"]
@@ -426,7 +635,8 @@ const projectileVfxLifetimeChecks = [
   "fireBoltAliveRemaining",
   "projectileBodyOpacity",
   "event.payload?.expire_world_position ?? event.payload?.end_position",
-  "ttl: aliveDuration + PROJECTILE_BODY_EXIT_FADE_DURATION",
+  "projectileExitFadeDuration",
+  "ttl: aliveDuration + projectileExitFadeDuration",
   "const opacity = projectileBodyOpacity(bolt)",
   "vfxFrameIndexInRow(sheets.projectile, sheets.projectileFrameRow, aliveRemaining, duration)",
   "data-projectile-alive-remaining",
@@ -555,12 +765,12 @@ const skillEditorChecks = [
   "鎶€鑳界紪杈戝櫒",
   "鎶€鑳芥枃浠跺垪锟?",
   "浠呯紪杈戝凡杩佺Щ鎶€鑳藉寘鍏佽鐨勫瓧锟?",
-  "active_fire_bolt",
-  "active_ice_shards",
-  "active_penetrating_shot",
-  "active_frost_nova",
-  "active_puncture",
-  "active_lightning_chain",
+  "active_split_firebolt",
+  "active_ice_shot",
+  "active_lightning_shot",
+  "active_ring_of_ice",
+  "active_flame_slash",
+  "active_chain_lightning",
   "player_nova",
   "melee_arc",
   "chain",
@@ -575,12 +785,12 @@ const skillEditorChecks = [
   "杩為攣娈电壒鏁堥敭",
   "杩戞垬鎵囧舰妯″潡",
   "melee-arc-vfx",
-  "createMeleeArcSkillEvents",
-  "selectMeleeArcTargets",
+
+
   "player-nova-vfx",
-  "createPlayerNovaSkillEvents",
-  "selectPlayerNovaTargets",
-  "selectDamageZoneTargets",
+
+
+
   "penetrating_shot",
   "PENETRATING_SHOT_VFX",
   "PENETRATING_SHOT_ART_FACING_OFFSET_DEG",
@@ -606,7 +816,6 @@ const skillEditorChecks = [
   "鎶€鑳界紪鍙凤紙鍙锟?",
   "淇濆瓨鎶€鑳藉寘",
   "淇濆瓨鎴愬姛",
-  "/api/skill-editor/save",
   "requestSkillEditorSave",
   "openSkillEditorPanel",
   "initialSkillEditorOpen",
@@ -624,7 +833,7 @@ const skillEditorChecks = [
   "鏁ｅ皠瑙掑害",
   "鍩虹浼ゅ",
   "棰勮瀛楁",
-  "SkillRuntimeGuideLayer",
+  "FrontendSkillGuideLayer",
   "缂栬緫鍣ㄨ繍琛岃緟鍔╃嚎",
   "runtime-skill-guides",
   "runtime-skill-search-ring",
@@ -636,20 +845,20 @@ const skillEditorChecks = [
   "projectileAngleStepDeg",
   "isProjectileSkillTemplate",
   "rotateDirection",
-  "selectProjectileTargets",
-  "ProjectileDamageTarget",
-  "projectileIndex",
-  "data-projectile-index",
+
+
+
+
   "data-current-world-x",
   "data-velocity-world-x",
   "data-local-spread-angle",
   "data-pierce-remaining",
   "data-projectile-speed",
   "data-impact-kind",
-  ".p${projectileIndex + 1}.damage",
-  "maxHitsPerProjectile",
-  "collisionRadius * 3",
-  "projectileLineMetrics",
+
+
+
+
   "pierce_count",
   "娴嬭瘯璇嶇紑锟?",
   "鍙祴璇曡緟鍔╂晥锟?",
@@ -669,7 +878,6 @@ const skillEditorChecks = [
   "鍘熷鏈€缁堜激锟?",
   "娴嬭瘯鍚庢渶缁堜激锟?",
   "鏈敓鏁堣瘝缂€鍒楄〃",
-  "/api/skill-editor/modifier-preview",
   "requestSkillEditorModifierPreview",
   "鎶€鑳芥祴璇曞満",
   "鍗曚綋鏈ㄦ々",
@@ -683,7 +891,6 @@ const skillEditorChecks = [
   "鍚敤娴嬭瘯璇嶇紑锟?",
   "鏈浜嬩欢鍘熷鎽樿",
   "椋炶鏈熼棿鏈墸琛€锛氶€氳繃",
-  "/api/skill-editor/test-arena/run",
   "requestSkillTestArenaRun",
   "鎶€鑳戒簨浠舵椂闂寸嚎",
   "鏀寔璇嗗埆鐨勪簨浠剁被锟?",
@@ -724,16 +931,18 @@ for (const text of runtimePerformanceChecks) {
   }
 }
 
-for (const text of skillEditorChecks) {
-  if (!app.includes(text) && !skillEditorAdapter.includes(text) && !webApi.includes(text) && !localization.includes(text) && !skillEditorRunner.includes(text)) {
-    if (isNonAsciiCheck(text)) continue;
-    throw new Error(`缂哄皯鎶€鑳界紪杈戝櫒 V0 涓枃鐣岄潰鎴栧彧璇绘暟鎹睍绀猴細${text}`);
-  }
+if (skillEditorRunner) {
+  throw new Error("skillEditor_run.bat must not exist while SkillEditor is disabled.");
 }
 
-const penetratingShotEditorEntry = state.skill_editor.entries.find((entry) => entry.id === "active_penetrating_shot");
-if (!penetratingShotEditorEntry?.openable || !penetratingShotEditorEntry?.editable || !penetratingShotEditorEntry?.package_data) {
-  throw new Error("active_penetrating_shot must be openable and editable in SkillEditor state.");
+if (Object.prototype.hasOwnProperty.call(state, "skill_editor")) {
+  throw new Error("WebApp state must not expose SkillEditor state while SkillEditor is disabled.");
+}
+
+for (const text of ["SkillEditor is disabled.", "DISABLED_SKILL_EDITOR_PORT", "dist-skill-editor"]) {
+  if (!webApi.includes(text) && !webappServer.includes(text)) {
+    throw new Error(`SkillEditor disable guard is missing: ${text}`);
+  }
 }
 
 const forbiddenSkillEditorText = [
@@ -851,7 +1060,7 @@ const abstractGeometryPhase2Checks = [
   [app, "moving: Math.hypot(playerVisual.current.movementVector.x", "Player geometry snapshot must preserve visual movement state for rotation speed."],
   [app, "velocityX: bolt.velocityX", "Projectile geometry snapshot must preserve projectile velocity input."],
   [app, "projectileSpeed: bolt.projectileSpeed", "Projectile geometry snapshot must preserve projectile speed input."],
-  [battleGeometryCanvas, "data-canvas-objects=\"entities-projectiles\"", "Canvas layer must declare that entities and projectiles are canvas-rendered."],
+  [battleGeometryCanvas, 'data-canvas-objects="entities-projectiles"', "Canvas layer must declare that entities and projectiles are canvas-rendered."],
   [battleGeometryCanvas, "data-geometry-enemies={viewportSnapshot.enemies.length}", "Canvas layer must expose enemy count for pressure validation."],
   [battleGeometryCanvas, "data-geometry-projectiles={viewportSnapshot.projectiles.length}", "Canvas layer must expose projectile count for pressure validation."],
   [battleGeometryCanvas, "window.requestAnimationFrame(draw)", "Canvas geometry rendering must run on requestAnimationFrame for smooth player marker rotation."],
@@ -1000,20 +1209,45 @@ const monsterPackCombatChecks = [
   [app, "hitKind?: MonsterHitKind", "Runtime Enemy must expose monster hit kind."],
   [app, "attackRange?: number", "Runtime Enemy must expose monster attack range."],
   [app, "attackCadenceMs?: number", "Runtime Enemy must expose monster attack cadence."],
+  [app, "attackStartedAtMs?: number", "Runtime Enemy must own monster attack start timing."],
+  [app, "attackUntilMs?: number", "Runtime Enemy must own monster active attack window."],
+  [app, "nextAttackReadyAtMs?: number", "Runtime Enemy must own monster attack cooldown readiness."],
   [app, "offenseModifiers?: MonsterOffenseModifiers", "Runtime Enemy must expose shared stat-id offense modifiers."],
+  [app, "const survivalEnemy = { ...enemy, aggroLocked: true }", "Survival/runtime-spawned monsters must use locked direct-charge AI instead of swarm-yield movement."],
   [app, "const aggroLocked = Boolean(enemy.aggroLocked || (enemy.spawnPlanSourceId && triggeredSourceIds.has(enemy.spawnPlanSourceId)))", "Runtime aggro must lock every monster from a triggered source."],
   [app, "triggeredEncounterSourceIds.current = new Set()", "Battle reset must clear triggered aggro sources."],
   [app, "if (enemy.hp <= 0) return { ...enemy, runtimeTier: \"dead\" as const }", "Dead monsters must leave active aggro behavior."],
   [app, "resolveMonsterHitAgainstPlayer", "Monster hits must resolve through player defensive stats."],
+  [app, "function applyRuntimeMonsterAttacks", "Monster attack hits must be applied by the runtime combat update path."],
+  [app, "function canEnemyStartRuntimeAttack", "Monster attack readiness must be checked from runtime enemy state."],
+  [app, "if (enemy.attackUntilMs !== undefined && nowMs < enemy.attackUntilMs)", "Active monster attacks must lock movement from runtime enemy state."],
+  [app, "freezeAttackingEnemy(enemy", "Attack-locked monsters must remain frozen during the active attack window."],
   [app, "attack_block_chance_percent", "Monster incoming damage must reference player attack block."],
   [app, "spell_block_chance_percent", "Monster incoming damage must reference player spell block."],
   [app, "damage_mitigation_final_percent", "Monster incoming damage must reference player final mitigation."],
   [app, "currentEnergyShield", "Monster incoming damage must reduce player energy shield before life."],
   [app, "if (enemy.aggroLocked) return player", "Aggro-locked monsters must target the player directly at close range."],
   [app, "!directCharge && playerDistance < ENEMY_PLAYER_BODY_SOFT_RADIUS", "Aggro-locked monsters must not apply player-body repulsion."],
+  [app, "? { x: 0, y: 0, speedScale: 1, active: false }", "Aggro-locked direct charge must not apply tangential crowd steering."],
+  [app, "if (enemyHasWalkableLine(map, enemy, approachTarget)) return approachTarget", "Close-range aggro navigation may press player center only when a walkable line exists."],
+  [app, "enemyLineReachablePlayerContactTarget", "Close-range aggro navigation must use same-side contact targets near boundaries before falling back to grid navigation."],
+  [app, "const attackLocked = lockedEnemyIds.has(enemy.id)", "Near-boundary attack-locked monsters must still receive lightweight occupancy correction."],
+  [app, "const maxPush = attackLocked ? ENEMY_COLLISION_MAX_PUSH * 0.45 : ENEMY_COLLISION_MAX_PUSH", "Attack-locked occupancy correction must be weaker than normal separation."],
+  [app, "if (enemyGridWalkable(map, center.gridX, center.gridY)) return [center]", "Navigation must not treat neighboring cells as finished targets while the player's own cell is walkable."],
+  [app, "runtimeDebugMonsterBoundaryTestEnabled", "WebApp must expose an in-browser full-boundary monster AI scan mode."],
+  [app, "runRuntimeBoundaryMonsterAiScan", "Boundary monster AI scan must execute in the frontend runtime."],
+  [app, "runtimeBoundaryMonsterIds", "Boundary monster AI scan must cover every runtime monster geometry id."],
+  [app, "Object.keys(MONSTER_GEOMETRY_VISUALS)", "Boundary monster AI scan must include all abstract geometry monsters, not only fallback enemies."],
+  [app, "canEnemyReachPlayerForMelee", "Runtime monster attacks must use map-aware melee reach near walls and corners."],
+  [app, "enemyReachableMeleeOccupancyTarget", "Direct-line aggro monsters must prefer reachable melee occupancy slots around the player instead of stacking on player center."],
+  [app, "const preferredAngle = baseAngle + ((((enemy.id * 137) % 7) - 3) * ENEMY_MELEE_SLOT_ANGLE_STEP)", "Melee occupancy slots must distribute enemies by stable id."],
+  [app, "resolveEnemyPlayerBodyOccupancyFloor", "Aggro monster occupancy correction must keep enemy centers out of the player body while preserving contact damage."],
+  [app, "const approachTargetIsPlayer = distance(approachTarget, player) <= 0.001", "Corner navigation must distinguish player-center approach from side-cell approach."],
+  [app, "distance(enemy, approachTarget)", "Corner navigation must keep moving toward reachable approach cells instead of stopping outside attack range."],
+  [app, "const directProgress = currentDistance - distance(directResolved, target)", "Direct-charge movement must prefer progress toward the player over side avoidance."],
   [app, "directCharge\n    ? resolveEnemyDirectChargeMove", "Aggro-locked monsters must bypass swarm steering and crowd-yield movement."],
   [app, "MONSTER_CHASE_SPEED_MULTIPLIER = 2", "Monster chase speed must be doubled by a centralized multiplier."],
-  [app, "nextAttackReadyAtMs: canStartAttack ? nowMs + monsterAttackCadenceMs(enemy)", "Monster damage must use attack cadence rather than per-frame proximity damage."],
+  [app, "nextAttackReadyAtMs: nowMs + monsterAttackCadenceMs(enemy)", "Monster damage must use attack cadence rather than per-frame proximity damage."],
   [mapSpawnRuntime, "monster_offense_defaults", "Procedural spawn runtime must accept monster offense defaults."],
   [mapSpawnRuntime, "offense_modifiers", "Procedural spawn runtime must materialize offense modifiers."],
   [mapSpawnRuntime, "mergeMonsterOffense", "Procedural spawn runtime must merge default and per-entry monster offense config."]
@@ -1021,6 +1255,31 @@ const monsterPackCombatChecks = [
 
 for (const [source, token, message] of monsterPackCombatChecks) {
   if (!source.includes(token)) throw new Error(message);
+}
+
+const runtimeMonsterAttackBody = functionBody(app, "applyRuntimeMonsterAttacks");
+for (const token of [
+  "canEnemyStartRuntimeAttack(enemy, nextPlayer, nowMs, battleMap)",
+  "resolveMonsterHitAgainstPlayer(enemy, playerBeforeHit, state?.player_stats, blocked)",
+  "nextAttackReadyAtMs: nowMs + monsterAttackCadenceMs(enemy)",
+  "setRuntimePlayer(() => nextPlayer)"
+]) {
+  if (!runtimeMonsterAttackBody.includes(token)) {
+    throw new Error(`runtime monster attacks must own stationary-player hit cadence: ${token}`);
+  }
+}
+if (runtimeMonsterAttackBody.includes("playerInputVector")) {
+  throw new Error("runtime monster attacks must not depend on player movement input.");
+}
+
+const enemyVisualSyncBody = functionBody(app, "syncEnemyVisuals");
+for (const forbidden of ["applyMonsterAttackHit", "resolveMonsterHitAgainstPlayer", "nextAttackReadyAtMs:"]) {
+  if (enemyVisualSyncBody.includes(forbidden)) {
+    throw new Error(`enemy visual sync must not own monster damage or cooldowns: ${forbidden}`);
+  }
+}
+if (!enemyVisualSyncBody.includes("attackStartedAtMs: enemy.attackStartedAtMs") || !enemyVisualSyncBody.includes("attackUntilMs: enemy.attackUntilMs")) {
+  throw new Error("enemy visual sync must read runtime-owned attack animation state.");
 }
 
 if (!Array.isArray(mapSpawnConfig.map_spawn_profiles) || mapSpawnConfig.map_spawn_profiles.length === 0) {

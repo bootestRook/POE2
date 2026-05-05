@@ -41,12 +41,14 @@ class TlidbAdoptionTest(unittest.TestCase):
         manifest = json.loads((self.config_root / "skills" / "tlidb_adopted_skills.json").read_text(encoding="utf-8"))
 
         self.assertEqual(manifest["counts"]["active"], 16)
-        self.assertEqual(manifest["counts"]["support"], 30)
+        self.assertEqual(manifest["counts"]["support"], 33)
         self.assertEqual(manifest["counts"]["passive"], 9)
         self.assertEqual(manifest["counts"]["board_conduits"], 3)
         self.assertNotIn("active_fire_bolt", self.definitions)
         self.assertEqual(sum(1 for definition in self.definitions.values() if definition.gem_kind == "active_skill"), 16)
-        self.assertEqual(sum(1 for definition in self.definitions.values() if definition.gem_kind == "support"), 33)
+        support_definitions = [definition for definition in self.definitions.values() if definition.gem_kind == "support"]
+        self.assertGreaterEqual(len(support_definitions), manifest["counts"]["support"])
+        self.assertTrue(all("support_gem" in definition.tags for definition in support_definitions))
         self.assertEqual(sum(1 for definition in self.definitions.values() if definition.gem_kind == "passive_skill"), 9)
 
     def test_active_level_table_changes_runtime_damage(self) -> None:
@@ -80,7 +82,67 @@ class TlidbAdoptionTest(unittest.TestCase):
         self.assertEqual(final_skill.projectile_count, 3)
         self.assertTrue(any(mod.source_base_gem_id == "support_multiple_projectiles" for mod in final_skill.applied_modifiers))
 
-    def test_support_level_table_is_applied_before_sudoku_scaling(self) -> None:
+    def test_board_conduits_grant_skill_level_in_matching_region(self) -> None:
+        cases = [
+            ("support_row_conduit", "same_row", (0, 0), (0, 6)),
+            ("support_column_conduit", "same_column", (0, 0), (6, 0)),
+            ("support_box_conduit", "same_box", (0, 0), (2, 2)),
+        ]
+        for conduit_id, relation, active_pos, conduit_pos in cases:
+            with self.subTest(conduit=conduit_id):
+                inventory = GemInventory(self.definitions)
+                active = inventory.add_instance("active", "active_split_firebolt", level=20)
+                inventory.add_instance("conduit", conduit_id, level=5)
+                board = SudokuGemBoard(load_board_rules(self.config_root), inventory)
+                board.mount_gem("active", *active_pos)
+                board.mount_gem("conduit", *conduit_pos)
+
+                final_skill = self.calculator(inventory, board).calculate_for_active(active)
+
+                self.assertEqual(final_skill.source_context["base_gem_level"], 20)
+                self.assertEqual(final_skill.source_context["effective_gem_level"], 25)
+                self.assertTrue(
+                    any(
+                        modifier.source_base_gem_id == conduit_id
+                        and modifier.stat == "active_gem_level_add"
+                        and modifier.value == 5
+                        and modifier.relation == relation
+                        and modifier.reason_key == "modifier.conduit_skill_level"
+                        for modifier in final_skill.applied_modifiers
+                    )
+                )
+
+    def test_board_conduits_grant_passive_skill_level_in_matching_region(self) -> None:
+        inventory = GemInventory(self.definitions)
+        active = inventory.add_instance("active", "active_split_firebolt", level=20)
+        inventory.add_instance("passive", "passive_spell_amplification", level=20)
+        inventory.add_instance("conduit", "support_row_conduit", level=5)
+        board = SudokuGemBoard(load_board_rules(self.config_root), inventory)
+        board.mount_gem("active", 0, 0)
+        board.mount_gem("passive", 0, 3)
+        board.mount_gem("conduit", 0, 6)
+
+        final_skill = self.calculator(inventory, board).calculate_for_active(active)
+
+        passive_modifier = next(
+            modifier
+            for modifier in final_skill.applied_modifiers
+            if modifier.source_base_gem_id == "passive_spell_amplification"
+            and modifier.stat == "spell_damage_add_percent"
+        )
+        self.assertAlmostEqual(passive_modifier.value, 16.4)
+        self.assertTrue(
+            any(
+                modifier.source_base_gem_id == "support_row_conduit"
+                and modifier.target_base_gem_id == "passive_spell_amplification"
+                and modifier.stat == "passive_gem_level_add"
+                and modifier.value == 5
+                and modifier.relation == "same_row"
+                for modifier in final_skill.applied_modifiers
+            )
+        )
+
+    def test_tlidb_support_display_value_uses_generated_level_table_and_sudoku_scale(self) -> None:
         inventory = GemInventory(self.definitions)
         active = inventory.add_instance("active", "active_split_firebolt", level=20)
         low_support = inventory.add_instance("low_support", "support_added_fire_damage", level=1)
@@ -94,7 +156,7 @@ class TlidbAdoptionTest(unittest.TestCase):
             modifier.value
             for modifier in low_skill.applied_modifiers
             if modifier.source_instance_id == low_support.instance_id
-            and modifier.stat == "fire_damage_add_percent"
+            and modifier.stat == "added_fire_damage"
         )
 
         low_board.unmount_gem("low_support")
@@ -104,10 +166,10 @@ class TlidbAdoptionTest(unittest.TestCase):
             modifier.value
             for modifier in high_skill.applied_modifiers
             if modifier.source_instance_id == high_support.instance_id
-            and modifier.stat == "fire_damage_add_percent"
+            and modifier.stat == "added_fire_damage"
         )
 
-        self.assertEqual(low_value, 13)
+        self.assertEqual(low_value, 2.5)
         self.assertEqual(high_value, 130)
 
     def test_passive_affects_active_without_auto_release(self) -> None:

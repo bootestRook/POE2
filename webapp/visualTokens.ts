@@ -17,6 +17,7 @@ export const GEOMETRIC_VISUAL_TOKENS = {
     fire: "#ff8a2a",
     cold: "#4aa3ff",
     lightning: "#dff6ff",
+    corrosive: "#5cff7f",
     spore: "#96d66f",
     vitality: "#f7f7f2"
   },
@@ -55,13 +56,14 @@ export const GEOMETRIC_VISUAL_TOKENS = {
   }
 } as const;
 
-export type GeometricDamageTone = "physical" | "fire" | "cold" | "lightning" | "spore" | "vitality";
+export type GeometricDamageTone = "physical" | "fire" | "cold" | "lightning" | "corrosive" | "spore" | "vitality";
 
 export function geometricToneColor(tone: string | undefined) {
   const token = (tone || "").toLowerCase();
   if (token.includes("fire") || token.includes("lava")) return GEOMETRIC_VISUAL_TOKENS.color.fire;
   if (token.includes("cold") || token.includes("ice") || token.includes("frost")) return GEOMETRIC_VISUAL_TOKENS.color.cold;
   if (token.includes("lightning")) return GEOMETRIC_VISUAL_TOKENS.color.lightning;
+  if (token.includes("corrosive") || token.includes("corrosion") || token.includes("chaos")) return GEOMETRIC_VISUAL_TOKENS.color.corrosive;
   if (token.includes("spore") || token.includes("fungal")) return GEOMETRIC_VISUAL_TOKENS.color.spore;
   if (token.includes("vitality")) return GEOMETRIC_VISUAL_TOKENS.color.vitality;
   return GEOMETRIC_VISUAL_TOKENS.color.physical;

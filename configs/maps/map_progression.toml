@@ -1,0 +1,510 @@
+schema_version = 1
+default_stage_id = "start_i"
+
+[monster_curve]
+life_base = 24.0
+life_per_level = 7.0
+life_level_exponent = 1.32
+damage_base = 4.0
+damage_per_level = 1.4
+damage_level_exponent = 1.18
+
+[rarity_multiplier.normal]
+life = 1.0
+damage = 1.0
+drop_quantity = 1.0
+drop_rarity = 1.0
+
+[rarity_multiplier.magic]
+life = 1.45
+damage = 1.25
+drop_quantity = 1.25
+drop_rarity = 1.2
+
+[rarity_multiplier.rare]
+life = 2.6
+damage = 1.7
+drop_quantity = 1.8
+drop_rarity = 1.55
+
+[rarity_multiplier.boss]
+life = 7.5
+damage = 2.35
+drop_quantity = 4.0
+drop_rarity = 2.6
+
+[[stages]]
+id = "start_i"
+display_name = "起始区域 I"
+phase = "growth"
+order = 1
+map_level_min = 1
+map_level_max = 9
+monster_level = 5
+loot_profile_id = "growth_early"
+entry_cost = 0
+free_entry = true
+unlock_after_stage_id = ""
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "start_ii"
+display_name = "起始区域 II"
+phase = "growth"
+order = 2
+map_level_min = 10
+map_level_max = 19
+monster_level = 15
+loot_profile_id = "growth_early"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "start_i"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "borderland"
+display_name = "边境区域"
+phase = "growth"
+order = 3
+map_level_min = 20
+map_level_max = 29
+monster_level = 25
+loot_profile_id = "growth_mid"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "start_ii"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "depths"
+display_name = "深层区域"
+phase = "growth"
+order = 4
+map_level_min = 30
+map_level_max = 39
+monster_level = 35
+loot_profile_id = "growth_mid"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "borderland"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "danger_i"
+display_name = "高危区域 I"
+phase = "growth"
+order = 5
+map_level_min = 40
+map_level_max = 49
+monster_level = 45
+loot_profile_id = "growth_late"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "depths"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "danger_ii"
+display_name = "高危区域 II"
+phase = "growth"
+order = 6
+map_level_min = 50
+map_level_max = 59
+monster_level = 55
+loot_profile_id = "growth_late"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "danger_i"
+map_template_ids = ["map_001"]
+boss_stage = true
+
+[[stages]]
+id = "timemark_1"
+display_name = "时刻 1"
+phase = "timemark"
+order = 7
+map_level_min = 60
+map_level_max = 67
+monster_level = 64
+loot_profile_id = "timemark_1"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "danger_ii"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "timemark_2"
+display_name = "时刻 2"
+phase = "timemark"
+order = 8
+map_level_min = 68
+map_level_max = 72
+monster_level = 70
+loot_profile_id = "timemark_2"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "timemark_1"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "timemark_3"
+display_name = "时刻 3"
+phase = "timemark"
+order = 9
+map_level_min = 73
+map_level_max = 76
+monster_level = 75
+loot_profile_id = "timemark_3"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "timemark_2"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "timemark_4"
+display_name = "时刻 4"
+phase = "timemark"
+order = 10
+map_level_min = 77
+map_level_max = 79
+monster_level = 78
+loot_profile_id = "timemark_4"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "timemark_3"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "timemark_5"
+display_name = "时刻 5"
+phase = "timemark"
+order = 11
+map_level_min = 80
+map_level_max = 81
+monster_level = 81
+loot_profile_id = "timemark_5"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "timemark_4"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "timemark_6"
+display_name = "时刻 6"
+phase = "timemark"
+order = 12
+map_level_min = 82
+map_level_max = 83
+monster_level = 83
+loot_profile_id = "timemark_6"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "timemark_5"
+map_template_ids = ["map_001"]
+boss_stage = true
+
+[[stages]]
+id = "timemark_7_1"
+display_name = "时刻 7-1"
+phase = "timemark"
+order = 13
+map_level_min = 84
+map_level_max = 84
+monster_level = 84
+loot_profile_id = "timemark_7"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "timemark_6"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "timemark_7_2"
+display_name = "时刻 7-2"
+phase = "timemark"
+order = 14
+map_level_min = 85
+map_level_max = 85
+monster_level = 85
+loot_profile_id = "timemark_7"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "timemark_7_1"
+map_template_ids = ["map_001"]
+boss_stage = true
+
+[[stages]]
+id = "timemark_8_1"
+display_name = "时刻 8-1"
+phase = "timemark"
+order = 15
+map_level_min = 86
+map_level_max = 86
+monster_level = 86
+loot_profile_id = "timemark_8"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "timemark_7_2"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "timemark_8_2"
+display_name = "时刻 8-2"
+phase = "timemark"
+order = 16
+map_level_min = 87
+map_level_max = 87
+monster_level = 87
+loot_profile_id = "timemark_8"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "timemark_8_1"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "timemark_8_3"
+display_name = "时刻 8-3"
+phase = "timemark"
+order = 17
+map_level_min = 88
+map_level_max = 88
+monster_level = 88
+loot_profile_id = "timemark_8"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "timemark_8_2"
+map_template_ids = ["map_001"]
+boss_stage = false
+
+[[stages]]
+id = "timemark_8_4"
+display_name = "时刻 8-4"
+phase = "timemark"
+order = 18
+map_level_min = 89
+map_level_max = 100
+monster_level = 92
+loot_profile_id = "timemark_8"
+entry_cost = 1
+free_entry = false
+unlock_after_stage_id = "timemark_8_3"
+map_template_ids = ["map_001"]
+boss_stage = true
+
+[loot_profile.growth_early]
+base_drop_chance = 0.10
+equipment_weight = 75
+gem_weight = 5
+map_entry_weight = 20
+equipment_rarity_weights = { white = 760, blue = 220, purple = 20, pink = 0 }
+gem_rarity_weights = { normal = 850, magic = 130, rare = 20 }
+gem_level_min = 1
+gem_level_max = 3
+boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
+
+[loot_profile.growth_mid]
+base_drop_chance = 0.12
+equipment_weight = 75
+gem_weight = 5
+map_entry_weight = 20
+equipment_rarity_weights = { white = 700, blue = 260, purple = 38, pink = 2 }
+gem_rarity_weights = { normal = 760, magic = 190, rare = 50 }
+gem_level_min = 3
+gem_level_max = 7
+boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
+
+[loot_profile.growth_late]
+base_drop_chance = 0.14
+equipment_weight = 75
+gem_weight = 5
+map_entry_weight = 20
+equipment_rarity_weights = { white = 640, blue = 290, purple = 65, pink = 5 }
+gem_rarity_weights = { normal = 640, magic = 270, rare = 90 }
+gem_level_min = 6
+gem_level_max = 10
+boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
+
+[loot_profile.timemark_1]
+base_drop_chance = 0.16
+equipment_weight = 75
+gem_weight = 5
+map_entry_weight = 20
+equipment_rarity_weights = { white = 590, blue = 320, purple = 80, pink = 10 }
+gem_rarity_weights = { normal = 520, magic = 330, rare = 150 }
+gem_level_min = 9
+gem_level_max = 12
+boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
+
+[loot_profile.timemark_2]
+base_drop_chance = 0.18
+equipment_weight = 75
+gem_weight = 5
+map_entry_weight = 20
+equipment_rarity_weights = { white = 540, blue = 340, purple = 100, pink = 20 }
+gem_rarity_weights = { normal = 450, magic = 350, rare = 200 }
+gem_level_min = 11
+gem_level_max = 14
+boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
+
+[loot_profile.timemark_3]
+base_drop_chance = 0.20
+equipment_weight = 75
+gem_weight = 5
+map_entry_weight = 20
+equipment_rarity_weights = { white = 500, blue = 350, purple = 115, pink = 35 }
+gem_rarity_weights = { normal = 390, magic = 360, rare = 250 }
+gem_level_min = 13
+gem_level_max = 15
+boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
+
+[loot_profile.timemark_4]
+base_drop_chance = 0.22
+equipment_weight = 75
+gem_weight = 5
+map_entry_weight = 20
+equipment_rarity_weights = { white = 460, blue = 360, purple = 130, pink = 50 }
+gem_rarity_weights = { normal = 340, magic = 360, rare = 300 }
+gem_level_min = 14
+gem_level_max = 16
+boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
+
+[loot_profile.timemark_5]
+base_drop_chance = 0.24
+equipment_weight = 75
+gem_weight = 5
+map_entry_weight = 20
+equipment_rarity_weights = { white = 420, blue = 370, purple = 145, pink = 65 }
+gem_rarity_weights = { normal = 290, magic = 360, rare = 350 }
+gem_level_min = 15
+gem_level_max = 17
+boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
+
+[loot_profile.timemark_6]
+base_drop_chance = 0.26
+equipment_weight = 75
+gem_weight = 5
+map_entry_weight = 20
+equipment_rarity_weights = { white = 390, blue = 375, purple = 155, pink = 80 }
+gem_rarity_weights = { normal = 240, magic = 360, rare = 400 }
+gem_level_min = 16
+gem_level_max = 18
+boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
+
+[loot_profile.timemark_7]
+base_drop_chance = 0.28
+equipment_weight = 75
+gem_weight = 5
+map_entry_weight = 20
+equipment_rarity_weights = { white = 360, blue = 350, purple = 190, pink = 100 }
+gem_rarity_weights = { normal = 190, magic = 350, rare = 460 }
+gem_level_min = 17
+gem_level_max = 19
+boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
+
+[loot_profile.timemark_8]
+base_drop_chance = 0.30
+equipment_weight = 75
+gem_weight = 5
+map_entry_weight = 20
+equipment_rarity_weights = { white = 340, blue = 330, purple = 220, pink = 110 }
+gem_rarity_weights = { normal = 140, magic = 330, rare = 530 }
+gem_level_min = 18
+gem_level_max = 20
+boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
+
+[[entry_rules]]
+source_stage_id = "start_i"
+target_stage_id = "start_ii"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "start_ii"
+target_stage_id = "borderland"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "borderland"
+target_stage_id = "depths"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "depths"
+target_stage_id = "danger_i"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "danger_i"
+target_stage_id = "danger_ii"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "danger_ii"
+target_stage_id = "timemark_1"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "timemark_1"
+target_stage_id = "timemark_2"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "timemark_2"
+target_stage_id = "timemark_3"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "timemark_3"
+target_stage_id = "timemark_4"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "timemark_4"
+target_stage_id = "timemark_5"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "timemark_5"
+target_stage_id = "timemark_6"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "timemark_6"
+target_stage_id = "timemark_7_1"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "timemark_7_1"
+target_stage_id = "timemark_7_2"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "timemark_7_2"
+target_stage_id = "timemark_8_1"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "timemark_8_1"
+target_stage_id = "timemark_8_2"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "timemark_8_2"
+target_stage_id = "timemark_8_3"
+weight = 100
+
+[[entry_rules]]
+source_stage_id = "timemark_8_3"
+target_stage_id = "timemark_8_4"
+weight = 100

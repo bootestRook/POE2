@@ -19,85 +19,85 @@ source_values:
 level_table:
   levels:
     1:
-      physical_damage_add_percent: 0.75
-    2:
-      physical_damage_add_percent: 1.11
-    3:
-      physical_damage_add_percent: 1.46
-    4:
-      physical_damage_add_percent: 1.82
-    5:
-      physical_damage_add_percent: 2.17
-    6:
-      physical_damage_add_percent: 2.53
-    7:
-      physical_damage_add_percent: 2.88
-    8:
-      physical_damage_add_percent: 3.24
-    9:
-      physical_damage_add_percent: 3.59
-    10:
-      physical_damage_add_percent: 3.95
-    11:
-      physical_damage_add_percent: 4.3
-    12:
-      physical_damage_add_percent: 4.66
-    13:
-      physical_damage_add_percent: 5.01
-    14:
-      physical_damage_add_percent: 5.37
-    15:
-      physical_damage_add_percent: 5.72
-    16:
-      physical_damage_add_percent: 6.08
-    17:
-      physical_damage_add_percent: 6.43
-    18:
-      physical_damage_add_percent: 6.79
-    19:
-      physical_damage_add_percent: 7.14
-    20:
       physical_damage_add_percent: 7.5
+    2:
+      physical_damage_add_percent: 8
+    3:
+      physical_damage_add_percent: 8.5
+    4:
+      physical_damage_add_percent: 9
+    5:
+      physical_damage_add_percent: 9.5
+    6:
+      physical_damage_add_percent: 10
+    7:
+      physical_damage_add_percent: 10.5
+    8:
+      physical_damage_add_percent: 11
+    9:
+      physical_damage_add_percent: 11.5
+    10:
+      physical_damage_add_percent: 12
+    11:
+      physical_damage_add_percent: 12.5
+    12:
+      physical_damage_add_percent: 13
+    13:
+      physical_damage_add_percent: 13.5
+    14:
+      physical_damage_add_percent: 14
+    15:
+      physical_damage_add_percent: 14.5
+    16:
+      physical_damage_add_percent: 15
+    17:
+      physical_damage_add_percent: 15.5
+    18:
+      physical_damage_add_percent: 16
+    19:
+      physical_damage_add_percent: 16.5
+    20:
+      physical_damage_add_percent: 17
     21:
-      physical_damage_add_percent: 7.54
+      physical_damage_add_percent: 17.5
     22:
-      physical_damage_add_percent: 7.58
+      physical_damage_add_percent: 18
     23:
-      physical_damage_add_percent: 7.61
+      physical_damage_add_percent: 18.5
     24:
-      physical_damage_add_percent: 7.65
+      physical_damage_add_percent: 19
     25:
-      physical_damage_add_percent: 7.69
+      physical_damage_add_percent: 19.5
     26:
-      physical_damage_add_percent: 7.73
+      physical_damage_add_percent: 20
     27:
-      physical_damage_add_percent: 7.76
+      physical_damage_add_percent: 20.5
     28:
-      physical_damage_add_percent: 7.8
+      physical_damage_add_percent: 21
     29:
-      physical_damage_add_percent: 7.84
+      physical_damage_add_percent: 21.5
     30:
-      physical_damage_add_percent: 7.88
+      physical_damage_add_percent: 22
     31:
-      physical_damage_add_percent: 7.91
+      physical_damage_add_percent: 22.5
     32:
-      physical_damage_add_percent: 7.95
+      physical_damage_add_percent: 23
     33:
-      physical_damage_add_percent: 7.99
+      physical_damage_add_percent: 23.5
     34:
-      physical_damage_add_percent: 8.03
+      physical_damage_add_percent: 24
     35:
-      physical_damage_add_percent: 8.06
+      physical_damage_add_percent: 24.5
     36:
-      physical_damage_add_percent: 8.1
+      physical_damage_add_percent: 25
     37:
-      physical_damage_add_percent: 8.14
+      physical_damage_add_percent: 25.5
     38:
-      physical_damage_add_percent: 8.18
+      physical_damage_add_percent: 26
     39:
-      physical_damage_add_percent: 8.21
+      physical_damage_add_percent: 26.5
     40:
-      physical_damage_add_percent: 8.25
+      physical_damage_add_percent: 27
 tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage", "support_status"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]

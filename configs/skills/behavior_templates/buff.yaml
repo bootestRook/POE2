@@ -1,0 +1,66 @@
+id: buff
+allowed_params: ["buff_type", "effect_type", "polarity", "chance_percent", "duration_ms", "base_value", "base_damage_per_second", "damage_over_time_more_percent", "dot_damage_bonus_per_ignite_stack_percent", "dot_damage_bonus_max_percent", "effect_per_stack", "stacks", "max_stacks", "max_triggers", "threshold", "conversion_buff_type", "convert_to_buff_type", "conversion_consume_source", "source_skill_id", "target_policy", "vfx_key"]
+param_constraints:
+  buff_type:
+    type: string
+    enum: ["aggravation", "guard", "ignite", "frostbite", "frozen", "shock", "numbed", "trauma", "wilt"]
+  effect_type:
+    type: string
+    enum: ["conversion", "damage_taken_increase"]
+  polarity:
+    type: string
+    enum: ["positive", "negative"]
+  chance_percent:
+    type: number
+    minimum: 0
+  duration_ms:
+    type: integer
+    minimum: 1
+  base_value:
+    type: number
+    minimum: 0
+  base_damage_per_second:
+    type: number
+    minimum: 0
+  damage_over_time_more_percent:
+    type: number
+    minimum: 0
+  dot_damage_bonus_per_ignite_stack_percent:
+    type: number
+    minimum: 0
+  dot_damage_bonus_max_percent:
+    type: number
+    minimum: 0
+  effect_per_stack:
+    type: number
+    minimum: 0
+  stacks:
+    type: integer
+    minimum: 1
+  max_stacks:
+    type: integer
+    minimum: 1
+  max_triggers:
+    type: integer
+    minimum: 0
+  threshold:
+    type: number
+    minimum: 0
+  conversion_buff_type:
+    type: string
+    enum: ["aggravation", "guard", "ignite", "frostbite", "frozen", "shock", "numbed", "trauma", "wilt"]
+  convert_to_buff_type:
+    type: string
+    enum: ["aggravation", "guard", "ignite", "frostbite", "frozen", "shock", "numbed", "trauma", "wilt"]
+  conversion_consume_source:
+    type: boolean
+  source_skill_id:
+    type: string
+    pattern: "^[a-z][a-z0-9_]*$"
+  target_policy:
+    type: string
+    enum: ["trigger_target"]
+  vfx_key:
+    type: key
+events: ["buff_apply"]
+damage_timing: on_damage_zone_hit

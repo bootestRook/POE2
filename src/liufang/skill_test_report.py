@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import dataclass
@@ -11,19 +11,19 @@ from .skill_editor import SkillEditorService
 
 
 EXPECTED_PLAYER_DESCRIPTIONS = {
-    "active_fire_bolt": "发射一枚火球，命中敌人造成火焰伤害。",
-    "active_ice_shards": "自动向最近敌人方向射出一枚冰霜冰棱，后续可通过投射物数量成长形成扇形散射，命中后造成冰霜伤害，并显示冰霜命中特效与伤害浮字。",
-    "active_frost_nova": "自动以玩家自身为中心释放一圈向外扩散的冰霜新星，命中范围内敌人后造成冰霜伤害，并显示冰霜范围爆发特效与伤害浮字。",
-    "active_puncture": "自动朝锁定敌人的方向发出一列地刺，命中矩形范围内敌人后造成物理伤害，并显示地刺命中特效与伤害浮字。",
-    "active_lightning_chain": "自动向最近敌人释放闪电链，命中初始目标后，在一定半径内跳跃到附近未命中的敌人，造成多段闪电伤害，并显示连续电弧、命中特效与伤害浮字。",
-    "active_fungal_petards": "自动向最近敌人位置投掷一枚真菌爆弹，爆弹以抛物线飞行到目标区域，落地后出现短暂预警，随后在落点产生圆形孢子爆炸，对范围内敌人造成物理伤害，并显示爆炸特效与伤害浮字。",
-    "active_lava_orb": "自动生成围绕玩家旋转的熔岩球，熔岩球在持续时间内周期性扫过附近敌人，每次 tick 在熔岩球当前位置产生小范围火焰伤害，并显示灼烧命中特效与伤害浮字。",
+    "active_split_firebolt": "发射一枚火球，命中敌人造成火焰伤害。",
+    "active_ice_shot": "自动向最近敌人方向射出一枚冰霜冰棱，后续可通过投射物数量成长形成扇形散射，命中后造成冰霜伤害，并显示冰霜命中特效与伤害浮字。",
+    "active_ring_of_ice": "自动以玩家自身为中心释放一圈向外扩散的冰霜新星，命中范围内敌人后造成冰霜伤害，并显示冰霜范围爆发特效与伤害浮字。",
+    "active_flame_slash": "自动朝锁定敌人的方向发出一列地刺，命中矩形范围内敌人后造成物理伤害，并显示地刺命中特效与伤害浮字。",
+    "active_chain_lightning": "自动向最近敌人释放闪电链，命中初始目标后，在一定半径内跳跃到附近未命中的敌人，造成多段闪电伤害，并显示连续电弧、命中特效与伤害浮字。",
+    "active_black_hole": "自动向最近敌人位置投掷一枚真菌爆弹，爆弹以抛物线飞行到目标区域，落地后出现短暂预警，随后在落点产生圆形孢子爆炸，对范围内敌人造成物理伤害，并显示爆炸特效与伤害浮字。",
+    "active_thundercloud": "自动生成围绕玩家旋转的熔岩球，熔岩球在持续时间内周期性扫过附近敌人，每次 tick 在熔岩球当前位置产生小范围火焰伤害，并显示灼烧命中特效与伤害浮字。",
 }
 
 
 @dataclass(frozen=True)
 class SkillTestReportRequest:
-    skill_id: str = "active_fire_bolt"
+    skill_id: str = "active_split_firebolt"
     scenario_id: str = "single_dummy"
     use_modifier_stack: bool = False
     modifier_ids: tuple[str, ...] = ()
@@ -162,7 +162,7 @@ def _report_checks(
     uses_module_chain = entry.get("behavior_template") == "module_chain"
     uses_orbit_chain = uses_module_chain and bool(orbit_spawn_events or orbit_tick_events)
     uses_chain = entry.get("behavior_template") == "chain"
-    expected_damage_type = "lightning" if request.skill_id == "active_lightning_chain" else ("physical" if request.skill_id in {"active_puncture", "active_fungal_petards"} else ("cold" if request.skill_id in {"active_ice_shards", "active_frost_nova"} else "fire"))
+    expected_damage_type = "lightning" if request.skill_id == "active_chain_lightning" else ("physical" if request.skill_id in {"active_flame_slash", "active_black_hole"} else ("cold" if request.skill_id in {"active_ice_shot", "active_ring_of_ice"} else "fire"))
     base_projectile_count = int(arena_result.get("tested", {}).get("projectile_count", len(spawn_events)))
     life_reduced = any(monster["current_life"] < monster["max_life"] for monster in arena_result["monsters"])
     modifier_changed = (
@@ -183,8 +183,8 @@ def _report_checks(
         "uses_chain": uses_chain,
         "expected_damage_type": expected_damage_type,
         "has_projectile_spawn": bool(timeline_checks["has_projectile_spawn"]),
-        "has_multiple_projectile_spawn": request.skill_id != "active_ice_shards" or base_projectile_count <= 1 or bool(timeline_checks.get("has_multiple_projectile_spawn")),
-        "fan_direction_passed": request.skill_id != "active_ice_shards" or base_projectile_count <= 1 or bool(timeline_checks.get("fan_direction_passed")),
+        "has_multiple_projectile_spawn": request.skill_id != "active_ice_shot" or base_projectile_count <= 1 or bool(timeline_checks.get("has_multiple_projectile_spawn")),
+        "fan_direction_passed": request.skill_id != "active_ice_shot" or base_projectile_count <= 1 or bool(timeline_checks.get("fan_direction_passed")),
         "has_area_spawn": (not uses_area_nova) or bool(timeline_checks.get("has_area_spawn")),
         "area_center_passed": (not uses_area_nova) or bool(timeline_checks.get("area_center_passed")),
         "damage_after_or_at_area_hit": (not uses_area_nova) or bool(timeline_checks.get("damage_after_or_at_area_hit")),
@@ -420,7 +420,7 @@ def _parameter_variant_checks(
     request: SkillTestReportRequest,
     baseline_spawns: list[dict[str, Any]],
 ) -> dict[str, bool]:
-    if request.skill_id == "active_lava_orb":
+    if request.skill_id == "active_thundercloud":
         package = entry.get("package_data")
         if not isinstance(package, dict):
             return {
@@ -456,7 +456,7 @@ def _parameter_variant_checks(
             "orbit_radius_changes_positions": _orbit_positions(base_result) != _orbit_positions(orbit_result),
             "radius_changes_hit_targets": _hit_target_ids(base_result) != _hit_target_ids(radius_result),
         }
-    if request.skill_id == "active_fungal_petards":
+    if request.skill_id == "active_black_hole":
         package = entry.get("package_data")
         if not isinstance(package, dict):
             return {
@@ -492,7 +492,7 @@ def _parameter_variant_checks(
             "arc_height_changes_payload": _spawn_arc_heights(base_result) != _spawn_arc_heights(arc_result),
             "trigger_delay_changes_damage_timing": _event_delays(base_result, "damage") != _event_delays(delay_result, "damage"),
         }
-    if request.skill_id == "active_lightning_chain":
+    if request.skill_id == "active_chain_lightning":
         package = entry.get("package_data")
         if not isinstance(package, dict):
             return {
@@ -524,7 +524,7 @@ def _parameter_variant_checks(
             "chain_delay_changes_timing": _chain_segment_delays(base_result) != _chain_segment_delays(delay_result),
             "damage_falloff_changes_damage": _damage_amounts(base_result) != _damage_amounts(falloff_result),
         }
-    if request.skill_id == "active_puncture":
+    if request.skill_id == "active_flame_slash":
         package = entry.get("package_data")
         if not isinstance(package, dict):
             return {
@@ -550,7 +550,7 @@ def _parameter_variant_checks(
             "length_changes_hit_targets": _hit_target_ids(base_result) != _hit_target_ids(length_result),
             "width_changes_hit_targets": _hit_target_ids(base_result) != _hit_target_ids(width_result),
         }
-    if request.skill_id == "active_frost_nova":
+    if request.skill_id == "active_ring_of_ice":
         package = entry.get("package_data")
         if not isinstance(package, dict):
             return {
@@ -572,7 +572,7 @@ def _parameter_variant_checks(
             "length_changes_hit_targets": True,
             "width_changes_hit_targets": True,
         }
-    if request.skill_id != "active_ice_shards":
+    if request.skill_id != "active_ice_shot":
         return {"projectile_count_changes_events": True, "spread_angle_changes_directions": True}
     package = entry.get("package_data")
     if not isinstance(package, dict):

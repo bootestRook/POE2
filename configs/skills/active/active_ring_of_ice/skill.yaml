@@ -5,7 +5,7 @@ source_values:
   source: "tlidb"
   tlidb_id: "Ring_of_Ice"
   display_level: 20
-  raw_lines: ["释放该技能在自身一定范围内形成一圈冰环，造成 612-918 法术冰冷伤害。", "该技能击败敌人时，有 20% 几率在该敌人位置再次触发一圈冰环。每圈冰环只能触发一次该效果。", "冰环：", "造成 612-918 法术冰冷伤害", "该技能击败敌人时， +20% 几率在敌人的位置再次触发该技能；每圈冰环只能触发一次该效果"]
+  raw_lines: ["释放该技能在自身一定范围内形成一圈冰环，造成 612-918 法术冰霜伤害。", "该技能击败敌人时，有 20% 几率在该敌人位置再次触发一圈冰环。每圈冰环只能触发一次该效果。", "冰环：", "造成 612-918 法术冰霜伤害", "该技能击败敌人时， +20% 几率在敌人的位置再次触发该技能；每圈冰环只能触发一次该效果"]
   parsed_values:
     base_damage: 765
     mana_cost: 8
@@ -188,7 +188,7 @@ classification:
 cast:
   mode: "spell"
   target_selector: "self"
-  search_range: 420
+  search_range: 118
   cooldown_ms: 0
   release_interval_ms: 800
   base_cooldown_ms: 0
@@ -200,15 +200,18 @@ behavior:
   template: "player_nova"
   params:
     radius: 118
-    expand_duration_ms: 160
+    expand_duration_ms: 520
     hit_at_ms: 140
     max_targets: 8
     center_policy: "player_center"
     damage_falloff_by_distance: "none"
-    ring_width: 42
+    ring_width: 82
+    suppress_hit_vfx: true
     status_chance_scale: 1
+    on_kill_recast_chance_percent: 20
+    on_kill_recast_max_per_area: 1
 hit:
-  base_damage: 765
+  base_damage: 76.5
   can_crit: true
   can_apply_status: true
   damage_timing: "on_area_hit"
@@ -223,7 +226,6 @@ presentation:
   vfx: "skill_event.ring_of_ice.vfx"
   cast_vfx_key: "skill_event.ring_of_ice.vfx"
   projectile_vfx_key: "skill_event.ring_of_ice.vfx"
-  hit_vfx_key: "skill_event.ring_of_ice.vfx"
   sfx: "skill_event.ring_of_ice.sfx"
   floating_text: "skill_event.ring_of_ice.floating_text"
   floating_text_style: "skill_event.ring_of_ice.floating_text"

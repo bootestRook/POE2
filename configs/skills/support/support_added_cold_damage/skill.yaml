@@ -12,94 +12,181 @@ source_values:
   display_level: 20
   raw_lines: ["辅助击中敌人的技能。", "被辅助技能附加 2 - 3 点冰冷伤害 (Lv1:2) (Lv2:2) (Lv3:3) (Lv4:4) (Lv5:5) (Lv6:6) (Lv7:6) (Lv8:7) (Lv9:9) (Lv10:10) (Lv11:12) (Lv12:14) (Lv13:16) (Lv14:20) (Lv15:28) (Lv16:40) (Lv17:48) (Lv18:56) (Lv19:68) (Lv20:83) (Lv21:84) (Lv22:85) (Lv23:86) (Lv24:87) (Lv25:88) (Lv26:88) (Lv27:89) (Lv28:90) (Lv29:91) (Lv30:92) (Lv31:93) (Lv32:94) (Lv33:95) (Lv34:96) (Lv35:97) (Lv36:98) (Lv37:99) (Lv38:100) (Lv39:101) (Lv40:102) (Lv1:3) (Lv2:4) (Lv3:5) (Lv4:6) (Lv5:7) (Lv6:8) (Lv7:10) (Lv8:11) (Lv9:13) (Lv10:16) (Lv11:18) (Lv12:20) (Lv13:24) (Lv14:30) (Lv15:42) (Lv16:60) (Lv17:72) (Lv18:84) (Lv19:102) (Lv20:125) (Lv21:126) (Lv22:128) (Lv23:129) (Lv24:130) (Lv25:131) (Lv26:133) (Lv27:134) (Lv28:135) (Lv29:137) (Lv30:138) (Lv31:139) (Lv32:141) (Lv33:142) (Lv34:144) (Lv35:145) (Lv36:147) (Lv37:148) (Lv38:150) (Lv39:151) (Lv40:153)", "被辅助技能附加 2 - 3 点冰冷伤害 (Lv1:2) (Lv2:2) (Lv3:3) (Lv4:4) (Lv5:5) (Lv6:6) (Lv7:6) (Lv8:7) (Lv9:9) (Lv10:10) (Lv11:12) (Lv12:14) (Lv13:16) (Lv14:20) (Lv15:28) (Lv16:40) (Lv17:48) (Lv18:56) (Lv19:68) (Lv20:83) (Lv21:84) (Lv22:85) (Lv23:86) (Lv24:87) (Lv25:88) (Lv26:88) (Lv27:89) (Lv28:90) (Lv29:91) (Lv30:92) (Lv31:93) (Lv32:94) (Lv33:95) (Lv34:96) (Lv35:97) (Lv36:98) (Lv37:99) (Lv38:100) (Lv39:101) (Lv40:102) (Lv1:3) (Lv2:4) (Lv3:5) (Lv4:6) (Lv5:7) (Lv6:8) (Lv7:10) (Lv8:11) (Lv9:13) (Lv10:16) (Lv11:18) (Lv12:20) (Lv13:24) (Lv14:30) (Lv15:42) (Lv16:60) (Lv17:72) (Lv18:84) (Lv19:102) (Lv20:125) (Lv21:126) (Lv22:128) (Lv23:129) (Lv24:130) (Lv25:131) (Lv26:133) (Lv27:134) (Lv28:135) (Lv29:137) (Lv30:138) (Lv31:139) (Lv32:141) (Lv33:142) (Lv34:144) (Lv35:145) (Lv36:147) (Lv37:148) (Lv38:150) (Lv39:151) (Lv40:153)"]
   parsed_values:
-    cold_damage_add_percent: 104
+    added_cold_damage_min: 83
+    added_cold_damage_max: 125
+    added_cold_damage: 104
   anchors:
-    cold_damage_add_percent:
-      20: 104
+    added_cold_damage_min: 83
+    added_cold_damage_max: 125
+    added_cold_damage: 104
 level_table:
   levels:
     1:
-      cold_damage_add_percent: 10.4
+      added_cold_damage_min: 2
+      added_cold_damage_max: 3
+      added_cold_damage: 2.5
     2:
-      cold_damage_add_percent: 15.33
+      added_cold_damage_min: 2
+      added_cold_damage_max: 4
+      added_cold_damage: 3
     3:
-      cold_damage_add_percent: 20.25
+      added_cold_damage_min: 3
+      added_cold_damage_max: 5
+      added_cold_damage: 4
     4:
-      cold_damage_add_percent: 25.18
+      added_cold_damage_min: 4
+      added_cold_damage_max: 6
+      added_cold_damage: 5
     5:
-      cold_damage_add_percent: 30.11
+      added_cold_damage_min: 5
+      added_cold_damage_max: 7
+      added_cold_damage: 6
     6:
-      cold_damage_add_percent: 35.03
+      added_cold_damage_min: 6
+      added_cold_damage_max: 8
+      added_cold_damage: 7
     7:
-      cold_damage_add_percent: 39.96
+      added_cold_damage_min: 6
+      added_cold_damage_max: 10
+      added_cold_damage: 8
     8:
-      cold_damage_add_percent: 44.88
+      added_cold_damage_min: 7
+      added_cold_damage_max: 11
+      added_cold_damage: 9
     9:
-      cold_damage_add_percent: 49.81
+      added_cold_damage_min: 9
+      added_cold_damage_max: 13
+      added_cold_damage: 11
     10:
-      cold_damage_add_percent: 54.74
+      added_cold_damage_min: 10
+      added_cold_damage_max: 16
+      added_cold_damage: 13
     11:
-      cold_damage_add_percent: 59.66
+      added_cold_damage_min: 12
+      added_cold_damage_max: 18
+      added_cold_damage: 15
     12:
-      cold_damage_add_percent: 64.59
+      added_cold_damage_min: 14
+      added_cold_damage_max: 20
+      added_cold_damage: 17
     13:
-      cold_damage_add_percent: 69.52
+      added_cold_damage_min: 16
+      added_cold_damage_max: 24
+      added_cold_damage: 20
     14:
-      cold_damage_add_percent: 74.44
+      added_cold_damage_min: 20
+      added_cold_damage_max: 30
+      added_cold_damage: 25
     15:
-      cold_damage_add_percent: 79.37
+      added_cold_damage_min: 28
+      added_cold_damage_max: 42
+      added_cold_damage: 35
     16:
-      cold_damage_add_percent: 84.29
+      added_cold_damage_min: 40
+      added_cold_damage_max: 60
+      added_cold_damage: 50
     17:
-      cold_damage_add_percent: 89.22
+      added_cold_damage_min: 48
+      added_cold_damage_max: 72
+      added_cold_damage: 60
     18:
-      cold_damage_add_percent: 94.15
+      added_cold_damage_min: 56
+      added_cold_damage_max: 84
+      added_cold_damage: 70
     19:
-      cold_damage_add_percent: 99.07
+      added_cold_damage_min: 68
+      added_cold_damage_max: 102
+      added_cold_damage: 85
     20:
-      cold_damage_add_percent: 104.0
+      added_cold_damage_min: 83
+      added_cold_damage_max: 125
+      added_cold_damage: 104
     21:
-      cold_damage_add_percent: 104.52
+      added_cold_damage_min: 84
+      added_cold_damage_max: 126
+      added_cold_damage: 105
     22:
-      cold_damage_add_percent: 105.04
+      added_cold_damage_min: 85
+      added_cold_damage_max: 128
+      added_cold_damage: 106.5
     23:
-      cold_damage_add_percent: 105.56
+      added_cold_damage_min: 86
+      added_cold_damage_max: 129
+      added_cold_damage: 107.5
     24:
-      cold_damage_add_percent: 106.08
+      added_cold_damage_min: 87
+      added_cold_damage_max: 130
+      added_cold_damage: 108.5
     25:
-      cold_damage_add_percent: 106.6
+      added_cold_damage_min: 88
+      added_cold_damage_max: 131
+      added_cold_damage: 109.5
     26:
-      cold_damage_add_percent: 107.12
+      added_cold_damage_min: 88
+      added_cold_damage_max: 133
+      added_cold_damage: 110.5
     27:
-      cold_damage_add_percent: 107.64
+      added_cold_damage_min: 89
+      added_cold_damage_max: 134
+      added_cold_damage: 111.5
     28:
-      cold_damage_add_percent: 108.16
+      added_cold_damage_min: 90
+      added_cold_damage_max: 135
+      added_cold_damage: 112.5
     29:
-      cold_damage_add_percent: 108.68
+      added_cold_damage_min: 91
+      added_cold_damage_max: 137
+      added_cold_damage: 114
     30:
-      cold_damage_add_percent: 109.2
+      added_cold_damage_min: 92
+      added_cold_damage_max: 138
+      added_cold_damage: 115
     31:
-      cold_damage_add_percent: 109.72
+      added_cold_damage_min: 93
+      added_cold_damage_max: 139
+      added_cold_damage: 116
     32:
-      cold_damage_add_percent: 110.24
+      added_cold_damage_min: 94
+      added_cold_damage_max: 141
+      added_cold_damage: 117.5
     33:
-      cold_damage_add_percent: 110.76
+      added_cold_damage_min: 95
+      added_cold_damage_max: 142
+      added_cold_damage: 118.5
     34:
-      cold_damage_add_percent: 111.28
+      added_cold_damage_min: 96
+      added_cold_damage_max: 144
+      added_cold_damage: 120
     35:
-      cold_damage_add_percent: 111.8
+      added_cold_damage_min: 97
+      added_cold_damage_max: 145
+      added_cold_damage: 121
     36:
-      cold_damage_add_percent: 112.32
+      added_cold_damage_min: 98
+      added_cold_damage_max: 147
+      added_cold_damage: 122.5
     37:
-      cold_damage_add_percent: 112.84
+      added_cold_damage_min: 99
+      added_cold_damage_max: 148
+      added_cold_damage: 123.5
     38:
-      cold_damage_add_percent: 113.36
+      added_cold_damage_min: 100
+      added_cold_damage_max: 150
+      added_cold_damage: 125
     39:
-      cold_damage_add_percent: 113.88
+      added_cold_damage_min: 101
+      added_cold_damage_max: 151
+      added_cold_damage: 126
     40:
-      cold_damage_add_percent: 114.4
+      added_cold_damage_min: 102
+      added_cold_damage_max: 153
+      added_cold_damage: 127.5
 tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage"]
 apply_filter:
-  target_kinds: ["active_skill", "passive_skill"]
-  tags_any: ["cold"]
-effect_stats: ["cold_damage_add_percent"]
+  target_kinds: ["active_skill"]
+  tags_any: ["attack", "spell"]
+  tags_none: ["dot", "guard"]
+effect_stats:
+  - stat: "added_cold_damage"
+    value: 104
+    layer: "additive"

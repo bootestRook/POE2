@@ -19,85 +19,85 @@ source_values:
 level_table:
   levels:
     1:
-      lightning_damage_add_percent: 1.03
-    2:
-      lightning_damage_add_percent: 1.52
-    3:
-      lightning_damage_add_percent: 2.01
-    4:
-      lightning_damage_add_percent: 2.49
-    5:
-      lightning_damage_add_percent: 2.98
-    6:
-      lightning_damage_add_percent: 3.47
-    7:
-      lightning_damage_add_percent: 3.96
-    8:
-      lightning_damage_add_percent: 4.45
-    9:
-      lightning_damage_add_percent: 4.93
-    10:
-      lightning_damage_add_percent: 5.42
-    11:
-      lightning_damage_add_percent: 5.91
-    12:
-      lightning_damage_add_percent: 6.4
-    13:
-      lightning_damage_add_percent: 6.88
-    14:
-      lightning_damage_add_percent: 7.37
-    15:
-      lightning_damage_add_percent: 7.86
-    16:
-      lightning_damage_add_percent: 8.35
-    17:
-      lightning_damage_add_percent: 8.84
-    18:
-      lightning_damage_add_percent: 9.32
-    19:
-      lightning_damage_add_percent: 9.81
-    20:
       lightning_damage_add_percent: 10.3
+    2:
+      lightning_damage_add_percent: 10.6
+    3:
+      lightning_damage_add_percent: 10.9
+    4:
+      lightning_damage_add_percent: 11.2
+    5:
+      lightning_damage_add_percent: 11.5
+    6:
+      lightning_damage_add_percent: 11.8
+    7:
+      lightning_damage_add_percent: 12.1
+    8:
+      lightning_damage_add_percent: 12.4
+    9:
+      lightning_damage_add_percent: 12.7
+    10:
+      lightning_damage_add_percent: 13
+    11:
+      lightning_damage_add_percent: 13.3
+    12:
+      lightning_damage_add_percent: 13.6
+    13:
+      lightning_damage_add_percent: 13.9
+    14:
+      lightning_damage_add_percent: 14.2
+    15:
+      lightning_damage_add_percent: 14.5
+    16:
+      lightning_damage_add_percent: 14.8
+    17:
+      lightning_damage_add_percent: 15.1
+    18:
+      lightning_damage_add_percent: 15.4
+    19:
+      lightning_damage_add_percent: 15.7
+    20:
+      lightning_damage_add_percent: 16
     21:
-      lightning_damage_add_percent: 10.35
+      lightning_damage_add_percent: 16.3
     22:
-      lightning_damage_add_percent: 10.4
+      lightning_damage_add_percent: 16.4
     23:
-      lightning_damage_add_percent: 10.45
+      lightning_damage_add_percent: 16.5
     24:
-      lightning_damage_add_percent: 10.51
+      lightning_damage_add_percent: 16.6
     25:
-      lightning_damage_add_percent: 10.56
+      lightning_damage_add_percent: 16.7
     26:
-      lightning_damage_add_percent: 10.61
+      lightning_damage_add_percent: 16.8
     27:
-      lightning_damage_add_percent: 10.66
+      lightning_damage_add_percent: 16.9
     28:
-      lightning_damage_add_percent: 10.71
+      lightning_damage_add_percent: 17
     29:
-      lightning_damage_add_percent: 10.76
+      lightning_damage_add_percent: 17.1
     30:
-      lightning_damage_add_percent: 10.82
+      lightning_damage_add_percent: 17.2
     31:
-      lightning_damage_add_percent: 10.87
+      lightning_damage_add_percent: 17.3
     32:
-      lightning_damage_add_percent: 10.92
+      lightning_damage_add_percent: 17.4
     33:
-      lightning_damage_add_percent: 10.97
+      lightning_damage_add_percent: 17.5
     34:
-      lightning_damage_add_percent: 11.02
+      lightning_damage_add_percent: 17.6
     35:
-      lightning_damage_add_percent: 11.07
+      lightning_damage_add_percent: 17.7
     36:
-      lightning_damage_add_percent: 11.12
+      lightning_damage_add_percent: 17.8
     37:
-      lightning_damage_add_percent: 11.18
+      lightning_damage_add_percent: 17.9
     38:
-      lightning_damage_add_percent: 11.23
+      lightning_damage_add_percent: 18
     39:
-      lightning_damage_add_percent: 11.28
+      lightning_damage_add_percent: 18.1
     40:
-      lightning_damage_add_percent: 11.33
+      lightning_damage_add_percent: 18.2
 tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage", "support_status"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]

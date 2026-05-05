@@ -12,94 +12,181 @@ source_values:
   display_level: 20
   raw_lines: ["辅助击中敌人的技能。", "被辅助技能附加 1 - 4 点闪电伤害 (Lv1:1) (Lv2:1) (Lv3:1) (Lv4:1) (Lv5:1) (Lv6:1) (Lv7:1) (Lv8:1) (Lv9:1) (Lv10:1) (Lv11:2) (Lv12:2) (Lv13:2) (Lv14:3) (Lv15:4) (Lv16:5) (Lv17:6) (Lv18:7) (Lv19:9) (Lv20:10) (Lv21:11) (Lv22:11) (Lv23:11) (Lv24:11) (Lv25:11) (Lv26:11) (Lv27:11) (Lv28:11) (Lv29:11) (Lv30:12) (Lv31:12) (Lv32:12) (Lv33:12) (Lv34:12) (Lv35:12) (Lv36:12) (Lv37:12) (Lv38:12) (Lv39:13) (Lv40:13) (Lv1:4) (Lv2:6) (Lv3:8) (Lv4:10) (Lv5:11) (Lv6:13) (Lv7:15) (Lv8:17) (Lv9:21) (Lv10:25) (Lv11:29) (Lv12:32) (Lv13:38) (Lv14:48) (Lv15:67) (Lv16:95) (Lv17:114) (Lv18:133) (Lv19:162) (Lv20:198) (Lv21:200) (Lv22:202) (Lv23:204) (Lv24:206) (Lv25:208) (Lv26:210) (Lv27:212) (Lv28:214) (Lv29:216) (Lv30:219) (Lv31:221) (Lv32:223) (Lv33:225) (Lv34:228) (Lv35:230) (Lv36:232) (Lv37:234) (Lv38:237) (Lv39:239) (Lv40:241)", "被辅助技能附加 1 - 4 点闪电伤害 (Lv1:1) (Lv2:1) (Lv3:1) (Lv4:1) (Lv5:1) (Lv6:1) (Lv7:1) (Lv8:1) (Lv9:1) (Lv10:1) (Lv11:2) (Lv12:2) (Lv13:2) (Lv14:3) (Lv15:4) (Lv16:5) (Lv17:6) (Lv18:7) (Lv19:9) (Lv20:10) (Lv21:11) (Lv22:11) (Lv23:11) (Lv24:11) (Lv25:11) (Lv26:11) (Lv27:11) (Lv28:11) (Lv29:11) (Lv30:12) (Lv31:12) (Lv32:12) (Lv33:12) (Lv34:12) (Lv35:12) (Lv36:12) (Lv37:12) (Lv38:12) (Lv39:13) (Lv40:13) (Lv1:4) (Lv2:6) (Lv3:8) (Lv4:10) (Lv5:11) (Lv6:13) (Lv7:15) (Lv8:17) (Lv9:21) (Lv10:25) (Lv11:29) (Lv12:32) (Lv13:38) (Lv14:48) (Lv15:67) (Lv16:95) (Lv17:114) (Lv18:133) (Lv19:162) (Lv20:198) (Lv21:200) (Lv22:202) (Lv23:204) (Lv24:206) (Lv25:208) (Lv26:210) (Lv27:212) (Lv28:214) (Lv29:216) (Lv30:219) (Lv31:221) (Lv32:223) (Lv33:225) (Lv34:228) (Lv35:230) (Lv36:232) (Lv37:234) (Lv38:237) (Lv39:239) (Lv40:241)"]
   parsed_values:
-    lightning_damage_add_percent: 104
+    added_lightning_damage_min: 10
+    added_lightning_damage_max: 198
+    added_lightning_damage: 104
   anchors:
-    lightning_damage_add_percent:
-      20: 104
+    added_lightning_damage_min: 10
+    added_lightning_damage_max: 198
+    added_lightning_damage: 104
 level_table:
   levels:
     1:
-      lightning_damage_add_percent: 10.4
+      added_lightning_damage_min: 1
+      added_lightning_damage_max: 4
+      added_lightning_damage: 2.5
     2:
-      lightning_damage_add_percent: 15.33
+      added_lightning_damage_min: 1
+      added_lightning_damage_max: 6
+      added_lightning_damage: 3.5
     3:
-      lightning_damage_add_percent: 20.25
+      added_lightning_damage_min: 1
+      added_lightning_damage_max: 8
+      added_lightning_damage: 4.5
     4:
-      lightning_damage_add_percent: 25.18
+      added_lightning_damage_min: 1
+      added_lightning_damage_max: 10
+      added_lightning_damage: 5.5
     5:
-      lightning_damage_add_percent: 30.11
+      added_lightning_damage_min: 1
+      added_lightning_damage_max: 11
+      added_lightning_damage: 6
     6:
-      lightning_damage_add_percent: 35.03
+      added_lightning_damage_min: 1
+      added_lightning_damage_max: 13
+      added_lightning_damage: 7
     7:
-      lightning_damage_add_percent: 39.96
+      added_lightning_damage_min: 1
+      added_lightning_damage_max: 15
+      added_lightning_damage: 8
     8:
-      lightning_damage_add_percent: 44.88
+      added_lightning_damage_min: 1
+      added_lightning_damage_max: 17
+      added_lightning_damage: 9
     9:
-      lightning_damage_add_percent: 49.81
+      added_lightning_damage_min: 1
+      added_lightning_damage_max: 21
+      added_lightning_damage: 11
     10:
-      lightning_damage_add_percent: 54.74
+      added_lightning_damage_min: 1
+      added_lightning_damage_max: 25
+      added_lightning_damage: 13
     11:
-      lightning_damage_add_percent: 59.66
+      added_lightning_damage_min: 2
+      added_lightning_damage_max: 29
+      added_lightning_damage: 15.5
     12:
-      lightning_damage_add_percent: 64.59
+      added_lightning_damage_min: 2
+      added_lightning_damage_max: 32
+      added_lightning_damage: 17
     13:
-      lightning_damage_add_percent: 69.52
+      added_lightning_damage_min: 2
+      added_lightning_damage_max: 38
+      added_lightning_damage: 20
     14:
-      lightning_damage_add_percent: 74.44
+      added_lightning_damage_min: 3
+      added_lightning_damage_max: 48
+      added_lightning_damage: 25.5
     15:
-      lightning_damage_add_percent: 79.37
+      added_lightning_damage_min: 4
+      added_lightning_damage_max: 67
+      added_lightning_damage: 35.5
     16:
-      lightning_damage_add_percent: 84.29
+      added_lightning_damage_min: 5
+      added_lightning_damage_max: 95
+      added_lightning_damage: 50
     17:
-      lightning_damage_add_percent: 89.22
+      added_lightning_damage_min: 6
+      added_lightning_damage_max: 114
+      added_lightning_damage: 60
     18:
-      lightning_damage_add_percent: 94.15
+      added_lightning_damage_min: 7
+      added_lightning_damage_max: 133
+      added_lightning_damage: 70
     19:
-      lightning_damage_add_percent: 99.07
+      added_lightning_damage_min: 9
+      added_lightning_damage_max: 162
+      added_lightning_damage: 85.5
     20:
-      lightning_damage_add_percent: 104.0
+      added_lightning_damage_min: 10
+      added_lightning_damage_max: 198
+      added_lightning_damage: 104
     21:
-      lightning_damage_add_percent: 104.52
+      added_lightning_damage_min: 11
+      added_lightning_damage_max: 200
+      added_lightning_damage: 105.5
     22:
-      lightning_damage_add_percent: 105.04
+      added_lightning_damage_min: 11
+      added_lightning_damage_max: 202
+      added_lightning_damage: 106.5
     23:
-      lightning_damage_add_percent: 105.56
+      added_lightning_damage_min: 11
+      added_lightning_damage_max: 204
+      added_lightning_damage: 107.5
     24:
-      lightning_damage_add_percent: 106.08
+      added_lightning_damage_min: 11
+      added_lightning_damage_max: 206
+      added_lightning_damage: 108.5
     25:
-      lightning_damage_add_percent: 106.6
+      added_lightning_damage_min: 11
+      added_lightning_damage_max: 208
+      added_lightning_damage: 109.5
     26:
-      lightning_damage_add_percent: 107.12
+      added_lightning_damage_min: 11
+      added_lightning_damage_max: 210
+      added_lightning_damage: 110.5
     27:
-      lightning_damage_add_percent: 107.64
+      added_lightning_damage_min: 11
+      added_lightning_damage_max: 212
+      added_lightning_damage: 111.5
     28:
-      lightning_damage_add_percent: 108.16
+      added_lightning_damage_min: 11
+      added_lightning_damage_max: 214
+      added_lightning_damage: 112.5
     29:
-      lightning_damage_add_percent: 108.68
+      added_lightning_damage_min: 11
+      added_lightning_damage_max: 216
+      added_lightning_damage: 113.5
     30:
-      lightning_damage_add_percent: 109.2
+      added_lightning_damage_min: 12
+      added_lightning_damage_max: 219
+      added_lightning_damage: 115.5
     31:
-      lightning_damage_add_percent: 109.72
+      added_lightning_damage_min: 12
+      added_lightning_damage_max: 221
+      added_lightning_damage: 116.5
     32:
-      lightning_damage_add_percent: 110.24
+      added_lightning_damage_min: 12
+      added_lightning_damage_max: 223
+      added_lightning_damage: 117.5
     33:
-      lightning_damage_add_percent: 110.76
+      added_lightning_damage_min: 12
+      added_lightning_damage_max: 225
+      added_lightning_damage: 118.5
     34:
-      lightning_damage_add_percent: 111.28
+      added_lightning_damage_min: 12
+      added_lightning_damage_max: 228
+      added_lightning_damage: 120
     35:
-      lightning_damage_add_percent: 111.8
+      added_lightning_damage_min: 12
+      added_lightning_damage_max: 230
+      added_lightning_damage: 121
     36:
-      lightning_damage_add_percent: 112.32
+      added_lightning_damage_min: 12
+      added_lightning_damage_max: 232
+      added_lightning_damage: 122
     37:
-      lightning_damage_add_percent: 112.84
+      added_lightning_damage_min: 12
+      added_lightning_damage_max: 234
+      added_lightning_damage: 123
     38:
-      lightning_damage_add_percent: 113.36
+      added_lightning_damage_min: 12
+      added_lightning_damage_max: 237
+      added_lightning_damage: 124.5
     39:
-      lightning_damage_add_percent: 113.88
+      added_lightning_damage_min: 13
+      added_lightning_damage_max: 239
+      added_lightning_damage: 126
     40:
-      lightning_damage_add_percent: 114.4
+      added_lightning_damage_min: 13
+      added_lightning_damage_max: 241
+      added_lightning_damage: 127
 tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage"]
 apply_filter:
-  target_kinds: ["active_skill", "passive_skill"]
-  tags_any: ["lightning"]
-effect_stats: ["lightning_damage_add_percent"]
+  target_kinds: ["active_skill"]
+  tags_any: ["attack", "spell"]
+  tags_none: ["dot", "guard"]
+effect_stats:
+  - stat: "added_lightning_damage"
+    value: 104
+    layer: "additive"

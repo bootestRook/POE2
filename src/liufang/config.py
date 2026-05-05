@@ -24,6 +24,7 @@ ALLOWED_SKILL_BEHAVIOR_TEMPLATES = frozenset(
         "player_nova",
         "melee_arc",
         "damage_zone",
+        "buff",
         "orbit_emitter",
         "line_pierce",
         "orbit",
@@ -121,6 +122,12 @@ SKILL_PACKAGE_FIELD_ALLOWLISTS = {
             "hit_delay_ms",
             "hit_radius",
             "target_policy",
+            "damage_components",
+            "damage_conversions",
+            "ailments",
+            "secondary_hits",
+            "damage_basis",
+            "weapon_attack_percent",
         }
     ),
     "scaling": frozenset({"additive_stats", "final_stats", "runtime_params"}),
@@ -381,8 +388,7 @@ def load_toml(path: Path) -> dict[str, Any]:
 
 
 def load_yaml_file(path: Path) -> dict[str, Any]:
-    data: dict[str, Any] = {}
-    stack: list[tuple[int, dict[str, Any]]] = [(-1, data)]
+    parsed_lines: list[tuple[int, int, str]] = []
     for line_number, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
         line = raw_line.split("#", 1)[0].rstrip()
         if not line.strip():
@@ -390,22 +396,72 @@ def load_yaml_file(path: Path) -> dict[str, Any]:
         indent = len(line) - len(line.lstrip(" "))
         if indent % 2 != 0:
             raise ValueError(f"YAML indentation must use two-space levels: {path}:{line_number}")
-        while stack and indent <= stack[-1][0]:
-            stack.pop()
-        if not stack:
-            raise ValueError(f"YAML indentation is invalid: {path}:{line_number}")
-        key, separator, value = line.strip().partition(":")
-        if not separator or not key.strip():
-            raise ValueError(f"YAML line must be a key/value pair: {path}:{line_number}")
-        parent = stack[-1][1]
-        key = key.strip()
-        value = value.strip()
-        if value == "":
-            child: dict[str, Any] = {}
-            parent[key] = child
-            stack.append((indent, child))
-        else:
-            parent[key] = _parse_yaml_scalar(value)
+        parsed_lines.append((line_number, indent, line.strip()))
+
+    def parse_block(index: int, indent: int) -> tuple[Any, int]:
+        if index >= len(parsed_lines):
+            return {}, index
+        _, first_indent, first_text = parsed_lines[index]
+        if first_indent != indent:
+            raise ValueError(f"YAML indentation is invalid: {path}:{parsed_lines[index][0]}")
+        if first_text.startswith("- "):
+            values: list[Any] = []
+            while index < len(parsed_lines):
+                line_number, current_indent, text = parsed_lines[index]
+                if current_indent != indent or not text.startswith("- "):
+                    break
+                item_text = text[2:].strip()
+                index += 1
+                if item_text == "":
+                    if index < len(parsed_lines) and parsed_lines[index][1] > current_indent:
+                        child, index = parse_block(index, parsed_lines[index][1])
+                        values.append(child)
+                    else:
+                        values.append({})
+                    continue
+                key, separator, value = item_text.partition(":")
+                if separator and key.strip():
+                    item: dict[str, Any] = {}
+                    item[key.strip()] = _parse_yaml_scalar(value.strip()) if value.strip() else {}
+                    if index < len(parsed_lines) and parsed_lines[index][1] > current_indent:
+                        child, index = parse_block(index, parsed_lines[index][1])
+                        if isinstance(child, dict):
+                            item.update(child)
+                        else:
+                            item[key.strip()] = child
+                    values.append(item)
+                else:
+                    values.append(_parse_yaml_scalar(item_text))
+            return values, index
+
+        values: dict[str, Any] = {}
+        while index < len(parsed_lines):
+            line_number, current_indent, text = parsed_lines[index]
+            if current_indent != indent or text.startswith("- "):
+                break
+            key, separator, value = text.partition(":")
+            if not separator or not key.strip():
+                raise ValueError(f"YAML line must be a key/value pair: {path}:{line_number}")
+            key = key.strip()
+            value = value.strip()
+            index += 1
+            if value == "":
+                if index < len(parsed_lines) and parsed_lines[index][1] > current_indent:
+                    child, index = parse_block(index, parsed_lines[index][1])
+                    values[key] = child
+                else:
+                    values[key] = {}
+            else:
+                values[key] = _parse_yaml_scalar(value)
+        return values, index
+
+    if not parsed_lines:
+        return {}
+    data, next_index = parse_block(0, parsed_lines[0][1])
+    if next_index != len(parsed_lines):
+        raise ValueError(f"YAML indentation is invalid: {path}:{parsed_lines[next_index][0]}")
+    if not isinstance(data, dict):
+        raise ValueError(f"YAML root must be an object: {path}")
     return data
 
 
@@ -897,6 +953,18 @@ def validate_skill_package_data(
         raise ValueError(f"skill package hit.hit_radius must be non-negative: {package_id}")
     if "target_policy" in hit and hit["target_policy"] not in {"selected_target", "nearest_enemy"}:
         raise ValueError(f"skill package hit.target_policy is invalid: {package_id}")
+    if "damage_basis" in hit and hit["damage_basis"] not in {"flat", "weapon_attack"}:
+        raise ValueError(f"skill package hit.damage_basis is invalid: {package_id}")
+    if "weapon_attack_percent" in hit and (not _is_number(hit["weapon_attack_percent"]) or hit["weapon_attack_percent"] < 0):
+        raise ValueError(f"skill package hit.weapon_attack_percent must be non-negative: {package_id}")
+    if "damage_components" in hit:
+        _validate_damage_components(hit["damage_components"], f"{package_id}.hit.damage_components")
+    if "damage_conversions" in hit:
+        _validate_damage_conversions(hit["damage_conversions"], f"{package_id}.hit.damage_conversions")
+    if "ailments" in hit:
+        _validate_ailments(hit["ailments"], f"{package_id}.hit.ailments")
+    if "secondary_hits" in hit:
+        _validate_secondary_hits(hit["secondary_hits"], f"{package_id}.hit.secondary_hits")
 
     scaling = _require_mapping(package["scaling"], "scaling")
     _reject_unknown_fields(scaling, SKILL_PACKAGE_FIELD_ALLOWLISTS["scaling"], "scaling", package_id)
@@ -1027,6 +1095,14 @@ def _validate_behavior_param(param_name: str, param_value: Any, constraint: Any,
         if isinstance(pattern, str) and not re.match(pattern, param_value):
             raise ValueError(f"skill package behavior.params.{param_name} must match required key pattern: {package_id}")
         return
+    if expected_type == "string_array":
+        if not isinstance(param_value, list) or not param_value:
+            raise ValueError(f"skill package behavior.params.{param_name} must be a non-empty string array: {package_id}")
+        enum_values = constraint.get("enum", [])
+        for item in param_value:
+            if not isinstance(item, str) or (isinstance(enum_values, list) and enum_values and item not in enum_values):
+                raise ValueError(f"skill package behavior.params.{param_name} has invalid enum value: {package_id}")
+        return
     if expected_type == "key":
         if not isinstance(param_value, str) or not LOCALIZATION_KEY_PATTERN.match(param_value) or "." not in param_value:
             raise ValueError(f"skill package behavior.params.{param_name} must be a key: {package_id}")
@@ -1054,7 +1130,7 @@ def _validate_damage_zone_params(params: dict[str, Any], template: dict[str, Any
     shape = params.get("shape")
     if shape not in {"circle", "rectangle"}:
         raise ValueError(f"skill package behavior.params.shape is invalid: {package_id}")
-    if params.get("origin_policy") not in {"caster", "trigger_position"}:
+    if params.get("origin_policy") not in {"caster", "target_position", "trigger_position"}:
         raise ValueError(f"skill package behavior.params.origin_policy is invalid: {package_id}")
     if params.get("facing_policy") not in {"none", "nearest_target", "locked_or_nearest_target"}:
         raise ValueError(f"skill package behavior.params.facing_policy is invalid: {package_id}")
@@ -1077,8 +1153,181 @@ def _validate_damage_zone_params(params: dict[str, Any], template: dict[str, Any
         raise ValueError(f"skill package behavior.params.facing_policy must choose a target direction for rectangle: {package_id}")
     if "trigger_delay_ms" in params and (not _is_integer(params["trigger_delay_ms"]) or params["trigger_delay_ms"] < 0):
         raise ValueError(f"skill package behavior.params.trigger_delay_ms must be a non-negative integer: {package_id}")
+    if "duration_ms" in params and (not _is_integer(params["duration_ms"]) or params["duration_ms"] <= 0):
+        raise ValueError(f"skill package behavior.params.duration_ms must be positive: {package_id}")
+    if "tick_interval_ms" in params and (not _is_integer(params["tick_interval_ms"]) or params["tick_interval_ms"] <= 0):
+        raise ValueError(f"skill package behavior.params.tick_interval_ms must be positive: {package_id}")
+    if "duration_ms" in params and "tick_interval_ms" in params and params["tick_interval_ms"] > params["duration_ms"]:
+        raise ValueError(f"skill package behavior.params.tick_interval_ms must not exceed duration_ms: {package_id}")
+    for field_name in ("max_hits", "max_hits_per_target"):
+        if field_name in params and (not _is_integer(params[field_name]) or params[field_name] < 1):
+            raise ValueError(f"skill package behavior.params.{field_name} must be positive: {package_id}")
     if params.get("origin_policy") == "trigger_position" and not params.get("trigger_marker_id"):
         raise ValueError(f"skill package behavior.params.trigger_marker_id is required for trigger_position: {package_id}")
+
+
+DAMAGE_TYPE_IDS = frozenset({"physical", "fire", "cold", "lightning", "chaos"})
+BUFF_IDS = frozenset(
+    {
+        "aggravation",
+        "guard",
+        "ignite",
+        "frostbite",
+        "frozen",
+        "shock",
+        "numbed",
+        "trauma",
+        "wilt",
+        "elemental_fusion_no_ailments",
+    }
+)
+BUFF_EFFECT_IDS = frozenset({"conversion", "damage_taken_increase", "prevent_status_application"})
+BUFF_FIELD_IDS = frozenset(
+    {
+        "type",
+        "source_damage_type",
+        "chance_percent",
+        "duration_ms",
+        "base_value",
+        "base_damage_per_second",
+        "damage_over_time_more_percent",
+        "dot_damage_bonus_per_ignite_stack_percent",
+        "dot_damage_bonus_max_percent",
+        "max_stacks",
+        "stacks",
+        "max_triggers",
+        "effect_per_stack",
+        "threshold",
+        "conversion_buff_type",
+        "convert_to_buff_type",
+        "conversion_consume_source",
+        "source_skill_id",
+    }
+)
+AILMENT_IDS = BUFF_IDS
+AILMENT_FIELD_IDS = BUFF_FIELD_IDS
+
+
+def _validate_damage_components(value: Any, label: str) -> None:
+    if not isinstance(value, dict) or not value:
+        raise ValueError(f"skill package {label} must be a non-empty object")
+    _reject_unknown_fields(value, DAMAGE_TYPE_IDS, label, label)
+    for damage_type, amount in value.items():
+        if damage_type not in DAMAGE_TYPE_IDS or not _is_number(amount) or amount < 0:
+            raise ValueError(f"skill package {label}.{damage_type} must be non-negative")
+
+
+def _validate_damage_conversions(value: Any, label: str) -> None:
+    if not isinstance(value, list):
+        raise ValueError(f"skill package {label} must be an array")
+    priority = {"physical": 0, "lightning": 1, "cold": 2, "fire": 3, "chaos": 4}
+    for index, entry in enumerate(value):
+        if not isinstance(entry, dict):
+            raise ValueError(f"skill package {label}[{index}] must be an object")
+        _reject_unknown_fields(entry, frozenset({"from", "to", "percent"}), f"{label}[{index}]", label)
+        source = entry.get("from")
+        target = entry.get("to")
+        if source not in DAMAGE_TYPE_IDS or target not in DAMAGE_TYPE_IDS:
+            raise ValueError(f"skill package {label}[{index}] has invalid damage type")
+        if priority[str(target)] <= priority[str(source)]:
+            raise ValueError(f"skill package {label}[{index}] must convert from lower to higher priority")
+        if not _is_number(entry.get("percent")) or entry["percent"] < 0:
+            raise ValueError(f"skill package {label}[{index}].percent must be non-negative")
+
+
+def _validate_ailments(value: Any, label: str) -> None:
+    if not isinstance(value, list):
+        raise ValueError(f"skill package {label} must be an array")
+    for index, entry in enumerate(value):
+        if not isinstance(entry, dict):
+            raise ValueError(f"skill package {label}[{index}] must be an object")
+        _reject_unknown_fields(
+            entry,
+            BUFF_FIELD_IDS,
+            f"{label}[{index}]",
+            label,
+        )
+        if entry.get("type") not in BUFF_IDS:
+            raise ValueError(f"skill package {label}[{index}].type is invalid")
+        if "source_damage_type" in entry and entry["source_damage_type"] not in DAMAGE_TYPE_IDS:
+            raise ValueError(f"skill package {label}[{index}].source_damage_type is invalid")
+        for field_name in ("conversion_buff_type", "convert_to_buff_type"):
+            if field_name in entry and entry[field_name] not in BUFF_IDS:
+                raise ValueError(f"skill package {label}[{index}].{field_name} is invalid")
+        if "conversion_consume_source" in entry and not isinstance(entry["conversion_consume_source"], bool):
+            raise ValueError(f"skill package {label}[{index}].conversion_consume_source must be boolean")
+        if "source_skill_id" in entry and not isinstance(entry["source_skill_id"], str):
+            raise ValueError(f"skill package {label}[{index}].source_skill_id must be a string")
+        for field_name in ("chance_percent", "duration_ms", "base_value", "base_damage_per_second", "damage_over_time_more_percent", "dot_damage_bonus_per_ignite_stack_percent", "dot_damage_bonus_max_percent", "max_stacks", "stacks", "max_triggers", "effect_per_stack", "threshold"):
+            if field_name in entry and (not _is_number(entry[field_name]) or entry[field_name] < 0):
+                raise ValueError(f"skill package {label}[{index}].{field_name} must be non-negative")
+
+
+def _validate_secondary_hits(value: Any, label: str) -> None:
+    if not isinstance(value, list):
+        raise ValueError(f"skill package {label} must be an array")
+    for index, entry in enumerate(value):
+        if not isinstance(entry, dict):
+            raise ValueError(f"skill package {label}[{index}] must be an object")
+        _reject_unknown_fields(
+            entry,
+            frozenset(
+                {
+                    "id",
+                    "trigger",
+                    "shape",
+                    "placement",
+                    "offset_distance",
+                    "radius",
+                    "base_damage",
+                    "damage_basis",
+                    "weapon_attack_percent",
+                    "damage_components",
+                    "damage_conversions",
+                    "ailments",
+                    "max_targets",
+                    "delay_ms",
+                    "duration_ms",
+                    "tick_interval_ms",
+                    "requires_unsplit_projectile",
+                    "vfx_key",
+                    "hit_vfx_key",
+                    "reason_key",
+                    "trigger_marker_id",
+                    "search_module_id",
+                    "direct_damage_module_id",
+                    "hit_marker_id",
+                }
+            ),
+            f"{label}[{index}]",
+            label,
+        )
+        if not isinstance(entry.get("id"), str) or not re.match(r"^[a-z][a-z0-9_]*$", entry["id"]):
+            raise ValueError(f"skill package {label}[{index}].id is invalid")
+        if entry.get("trigger") not in {"on_projectile_hit", "on_hit"}:
+            raise ValueError(f"skill package {label}[{index}].trigger is invalid")
+        if entry.get("shape") not in {"circle"}:
+            raise ValueError(f"skill package {label}[{index}].shape is invalid")
+        if entry.get("placement") not in {"behind_target", "impact_position"}:
+            raise ValueError(f"skill package {label}[{index}].placement is invalid")
+        for field_name in ("offset_distance", "radius", "base_damage", "max_targets", "delay_ms"):
+            if field_name in entry and (not _is_number(entry[field_name]) or entry[field_name] < 0):
+                raise ValueError(f"skill package {label}[{index}].{field_name} must be non-negative")
+        for field_name in ("duration_ms", "tick_interval_ms"):
+            if field_name in entry and (not _is_integer(entry[field_name]) or entry[field_name] <= 0):
+                raise ValueError(f"skill package {label}[{index}].{field_name} must be positive")
+        if "requires_unsplit_projectile" in entry and not isinstance(entry["requires_unsplit_projectile"], bool):
+            raise ValueError(f"skill package {label}[{index}].requires_unsplit_projectile must be boolean")
+        if "damage_basis" in entry and entry["damage_basis"] not in {"flat", "weapon_attack"}:
+            raise ValueError(f"skill package {label}[{index}].damage_basis is invalid")
+        if "weapon_attack_percent" in entry and (not _is_number(entry["weapon_attack_percent"]) or entry["weapon_attack_percent"] < 0):
+            raise ValueError(f"skill package {label}[{index}].weapon_attack_percent must be non-negative")
+        if "damage_components" in entry:
+            _validate_damage_components(entry["damage_components"], f"{label}[{index}].damage_components")
+        if "damage_conversions" in entry:
+            _validate_damage_conversions(entry["damage_conversions"], f"{label}[{index}].damage_conversions")
+        if "ailments" in entry:
+            _validate_ailments(entry["ailments"], f"{label}[{index}].ailments")
 
 
 def _validate_orbit_emitter_params(params: dict[str, Any], package_id: str) -> None:
@@ -1184,6 +1433,7 @@ def _validate_skill_modules(
                 merged_params.setdefault("trigger_marker_id", trigger_map["trigger_marker_id"])
                 merged_params.setdefault("trigger_delay_ms", trigger_map.get("trigger_delay_ms", 0))
             _validate_damage_zone_params(merged_params, template, package_id)
+            marker_ids.add(f"{module_id}_hit")
 
 
 def _validate_chain_params(params: dict[str, Any], package_id: str) -> None:

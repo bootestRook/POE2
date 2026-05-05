@@ -19,85 +19,125 @@ source_values:
 level_table:
   levels:
     1:
-      duration_add_percent: -1.0
+      duration_add_percent: -10
+      dot_damage_add_percent: 20
     2:
-      duration_add_percent: -1.47
+      duration_add_percent: -9.9
+      dot_damage_add_percent: 20.5
     3:
-      duration_add_percent: -1.95
+      duration_add_percent: -9.8
+      dot_damage_add_percent: 21
     4:
-      duration_add_percent: -2.42
+      duration_add_percent: -9.7
+      dot_damage_add_percent: 21.5
     5:
-      duration_add_percent: -2.89
+      duration_add_percent: -9.6
+      dot_damage_add_percent: 22
     6:
-      duration_add_percent: -3.37
+      duration_add_percent: -9.5
+      dot_damage_add_percent: 22.5
     7:
-      duration_add_percent: -3.84
+      duration_add_percent: -9.4
+      dot_damage_add_percent: 23
     8:
-      duration_add_percent: -4.32
+      duration_add_percent: -9.3
+      dot_damage_add_percent: 23.5
     9:
-      duration_add_percent: -4.79
+      duration_add_percent: -9.2
+      dot_damage_add_percent: 24
     10:
-      duration_add_percent: -5.26
+      duration_add_percent: -9.1
+      dot_damage_add_percent: 24.5
     11:
-      duration_add_percent: -5.74
+      duration_add_percent: -9
+      dot_damage_add_percent: 25
     12:
-      duration_add_percent: -6.21
+      duration_add_percent: -8.9
+      dot_damage_add_percent: 25.5
     13:
-      duration_add_percent: -6.68
+      duration_add_percent: -8.8
+      dot_damage_add_percent: 26
     14:
-      duration_add_percent: -7.16
+      duration_add_percent: -8.7
+      dot_damage_add_percent: 26.5
     15:
-      duration_add_percent: -7.63
+      duration_add_percent: -8.6
+      dot_damage_add_percent: 27
     16:
-      duration_add_percent: -8.11
+      duration_add_percent: -8.5
+      dot_damage_add_percent: 27.5
     17:
-      duration_add_percent: -8.58
+      duration_add_percent: -8.4
+      dot_damage_add_percent: 28
     18:
-      duration_add_percent: -9.05
+      duration_add_percent: -8.3
+      dot_damage_add_percent: 28.5
     19:
-      duration_add_percent: -9.53
+      duration_add_percent: -8.2
+      dot_damage_add_percent: 29
     20:
-      duration_add_percent: -10.0
+      duration_add_percent: -8.1
+      dot_damage_add_percent: 29.5
     21:
-      duration_add_percent: -10.05
+      duration_add_percent: -8
+      dot_damage_add_percent: 30
     22:
-      duration_add_percent: -10.1
+      duration_add_percent: -7.9
+      dot_damage_add_percent: 30.5
     23:
-      duration_add_percent: -10.15
+      duration_add_percent: -7.8
+      dot_damage_add_percent: 31
     24:
-      duration_add_percent: -10.2
+      duration_add_percent: -7.7
+      dot_damage_add_percent: 31.5
     25:
-      duration_add_percent: -10.25
+      duration_add_percent: -7.6
+      dot_damage_add_percent: 32
     26:
-      duration_add_percent: -10.3
+      duration_add_percent: -7.5
+      dot_damage_add_percent: 32.5
     27:
-      duration_add_percent: -10.35
+      duration_add_percent: -7.4
+      dot_damage_add_percent: 33
     28:
-      duration_add_percent: -10.4
+      duration_add_percent: -7.3
+      dot_damage_add_percent: 33.5
     29:
-      duration_add_percent: -10.45
+      duration_add_percent: -7.2
+      dot_damage_add_percent: 34
     30:
-      duration_add_percent: -10.5
+      duration_add_percent: -7.1
+      dot_damage_add_percent: 34.5
     31:
-      duration_add_percent: -10.55
+      duration_add_percent: -7
+      dot_damage_add_percent: 35
     32:
-      duration_add_percent: -10.6
+      duration_add_percent: -6.9
+      dot_damage_add_percent: 35.5
     33:
-      duration_add_percent: -10.65
+      duration_add_percent: -6.8
+      dot_damage_add_percent: 36
     34:
-      duration_add_percent: -10.7
+      duration_add_percent: -6.7
+      dot_damage_add_percent: 36.5
     35:
-      duration_add_percent: -10.75
+      duration_add_percent: -6.6
+      dot_damage_add_percent: 37
     36:
-      duration_add_percent: -10.8
+      duration_add_percent: -6.5
+      dot_damage_add_percent: 37.5
     37:
-      duration_add_percent: -10.85
+      duration_add_percent: -6.4
+      dot_damage_add_percent: 38
     38:
-      duration_add_percent: -10.9
+      duration_add_percent: -6.3
+      dot_damage_add_percent: 38.5
     39:
-      duration_add_percent: -10.95
+      duration_add_percent: -6.2
+      dot_damage_add_percent: 39
     40:
-      duration_add_percent: -11.0
+      duration_add_percent: -6.1
+      dot_damage_add_percent: 39.5
 tags: ["gem", "support_gem", "loot_gem", "gem_type_6", "support_damage"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]

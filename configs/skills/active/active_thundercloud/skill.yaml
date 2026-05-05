@@ -182,7 +182,7 @@ display:
   name_key: "gem.active_thundercloud.name"
   description_key: "gem.active_thundercloud.description"
 classification:
-  tags: ["spell", "lightning", "area"]
+  tags: ["spell", "lightning", "area", "channel"]
   damage_type: "lightning"
   damage_form: "spell"
 cast:
@@ -203,24 +203,36 @@ behavior:
     origin_policy: "caster"
     facing_policy: "none"
     hit_at_ms: 120
-    max_targets: 8
+    max_targets: 3
     status_chance_scale: 1
-    zone_vfx_key: "skill_event.lightning_chain.vfx"
-    radius: 110
+    zone_vfx_key: "skill_event.thundercloud.vfx"
+    radius: 143
     expand_duration_ms: 120
     ring_width: 60
+    channel_max_stacks: 5
+    channel_time_per_stack_ms: 333
+    channel_frequency_cap_stacks: 9
+    cloud_duration_per_stack_ms: 2500
+    base_tick_interval_ms: 600
+    duration_ms: 12500
+    tick_interval_ms: 333
+    max_hits: 111
+    max_hits_per_target: 37
+    chain_count: 1
+    chain_radius: 160
+    segment_vfx_key: "skill_event.thundercloud.vfx"
 hit:
   base_damage: 359
   can_crit: true
   can_apply_status: true
   damage_timing: "on_damage_zone_hit"
   hit_delay_ms: 160
-  hit_radius: 110
+  hit_radius: 143
   target_policy: "selected_target"
 scaling:
   additive_stats: ["damage_add_percent", "lightning_damage_add_percent", "cast_speed_add_percent"]
   final_stats: ["damage_final_percent", "skill_speed_final_percent"]
-  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add", "area_add_percent"]
+  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add", "area_add_percent", "channel_max_stacks_add", "channel_min_stacks_add", "channel_time_per_stack_ms_reduction_percent"]
 presentation:
   vfx: "skill_event.thundercloud.vfx"
   cast_vfx_key: "skill_event.thundercloud.vfx"

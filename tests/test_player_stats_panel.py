@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import shutil
 import sys
@@ -73,9 +73,11 @@ class PlayerStatsPanelTest(unittest.TestCase):
         for required in [
             "max_life",
             "current_life",
+            "life_return_percent",
             "move_speed",
             "max_mana",
             "max_energy_shield",
+            "shield_return_percent",
             "armor",
             "evasion",
             "hit_damage_add_percent",
@@ -150,25 +152,46 @@ class PlayerStatsPanelTest(unittest.TestCase):
         self.assertEqual(state["player_stats"]["max_life"]["trace"]["primary_attribute"], 5)
         self.assertEqual(state["player_stats"]["max_mana"]["value"], 100)
         self.assertEqual(state["player_stats"]["life_regen_flat"]["value"], 10)
+        self.assertEqual(state["player_stats"]["life_return_percent"]["value"], 0)
         self.assertEqual(state["player_stats"]["mana_regen_flat"]["value"], 8)
+        self.assertEqual(state["player_stats"]["shield_return_percent"]["value"], 0)
         self.assertEqual(state["player_stats"]["derived_crit_chance_percent"]["value"], 5)
         self.assertEqual(state["player_stats"]["derived_crit_damage_percent"]["value"], 150)
-        self.assertEqual(state["player_stats"]["move_speed"]["value"], 1.0)
+        self.assertEqual(state["player_stats"]["move_speed"]["value"], 250.0)
         self.assertEqual(state["player_stats"]["strength"]["v1_status"], "V1_ACTIVE")
 
         panel_rows = [
-            row
+            (section, row)
             for section in state["character_panel"]["sections"]
             for row in section["rows"]
         ]
-        self.assertTrue(any(row["stat_id"] == "strength" and row["label_text"] == "力量" for row in panel_rows))
-        self.assertTrue(any(row["stat_id"] == "current_life" for row in panel_rows))
-        self.assertTrue(any(row["stat_id"] == "crit_damage_rating" and row["formatter"] == "rating" for row in panel_rows))
-        self.assertFalse(any(row["stat_id"] == "support_link_limit" for row in panel_rows))
-        self.assertFalse(any(row["stat_id"] == "gem_level" for row in panel_rows))
-        self.assertFalse(any(row["stat_id"] == "elemental_resistance_percent" for row in panel_rows))
-        self.assertFalse(any(row["stat_id"] in SKILL_SHAPE_PANEL_STATS for row in panel_rows))
-        self.assertFalse(any(row["stat_id"] in BOARD_POWER_PANEL_STATS for row in panel_rows))
+        flat_panel_rows = [row for _, row in panel_rows]
+        self.assertTrue(any(row["stat_id"] == "strength" and row["label_text"] == "力量" for row in flat_panel_rows))
+        self.assertTrue(any(row["stat_id"] == "current_life" for row in flat_panel_rows))
+        self.assertTrue(
+            any(
+                row["stat_id"] == "life_return_percent"
+                and section["id"] == "life"
+                and row["label_text"] == "生命返还"
+                and row["formatter"] == "percent"
+                for section, row in panel_rows
+            )
+        )
+        self.assertTrue(
+            any(
+                row["stat_id"] == "shield_return_percent"
+                and section["id"] == "energy_shield"
+                and row["label_text"] == "护盾返还"
+                and row["formatter"] == "percent"
+                for section, row in panel_rows
+            )
+        )
+        self.assertTrue(any(row["stat_id"] == "crit_damage_rating" and row["formatter"] == "rating" for row in flat_panel_rows))
+        self.assertFalse(any(row["stat_id"] == "support_link_limit" for row in flat_panel_rows))
+        self.assertFalse(any(row["stat_id"] == "gem_level" for row in flat_panel_rows))
+        self.assertFalse(any(row["stat_id"] == "elemental_resistance_percent" for row in flat_panel_rows))
+        self.assertFalse(any(row["stat_id"] in SKILL_SHAPE_PANEL_STATS for row in flat_panel_rows))
+        self.assertFalse(any(row["stat_id"] in BOARD_POWER_PANEL_STATS for row in flat_panel_rows))
 
     def test_character_panel_reflects_active_skill_modifier_deltas(self) -> None:
         api = V1WebAppApi(self.config_root)

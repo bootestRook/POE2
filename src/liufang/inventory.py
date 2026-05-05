@@ -138,6 +138,10 @@ class GemInventory:
             instance.sudoku_digit = definition.sudoku_digit
             instance.tags = definition.tags
 
+    def clear(self) -> None:
+        self._instances.clear()
+        self._next_order = 0
+
     def get(self, instance_id: str) -> GemInstance | None:
         return self._instances.get(instance_id)
 

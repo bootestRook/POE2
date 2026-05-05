@@ -14,17 +14,37 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from liufang.web_api import V1WebAppApi, encode_json
 
+DISABLED_SKILL_EDITOR_PORT = 8765
+DISABLED_SKILL_EDITOR_DIST_DIR = "dist-skill-editor"
+
+
+def _is_skill_editor_path(path: str) -> bool:
+    return path == "/skill-editor" or path.startswith("/skill-editor/")
+
+
+def _is_skill_editor_api_path(path: str) -> bool:
+    return path == "/api/skill-editor" or path.startswith("/api/skill-editor/")
+
 
 class V1RequestHandler(BaseHTTPRequestHandler):
-    api = V1WebAppApi(ROOT / "configs")
+    api = V1WebAppApi(ROOT / "configs", autosave_enabled=False)
     dist_dir = ROOT / "dist"
     index_file = dist_dir / "index.html"
 
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
         try:
+            if _is_skill_editor_path(parsed.path):
+                self._send_html("SkillEditor is disabled.", status=404)
+                return
             if parsed.path == "/api/state":
                 self._send_json(self.api.state())
+                return
+            if parsed.path == "/api/gm/equipment-affix-effect-status":
+                self._send_json(self.api.equipment_affix_effect_status())
+                return
+            if parsed.path == "/api/gm/options":
+                self._send_json(self.api.gm_options())
                 return
             self._serve_static(parsed.path)
         except Exception as exc:
@@ -34,20 +54,44 @@ class V1RequestHandler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         try:
             body = self._read_json()
+            if _is_skill_editor_api_path(parsed.path):
+                self._send_json({"error": "SkillEditor is disabled."}, status=404)
+                return
             if parsed.path == "/api/mount":
                 payload = self.api.mount(str(body["instance_id"]), int(body["row"]), int(body["column"]))
             elif parsed.path == "/api/unmount":
                 payload = self.api.unmount(str(body["instance_id"]))
             elif parsed.path == "/api/combat/start":
                 payload = self.api.start_combat()
+            elif parsed.path == "/api/map/start":
+                payload = self.api.start_map(str(body.get("stage_id", "")), body.get("spawn_monsters"))
+            elif parsed.path == "/api/combat/tick":
+                payload = self.api.combat_tick(int(body.get("delta_ms", 250)))
+            elif parsed.path == "/api/save/new":
+                payload = self.api.new_game()
+            elif parsed.path == "/api/save/continue":
+                payload = self.api.continue_game()
+            elif parsed.path == "/api/save/restore":
+                payload = self.api.restore_frontend_save(dict(body.get("save", {})))
             elif parsed.path == "/api/pickup":
                 payload = self.api.pickup(str(body["drop_id"]))
-            elif parsed.path == "/api/skill-editor/save":
-                payload = self.api.save_skill_package(str(body["skill_id"]), body["package"])
-            elif parsed.path == "/api/skill-editor/modifier-preview":
-                payload = self.api.preview_skill_modifier_stack(body)
-            elif parsed.path == "/api/skill-editor/test-arena/run":
-                payload = self.api.run_skill_test_arena(body)
+            elif parsed.path == "/api/equip":
+                payload = self.api.equip_item(str(body["instance_id"]), body.get("slot_indices", []))
+            elif parsed.path == "/api/unequip-equipment":
+                payload = self.api.unequip_item(str(body["instance_id"]))
+            elif parsed.path == "/api/runtime/skill-events":
+                payload = self.api.runtime_skill_events(body)
+            elif parsed.path == "/api/gm/equipment-affixes":
+                payload = self.api.gm_equipment_affixes(str(body["source"]), int(body.get("level", 86)))
+            elif parsed.path == "/api/gm/add-gem":
+                payload = self.api.gm_add_gem(str(body["base_gem_id"]), int(body.get("level", 1)), int(body.get("quantity", 1)))
+            elif parsed.path == "/api/gm/add-equipment":
+                payload = self.api.gm_add_equipment(
+                    str(body["source"]),
+                    int(body.get("level", 86)),
+                    body.get("affix_ids", []),
+                    random_rarity=body.get("random_rarity"),
+                )
             else:
                 self._send_json({"error": "未知接口。"}, status=404)
                 return
@@ -124,9 +168,16 @@ def main() -> int:
     parser.add_argument("--open", action="store_true")
     args = parser.parse_args()
 
+    if args.port == DISABLED_SKILL_EDITOR_PORT:
+        print("SkillEditor port 8765 is disabled.")
+        return 2
+
     dist_dir = Path(args.dist_dir)
     if not dist_dir.is_absolute():
         dist_dir = ROOT / dist_dir
+    if dist_dir.name == DISABLED_SKILL_EDITOR_DIST_DIR:
+        print("SkillEditor dist directory is disabled.")
+        return 2
     V1RequestHandler.dist_dir = dist_dir.resolve()
     V1RequestHandler.index_file = V1RequestHandler.dist_dir / "index.html"
 

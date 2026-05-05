@@ -12,94 +12,181 @@ source_values:
   display_level: 20
   raw_lines: ["辅助击中敌人的技能。", "被辅助技能附加 1 - 3 点火焰伤害 (Lv1:1) (Lv2:2) (Lv3:3) (Lv4:4) (Lv5:4) (Lv6:5) (Lv7:6) (Lv8:6) (Lv9:8) (Lv10:9) (Lv11:11) (Lv12:12) (Lv13:14) (Lv14:18) (Lv15:25) (Lv16:35) (Lv17:42) (Lv18:49) (Lv19:60) (Lv20:73) (Lv21:74) (Lv22:74) (Lv23:75) (Lv24:76) (Lv25:77) (Lv26:77) (Lv27:78) (Lv28:79) (Lv29:80) (Lv30:81) (Lv31:81) (Lv32:82) (Lv33:83) (Lv34:84) (Lv35:85) (Lv36:86) (Lv37:86) (Lv38:87) (Lv39:88) (Lv40:89) (Lv1:3) (Lv2:4) (Lv3:5) (Lv4:7) (Lv5:8) (Lv6:9) (Lv7:10) (Lv8:12) (Lv9:14) (Lv10:17) (Lv11:20) (Lv12:22) (Lv13:26) (Lv14:33) (Lv15:46) (Lv16:65) (Lv17:78) (Lv18:91) (Lv19:111) (Lv20:135) (Lv21:137) (Lv22:138) (Lv23:140) (Lv24:141) (Lv25:142) (Lv26:144) (Lv27:145) (Lv28:147) (Lv29:148) (Lv30:150) (Lv31:151) (Lv32:153) (Lv33:154) (Lv34:156) (Lv35:157) (Lv36:159) (Lv37:160) (Lv38:162) (Lv39:164) (Lv40:165)", "被辅助技能附加 1 - 3 点火焰伤害 (Lv1:1) (Lv2:2) (Lv3:3) (Lv4:4) (Lv5:4) (Lv6:5) (Lv7:6) (Lv8:6) (Lv9:8) (Lv10:9) (Lv11:11) (Lv12:12) (Lv13:14) (Lv14:18) (Lv15:25) (Lv16:35) (Lv17:42) (Lv18:49) (Lv19:60) (Lv20:73) (Lv21:74) (Lv22:74) (Lv23:75) (Lv24:76) (Lv25:77) (Lv26:77) (Lv27:78) (Lv28:79) (Lv29:80) (Lv30:81) (Lv31:81) (Lv32:82) (Lv33:83) (Lv34:84) (Lv35:85) (Lv36:86) (Lv37:86) (Lv38:87) (Lv39:88) (Lv40:89) (Lv1:3) (Lv2:4) (Lv3:5) (Lv4:7) (Lv5:8) (Lv6:9) (Lv7:10) (Lv8:12) (Lv9:14) (Lv10:17) (Lv11:20) (Lv12:22) (Lv13:26) (Lv14:33) (Lv15:46) (Lv16:65) (Lv17:78) (Lv18:91) (Lv19:111) (Lv20:135) (Lv21:137) (Lv22:138) (Lv23:140) (Lv24:141) (Lv25:142) (Lv26:144) (Lv27:145) (Lv28:147) (Lv29:148) (Lv30:150) (Lv31:151) (Lv32:153) (Lv33:154) (Lv34:156) (Lv35:157) (Lv36:159) (Lv37:160) (Lv38:162) (Lv39:164) (Lv40:165)"]
   parsed_values:
-    fire_damage_add_percent: 104
+    added_fire_damage_min: 73
+    added_fire_damage_max: 135
+    added_fire_damage: 104
   anchors:
-    fire_damage_add_percent:
-      20: 104
+    added_fire_damage_min: 73
+    added_fire_damage_max: 135
+    added_fire_damage: 104
 level_table:
   levels:
     1:
-      fire_damage_add_percent: 10.4
+      added_fire_damage_min: 1
+      added_fire_damage_max: 3
+      added_fire_damage: 2
     2:
-      fire_damage_add_percent: 15.33
+      added_fire_damage_min: 2
+      added_fire_damage_max: 4
+      added_fire_damage: 3
     3:
-      fire_damage_add_percent: 20.25
+      added_fire_damage_min: 3
+      added_fire_damage_max: 5
+      added_fire_damage: 4
     4:
-      fire_damage_add_percent: 25.18
+      added_fire_damage_min: 4
+      added_fire_damage_max: 7
+      added_fire_damage: 5.5
     5:
-      fire_damage_add_percent: 30.11
+      added_fire_damage_min: 4
+      added_fire_damage_max: 8
+      added_fire_damage: 6
     6:
-      fire_damage_add_percent: 35.03
+      added_fire_damage_min: 5
+      added_fire_damage_max: 9
+      added_fire_damage: 7
     7:
-      fire_damage_add_percent: 39.96
+      added_fire_damage_min: 6
+      added_fire_damage_max: 10
+      added_fire_damage: 8
     8:
-      fire_damage_add_percent: 44.88
+      added_fire_damage_min: 6
+      added_fire_damage_max: 12
+      added_fire_damage: 9
     9:
-      fire_damage_add_percent: 49.81
+      added_fire_damage_min: 8
+      added_fire_damage_max: 14
+      added_fire_damage: 11
     10:
-      fire_damage_add_percent: 54.74
+      added_fire_damage_min: 9
+      added_fire_damage_max: 17
+      added_fire_damage: 13
     11:
-      fire_damage_add_percent: 59.66
+      added_fire_damage_min: 11
+      added_fire_damage_max: 20
+      added_fire_damage: 15.5
     12:
-      fire_damage_add_percent: 64.59
+      added_fire_damage_min: 12
+      added_fire_damage_max: 22
+      added_fire_damage: 17
     13:
-      fire_damage_add_percent: 69.52
+      added_fire_damage_min: 14
+      added_fire_damage_max: 26
+      added_fire_damage: 20
     14:
-      fire_damage_add_percent: 74.44
+      added_fire_damage_min: 18
+      added_fire_damage_max: 33
+      added_fire_damage: 25.5
     15:
-      fire_damage_add_percent: 79.37
+      added_fire_damage_min: 25
+      added_fire_damage_max: 46
+      added_fire_damage: 35.5
     16:
-      fire_damage_add_percent: 84.29
+      added_fire_damage_min: 35
+      added_fire_damage_max: 65
+      added_fire_damage: 50
     17:
-      fire_damage_add_percent: 89.22
+      added_fire_damage_min: 42
+      added_fire_damage_max: 78
+      added_fire_damage: 60
     18:
-      fire_damage_add_percent: 94.15
+      added_fire_damage_min: 49
+      added_fire_damage_max: 91
+      added_fire_damage: 70
     19:
-      fire_damage_add_percent: 99.07
+      added_fire_damage_min: 60
+      added_fire_damage_max: 111
+      added_fire_damage: 85.5
     20:
-      fire_damage_add_percent: 104.0
+      added_fire_damage_min: 73
+      added_fire_damage_max: 135
+      added_fire_damage: 104
     21:
-      fire_damage_add_percent: 104.52
+      added_fire_damage_min: 74
+      added_fire_damage_max: 137
+      added_fire_damage: 105.5
     22:
-      fire_damage_add_percent: 105.04
+      added_fire_damage_min: 74
+      added_fire_damage_max: 138
+      added_fire_damage: 106
     23:
-      fire_damage_add_percent: 105.56
+      added_fire_damage_min: 75
+      added_fire_damage_max: 140
+      added_fire_damage: 107.5
     24:
-      fire_damage_add_percent: 106.08
+      added_fire_damage_min: 76
+      added_fire_damage_max: 141
+      added_fire_damage: 108.5
     25:
-      fire_damage_add_percent: 106.6
+      added_fire_damage_min: 77
+      added_fire_damage_max: 142
+      added_fire_damage: 109.5
     26:
-      fire_damage_add_percent: 107.12
+      added_fire_damage_min: 77
+      added_fire_damage_max: 144
+      added_fire_damage: 110.5
     27:
-      fire_damage_add_percent: 107.64
+      added_fire_damage_min: 78
+      added_fire_damage_max: 145
+      added_fire_damage: 111.5
     28:
-      fire_damage_add_percent: 108.16
+      added_fire_damage_min: 79
+      added_fire_damage_max: 147
+      added_fire_damage: 113
     29:
-      fire_damage_add_percent: 108.68
+      added_fire_damage_min: 80
+      added_fire_damage_max: 148
+      added_fire_damage: 114
     30:
-      fire_damage_add_percent: 109.2
+      added_fire_damage_min: 81
+      added_fire_damage_max: 150
+      added_fire_damage: 115.5
     31:
-      fire_damage_add_percent: 109.72
+      added_fire_damage_min: 81
+      added_fire_damage_max: 151
+      added_fire_damage: 116
     32:
-      fire_damage_add_percent: 110.24
+      added_fire_damage_min: 82
+      added_fire_damage_max: 153
+      added_fire_damage: 117.5
     33:
-      fire_damage_add_percent: 110.76
+      added_fire_damage_min: 83
+      added_fire_damage_max: 154
+      added_fire_damage: 118.5
     34:
-      fire_damage_add_percent: 111.28
+      added_fire_damage_min: 84
+      added_fire_damage_max: 156
+      added_fire_damage: 120
     35:
-      fire_damage_add_percent: 111.8
+      added_fire_damage_min: 85
+      added_fire_damage_max: 157
+      added_fire_damage: 121
     36:
-      fire_damage_add_percent: 112.32
+      added_fire_damage_min: 86
+      added_fire_damage_max: 159
+      added_fire_damage: 122.5
     37:
-      fire_damage_add_percent: 112.84
+      added_fire_damage_min: 86
+      added_fire_damage_max: 160
+      added_fire_damage: 123
     38:
-      fire_damage_add_percent: 113.36
+      added_fire_damage_min: 87
+      added_fire_damage_max: 162
+      added_fire_damage: 124.5
     39:
-      fire_damage_add_percent: 113.88
+      added_fire_damage_min: 88
+      added_fire_damage_max: 164
+      added_fire_damage: 126
     40:
-      fire_damage_add_percent: 114.4
+      added_fire_damage_min: 89
+      added_fire_damage_max: 165
+      added_fire_damage: 127
 tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage"]
 apply_filter:
-  target_kinds: ["active_skill", "passive_skill"]
-  tags_any: ["fire"]
-effect_stats: ["fire_damage_add_percent"]
+  target_kinds: ["active_skill"]
+  tags_any: ["attack", "spell"]
+  tags_none: ["dot", "guard"]
+effect_stats:
+  - stat: "added_fire_damage"
+    value: 104
+    layer: "additive"

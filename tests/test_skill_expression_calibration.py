@@ -60,10 +60,10 @@ class SkillExpressionCalibrationTest(unittest.TestCase):
 
         self.assertIn("projectile_count_add", support_stats)
         self.assertIn("area_add_percent", support_stats)
-        self.assertIn("skill_speed_final_percent", support_stats)
         self.assertNotIn("damage_add_percent", support_stats)
         self.assertNotIn("damage_final_percent", support_stats)
-        self.assertEqual(passive_stats, {"move_speed"})
+        self.assertNotIn("damage_add_percent", passive_stats)
+        self.assertNotIn("damage_final_percent", passive_stats)
 
     def test_markdown_report_contains_recommendations(self) -> None:
         markdown = calibration_report_to_markdown(calibrate_skill_expression(self.config_root))

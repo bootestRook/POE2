@@ -19,85 +19,85 @@ source_values:
 level_table:
   levels:
     1:
-      crit_rating: 13.5
+      crit_rating: 135
     2:
-      crit_rating: 19.89
+      crit_rating: 140
     3:
-      crit_rating: 26.29
+      crit_rating: 145
     4:
-      crit_rating: 32.68
+      crit_rating: 150
     5:
-      crit_rating: 39.08
+      crit_rating: 155
     6:
-      crit_rating: 45.47
+      crit_rating: 160
     7:
-      crit_rating: 51.87
+      crit_rating: 165
     8:
-      crit_rating: 58.26
+      crit_rating: 170
     9:
-      crit_rating: 64.66
+      crit_rating: 175
     10:
-      crit_rating: 71.05
+      crit_rating: 180
     11:
-      crit_rating: 77.45
+      crit_rating: 185
     12:
-      crit_rating: 83.84
+      crit_rating: 190
     13:
-      crit_rating: 90.24
+      crit_rating: 195
     14:
-      crit_rating: 96.63
+      crit_rating: 200
     15:
-      crit_rating: 103.03
+      crit_rating: 205
     16:
-      crit_rating: 109.42
+      crit_rating: 210
     17:
-      crit_rating: 115.82
+      crit_rating: 215
     18:
-      crit_rating: 122.21
+      crit_rating: 220
     19:
-      crit_rating: 128.61
+      crit_rating: 225
     20:
-      crit_rating: 135.0
+      crit_rating: 230
     21:
-      crit_rating: 135.67
+      crit_rating: 235
     22:
-      crit_rating: 136.35
+      crit_rating: 240
     23:
-      crit_rating: 137.02
+      crit_rating: 245
     24:
-      crit_rating: 137.7
+      crit_rating: 250
     25:
-      crit_rating: 138.38
+      crit_rating: 255
     26:
-      crit_rating: 139.05
+      crit_rating: 260
     27:
-      crit_rating: 139.72
+      crit_rating: 265
     28:
-      crit_rating: 140.4
+      crit_rating: 270
     29:
-      crit_rating: 141.07
+      crit_rating: 275
     30:
-      crit_rating: 141.75
+      crit_rating: 280
     31:
-      crit_rating: 142.42
+      crit_rating: 285
     32:
-      crit_rating: 143.1
+      crit_rating: 290
     33:
-      crit_rating: 143.78
+      crit_rating: 295
     34:
-      crit_rating: 144.45
+      crit_rating: 300
     35:
-      crit_rating: 145.12
+      crit_rating: 305
     36:
-      crit_rating: 145.8
+      crit_rating: 310
     37:
-      crit_rating: 146.47
+      crit_rating: 315
     38:
-      crit_rating: 147.15
+      crit_rating: 320
     39:
-      crit_rating: 147.82
+      crit_rating: 325
     40:
-      crit_rating: 148.5
+      crit_rating: 330
 tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_crit"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]

@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import random
 import sys
@@ -224,6 +224,45 @@ class PresentationTest(unittest.TestCase):
             },
             stat_lines,
         )
+
+    def test_ice_shot_moves_weapon_attack_percents_from_description_to_stats(self) -> None:
+        active = self.inventory.add_instance("active", "active_ice_shot", level=1)
+        self.board.mount_gem(active.instance_id, 0, 0)
+        final_skill = self.calculator().calculate_all()[0]
+
+        active_detail = self.presenter.gem_detail(active, board=self.board, final_skills=(final_skill,))
+        stat_lines = active_detail["tooltip_view"]["sections"]["stats"]["lines"]
+        tooltip_tags = [tag["id"] for tag in active_detail["tooltip_view"]["tags"]]
+
+        self.assertNotIn("313%", active_detail["description_text"])
+        self.assertNotIn("157%", active_detail["description_text"])
+        self.assertIn("冰霜爆炸", active_detail["description_text"])
+        self.assertNotIn("bow", tooltip_tags)
+        self.assertIn("attack", tooltip_tags)
+        self.assertIn(
+            {
+                "label_text": self.presenter.localizer.text("ui.skill.attack_interval_ms"),
+                "value_text": f"{self.presenter._format_number(final_skill.release_interval_ms)}{self.presenter.localizer.text('ui.tooltip.unit.ms')}",
+            },
+            stat_lines,
+        )
+        self.assertIn(
+            {
+                "label_text": self.presenter.localizer.text("ui.skill.weapon_attack_percent"),
+                "value_text": "31.3%",
+            },
+            stat_lines,
+        )
+        self.assertIn(
+            {
+                "label_text": self.presenter.localizer.text("ui.skill.secondary_weapon_attack_percent"),
+                "value_text": "15.7%",
+            },
+            stat_lines,
+        )
+        preview = self.presenter.skill_preview(final_skill)
+        self.assertAlmostEqual(preview["hit"]["secondary_hits"][0]["base_damage"], 15.7)
+        self.assertAlmostEqual(preview["hit"]["secondary_hits"][0]["weapon_attack_percent"], 15.7)
 
     def test_board_view_shows_localized_invalid_prompt(self) -> None:
         self.inventory.add_instance("support", "support_fast_attack")

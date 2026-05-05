@@ -218,10 +218,19 @@ behavior:
     min_duration_ms: 180
     max_duration_ms: 1800
     trajectory: "ballistic"
-    travel_time_ms: 420
+    travel_time_ms: 140
     arc_height: 90
+    target_policy: "nearest_unique_enemy"
+    projectile_visual_mode: "falling_arrow"
+    projectile_speed_damage_conversion_percent: 25
+    allow_same_target_projectile_hits: true
+    shotgun_falloff_coeff: 0.7
 hit:
   base_damage: 134
+  damage_basis: "weapon_attack"
+  weapon_attack_percent: 134
+  damage_components:
+    physical: 134
   can_crit: true
   can_apply_status: true
   damage_timing: "on_projectile_hit"

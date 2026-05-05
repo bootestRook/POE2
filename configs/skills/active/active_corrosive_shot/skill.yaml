@@ -5,7 +5,7 @@ source_values:
   source: "tlidb"
   tlidb_id: "Corrosive_Shot"
   display_level: 20
-  raw_lines: ["释放该技能向前抛射一个侵蚀弹，侵蚀弹接触目标时产生爆炸，造成 95% 武器攻击伤害。", "未分裂的侵蚀弹接触目标时还会生成侵蚀地面，对其中的敌人每秒造成 57 持续腐蚀伤害，并使其中敌人受到的该技能的伤害额外增加。", "该技能造成的凋零伤害更高。", "该技能全部物理伤害转化为腐蚀伤害。", "爆炸：", "造成 95% 武器攻击伤害", "该技能 +30% 凋零几率", "该技能额外 +30% 凋零伤害", "该技能 100% 物理伤害转化为腐蚀伤害", "侵蚀地面：", "侵蚀地面持续 3 秒", "伤害状态持续 2 秒，每秒造成 57 持续腐蚀伤害"]
+  raw_lines: ["释放该技能向前抛射一个侵蚀弹，侵蚀弹接触目标时产生爆炸，造成 95% 武器攻击伤害。", "未分裂的侵蚀弹接触目标时还会生成侵蚀地面，对其中的敌人每秒造成 57 持续混沌伤害，并使其中敌人受到的该技能的伤害额外增加。", "该技能造成的凋零伤害更高。", "该技能全部物理伤害转化为混沌伤害。", "爆炸：", "造成 95% 武器攻击伤害", "该技能 +30% 凋零几率", "该技能额外 +30% 凋零伤害", "该技能 100% 物理伤害转化为混沌伤害", "侵蚀地面：", "侵蚀地面持续 3 秒", "伤害状态持续 2 秒，每秒造成 57 持续混沌伤害"]
   parsed_values:
     base_damage: 95
     mana_cost: 5
@@ -182,7 +182,7 @@ display:
   name_key: "gem.active_corrosive_shot.name"
   description_key: "gem.active_corrosive_shot.description"
 classification:
-  tags: ["attack", "ranged", "bow", "chaos", "projectile", "area", "dot"]
+  tags: ["attack", "ranged", "gun", "cannon", "chaos", "projectile", "area", "dot", "ground", "dexterity"]
   damage_type: "chaos"
   damage_form: "attack"
 cast:
@@ -216,8 +216,79 @@ behavior:
     max_targets: 1
     min_duration_ms: 80
     max_duration_ms: 2200
+    trajectory: "linear"
+    travel_time_ms: 520
+    arc_height: 0
+    impact_marker_id: "corrosive_impact"
+modules:
+  - id: "corrosive_projectile"
+    type: "projectile"
+    params:
+      projectile_count: 1
+      spread_angle_deg: 0
+      projectile_speed: 540
+      projectile_width: 46
+      projectile_height: 30
+      max_distance: 420
+      hit_policy: "first_hit"
+      pierce_count: 0
+      collision_radius: 16
+      spawn_offset:
+        x: -14
+        y: -20
+      projectile_radius: 12
+      impact_radius: 54
+      max_targets: 1
+      min_duration_ms: 80
+      max_duration_ms: 2200
+      trajectory: "linear"
+      travel_time_ms: 520
+      arc_height: 0
+      target_policy: "target_position"
+      impact_marker_id: "corrosive_impact"
+      vfx_key: "skill_event.corrosive_shot.vfx"
+  - id: "corrosive_ground"
+    type: "damage_zone"
+    trigger:
+      trigger_marker_id: "corrosive_impact"
+      trigger_delay_ms: 0
+    params:
+      shape: "circle"
+      origin_policy: "trigger_position"
+      facing_policy: "none"
+      hit_at_ms: 1000
+      radius: 80
+      max_targets: 8
+      duration_ms: 20000
+      tick_interval_ms: 1000
+      max_hits: 160
+      max_hits_per_target: 20
+      damage_amount: 7.41
+      emit_hit_vfx: false
+      ring_width: 48
+      vfx_key: "skill_event.corrosive_shot.vfx"
+  - id: "corrosive_exposure"
+    type: "buff"
+    trigger:
+      trigger_marker_id: "corrosive_ground_hit"
+      trigger_delay_ms: 0
+    params:
+      effect_type: "damage_taken_increase"
+      chance_percent: 40
+      duration_ms: 2000
+      effect_per_stack: 30
+      max_stacks: 1
+      source_skill_id: "active_corrosive_shot"
+      target_policy: "trigger_target"
+      vfx_key: "skill_event.corrosive_shot.vfx"
 hit:
   base_damage: 95
+  damage_basis: "weapon_attack"
+  weapon_attack_percent: 95
+  damage_components:
+    physical: 95
+  damage_conversions: [{"from": "physical", "to": "chaos", "percent": 100}]
+  ailments: [{"type": "wilt", "source_damage_type": "chaos", "chance_percent": 30, "duration_ms": 2000, "base_damage_per_second": 5.7, "max_stacks": 30}]
   can_crit: true
   can_apply_status: true
   damage_timing: "on_projectile_hit"

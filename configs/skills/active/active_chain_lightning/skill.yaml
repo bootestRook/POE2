@@ -199,7 +199,7 @@ cast:
 behavior:
   template: "chain"
   params:
-    chain_count: 2
+    chain_count: 3
     chain_radius: 180
     chain_delay_ms: 90
     damage_falloff_per_chain: 0

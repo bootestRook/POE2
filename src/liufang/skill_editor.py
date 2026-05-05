@@ -30,17 +30,19 @@ from .skill_runtime import SkillEvent, SkillRuntime
 
 
 ACTIVE_SKILL_ORDER = (
-    "active_fire_bolt",
-    "active_ice_shards",
-    "active_lightning_chain",
-    "active_frost_nova",
-    "active_puncture",
-    "active_penetrating_shot",
-    "active_lava_orb",
-    "active_fungal_petards",
+    "active_split_firebolt",
+    "active_ice_shot",
+    "active_chain_lightning",
+    "active_ring_of_ice",
+    "active_flame_slash",
+    "active_lightning_shot",
+    "active_corrosive_shot",
+    "active_thundercloud",
+    "active_whirlwind",
+    "active_black_hole",
 )
-TESTABLE_SKILL_ID = "active_fire_bolt"
-TEST_ACTIVE_INSTANCE_ID = "skill_editor_test_active_fire_bolt"
+TESTABLE_SKILL_ID = "active_split_firebolt"
+TEST_ACTIVE_INSTANCE_ID = "skill_editor_test_active_split_firebolt"
 POWER_MIN = 0.0
 POWER_MAX = 10.0
 RELATION_ALIASES = {
@@ -186,10 +188,14 @@ NESTED_KEY_ORDER = {
         "segment_vfx_key",
         "center_policy",
         "damage_falloff_by_distance",
+        "on_kill_recast_chance_percent",
+        "on_kill_recast_max_per_area",
+        "suppress_hit_vfx",
         "projectile_count",
         "burst_interval_ms",
         "spread_angle_deg",
         "angle_step",
+        "random_angle_jitter_deg",
         "projectile_speed",
         "projectile_width",
         "projectile_height",
@@ -254,7 +260,7 @@ class _ArenaPoint:
 
 
 class SkillEditorService:
-    """Builds and saves the active_fire_bolt SkillEditor view."""
+    """Builds and saves the active_split_firebolt SkillEditor view."""
 
     def __init__(self, config_root: Path) -> None:
         self.config_root = config_root
@@ -276,7 +282,7 @@ class SkillEditorService:
         return {
             "title_text": "技能编辑器初版",
             "subtitle_text": "模块化编辑已迁移技能包",
-            "selected_id": "active_fire_bolt",
+            "selected_id": "active_split_firebolt",
             "entries": entries,
             "options": skill_editor_options(),
             "modifier_stack": self.modifier_stack_view(),
@@ -1130,7 +1136,7 @@ def _test_active_instance_id(skill_id: str) -> str:
 
 
 def _test_arena_source_position(skill_id: str) -> dict[str, float]:
-    if skill_id == "active_lava_orb":
+    if skill_id == "active_thundercloud":
         return TEST_ARENA_ORBIT_SOURCE
     return TEST_ARENA_SOURCE
 

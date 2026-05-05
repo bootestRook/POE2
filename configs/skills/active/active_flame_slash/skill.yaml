@@ -182,7 +182,7 @@ display:
   name_key: "gem.active_flame_slash.name"
   description_key: "gem.active_flame_slash.description"
 classification:
-  tags: ["attack", "melee", "fire", "area"]
+  tags: ["attack", "melee", "area", "fire", "slash"]
   damage_type: "fire"
   damage_form: "attack"
 cast:
@@ -199,17 +199,32 @@ cast:
 behavior:
   template: "melee_arc"
   params:
-    arc_angle: 82
-    arc_radius: 108
+    arc_angle: 120
+    arc_radius: 162
     windup_ms: 120
     hit_at_ms: 160
     max_targets: 6
     facing_policy: "nearest_target"
     hit_shape: "sector"
     status_chance_scale: 1
-    slash_vfx_key: "skill_event.puncture.vfx"
+    slash_vfx_key: "skill_event.flame_slash.vfx"
+    slash_chance_percent: 20
+    flame_wave_count: 3
+    flame_wave_count_per_area_step: 2
+    flame_wave_area_step_percent: 115
+    flame_wave_distance_bonus_per_area_step_percent: 30
+    flame_wave_distance: 162
+    flame_wave_spread_angle: 48
+    flame_wave_arc_angle: 120
+    allow_same_target_projectile_hits: true
+    shotgun_falloff_coeff: 0.5
 hit:
   base_damage: 346
+  damage_basis: "weapon_attack"
+  weapon_attack_percent: 346
+  damage_components:
+    physical: 346
+  damage_conversions: [{"from": "physical", "to": "fire", "percent": 100}]
   can_crit: true
   can_apply_status: true
   damage_timing: "on_melee_hit"
@@ -219,7 +234,7 @@ hit:
 scaling:
   additive_stats: ["damage_add_percent", "fire_damage_add_percent", "attack_speed_add_percent"]
   final_stats: ["damage_final_percent", "skill_speed_final_percent"]
-  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add", "area_add_percent"]
+  runtime_params: ["projectile_speed_add_percent", "projectile_count_add", "chain_count_add", "pierce_count_add", "area_add_percent", "slash_chance_add_percent"]
 presentation:
   vfx: "skill_event.flame_slash.vfx"
   cast_vfx_key: "skill_event.flame_slash.vfx"

@@ -10,7 +10,7 @@ source_values:
   source: "tlidb"
   tlidb_id: "Frigid_Domain"
   display_level: 20
-  raw_lines: ["激活光环，自身和一定范围内的所有友军获得增益：", "额外 16% 冰冷伤害。", "激活光环，自身和一定范围内的所有友军获得增益：", "额外 +35% 冰冷伤害"]
+  raw_lines: ["激活光环，自身和一定范围内的所有友军获得增益：", "额外 16% 冰霜伤害。", "激活光环，自身和一定范围内的所有友军获得增益：", "额外 +35% 冰霜伤害"]
   parsed_values:
     cold_damage_add_percent: 16
   anchors:

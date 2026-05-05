@@ -12,94 +12,137 @@ source_values:
   display_level: 20
   raw_lines: ["辅助攻击技能。无法辅助位移和引导技能。", "被辅助技能 +101% 几率触发连续攻击 (Lv1:101) (Lv21:121) (Lv41:141)", "被辅助技能连续攻击时，伤害递增 27%", "被辅助技能 +101% 几率触发连续攻击 (Lv1:101) (Lv21:121) (Lv41:141)", "被辅助技能连续攻击时，伤害递增 27%"]
   parsed_values:
-    damage_final_percent: 27
+    continuous_attack_chance_percent: 101
+    continuous_attack_damage_step_percent: 27
   anchors:
-    damage_final_percent:
+    continuous_attack_chance_percent:
+      20: 101
+    continuous_attack_damage_step_percent:
       20: 27
 level_table:
   levels:
     1:
-      damage_final_percent: 2.7
+      continuous_attack_chance_percent: 101
+      continuous_attack_damage_step_percent: 101
     2:
-      damage_final_percent: 3.98
+      continuous_attack_chance_percent: 102
+      continuous_attack_damage_step_percent: 102
     3:
-      damage_final_percent: 5.26
+      continuous_attack_chance_percent: 103
+      continuous_attack_damage_step_percent: 103
     4:
-      damage_final_percent: 6.54
+      continuous_attack_chance_percent: 104
+      continuous_attack_damage_step_percent: 104
     5:
-      damage_final_percent: 7.82
+      continuous_attack_chance_percent: 105
+      continuous_attack_damage_step_percent: 105
     6:
-      damage_final_percent: 9.09
+      continuous_attack_chance_percent: 106
+      continuous_attack_damage_step_percent: 106
     7:
-      damage_final_percent: 10.37
+      continuous_attack_chance_percent: 107
+      continuous_attack_damage_step_percent: 107
     8:
-      damage_final_percent: 11.65
+      continuous_attack_chance_percent: 108
+      continuous_attack_damage_step_percent: 108
     9:
-      damage_final_percent: 12.93
+      continuous_attack_chance_percent: 109
+      continuous_attack_damage_step_percent: 109
     10:
-      damage_final_percent: 14.21
+      continuous_attack_chance_percent: 110
+      continuous_attack_damage_step_percent: 110
     11:
-      damage_final_percent: 15.49
+      continuous_attack_chance_percent: 111
+      continuous_attack_damage_step_percent: 111
     12:
-      damage_final_percent: 16.77
+      continuous_attack_chance_percent: 112
+      continuous_attack_damage_step_percent: 112
     13:
-      damage_final_percent: 18.05
+      continuous_attack_chance_percent: 113
+      continuous_attack_damage_step_percent: 113
     14:
-      damage_final_percent: 19.33
+      continuous_attack_chance_percent: 114
+      continuous_attack_damage_step_percent: 114
     15:
-      damage_final_percent: 20.61
+      continuous_attack_chance_percent: 115
+      continuous_attack_damage_step_percent: 115
     16:
-      damage_final_percent: 21.88
+      continuous_attack_chance_percent: 116
+      continuous_attack_damage_step_percent: 116
     17:
-      damage_final_percent: 23.16
+      continuous_attack_chance_percent: 117
+      continuous_attack_damage_step_percent: 117
     18:
-      damage_final_percent: 24.44
+      continuous_attack_chance_percent: 118
+      continuous_attack_damage_step_percent: 118
     19:
-      damage_final_percent: 25.72
+      continuous_attack_chance_percent: 119
+      continuous_attack_damage_step_percent: 119
     20:
-      damage_final_percent: 27.0
+      continuous_attack_chance_percent: 120
+      continuous_attack_damage_step_percent: 120
     21:
-      damage_final_percent: 27.13
+      continuous_attack_chance_percent: 121
+      continuous_attack_damage_step_percent: 121
     22:
-      damage_final_percent: 27.27
+      continuous_attack_chance_percent: 122
+      continuous_attack_damage_step_percent: 122
     23:
-      damage_final_percent: 27.4
+      continuous_attack_chance_percent: 123
+      continuous_attack_damage_step_percent: 123
     24:
-      damage_final_percent: 27.54
+      continuous_attack_chance_percent: 124
+      continuous_attack_damage_step_percent: 124
     25:
-      damage_final_percent: 27.67
+      continuous_attack_chance_percent: 125
+      continuous_attack_damage_step_percent: 125
     26:
-      damage_final_percent: 27.81
+      continuous_attack_chance_percent: 126
+      continuous_attack_damage_step_percent: 126
     27:
-      damage_final_percent: 27.94
+      continuous_attack_chance_percent: 127
+      continuous_attack_damage_step_percent: 127
     28:
-      damage_final_percent: 28.08
+      continuous_attack_chance_percent: 128
+      continuous_attack_damage_step_percent: 128
     29:
-      damage_final_percent: 28.21
+      continuous_attack_chance_percent: 129
+      continuous_attack_damage_step_percent: 129
     30:
-      damage_final_percent: 28.35
+      continuous_attack_chance_percent: 130
+      continuous_attack_damage_step_percent: 130
     31:
-      damage_final_percent: 28.48
+      continuous_attack_chance_percent: 131
+      continuous_attack_damage_step_percent: 131
     32:
-      damage_final_percent: 28.62
+      continuous_attack_chance_percent: 132
+      continuous_attack_damage_step_percent: 132
     33:
-      damage_final_percent: 28.75
+      continuous_attack_chance_percent: 133
+      continuous_attack_damage_step_percent: 133
     34:
-      damage_final_percent: 28.89
+      continuous_attack_chance_percent: 134
+      continuous_attack_damage_step_percent: 134
     35:
-      damage_final_percent: 29.02
+      continuous_attack_chance_percent: 135
+      continuous_attack_damage_step_percent: 135
     36:
-      damage_final_percent: 29.16
+      continuous_attack_chance_percent: 136
+      continuous_attack_damage_step_percent: 136
     37:
-      damage_final_percent: 29.29
+      continuous_attack_chance_percent: 137
+      continuous_attack_damage_step_percent: 137
     38:
-      damage_final_percent: 29.43
+      continuous_attack_chance_percent: 138
+      continuous_attack_damage_step_percent: 138
     39:
-      damage_final_percent: 29.56
+      continuous_attack_chance_percent: 139
+      continuous_attack_damage_step_percent: 139
     40:
-      damage_final_percent: 29.7
+      continuous_attack_chance_percent: 140
+      continuous_attack_damage_step_percent: 140
 tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_speed", "support_damage"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["attack"]
-effect_stats: ["damage_final_percent"]
+effect_stats: ["continuous_attack_chance_percent", "continuous_attack_damage_step_percent"]

@@ -12,94 +12,141 @@ source_values:
   display_level: 20
   raw_lines: ["辅助法术技能。", "每有 1 层聚能祝福，被辅助技能额外 3.05% 伤害，上限 8 层 (Lv1:61/20) (Lv21:81/20) (Lv41:101/20)", "每有 1 层聚能祝福，被辅助技能额外 3.05% 伤害，上限 8 层 (Lv1:61/20) (Lv21:81/20) (Lv41:101/20)"]
   parsed_values:
-    damage_final_percent: 24.4
+    energy_blessing_damage_per_stack_percent: 3.05
+    energy_blessing_max_stacks: 8
   anchors:
-    damage_final_percent:
-      20: 24.4
+    energy_blessing_damage_per_stack_percent: 3.05
+    energy_blessing_max_stacks: 8
 level_table:
   levels:
     1:
-      damage_final_percent: 2.44
+      energy_blessing_damage_per_stack_percent: 3.05
+      energy_blessing_max_stacks: 8
     2:
-      damage_final_percent: 3.6
+      energy_blessing_damage_per_stack_percent: 3.1
+      energy_blessing_max_stacks: 8
     3:
-      damage_final_percent: 4.75
+      energy_blessing_damage_per_stack_percent: 3.15
+      energy_blessing_max_stacks: 8
     4:
-      damage_final_percent: 5.91
+      energy_blessing_damage_per_stack_percent: 3.2
+      energy_blessing_max_stacks: 8
     5:
-      damage_final_percent: 7.06
+      energy_blessing_damage_per_stack_percent: 3.25
+      energy_blessing_max_stacks: 8
     6:
-      damage_final_percent: 8.22
+      energy_blessing_damage_per_stack_percent: 3.3
+      energy_blessing_max_stacks: 8
     7:
-      damage_final_percent: 9.37
+      energy_blessing_damage_per_stack_percent: 3.35
+      energy_blessing_max_stacks: 8
     8:
-      damage_final_percent: 10.53
+      energy_blessing_damage_per_stack_percent: 3.4
+      energy_blessing_max_stacks: 8
     9:
-      damage_final_percent: 11.69
+      energy_blessing_damage_per_stack_percent: 3.45
+      energy_blessing_max_stacks: 8
     10:
-      damage_final_percent: 12.84
+      energy_blessing_damage_per_stack_percent: 3.5
+      energy_blessing_max_stacks: 8
     11:
-      damage_final_percent: 14.0
+      energy_blessing_damage_per_stack_percent: 3.55
+      energy_blessing_max_stacks: 8
     12:
-      damage_final_percent: 15.15
+      energy_blessing_damage_per_stack_percent: 3.6
+      energy_blessing_max_stacks: 8
     13:
-      damage_final_percent: 16.31
+      energy_blessing_damage_per_stack_percent: 3.65
+      energy_blessing_max_stacks: 8
     14:
-      damage_final_percent: 17.47
+      energy_blessing_damage_per_stack_percent: 3.7
+      energy_blessing_max_stacks: 8
     15:
-      damage_final_percent: 18.62
+      energy_blessing_damage_per_stack_percent: 3.75
+      energy_blessing_max_stacks: 8
     16:
-      damage_final_percent: 19.78
+      energy_blessing_damage_per_stack_percent: 3.8
+      energy_blessing_max_stacks: 8
     17:
-      damage_final_percent: 20.93
+      energy_blessing_damage_per_stack_percent: 3.85
+      energy_blessing_max_stacks: 8
     18:
-      damage_final_percent: 22.09
+      energy_blessing_damage_per_stack_percent: 3.9
+      energy_blessing_max_stacks: 8
     19:
-      damage_final_percent: 23.24
+      energy_blessing_damage_per_stack_percent: 3.95
+      energy_blessing_max_stacks: 8
     20:
-      damage_final_percent: 24.4
+      energy_blessing_damage_per_stack_percent: 4
+      energy_blessing_max_stacks: 8
     21:
-      damage_final_percent: 24.52
+      energy_blessing_damage_per_stack_percent: 4.05
+      energy_blessing_max_stacks: 8
     22:
-      damage_final_percent: 24.64
+      energy_blessing_damage_per_stack_percent: 4.1
+      energy_blessing_max_stacks: 8
     23:
-      damage_final_percent: 24.77
+      energy_blessing_damage_per_stack_percent: 4.15
+      energy_blessing_max_stacks: 8
     24:
-      damage_final_percent: 24.89
+      energy_blessing_damage_per_stack_percent: 4.2
+      energy_blessing_max_stacks: 8
     25:
-      damage_final_percent: 25.01
+      energy_blessing_damage_per_stack_percent: 4.25
+      energy_blessing_max_stacks: 8
     26:
-      damage_final_percent: 25.13
+      energy_blessing_damage_per_stack_percent: 4.3
+      energy_blessing_max_stacks: 8
     27:
-      damage_final_percent: 25.25
+      energy_blessing_damage_per_stack_percent: 4.35
+      energy_blessing_max_stacks: 8
     28:
-      damage_final_percent: 25.38
+      energy_blessing_damage_per_stack_percent: 4.4
+      energy_blessing_max_stacks: 8
     29:
-      damage_final_percent: 25.5
+      energy_blessing_damage_per_stack_percent: 4.45
+      energy_blessing_max_stacks: 8
     30:
-      damage_final_percent: 25.62
+      energy_blessing_damage_per_stack_percent: 4.5
+      energy_blessing_max_stacks: 8
     31:
-      damage_final_percent: 25.74
+      energy_blessing_damage_per_stack_percent: 4.55
+      energy_blessing_max_stacks: 8
     32:
-      damage_final_percent: 25.86
+      energy_blessing_damage_per_stack_percent: 4.6
+      energy_blessing_max_stacks: 8
     33:
-      damage_final_percent: 25.99
+      energy_blessing_damage_per_stack_percent: 4.65
+      energy_blessing_max_stacks: 8
     34:
-      damage_final_percent: 26.11
+      energy_blessing_damage_per_stack_percent: 4.7
+      energy_blessing_max_stacks: 8
     35:
-      damage_final_percent: 26.23
+      energy_blessing_damage_per_stack_percent: 4.75
+      energy_blessing_max_stacks: 8
     36:
-      damage_final_percent: 26.35
+      energy_blessing_damage_per_stack_percent: 4.8
+      energy_blessing_max_stacks: 8
     37:
-      damage_final_percent: 26.47
+      energy_blessing_damage_per_stack_percent: 4.85
+      energy_blessing_max_stacks: 8
     38:
-      damage_final_percent: 26.6
+      energy_blessing_damage_per_stack_percent: 4.9
+      energy_blessing_max_stacks: 8
     39:
-      damage_final_percent: 26.72
+      energy_blessing_damage_per_stack_percent: 4.95
+      energy_blessing_max_stacks: 8
     40:
-      damage_final_percent: 26.84
+      energy_blessing_damage_per_stack_percent: 5
+      energy_blessing_max_stacks: 8
 tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_damage"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["spell"]
-effect_stats: ["damage_final_percent"]
+effect_stats:
+  - stat: "energy_blessing_damage_per_stack_percent"
+    value: 3.05
+    layer: "additive"
+  - stat: "energy_blessing_max_stacks"
+    value: 8
+    layer: "additive"

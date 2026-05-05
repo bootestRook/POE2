@@ -5,14 +5,14 @@ source_values:
   source: "tlidb"
   tlidb_id: "Chromatic_Shot"
   display_level: 20
-  raw_lines: ["释放该技能向前发射 3 个自动追踪敌人的魔矢，造成 592-1100 法术伤害。", "该技能击败敌人时，有 10% 几率产生一次爆炸，造成被击败敌人最大生命 25% 的真实伤害。", "每次释放该技能会随机选择一种元素伤害，使下次技能的所有伤害都强制转化为该类型", "该技能发射的魔矢可以命中同一个敌人。", "五彩魔矢：", "造成 592-1100 法术伤害", "基础发射 1 个投射物", "该技能 +2 投射物数量", "该技能释放时，随机选择一种元素类型，使下次该技能的伤害强制转化为该类型", "该技能击败敌人时 10% 几率爆炸，对半径 5 米内的敌人造成被击败的敌人最大生命 25% 的真实伤害", "该技能发射的投射物可以命中同一个敌人", "该技能的霰弹效应衰减系数为 70%"]
+  raw_lines: ["释放该技能向前发射 3 个自动追踪敌人的魔矢，造成 59-110 法术伤害。", "该技能击败敌人时，有 10% 几率产生一次爆炸，造成被击败敌人最大生命 25% 的真实伤害。", "每次释放该技能会随机选择一种元素伤害，使下次技能的所有伤害都强制转化为该类型", "该技能发射的魔矢可以命中同一个敌人。", "五彩魔矢：", "造成 59-110 法术伤害", "基础发射 1 个投射物", "该技能 +2 投射物数量", "该技能释放时，随机选择一种元素类型，使下次该技能的伤害强制转化为该类型", "该技能击败敌人时 10% 几率爆炸，对半径 5 米内的敌人造成被击败的敌人最大生命 25% 的真实伤害", "该技能发射的投射物可以命中同一个敌人", "该技能的霰弹效应衰减系数为 70%"]
   parsed_values:
-    base_damage: 846
+    base_damage: 84.6
     mana_cost: 8
     release_interval_ms: 650
   anchors:
     base_damage:
-      20: 846
+      1: 84.6
 level_table:
   levels:
     1:
@@ -200,7 +200,9 @@ behavior:
   template: "projectile"
   params:
     projectile_count: 3
+    burst_interval_ms: 100
     spread_angle_deg: 24
+    random_angle_jitter_deg: 8
     projectile_speed: 600
     projectile_width: 46
     projectile_height: 32
@@ -209,15 +211,23 @@ behavior:
     pierce_count: 0
     collision_radius: 16
     spawn_offset:
-      x: -14
-      y: -20
+      x: 0
+      y: 0
     projectile_radius: 12
     impact_radius: 28
     max_targets: 1
     min_duration_ms: 80
     max_duration_ms: 2200
+    target_policy: "nearest_unique_enemy"
+    forced_element_types: ["fire", "cold", "lightning"]
+    allow_same_target_projectile_hits: true
+    shotgun_falloff_coeff: 0.7
+    on_kill_explosion_chance_percent: 10
+    on_kill_explosion_radius: 5
+    on_kill_explosion_max_life_percent: 25
+    on_kill_explosion_damage_type: "true"
 hit:
-  base_damage: 846
+  base_damage: 84.6
   can_crit: true
   can_apply_status: true
   damage_timing: "on_projectile_hit"

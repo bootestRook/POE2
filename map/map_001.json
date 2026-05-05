@@ -3,6 +3,9 @@
   "version": 1,
   "name": "map_001",
   "savedAt": "2026-05-02T19:41:51.694Z",
+  "map_modifiers": {
+    "monster_life_multiplier": 100
+  },
   "tiles": [
     [
       "empty",

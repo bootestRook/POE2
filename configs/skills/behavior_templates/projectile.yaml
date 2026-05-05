@@ -1,5 +1,5 @@
 id: projectile
-allowed_params: ["projectile_count", "burst_interval_ms", "spread_angle_deg", "angle_step", "projectile_speed", "projectile_width", "projectile_height", "max_distance", "hit_policy", "pierce_count", "collision_radius", "spawn_offset", "projectile_radius", "impact_radius", "max_targets", "min_duration_ms", "max_duration_ms", "trajectory", "travel_time_ms", "arc_height", "target_policy", "impact_marker_id", "vfx_key"]
+allowed_params: ["projectile_count", "burst_interval_ms", "spread_angle_deg", "angle_step", "random_angle_jitter_deg", "projectile_speed", "projectile_width", "projectile_height", "max_distance", "hit_policy", "pierce_count", "collision_radius", "spawn_offset", "projectile_radius", "impact_radius", "max_targets", "min_duration_ms", "max_duration_ms", "duration_ms", "tick_interval_ms", "sustained_ticks", "trajectory", "travel_time_ms", "arc_height", "target_policy", "impact_marker_id", "vfx_key", "projectile_visual_mode", "projectile_speed_damage_conversion_percent", "forced_element_types", "allow_same_target_projectile_hits", "shotgun_falloff_coeff", "split_projectile_count", "split_projectile_angle_step_deg", "split_projectile_damage_multiplier", "split_projectile_pierce_count", "split_projectile_speed", "split_projectile_max_distance", "split_projectile_width", "split_projectile_height", "split_projectile_collision_radius", "on_kill_explosion_chance_percent", "on_kill_explosion_radius", "on_kill_explosion_max_life_percent", "on_kill_explosion_damage_type", "on_ignited_hit_explosion_radius", "on_ignited_hit_true_damage_percent_of_ignite_dps", "on_ignited_hit_indirect_fire_damage", "on_ignited_hit_cooldown_ms"]
 param_constraints:
   projectile_count:
     type: integer
@@ -15,6 +15,10 @@ param_constraints:
     type: number
     minimum: 0
     maximum: 90
+  random_angle_jitter_deg:
+    type: number
+    minimum: 0
+    maximum: 45
   projectile_speed:
     type: number
     minimum: 1
@@ -55,6 +59,14 @@ param_constraints:
   max_duration_ms:
     type: integer
     minimum: 1
+  duration_ms:
+    type: integer
+    minimum: 1
+  tick_interval_ms:
+    type: integer
+    minimum: 1
+  sustained_ticks:
+    type: boolean
   trajectory:
     type: string
     enum: ["linear", "ballistic"]
@@ -66,7 +78,75 @@ param_constraints:
     minimum: 0
   target_policy:
     type: string
-    enum: ["nearest_enemy", "locked_target", "target_position"]
+    enum: ["nearest_enemy", "random_enemy", "nearest_unique_enemy", "target_position"]
+  projectile_visual_mode:
+    type: string
+    enum: ["standard", "falling_arrow"]
+  projectile_speed_damage_conversion_percent:
+    type: number
+    minimum: 0
+  forced_element_types:
+    type: string_array
+    enum: ["fire", "cold", "lightning"]
+  allow_same_target_projectile_hits:
+    type: boolean
+  shotgun_falloff_coeff:
+    type: number
+    minimum: 0
+    maximum: 1
+  split_projectile_count:
+    type: integer
+    minimum: 0
+  split_projectile_angle_step_deg:
+    type: number
+    minimum: 0
+    maximum: 90
+  split_projectile_damage_multiplier:
+    type: number
+    minimum: 0
+  split_projectile_pierce_count:
+    type: integer
+    minimum: 0
+  split_projectile_speed:
+    type: number
+    minimum: 1
+  split_projectile_max_distance:
+    type: number
+    minimum: 1
+  split_projectile_width:
+    type: number
+    minimum: 1
+  split_projectile_height:
+    type: number
+    minimum: 1
+  split_projectile_collision_radius:
+    type: number
+    minimum: 0
+  on_kill_explosion_chance_percent:
+    type: number
+    minimum: 0
+    maximum: 100
+  on_kill_explosion_radius:
+    type: number
+    minimum: 0
+  on_kill_explosion_max_life_percent:
+    type: number
+    minimum: 0
+  on_kill_explosion_damage_type:
+    type: string
+    enum: ["true"]
+  on_ignited_hit_explosion_radius:
+    type: number
+    minimum: 0
+  on_ignited_hit_true_damage_percent_of_ignite_dps:
+    type: number
+    minimum: 0
+  on_ignited_hit_indirect_fire_damage:
+    type: number
+    minimum: 0
+  on_ignited_hit_cooldown_ms:
+    type: integer
+    minimum: 0
   impact_marker_id:
     type: string
     pattern: "^[a-z][a-z0-9_]*$"

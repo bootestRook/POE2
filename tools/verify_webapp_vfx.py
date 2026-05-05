@@ -19,6 +19,7 @@ PORT = 9342
 
 
 async def main() -> None:
+    raise SystemExit("Skill editor VFX verification is disabled. Use the playable WebApp battle view instead.")
     profile = Path(tempfile.gettempdir()) / "poe-codex-chrome-vfx"
     profile.mkdir(parents=True, exist_ok=True)
     subprocess.Popen(

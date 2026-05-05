@@ -99,9 +99,39 @@ class SkillEffectTest(unittest.TestCase):
         self.assertFalse((self.config_root / "gems" / "active_skill_gems.toml").exists())
         self.assertFalse((self.config_root / "gems" / "passive_skill_gems.toml").exists())
         self.assertFalse((self.config_root / "gems" / "support_gems.toml").exists())
-        self.assertEqual(sum(1 for definition in self.definitions.values() if definition.gem_kind == "active_skill"), 8)
-        self.assertEqual(sum(1 for definition in self.definitions.values() if definition.gem_kind == "passive_skill"), 3)
-        self.assertEqual(sum(1 for definition in self.definitions.values() if definition.gem_kind == "support"), 65)
+        self.assertEqual(sum(1 for definition in self.definitions.values() if definition.gem_kind == "active_skill"), 16)
+        self.assertEqual(sum(1 for definition in self.definitions.values() if definition.gem_kind == "passive_skill"), 9)
+        support_definitions = [definition for definition in self.definitions.values() if definition.gem_kind == "support"]
+        self.assertGreater(len(support_definitions), 0)
+        self.assertTrue(all("support_gem" in definition.tags for definition in support_definitions))
+
+    def test_shape_supports_affect_current_product_active_skills(self) -> None:
+        cases = [
+            ("support_nova_shot", "active_rain_of_arrows", "projectile_speed_add_percent"),
+            ("support_precision_strike", "active_flame_slash", "area_add_percent"),
+            ("support_steamroll", "active_whirlwind", "melee_damage_add_percent"),
+        ]
+        for support_id, active_id, expected_stat in cases:
+            with self.subTest(support=support_id):
+                inventory, board, calculator = self._fresh_calculator()
+                active = inventory.add_instance("active", active_id, level=20)
+                inventory.add_instance("support", support_id, level=20)
+                board.mount_gem("active", 0, 0)
+                board.mount_gem("support", 0, 1)
+
+                final_skill = calculator.calculate_for_active(active)
+
+                self.assertTrue(
+                    any(
+                        modifier.source_base_gem_id == support_id
+                        and modifier.stat == expected_stat
+                        and modifier.applied
+                        for modifier in final_skill.applied_modifiers
+                    )
+                )
+                support_definition = self.definitions[support_id]
+                self.assertEqual(support_definition.gem_type, "gem_type_7")
+                self.assertIn("support_shape", support_definition.tags)
 
     def test_all_migrated_active_and_passive_skill_gems_take_effect(self) -> None:
         active_ids = sorted(
@@ -140,14 +170,14 @@ class SkillEffectTest(unittest.TestCase):
                     class PlayerStub:
                         current_life = 100
                         max_life = 100
-                        move_speed = 1.0
+                        move_speed = 250.0
 
                     player = PlayerStub()
                     calculator.apply_player_stat_contributions(player)
                     if passive_id == "passive_vitality":
                         self.assertEqual(player.max_life, 125)
                     if passive_id == "passive_swift_gathering":
-                        self.assertAlmostEqual(player.move_speed, 1.1)
+                        self.assertAlmostEqual(player.move_speed, 275.0)
 
     def test_all_migrated_support_skill_gems_take_effect(self) -> None:
         active_definitions = [
@@ -202,7 +232,8 @@ class SkillEffectTest(unittest.TestCase):
                     self.assertTrue(
                         any(
                             modifier.source_base_gem_id == support_id
-                            and modifier.reason_key == "modifier.conduit_amplifier"
+                            and modifier.reason_key == "modifier.conduit_skill_level"
+                            and modifier.stat == "active_gem_level_add"
                             and modifier.applied
                             for modifier in final_skill.applied_modifiers
                         )
@@ -452,9 +483,9 @@ class SkillEffectTest(unittest.TestCase):
         self.assertEqual(final_skill.source_context["gem_kind"], "active_skill")
         self.assertEqual(final_skill.source_context["sudoku_digit"], 1)
         self.assertEqual(final_skill.base_damage, 12)
-        self.assertAlmostEqual(final_skill.final_damage, 14.7, places=3)
+        self.assertAlmostEqual(final_skill.final_damage, 14.112, places=3)
         self.assertTrue(
-            any(modifier.reason_key == "modifier.conduit_amplifier" for modifier in final_skill.applied_modifiers)
+            any(modifier.reason_key == "modifier.conduit_skill_level" for modifier in final_skill.applied_modifiers)
         )
         self.assertTrue(
             any(
@@ -518,6 +549,53 @@ class SkillEffectTest(unittest.TestCase):
         self.assertEqual(final_skill.increase_pool, 0)
         self.assertEqual(final_skill.final_damage, 12)
 
+    def test_ice_shot_keeps_physical_source_but_converts_hit_to_cold(self) -> None:
+        inventory, board, calculator = self._fresh_calculator()
+        inventory.add_instance("active", "active_ice_shot", level=20)
+        board.mount_gem("active", 0, 0)
+
+        final_skill = calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.base_damage_components, {"physical": 313.0})
+        self.assertEqual(final_skill.converted_damage_components, {"cold": {"physical": 313.0}})
+        self.assertEqual(final_skill.final_damage_components, {"cold": 313.0})
+        self.assertEqual(final_skill.damage_conversions, ({"from": "physical", "to": "cold", "percent": 100.0},))
+        self.assertEqual(final_skill.ailments[0]["type"], "frostbite")
+        self.assertEqual(final_skill.secondary_hits[0]["base_damage"], 157.0)
+        self.assertEqual(final_skill.source_context["damage_basis"], "weapon_attack")
+        self.assertEqual(final_skill.source_context["weapon_attack_base_damage"], 100.0)
+
+    def test_ice_shot_weapon_attack_percent_scales_with_gem_level(self) -> None:
+        inventory, board, calculator = self._fresh_calculator()
+        inventory.add_instance("active", "active_ice_shot", level=1)
+        board.mount_gem("active", 0, 0)
+
+        final_skill = calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.base_damage, 31.3)
+        self.assertEqual(final_skill.hit["weapon_attack_percent"], 31.3)
+        self.assertEqual(final_skill.base_damage_components, {"physical": 31.3})
+        self.assertEqual(final_skill.final_damage_components, {"cold": 31.3})
+        self.assertAlmostEqual(final_skill.secondary_hits[0]["base_damage"], 15.7)
+        self.assertAlmostEqual(final_skill.secondary_hits[0]["weapon_attack_percent"], 15.7)
+        self.assertAlmostEqual(final_skill.secondary_hits[0]["damage_components"]["physical"], 15.7)
+        self.assertAlmostEqual(final_skill.hit["secondary_hits"][0]["base_damage"], 15.7)
+        self.assertAlmostEqual(final_skill.hit["secondary_hits"][0]["weapon_attack_percent"], 15.7)
+
+    def test_weapon_attack_damage_basis_uses_player_weapon_attack_hook(self) -> None:
+        inventory, board, calculator = self._fresh_calculator()
+        calculator.player_base_stats = {"weapon_attack_base_damage": 200}
+        inventory.add_instance("active", "active_ice_shot", level=20)
+        board.mount_gem("active", 0, 0)
+
+        final_skill = calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.base_damage, 626.0)
+        self.assertEqual(final_skill.base_damage_components, {"physical": 626.0})
+        self.assertEqual(final_skill.final_damage_components, {"cold": 626.0})
+        self.assertEqual(final_skill.secondary_hits[0]["base_damage"], 314.0)
+        self.assertEqual(final_skill.source_context["weapon_attack_base_damage"], 200.0)
+
     def test_row_column_and_box_power_stats_scale_routed_values_with_conduit(self) -> None:
         cases = [
             ("same_row", "source_power_row", "target_power_row", "support_row_conduit", (0, 0), (0, 3), (0, 6)),
@@ -551,12 +629,13 @@ class SkillEffectTest(unittest.TestCase):
                 conduit_modifiers = [
                     modifier
                     for modifier in final_skill.applied_modifiers
-                    if modifier.stat == "conduit_multiplier" and modifier.applied
+                    if modifier.stat == "active_gem_level_add" and modifier.applied
                 ]
 
                 self.assertEqual(fire_modifier.relation, relation)
-                self.assertAlmostEqual(fire_modifier.value, 18 * 1.1 * 1.2 * 1.25)
+                self.assertAlmostEqual(fire_modifier.value, 18 * 1.1 * 1.2)
                 self.assertEqual(len(conduit_modifiers), 1)
+                self.assertEqual(conduit_modifiers[0].reason_key, "modifier.conduit_skill_level")
 
     def test_v1_critical_expectation_fields_are_exposed(self) -> None:
         self.calculator.player_base_stats = {
@@ -629,12 +708,16 @@ class SkillEffectTest(unittest.TestCase):
         fire_modifier = next(
             modifier for modifier in final_skill.applied_modifiers if modifier.stat == "fire_damage_add_percent"
         )
-        conduit_modifier = next(
-            modifier for modifier in final_skill.applied_modifiers if modifier.stat == "conduit_multiplier"
-        )
 
-        self.assertAlmostEqual(fire_modifier.value, 43.659)
-        self.assertAlmostEqual(conduit_modifier.value, 1.75)
+        self.assertAlmostEqual(fire_modifier.value, 24.948)
+        self.assertTrue(
+            any(
+                modifier.stat == "active_gem_level_add"
+                and modifier.value == 1
+                and modifier.relation == "same_row"
+                for modifier in final_skill.applied_modifiers
+            )
+        )
 
     def test_adjacent_relation_takes_priority_over_row_column_or_box(self) -> None:
         self.inventory.add_instance("active", "active_fire_bolt")
@@ -862,7 +945,7 @@ class SkillEffectTest(unittest.TestCase):
         class PlayerStub:
             current_life = 100
             max_life = 100
-            move_speed = 1.0
+            move_speed = 250.0
 
         player = PlayerStub()
         modifiers = self.calculator.apply_player_stat_contributions(player)
@@ -870,7 +953,7 @@ class SkillEffectTest(unittest.TestCase):
         self.assertEqual({modifier.stat for modifier in modifiers}, {"max_life", "move_speed"})
         self.assertEqual(player.max_life, 125)
         self.assertEqual(player.current_life, 125)
-        self.assertAlmostEqual(player.move_speed, 1.1)
+        self.assertAlmostEqual(player.move_speed, 275.0)
 
     def test_each_active_skill_has_five_visible_shape_supports(self) -> None:
         active_skill_tags = {

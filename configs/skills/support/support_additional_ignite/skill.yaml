@@ -12,94 +12,232 @@ source_values:
   display_level: 20
   raw_lines: ["辅助击中敌人的技能。", "被辅助技能能够额外造成 1 层点燃", "敌人每有 1 层点燃，被辅助技能额外 2.7% 对其造成的点燃伤害，最多额外 10.8% (Lv1:27/10) (Lv21:67/10) (Lv41:87/10) (Lv1:54/5) (Lv21:134/5) (Lv41:174/5)", "被辅助技能 +15% 点燃几率", "被辅助技能能够额外造成 1 层点燃", "敌人每有 1 层点燃，被辅助技能额外 2.7% 对其造成的点燃伤害，最多额外 10.8% (Lv1:27/10) (Lv21:67/10) (Lv41:87/10) (Lv1:54/5) (Lv21:134/5) (Lv41:174/5)", "被辅助技能 +15% 点燃几率"]
   parsed_values:
+    ignite_stacks_add: 1
+    ignite_damage_bonus_per_stack_percent: 2.7
+    ignite_damage_bonus_max_percent: 10.8
     ignite_chance_add_percent: 15
   anchors:
+    ignite_stacks_add: 1
+    ignite_damage_bonus_per_stack_percent: 2.7
+    ignite_damage_bonus_max_percent: 10.8
     ignite_chance_add_percent:
       20: 15
 level_table:
   levels:
     1:
-      ignite_chance_add_percent: 1.5
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 2.7
+      ignite_damage_bonus_max_percent: 10.8
+      ignite_chance_add_percent: 15
     2:
-      ignite_chance_add_percent: 2.21
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 2.9
+      ignite_damage_bonus_max_percent: 11.6
+      ignite_chance_add_percent: 15
     3:
-      ignite_chance_add_percent: 2.92
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 3.1
+      ignite_damage_bonus_max_percent: 12.4
+      ignite_chance_add_percent: 15
     4:
-      ignite_chance_add_percent: 3.63
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 3.3
+      ignite_damage_bonus_max_percent: 13.2
+      ignite_chance_add_percent: 15
     5:
-      ignite_chance_add_percent: 4.34
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 3.5
+      ignite_damage_bonus_max_percent: 14
+      ignite_chance_add_percent: 15
     6:
-      ignite_chance_add_percent: 5.05
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 3.7
+      ignite_damage_bonus_max_percent: 14.8
+      ignite_chance_add_percent: 15
     7:
-      ignite_chance_add_percent: 5.76
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 3.9
+      ignite_damage_bonus_max_percent: 15.6
+      ignite_chance_add_percent: 15
     8:
-      ignite_chance_add_percent: 6.47
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 4.1
+      ignite_damage_bonus_max_percent: 16.4
+      ignite_chance_add_percent: 15
     9:
-      ignite_chance_add_percent: 7.18
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 4.3
+      ignite_damage_bonus_max_percent: 17.2
+      ignite_chance_add_percent: 15
     10:
-      ignite_chance_add_percent: 7.89
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 4.5
+      ignite_damage_bonus_max_percent: 18
+      ignite_chance_add_percent: 15
     11:
-      ignite_chance_add_percent: 8.61
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 4.7
+      ignite_damage_bonus_max_percent: 18.8
+      ignite_chance_add_percent: 15
     12:
-      ignite_chance_add_percent: 9.32
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 4.9
+      ignite_damage_bonus_max_percent: 19.6
+      ignite_chance_add_percent: 15
     13:
-      ignite_chance_add_percent: 10.03
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 5.1
+      ignite_damage_bonus_max_percent: 20.4
+      ignite_chance_add_percent: 15
     14:
-      ignite_chance_add_percent: 10.74
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 5.3
+      ignite_damage_bonus_max_percent: 21.2
+      ignite_chance_add_percent: 15
     15:
-      ignite_chance_add_percent: 11.45
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 5.5
+      ignite_damage_bonus_max_percent: 22
+      ignite_chance_add_percent: 15
     16:
-      ignite_chance_add_percent: 12.16
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 5.7
+      ignite_damage_bonus_max_percent: 22.8
+      ignite_chance_add_percent: 15
     17:
-      ignite_chance_add_percent: 12.87
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 5.9
+      ignite_damage_bonus_max_percent: 23.6
+      ignite_chance_add_percent: 15
     18:
-      ignite_chance_add_percent: 13.58
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 6.1
+      ignite_damage_bonus_max_percent: 24.4
+      ignite_chance_add_percent: 15
     19:
-      ignite_chance_add_percent: 14.29
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 6.3
+      ignite_damage_bonus_max_percent: 25.2
+      ignite_chance_add_percent: 15
     20:
-      ignite_chance_add_percent: 15.0
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 6.5
+      ignite_damage_bonus_max_percent: 26
+      ignite_chance_add_percent: 15
     21:
-      ignite_chance_add_percent: 15.07
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 6.7
+      ignite_damage_bonus_max_percent: 26.8
+      ignite_chance_add_percent: 15
     22:
-      ignite_chance_add_percent: 15.15
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 6.8
+      ignite_damage_bonus_max_percent: 27.2
+      ignite_chance_add_percent: 15
     23:
-      ignite_chance_add_percent: 15.22
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 6.9
+      ignite_damage_bonus_max_percent: 27.6
+      ignite_chance_add_percent: 15
     24:
-      ignite_chance_add_percent: 15.3
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 7
+      ignite_damage_bonus_max_percent: 28
+      ignite_chance_add_percent: 15
     25:
-      ignite_chance_add_percent: 15.37
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 7.1
+      ignite_damage_bonus_max_percent: 28.4
+      ignite_chance_add_percent: 15
     26:
-      ignite_chance_add_percent: 15.45
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 7.2
+      ignite_damage_bonus_max_percent: 28.8
+      ignite_chance_add_percent: 15
     27:
-      ignite_chance_add_percent: 15.52
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 7.3
+      ignite_damage_bonus_max_percent: 29.2
+      ignite_chance_add_percent: 15
     28:
-      ignite_chance_add_percent: 15.6
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 7.4
+      ignite_damage_bonus_max_percent: 29.6
+      ignite_chance_add_percent: 15
     29:
-      ignite_chance_add_percent: 15.67
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 7.5
+      ignite_damage_bonus_max_percent: 30
+      ignite_chance_add_percent: 15
     30:
-      ignite_chance_add_percent: 15.75
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 7.6
+      ignite_damage_bonus_max_percent: 30.4
+      ignite_chance_add_percent: 15
     31:
-      ignite_chance_add_percent: 15.82
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 7.7
+      ignite_damage_bonus_max_percent: 30.8
+      ignite_chance_add_percent: 15
     32:
-      ignite_chance_add_percent: 15.9
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 7.8
+      ignite_damage_bonus_max_percent: 31.2
+      ignite_chance_add_percent: 15
     33:
-      ignite_chance_add_percent: 15.97
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 7.9
+      ignite_damage_bonus_max_percent: 31.6
+      ignite_chance_add_percent: 15
     34:
-      ignite_chance_add_percent: 16.05
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 8
+      ignite_damage_bonus_max_percent: 32
+      ignite_chance_add_percent: 15
     35:
-      ignite_chance_add_percent: 16.12
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 8.1
+      ignite_damage_bonus_max_percent: 32.4
+      ignite_chance_add_percent: 15
     36:
-      ignite_chance_add_percent: 16.2
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 8.2
+      ignite_damage_bonus_max_percent: 32.8
+      ignite_chance_add_percent: 15
     37:
-      ignite_chance_add_percent: 16.27
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 8.3
+      ignite_damage_bonus_max_percent: 33.2
+      ignite_chance_add_percent: 15
     38:
-      ignite_chance_add_percent: 16.35
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 8.4
+      ignite_damage_bonus_max_percent: 33.6
+      ignite_chance_add_percent: 15
     39:
-      ignite_chance_add_percent: 16.43
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 8.5
+      ignite_damage_bonus_max_percent: 34
+      ignite_chance_add_percent: 15
     40:
-      ignite_chance_add_percent: 16.5
+      ignite_stacks_add: 1
+      ignite_damage_bonus_per_stack_percent: 8.6
+      ignite_damage_bonus_max_percent: 34.4
+      ignite_chance_add_percent: 15
 tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage", "support_status"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["fire"]
-effect_stats: ["ignite_chance_add_percent", "fire_damage_add_percent"]
+effect_stats:
+  - stat: "ignite_stacks_add"
+    value: 1
+    layer: "additive"
+  - stat: "ignite_damage_bonus_per_stack_percent"
+    value: 2.7
+    layer: "additive"
+  - stat: "ignite_damage_bonus_max_percent"
+    value: 10.8
+    layer: "additive"
+  - stat: "ignite_chance_add_percent"
+    value: 15
+    layer: "additive"

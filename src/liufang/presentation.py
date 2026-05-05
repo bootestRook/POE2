@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from dataclasses import dataclass
 from math import dist
@@ -225,9 +225,60 @@ class PresentationService:
         }
 
     def drop_prompt(self, dropped: DroppedGem) -> dict[str, Any]:
+        if dropped.loot_kind == "equipment" and dropped.equipment_item is not None:
+            item = dropped.equipment_item
+            rarity = getattr(item, "rarity", "white")
+            source = getattr(item, "source", "equipment")
+            level = getattr(item, "level", 1)
+            return {
+                "drop_id": dropped.drop_id,
+                "loot_kind": "equipment",
+                "name_text": f"{self.localizer.text(f'rarity.{rarity}.name')} {source}",
+                "rarity_text": self.localizer.text(f"rarity.{rarity}.name"),
+                "picked_up": dropped.picked_up,
+                "status_text": self.localizer.text(
+                    "ui.drop.picked" if dropped.picked_up else "ui.drop.not_picked"
+                ),
+                "inventory_result_text": self.localizer.text(
+                    "ui.pickup.success" if dropped.picked_up else "ui.pickup.pending"
+                ),
+                "position": {"x": dropped.position.x, "y": dropped.position.y},
+                "level": level,
+            }
+        if dropped.loot_kind == "map_entry" and dropped.map_entry is not None:
+            stage_id = getattr(dropped.map_entry, "stage_id", "")
+            quantity = getattr(dropped.map_entry, "quantity", 1)
+            return {
+                "drop_id": dropped.drop_id,
+                "loot_kind": "map_entry",
+                "name_text": f"地图门票 {stage_id}",
+                "rarity_text": "地图",
+                "picked_up": dropped.picked_up,
+                "status_text": self.localizer.text(
+                    "ui.drop.picked" if dropped.picked_up else "ui.drop.not_picked"
+                ),
+                "inventory_result_text": self.localizer.text(
+                    "ui.pickup.success" if dropped.picked_up else "ui.pickup.pending"
+                ),
+                "position": {"x": dropped.position.x, "y": dropped.position.y},
+                "quantity": quantity,
+                "target_stage_id": stage_id,
+            }
+        if dropped.gem_instance is None:
+            return {
+                "drop_id": dropped.drop_id,
+                "loot_kind": dropped.loot_kind,
+                "name_text": "",
+                "rarity_text": "",
+                "picked_up": True,
+                "status_text": self.localizer.text("ui.drop.picked"),
+                "inventory_result_text": self.localizer.text("ui.pickup.success"),
+                "position": {"x": dropped.position.x, "y": dropped.position.y},
+            }
         definition = self.definitions[dropped.gem_instance.base_gem_id]
         return {
             "drop_id": dropped.drop_id,
+            "loot_kind": "gem",
             "name_text": self.localizer.text(definition.name_key),
             "rarity_text": self.localizer.text(f"rarity.{dropped.gem_instance.rarity}.name"),
             "picked_up": dropped.picked_up,
@@ -237,6 +288,8 @@ class PresentationService:
             "inventory_result_text": self.localizer.text(
                 "ui.pickup.success" if dropped.picked_up else "ui.pickup.pending"
             ),
+            "position": {"x": dropped.position.x, "y": dropped.position.y},
+            "level": dropped.gem_instance.level,
         }
 
     def _gem_type_view(self, gem_type: str) -> dict[str, Any]:
@@ -414,6 +467,9 @@ class PresentationService:
                 continue
             values["conduit_multiplier"] = self._format_number(amplifier.multiplier)
             values["conduit_bonus_percent"] = self._format_number((amplifier.multiplier - 1) * 100)
+        if "support_conduit" in definition.tags:
+            values.setdefault("conduit_multiplier", self._format_number(1.0))
+            values.setdefault("conduit_bonus_percent", self._format_number(0.0))
         try:
             return self.localizer.format(definition.description_key, **values)
         except (KeyError, ValueError):
@@ -861,10 +917,13 @@ class PresentationService:
 
     def _active_tooltip_tags(self, tags: list[dict[str, str]]) -> list[dict[str, str]]:
         hidden = {"active_skill_gem", "passive_skill_gem", "loot_gem"}
+        hidden_weapon_tags = {"bow", "gun", "cannon"}
         visible = [
             tag
             for tag in tags
-            if tag["id"] not in hidden and not tag["id"].startswith(("gem_type_", "skill_"))
+            if tag["id"] not in hidden
+            and tag["id"] not in hidden_weapon_tags
+            and not tag["id"].startswith(("gem_type_", "skill_"))
         ]
         order = {
             tag_id: index
@@ -926,11 +985,13 @@ class PresentationService:
                         "value_text": self._format_with_delta(damage, damage_delta),
                     },
                     self._cooldown_line(base_effect, final_skill),
-                    self._actual_interval_line(final_skill),
+                    self._release_interval_line(final_skill, tags),
                     self._mana_cost_line(base_effect, final_skill),
                     self._projectile_line(final_skill, tags),
                     self._area_line(final_skill, tags),
                     self._speed_line(final_skill),
+                    *self._weapon_attack_percent_lines(final_skill),
+                    self._shotgun_falloff_line(final_skill),
                 ]
             )
         )
@@ -976,12 +1037,17 @@ class PresentationService:
             "value_text": self._format_with_delta(cooldown, cooldown - base_cooldown, suffix=self.localizer.text("ui.tooltip.unit.ms")),
         }
 
-    def _actual_interval_line(self, final_skill: FinalSkillInstance | None) -> dict[str, str] | None:
-        if final_skill is None or final_skill.actual_interval_ms <= 0:
+    def _release_interval_line(
+        self,
+        final_skill: FinalSkillInstance | None,
+        tags: frozenset[str],
+    ) -> dict[str, str] | None:
+        if final_skill is None or final_skill.release_interval_ms <= 0:
             return None
+        label_key = "ui.skill.cast_time_ms" if "spell" in tags else "ui.skill.attack_interval_ms"
         return {
-            "label_text": self.localizer.text("ui.skill.actual_interval_ms"),
-            "value_text": self._format_number(final_skill.actual_interval_ms) + self.localizer.text("ui.tooltip.unit.ms"),
+            "label_text": self.localizer.text(label_key),
+            "value_text": self._format_number(final_skill.release_interval_ms) + self.localizer.text("ui.tooltip.unit.ms"),
         }
 
     def _mana_cost_line(
@@ -1033,6 +1099,57 @@ class PresentationService:
                 value=self._format_number(final_skill.speed_multiplier * 100),
             )
             + (self._delta_text(delta_percent, suffix="%") if delta_percent else ""),
+        }
+
+    def _weapon_attack_percent_lines(self, final_skill: FinalSkillInstance | None) -> list[dict[str, str]]:
+        if final_skill is None:
+            return []
+        hit = final_skill.hit or {}
+        if hit.get("damage_basis") != "weapon_attack":
+            return []
+        lines: list[dict[str, str]] = []
+        weapon_attack_percent = self._non_negative_number(hit.get("weapon_attack_percent"))
+        if weapon_attack_percent is not None:
+            lines.append(
+                {
+                    "label_text": self.localizer.text("ui.skill.weapon_attack_percent"),
+                    "value_text": self._format_number(weapon_attack_percent) + "%",
+                }
+            )
+        for secondary in final_skill.secondary_hits:
+            if not isinstance(secondary, dict):
+                continue
+            secondary_percent = self._non_negative_number(secondary.get("weapon_attack_percent"))
+            if secondary_percent is None:
+                secondary_percent = self._non_negative_number(secondary.get("base_damage"))
+            if secondary_percent is None:
+                continue
+            lines.append(
+                {
+                    "label_text": self.localizer.text("ui.skill.secondary_weapon_attack_percent"),
+                    "value_text": self._format_number(secondary_percent) + "%",
+                }
+            )
+        return lines
+
+    def _non_negative_number(self, value: Any) -> float | None:
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
+            return None
+        if value < 0:
+            return None
+        return float(value)
+
+    def _shotgun_falloff_line(self, final_skill: FinalSkillInstance | None) -> dict[str, str] | None:
+        if final_skill is None:
+            return None
+        if "shotgun_falloff_coeff" not in final_skill.runtime_params:
+            return None
+        coeff = max(0.0, min(1.0, float(final_skill.runtime_params["shotgun_falloff_coeff"])))
+        if coeff <= 0:
+            return None
+        return {
+            "label_text": self.localizer.text("ui.skill.shotgun_falloff_coeff"),
+            "value_text": self._format_number(coeff * 100) + "%",
         }
 
     def _non_empty_stat_lines(self, lines: list[dict[str, str] | None]) -> list[dict[str, str]]:
@@ -1130,6 +1247,9 @@ class PresentationService:
                         },
                     ]
                 )
+                shotgun_line = self._shotgun_falloff_line(final_skill)
+                if shotgun_line is not None:
+                    lines.append(shotgun_line)
             return lines
 
         for modifier in base_effect.get("modifiers", []):
@@ -1342,7 +1462,7 @@ class PresentationService:
             status_key = "ui.pickup.out_of_range"
         return {
             "drop_id": dropped.drop_id,
-            "name_text": self.localizer.text(self.definitions[dropped.gem_instance.base_gem_id].name_key),
+            "name_text": self.drop_prompt(dropped)["name_text"],
             "status_text": self.localizer.text(status_key),
         }
 

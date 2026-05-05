@@ -12,6 +12,15 @@ from .config import (
     SkillTemplate,
     SupportBaseModifier,
 )
+from .damage_model import (
+    DAMAGE_TYPES,
+    calculate_converted_hit_damage,
+    damage_components_payload,
+    normalize_damage_components,
+    normalize_damage_conversions,
+    stat_conversions,
+)
+from .equipment import EquipmentAffixDefinition, EquipmentItem, equipment_runtime_params, equipment_stat_modifiers
 from .gem_board import GemRelation, SudokuGemBoard
 from .inventory import AffixRoll, GemInstance
 from .player_stats import aggregate_player_stats
@@ -31,6 +40,16 @@ BOARD_TARGET_STATS = {
 }
 RELATION_PRIORITY = ("adjacent", "same_row", "same_column", "same_box")
 ELEMENTAL_DAMAGE_TYPES = frozenset({"fire", "cold", "lightning"})
+SKILL_LEVEL_TAG_STATS = {
+    "attack": "attack_skill_level_add",
+    "spell": "spell_skill_level_add",
+    "physical": "physical_skill_level_add",
+    "fire": "fire_skill_level_add",
+    "cold": "cold_skill_level_add",
+    "lightning": "lightning_skill_level_add",
+    "chaos": "chaos_skill_level_add",
+    "core": "core_skill_level_add",
+}
 DAMAGE_TYPE_STATS = {
     "physical": ("physical_damage_add_percent",),
     "fire": ("fire_damage_add_percent", "elemental_damage_add_percent"),
@@ -50,11 +69,15 @@ BEHAVIOR_TAG_DAMAGE_STATS = {
     "chain": "chain_damage_add_percent",
     "pierce": "pierce_damage_add_percent",
 }
-BOOLEAN_SKILL_STATS = frozenset({"cannot_crit"})
+BOOLEAN_SKILL_STATS = frozenset({"cannot_crit", "prevent_elemental_ailments"})
 CONDUIT_POWER_STATS = {
     "same_row": "conduit_power_row",
     "same_column": "conduit_power_column",
     "same_box": "conduit_power_box",
+}
+CONDUIT_LEVEL_ADD_STATS = {
+    "active_skill": "active_gem_level_add",
+    "passive_skill": "passive_gem_level_add",
 }
 
 
@@ -121,6 +144,12 @@ class FinalSkillInstance:
     presentation_keys: dict[str, Any] | None = None
     source_context: dict[str, Any] | None = None
     skill_stats: dict[str, Any] | None = None
+    base_damage_components: dict[str, float] | None = None
+    final_damage_components: dict[str, float] | None = None
+    converted_damage_components: dict[str, dict[str, float]] | None = None
+    damage_conversions: tuple[dict[str, Any], ...] = ()
+    ailments: tuple[dict[str, Any], ...] = ()
+    secondary_hits: tuple[dict[str, Any], ...] = ()
 
     @property
     def uses_skill_event_pipeline(self) -> bool:
@@ -147,6 +176,8 @@ class SkillEffectCalculator:
     affix_definitions: dict[str, AffixDefinition]
     player_runtime_stat_ids: frozenset[str] | None = None
     player_base_stats: dict[str, int | float | bool] | None = None
+    equipment_items: tuple[EquipmentItem, ...] = ()
+    equipment_affix_definitions: tuple[EquipmentAffixDefinition, ...] = ()
 
     def calculate_all(self) -> tuple[FinalSkillInstance, ...]:
         validation = self.board.validate()
@@ -174,6 +205,8 @@ class SkillEffectCalculator:
         template = self.skill_templates[definition.skill_template_id]
         modifiers: list[AppliedModifier] = []
         dedupe: set[tuple[str, str, str]] = set()
+        conduit_level_modifiers = self._conduit_level_modifiers(active)
+        modifiers.extend(conduit_level_modifiers)
 
         for roll in active.random_affixes + active.implicit_affixes:
             self._append_affix_modifier(
@@ -219,12 +252,13 @@ class SkillEffectCalculator:
         for passive in self._passive_instances():
             passive_definition = self.definitions[passive.base_gem_id]
             supported_values = self._support_values_for_passive(passive, passive_definition, "self_stat", [])
+            effective_level = self._effective_level_with_conduits(passive, "passive_gem_level_add")
             for effect in passive_definition.passive_effects:
                 if effect.target != "self_stat":
                     continue
                 if self.player_runtime_stat_ids is not None and effect.stat not in self.player_runtime_stat_ids:
                     continue
-                value = _definition_level_number(passive_definition, passive.level, effect.stat, effect.value)
+                value = _definition_level_number(passive_definition, effective_level, effect.stat, effect.value)
                 value += supported_values.get(effect.stat, 0.0)
                 modifiers.append(
                     PlayerStatModifier(
@@ -249,7 +283,7 @@ class SkillEffectCalculator:
             }
         old_max_life = float(getattr(player, "max_life", base_stats.get("max_life", 100)))
         old_current_life = float(getattr(player, "current_life", base_stats.get("current_life", old_max_life)))
-        context = aggregate_player_stats(base_stats, modifiers)
+        context = aggregate_player_stats(base_stats, tuple(modifiers) + self._equipment_stat_modifiers())
         for stat, value in context.values.items():
             setattr(player, stat, value)
         if old_current_life >= old_max_life:
@@ -294,6 +328,8 @@ class SkillEffectCalculator:
             relation = self._effective_relation(passive.instance_id, active.instance_id)
             if relation is None:
                 continue
+            passive_level_modifiers = self._conduit_level_modifiers(passive)
+            modifiers.extend(passive_level_modifiers)
             supported_values = self._support_values_for_passive(passive, passive_definition, "active_skill", modifiers, dedupe)
             relation_scale, conduit_modifiers = self._relation_scale(passive, active, relation)
             modifiers.extend(conduit_modifiers)
@@ -416,34 +452,45 @@ class SkillEffectCalculator:
         *,
         excluded_instance_id: str | None = None,
     ) -> tuple[float, list[AppliedModifier]]:
-        multiplier = 1.0
+        return 1.0, []
+
+    def _conduit_level_modifiers(self, target: GemInstance) -> list[AppliedModifier]:
+        stat = CONDUIT_LEVEL_ADD_STATS.get(target.gem_kind, "")
+        if not stat:
+            return []
         modifiers: list[AppliedModifier] = []
-        for conduit in self._matching_conduits(
-            target,
-            relation,
-            excluded_instance_id=excluded_instance_id,
-        ):
-            amplifier = self._conduit_amplifier(conduit.base_gem_id, relation)
-            if amplifier is None:
-                continue
-            conduit_stat = CONDUIT_POWER_STATS.get(relation, "")
-            player_conduit_multiplier = 1.0 + self._player_numeric_stat(conduit_stat) / 100.0
-            multiplier *= amplifier.multiplier * player_conduit_multiplier
-            modifiers.append(
-                AppliedModifier(
-                    source_instance_id=conduit.instance_id,
-                    source_base_gem_id=conduit.base_gem_id,
-                    target_instance_id=target.instance_id,
-                    stat="conduit_multiplier",
-                    value=amplifier.multiplier * player_conduit_multiplier,
-                    layer="final",
-                    relation=relation,
-                    reason_key="modifier.conduit_amplifier",
-                    applied=True,
-                    target_base_gem_id=target.base_gem_id,
+        for relation in ("same_row", "same_column", "same_box"):
+            for conduit in self._matching_conduits(target, relation):
+                amplifier = self._conduit_amplifier(conduit.base_gem_id, relation)
+                if amplifier is None:
+                    continue
+                conduit_definition = self.definitions.get(conduit.base_gem_id)
+                level_add = 1.0
+                if conduit_definition is not None:
+                    level_add = _definition_level_number(
+                        conduit_definition,
+                        conduit.level,
+                        "skill_level_add",
+                        min(conduit.level, 5),
+                    )
+                modifiers.append(
+                    AppliedModifier(
+                        source_instance_id=conduit.instance_id,
+                        source_base_gem_id=conduit.base_gem_id,
+                        target_instance_id=target.instance_id,
+                        stat=stat,
+                        value=level_add,
+                        layer="additive",
+                        relation=relation,
+                        reason_key="modifier.conduit_skill_level",
+                        applied=True,
+                        target_base_gem_id=target.base_gem_id,
+                    )
                 )
-            )
-        return multiplier, modifiers
+        return modifiers
+
+    def _effective_level_with_conduits(self, target: GemInstance, stat: str) -> int:
+        return _effective_gem_level(target, self._conduit_level_modifiers(target), stat)
 
     def _matching_conduits(
         self,
@@ -579,7 +626,8 @@ class SkillEffectCalculator:
         source_definition = self.definitions.get(source.base_gem_id)
         base_value = effect.value
         if source_definition is not None:
-            base_value = _definition_level_number(source_definition, source.level, effect.stat, effect.value)
+            effective_level = self._effective_level_with_conduits(source, "passive_gem_level_add")
+            base_value = _definition_level_number(source_definition, effective_level, effect.stat, effect.value)
         self._append_raw_modifier(
             modifiers,
             dedupe,
@@ -642,20 +690,74 @@ class SkillEffectCalculator:
             dict.fromkeys(modifier.shape_effect for modifier in applied if modifier.shape_effect)
         )
         active_definition = self.definitions[active.base_gem_id]
-        level_values = _template_level_values(template, active.level)
+        effective_level = _effective_gem_level(active, applied, "active_gem_level_add") + self._equipment_skill_level_add(template)
+        level_values = _template_level_values(template, effective_level)
+        source_parsed_values = active_definition.source_values.get("parsed_values", {})
+        added_damage_effectiveness_percent = (
+            float(source_parsed_values.get("added_damage_effectiveness_percent", 100.0))
+            if isinstance(source_parsed_values, dict)
+            else 100.0
+        )
+        skill_stats["added_damage_effectiveness_percent"] = added_damage_effectiveness_percent
         base_damage = _level_number(level_values, "base_damage", template.base_damage)
+        weapon_attack_base_damage = self._weapon_attack_base_damage(skill_stats)
+        weapon_attack_percent_scale = 1.0
+        if template.hit.get("damage_basis") == "weapon_attack":
+            weapon_attack_percent = _level_number(level_values, "weapon_attack_percent", base_damage)
+            template_weapon_attack_percent = float(template.hit.get("weapon_attack_percent", weapon_attack_percent))
+            if template_weapon_attack_percent > 0:
+                weapon_attack_percent_scale = weapon_attack_percent / template_weapon_attack_percent
+            base_damage = weapon_attack_base_damage * weapon_attack_percent / 100.0
         base_release_interval_ms = round(_level_number(level_values, "release_interval_ms", template.base_release_interval_ms))
         base_cooldown_ms = round(_level_number(level_values, "base_cooldown_ms", template.base_cooldown_ms))
         trigger_interval_ms = round(_level_number(level_values, "trigger_interval_ms", template.trigger_interval_ms))
         mana_cost = round(_level_number(level_values, "mana_cost", template.mana_cost))
 
-        increase_pool = self._increase_pool(skill_stats, template)
+        projectile_speed_damage_bonus_percent = 0.0
+        projectile_speed_damage_conversion_percent = float(
+            template.runtime_params.get("projectile_speed_damage_conversion_percent", 0.0)
+        )
+        if projectile_speed_damage_conversion_percent > 0:
+            projectile_speed_damage_bonus_percent = (
+                self._numeric_stat(skill_stats, "projectile_speed_add_percent")
+                * projectile_speed_damage_conversion_percent
+                / 100.0
+            )
         final_pool = self._numeric_stat(skill_stats, "damage_final_percent") + self._numeric_stat(
             skill_stats,
             "hit_damage_final_percent",
+        ) + projectile_speed_damage_bonus_percent
+        base_damage_components = normalize_damage_components(
+            template.hit.get("damage_components"),
+            fallback_type=template.damage_type,
+            fallback_amount=base_damage,
         )
-        non_crit_damage = base_damage * (1.0 + increase_pool / 100.0) * (1.0 + final_pool / 100.0)
-        final_damage = non_crit_damage
+        component_total = sum(base_damage_components.values())
+        if component_total > 0 and abs(component_total - base_damage) > 1e-9:
+            level_damage_scale = base_damage / component_total
+            base_damage_components = {
+                damage_type: amount * level_damage_scale
+                for damage_type, amount in base_damage_components.items()
+            }
+        else:
+            level_damage_scale = 1.0
+        base_damage_components = _add_supported_damage_components(
+            base_damage_components,
+            skill_stats,
+            added_damage_effectiveness_percent=added_damage_effectiveness_percent,
+        )
+        package_conversions = normalize_damage_conversions(template.hit.get("damage_conversions"))
+        all_conversions = package_conversions + stat_conversions(skill_stats)
+        final_damage, final_damage_components, converted_damage_components, increase_pool = calculate_converted_hit_damage(
+            base_components=base_damage_components,
+            conversions=all_conversions,
+            stats=skill_stats,
+            tags=template.tags,
+            behavior_template=template.behavior_template,
+            behavior_type=template.behavior_type,
+            final_pool=final_pool,
+        )
+        non_crit_damage = final_damage
         can_crit = bool(template.hit.get("can_crit", False)) and not bool(skill_stats.get("cannot_crit", False))
         crit_multiplier = self._numeric_stat(skill_stats, "derived_crit_damage_percent") / 100.0
         if can_crit:
@@ -695,6 +797,7 @@ class SkillEffectCalculator:
         hit_coverage_factor = 1.0
         preview_dps = expected_hit_damage * uses_per_second * hit_coverage_factor
         area_multiplier = 1.0 + self._numeric_stat(skill_stats, "area_add_percent") / 100.0
+        area_add_percent = self._numeric_stat(skill_stats, "area_add_percent")
         projectile_speed_multiplier = 1.0 + self._numeric_stat(skill_stats, "projectile_speed_add_percent") / 100.0
         runtime_params = dict(template.runtime_params)
         for key, value in level_values.items():
@@ -732,6 +835,108 @@ class SkillEffectCalculator:
             runtime_params["status_chance_scale"] = float(runtime_params["status_chance_scale"]) * (
                 1.0 + self._numeric_stat(skill_stats, "status_chance_add_percent") / 100.0
             )
+        if "dot_damage_bonus_per_10_aggravation_percent" in runtime_params:
+            runtime_params["dot_damage_bonus_per_10_aggravation_percent"] = float(
+                runtime_params["dot_damage_bonus_per_10_aggravation_percent"]
+            ) * (1.0 + self._numeric_stat(skill_stats, "aggravation_effect_add_percent") / 100.0)
+        numbed_effect_add_percent = self._numeric_stat(skill_stats, "numbed_effect_add_percent")
+        if numbed_effect_add_percent > 0:
+            runtime_params["numbed_effect_add_percent"] = numbed_effect_add_percent
+        aggravation_value_add = max(0.0, self._numeric_stat(skill_stats, "aggravation_value_add"))
+        if aggravation_value_add > 0 and template.damage_form == "damage_over_time":
+            runtime_params["aggravation_value"] = max(0.0, float(runtime_params.get("aggravation_value", 0.0))) + aggravation_value_add
+            runtime_params.setdefault(
+                "dot_damage_bonus_per_10_aggravation_percent",
+                10.0 * (1.0 + self._numeric_stat(skill_stats, "aggravation_effect_add_percent") / 100.0),
+            )
+        armor_reduction_penetration_percent = self._numeric_stat(skill_stats, "armor_reduction_penetration_percent")
+        if armor_reduction_penetration_percent > 0:
+            runtime_params["armor_reduction_penetration_percent"] = armor_reduction_penetration_percent
+        cull_threshold_percent = self._numeric_stat(skill_stats, "cull_threshold_percent")
+        if cull_threshold_percent > 0:
+            runtime_params["cull_threshold_percent"] = max(0.0, min(100.0, cull_threshold_percent))
+        double_damage_chance_percent = self._numeric_stat(skill_stats, "double_damage_chance_percent")
+        if double_damage_chance_percent > 0:
+            runtime_params["double_damage_chance_percent"] = max(0.0, min(100.0, double_damage_chance_percent))
+        deterioration_chance = self._numeric_stat(skill_stats, "deterioration_chance_add_percent")
+        if deterioration_chance > 0:
+            runtime_params["deterioration_chance_percent"] = max(0.0, min(100.0, deterioration_chance))
+            runtime_params["deterioration_damage_percent_of_chaos_hit"] = 60.0 * (
+                1.0 + max(0.0, self._numeric_stat(skill_stats, "deterioration_damage_add_percent")) / 100.0
+            )
+            runtime_params["deterioration_duration_ms"] = max(
+                1,
+                round(1000.0 * (1.0 + self._numeric_stat(skill_stats, "deterioration_duration_add_percent") / 100.0)),
+            )
+        duration_multiplier = max(
+            0.01,
+            1.0 + self._numeric_stat(skill_stats, "duration_add_percent") / 100.0,
+        )
+        if abs(duration_multiplier - 1.0) > 1e-9:
+            _scale_runtime_durations(runtime_params, duration_multiplier)
+        if "slash_chance_percent" in runtime_params:
+            runtime_params["slash_chance_percent"] = _clamp(
+                float(runtime_params.get("slash_chance_percent", 0.0))
+                + self._numeric_stat(skill_stats, "slash_chance_add_percent"),
+                0.0,
+                100.0,
+            )
+        continuous_attack_chance_percent = self._numeric_stat(skill_stats, "continuous_attack_chance_percent")
+        if continuous_attack_chance_percent > 0 and "attack" in template.tags:
+            runtime_params["continuous_attack_chance_percent"] = max(0.0, continuous_attack_chance_percent)
+            runtime_params["continuous_attack_damage_step_percent"] = max(
+                0.0,
+                self._numeric_stat(skill_stats, "continuous_attack_damage_step_percent"),
+            )
+        knockback_chance_percent = self._numeric_stat(skill_stats, "knockback_chance_percent")
+        if knockback_chance_percent > 0:
+            runtime_params["knockback_chance_percent"] = max(0.0, knockback_chance_percent)
+            runtime_params["knockback_distance_add_percent"] = self._numeric_stat(skill_stats, "knockback_distance_add_percent")
+            runtime_params["knockback_base_distance"] = float(runtime_params.get("knockback_base_distance", 48.0))
+        energy_blessing_damage_per_stack_percent = self._numeric_stat(skill_stats, "energy_blessing_damage_per_stack_percent")
+        if energy_blessing_damage_per_stack_percent > 0 and "spell" in template.tags:
+            runtime_params["overload_buff_type"] = "energy_blessing"
+            runtime_params["overload_damage_per_stack_percent"] = max(0.0, energy_blessing_damage_per_stack_percent)
+            runtime_params["overload_max_stacks"] = 8
+        guard_trigger_count = round(self._numeric_stat(skill_stats, "guard_trigger_count"))
+        if guard_trigger_count > 0:
+            runtime_params["guard_trigger_count"] = max(1, guard_trigger_count)
+            runtime_params["guard_internal_cooldown_ms"] = max(
+                0,
+                round(self._numeric_stat(skill_stats, "guard_internal_cooldown_ms")),
+            )
+            runtime_params.setdefault("guard_absorb_percent", 70)
+            runtime_params.setdefault("guard_absorb_amount", 150)
+            runtime_params.setdefault("guard_duration_ms", 6000)
+            runtime_params.setdefault("guard_exclude_damage_over_time", True)
+        if skill_stats.get("prevent_elemental_ailments"):
+            runtime_params["prevent_elemental_ailments"] = True
+            runtime_params["prevent_status_buff_type"] = "elemental_fusion_no_ailments"
+            runtime_params["prevented_status_types"] = ["ignite", "frozen", "numbed"]
+        split_projectile_chance_percent = self._numeric_stat(skill_stats, "split_projectile_chance_percent")
+        split_projectile_count_add = round(self._numeric_stat(skill_stats, "split_projectile_count_add"))
+        if split_projectile_chance_percent > 0 and split_projectile_count_add > 0 and "projectile" in template.tags:
+            runtime_params["split_projectile_chance_percent"] = max(0.0, split_projectile_chance_percent)
+            runtime_params["split_projectile_count_add"] = max(0, split_projectile_count_add)
+            runtime_params.setdefault("split_projectile_damage_multiplier", 1.0)
+            runtime_params.setdefault("split_projectile_angle_step_deg", 25.0)
+        if "flame_wave_count" in runtime_params:
+            area_step = max(1.0, float(runtime_params.get("flame_wave_area_step_percent", 115.0)))
+            area_steps = int(max(0.0, area_add_percent) // area_step)
+            count_per_step = max(0, int(runtime_params.get("flame_wave_count_per_area_step", 0)))
+            runtime_params["flame_wave_area_steps"] = area_steps
+            runtime_params["flame_wave_count"] = max(
+                1,
+                int(runtime_params.get("flame_wave_count", 1)) + area_steps * count_per_step,
+            )
+            if "flame_wave_distance" in runtime_params:
+                distance_bonus = max(
+                    0.0,
+                    float(runtime_params.get("flame_wave_distance_bonus_per_area_step_percent", 0.0)),
+                )
+                runtime_params["flame_wave_distance"] = float(runtime_params["flame_wave_distance"]) * (
+                    1.0 + area_steps * distance_bonus / 100.0
+                )
         base_projectile_count = int(runtime_params.get("projectile_count", 1))
         projectile_count_add = round(self._numeric_stat(skill_stats, "projectile_count_add"))
         runtime_params["projectile_count"] = max(
@@ -747,13 +952,39 @@ class SkillEffectCalculator:
             runtime_params["spread_angle_deg"] = min(60.0, 12.0 * (int(runtime_params["projectile_count"]) - 1))
         if runtime_params.get("max_targets") != "unlimited":
             runtime_params["max_targets"] = max(1, int(runtime_params.get("max_targets", 1)))
+        bounce_count_add = round(self._numeric_stat(skill_stats, "bounce_count_add"))
         if "chain_count" in runtime_params:
+            chain_count_bonus = round(self._numeric_stat(skill_stats, "chain_count_add")) + bounce_count_add
             runtime_params["chain_count"] = max(
                 0,
-                int(runtime_params.get("chain_count", 0)) + round(self._numeric_stat(skill_stats, "chain_count_add")),
+                int(runtime_params.get("chain_count", 0)) + chain_count_bonus,
             )
             if runtime_params.get("max_targets") != "unlimited":
                 runtime_params["max_targets"] = max(int(runtime_params.get("max_targets", 1)), int(runtime_params["chain_count"]) + 1)
+        elif bounce_count_add > 0 and "projectile" in template.tags:
+            runtime_params["bounce_count"] = max(0, int(runtime_params.get("bounce_count", 0)) + bounce_count_add)
+            runtime_params.setdefault("bounce_radius", 180.0)
+        if "channel_max_stacks" in runtime_params:
+            runtime_params["channel_max_stacks"] = max(
+                1,
+                int(runtime_params.get("channel_max_stacks", 1)) + round(self._numeric_stat(skill_stats, "channel_max_stacks_add")),
+            )
+            runtime_params["channel_min_stacks"] = max(
+                0,
+                min(
+                    int(runtime_params["channel_max_stacks"]),
+                    int(runtime_params.get("channel_min_stacks", 0)) + round(self._numeric_stat(skill_stats, "channel_min_stacks_add")),
+                ),
+            )
+        if "channel_time_per_stack_ms" in runtime_params:
+            channel_time_multiplier = max(
+                0.01,
+                1.0 - self._numeric_stat(skill_stats, "channel_time_per_stack_ms_reduction_percent") / 100.0,
+            )
+            runtime_params["channel_time_per_stack_ms"] = max(
+                1,
+                round(float(runtime_params.get("channel_time_per_stack_ms", 1)) * channel_time_multiplier),
+            )
         if "pierce_count" in runtime_params:
             runtime_params["pierce_count"] = max(
                 0,
@@ -761,6 +992,25 @@ class SkillEffectCalculator:
             )
         if runtime_params.get("pierce") is True and "pierce_count" not in runtime_params:
             runtime_params["pierce_count"] = max(0, round(self._numeric_stat(skill_stats, "pierce_count_add")))
+        runtime_params.update(self._equipment_runtime_params())
+
+        secondary_hits = tuple(
+            _scaled_secondary_hit(
+                hit,
+                level_damage_scale,
+                weapon_attack_base_damage,
+                weapon_attack_percent_scale=weapon_attack_percent_scale,
+            )
+            for hit in template.hit.get("secondary_hits", ())
+            if isinstance(hit, dict)
+        )
+        hit_payload = {**dict(template.hit), "base_damage": base_damage}
+        if template.hit.get("damage_basis") == "weapon_attack":
+            hit_payload["weapon_attack_percent"] = weapon_attack_percent
+        if secondary_hits:
+            hit_payload["secondary_hits"] = [dict(hit) for hit in secondary_hits]
+
+        ailments = _scaled_ailments(tuple(dict(ailment) for ailment in template.hit.get("ailments", ()) if isinstance(ailment, dict)), skill_stats)
 
         return FinalSkillInstance(
             active_gem_instance_id=active.instance_id,
@@ -803,7 +1053,7 @@ class SkillEffectCalculator:
                 "trigger_interval_ms": trigger_interval_ms,
                 "mana_cost": mana_cost,
             },
-            hit={**dict(template.hit), "base_damage": base_damage},
+            hit=hit_payload,
             runtime_params=runtime_params,
             presentation_keys=dict(template.presentation_keys),
             source_context={
@@ -811,11 +1061,34 @@ class SkillEffectCalculator:
                 "base_gem_id": active.base_gem_id,
                 "gem_kind": active.gem_kind,
                 "sudoku_digit": active.sudoku_digit,
+                "base_gem_level": active.level,
+                "effective_gem_level": effective_level,
                 "tlidb_source_values": dict(active_definition.source_values),
                 "level_values": dict(level_values),
                 "auto_release": dict(active_definition.auto_release or template.auto_release),
+                "damage_basis": template.hit.get("damage_basis", "flat"),
+                "damage_form": template.damage_form,
+                "weapon_attack_base_damage": weapon_attack_base_damage,
+                "added_damage_effectiveness_percent": added_damage_effectiveness_percent,
             },
             skill_stats=skill_stats,
+            base_damage_components=damage_components_payload(base_damage_components),
+            final_damage_components=damage_components_payload(final_damage_components),
+            converted_damage_components={
+                damage_type: damage_components_payload(origins)
+                for damage_type, origins in converted_damage_components.items()
+                if damage_type in DAMAGE_TYPES
+            },
+            damage_conversions=tuple(
+                {
+                    "from": conversion.source,
+                    "to": conversion.target,
+                    "percent": conversion.percent,
+                }
+                for conversion in all_conversions
+            ),
+            ailments=ailments,
+            secondary_hits=secondary_hits,
         )
 
     def _sum_by_stat(self, modifiers: list[AppliedModifier], layer: str) -> dict[str, float]:
@@ -837,10 +1110,19 @@ class SkillEffectCalculator:
             elif isinstance(value, (int, float)) and not isinstance(value, bool):
                 result[stat] = float(value)
 
+        equipment_context = aggregate_player_stats({}, self._equipment_stat_modifiers())
+        for stat, value in equipment_context.values.items():
+            if not self._stat_can_enter_skill_context(stat, require_player_runtime_stat=False):
+                continue
+            if stat in BOOLEAN_SKILL_STATS:
+                result[stat] = bool(result.get(stat, False) or value)
+            elif isinstance(value, (int, float)) and not isinstance(value, bool):
+                result[stat] = self._numeric_stat(result, stat) + float(value)
+
         for modifier in applied:
             if modifier.layer not in {"additive", "final"}:
                 continue
-            if not self._stat_can_enter_skill_context(modifier.stat):
+            if not self._stat_can_enter_skill_context(modifier.stat, require_player_runtime_stat=False):
                 continue
             if modifier.stat in BOOLEAN_SKILL_STATS:
                 result[modifier.stat] = bool(result.get(modifier.stat, False) or modifier.value)
@@ -848,10 +1130,10 @@ class SkillEffectCalculator:
             result[modifier.stat] = self._numeric_stat(result, modifier.stat) + modifier.value
         return result
 
-    def _stat_can_enter_skill_context(self, stat: str) -> bool:
+    def _stat_can_enter_skill_context(self, stat: str, *, require_player_runtime_stat: bool = True) -> bool:
         if stat not in self.scaling_rules.stat_layers:
             return False
-        if self.player_runtime_stat_ids is not None and stat not in self.player_runtime_stat_ids:
+        if require_player_runtime_stat and self.player_runtime_stat_ids is not None and stat not in self.player_runtime_stat_ids:
             return False
         return True
 
@@ -861,6 +1143,22 @@ class SkillEffectCalculator:
             + self._numeric_stat(stats, "hit_damage_add_percent")
             + self._numeric_stat(stats, "all_damage_type_add_percent")
         )
+        attribute_damage = self._numeric_stat(stats, "damage_add_percent_per_27_attributes")
+        if attribute_damage:
+            attributes = (
+                self._numeric_stat(stats, "strength")
+                + self._numeric_stat(stats, "dexterity")
+                + self._numeric_stat(stats, "intelligence")
+            )
+            pool += (attributes // 27.0) * attribute_damage
+        attribute_damage_per_12 = self._numeric_stat(stats, "damage_add_percent_per_12_attributes")
+        if attribute_damage_per_12:
+            attributes = (
+                self._numeric_stat(stats, "strength")
+                + self._numeric_stat(stats, "dexterity")
+                + self._numeric_stat(stats, "intelligence")
+            )
+            pool += (attributes // 12.0) * attribute_damage_per_12
         for stat in DAMAGE_TYPE_STATS.get(template.damage_type, ()):
             pool += self._numeric_stat(stats, stat)
         for tag, stat in SOURCE_TAG_DAMAGE_STATS.items():
@@ -882,7 +1180,35 @@ class SkillEffectCalculator:
     def _player_numeric_stat(self, stat: str) -> float:
         if not stat:
             return 0.0
-        return self._numeric_stat(aggregate_player_stats(self.player_base_stats).values, stat)
+        return self._numeric_stat(aggregate_player_stats(self.player_base_stats, self._equipment_stat_modifiers()).values, stat)
+
+    def _equipment_stat_modifiers(self) -> tuple[object, ...]:
+        if not self.equipment_items or not self.equipment_affix_definitions:
+            return ()
+        return equipment_stat_modifiers(self.equipment_items, definitions=self.equipment_affix_definitions)
+
+    def _equipment_skill_level_add(self, template: SkillTemplate) -> int:
+        equipment_context = aggregate_player_stats({}, self._equipment_stat_modifiers())
+        equipment_stats = equipment_context.values
+        total = round(self._numeric_stat(equipment_stats, "active_gem_level_add"))
+        for tag, stat in SKILL_LEVEL_TAG_STATS.items():
+            if tag in template.tags or template.damage_type == tag:
+                total += round(self._numeric_stat(equipment_stats, stat))
+        return max(0, total)
+
+    def _equipment_runtime_params(self) -> dict[str, object]:
+        if not self.equipment_items or not self.equipment_affix_definitions:
+            return {}
+        return equipment_runtime_params(self.equipment_items, definitions=self.equipment_affix_definitions)
+
+    def _weapon_attack_base_damage(self, skill_stats: dict[str, Any]) -> float:
+        from_skill_context = self._numeric_stat(skill_stats, "weapon_attack_base_damage")
+        if from_skill_context > 0:
+            return from_skill_context
+        from_player_context = self._player_numeric_stat("weapon_attack_base_damage")
+        if from_player_context > 0:
+            return from_player_context
+        return 100.0
 
 
 def _scaled_modules(
@@ -915,6 +1241,178 @@ def _scaled_modules(
         next_module["params"] = params
         scaled.append(next_module)
     return scaled
+
+
+def _scale_runtime_durations(runtime_params: dict[str, Any], duration_multiplier: float) -> None:
+    for key in ("duration_ms", "cloud_duration_per_stack_ms"):
+        if key in runtime_params:
+            runtime_params[key] = max(1, round(float(runtime_params[key]) * duration_multiplier))
+    modules = runtime_params.get("modules")
+    if not isinstance(modules, list):
+        return
+    for module in modules:
+        if not isinstance(module, dict):
+            continue
+        params = module.get("params")
+        if not isinstance(params, dict):
+            continue
+        for key in ("duration_ms", "cloud_duration_per_stack_ms"):
+            if key in params:
+                params[key] = max(1, round(float(params[key]) * duration_multiplier))
+
+
+def _add_supported_damage_components(
+    base_components: dict[str, float],
+    skill_stats: dict[str, Any],
+    *,
+    added_damage_effectiveness_percent: float,
+) -> dict[str, float]:
+    result = dict(base_components)
+    effectiveness = max(0.0, float(added_damage_effectiveness_percent)) / 100.0
+    for damage_type, stat in {
+        "physical": "added_physical_damage",
+        "fire": "added_fire_damage",
+        "cold": "added_cold_damage",
+        "lightning": "added_lightning_damage",
+        "chaos": "added_chaos_damage",
+    }.items():
+        amount = _numeric_context_stat(skill_stats, stat) * effectiveness
+        if amount > 0:
+            result[damage_type] = result.get(damage_type, 0.0) + amount
+    physical_base = result.get("physical", 0.0)
+    fire_from_physical_percent = _numeric_context_stat(skill_stats, "added_fire_damage_from_physical_percent")
+    if physical_base > 0 and fire_from_physical_percent > 0:
+        result["fire"] = result.get("fire", 0.0) + physical_base * fire_from_physical_percent / 100.0
+    return {damage_type: amount for damage_type, amount in result.items() if amount > 1e-9}
+
+
+def _numeric_context_stat(stats: dict[str, Any], stat: str) -> float:
+    value = stats.get(stat, 0.0)
+    return float(value) if isinstance(value, (int, float)) and not isinstance(value, bool) else 0.0
+
+
+def _scaled_ailments(ailments: tuple[dict[str, Any], ...], skill_stats: dict[str, Any]) -> tuple[dict[str, Any], ...]:
+    if not ailments:
+        return ()
+    ignite_chance_add = _numeric_context_stat(skill_stats, "ignite_chance_add_percent")
+    ignite_stacks_add = max(0, round(_numeric_context_stat(skill_stats, "ignite_stacks_add")))
+    ignite_duration_multiplier = max(
+        0.01,
+        1.0
+        + (
+            _numeric_context_stat(skill_stats, "duration_add_percent")
+            + _numeric_context_stat(skill_stats, "ignite_duration_add_percent")
+        )
+        / 100.0,
+    )
+    ailment_duration_multiplier = max(
+        0.01,
+        1.0 + _numeric_context_stat(skill_stats, "ailment_duration_add_percent") / 100.0,
+    )
+    trauma_duration_multiplier = max(
+        0.01,
+        1.0
+        + (
+            _numeric_context_stat(skill_stats, "duration_add_percent")
+            + _numeric_context_stat(skill_stats, "trauma_duration_add_percent")
+        )
+        / 100.0,
+    )
+    ignite_bonus_per_stack = max(0.0, _numeric_context_stat(skill_stats, "ignite_damage_bonus_per_stack_percent"))
+    ignite_bonus_max = max(0.0, _numeric_context_stat(skill_stats, "ignite_damage_bonus_max_percent"))
+    frostbite_max_value_add = max(0.0, _numeric_context_stat(skill_stats, "frostbite_max_value_add"))
+    added_base_ailment_damage = max(0.0, _numeric_context_stat(skill_stats, "added_base_ailment_damage_per_second"))
+    added_base_trauma_damage = max(0.0, _numeric_context_stat(skill_stats, "added_base_trauma_damage_per_second"))
+    ailment_damage_multiplier = 1.0 + max(0.0, _numeric_context_stat(skill_stats, "ailment_damage_deepen_percent")) / 100.0
+    result: list[dict[str, Any]] = []
+    for ailment in ailments:
+        next_ailment = dict(ailment)
+        ailment_type = str(next_ailment.get("type", ""))
+        if ailment_type == "ignite":
+            added_base_ignite_damage = max(0.0, _numeric_context_stat(skill_stats, "added_base_ignite_damage_per_second"))
+            added_base_ignite_damage += added_base_ailment_damage
+            if added_base_ignite_damage > 0:
+                next_ailment["base_damage_per_second"] = float(next_ailment.get("base_damage_per_second", 0.0)) + added_base_ignite_damage
+            if ignite_chance_add:
+                next_ailment["chance_percent"] = max(0.0, float(next_ailment.get("chance_percent", 100.0)) + ignite_chance_add)
+            if ignite_stacks_add:
+                base_stacks = max(1, int(next_ailment.get("stacks", 1)))
+                next_ailment["stacks"] = base_stacks + ignite_stacks_add
+                next_ailment["max_stacks"] = max(int(next_ailment.get("max_stacks", 1)), int(next_ailment["stacks"]))
+            if ignite_bonus_per_stack > 0:
+                next_ailment["dot_damage_bonus_per_ignite_stack_percent"] = ignite_bonus_per_stack
+                next_ailment["dot_damage_bonus_max_percent"] = ignite_bonus_max
+            if abs(ignite_duration_multiplier - 1.0) > 1e-9:
+                next_ailment["duration_ms"] = max(
+                    1,
+                    round(float(next_ailment.get("duration_ms", 4000)) * ignite_duration_multiplier * ailment_duration_multiplier),
+                )
+        elif ailment_type == "frostbite" and frostbite_max_value_add > 0:
+            current_threshold = float(next_ailment.get("threshold", 100.0))
+            if current_threshold > 0:
+                next_ailment["threshold"] = current_threshold + frostbite_max_value_add
+            next_ailment["max_value"] = float(next_ailment.get("max_value", current_threshold or 100.0)) + frostbite_max_value_add
+        elif ailment_type == "trauma":
+            added = added_base_ailment_damage + added_base_trauma_damage
+            if added > 0:
+                next_ailment["base_damage_per_second"] = float(next_ailment.get("base_damage_per_second", 0.0)) + added
+            next_ailment["duration_ms"] = max(
+                1,
+                round(float(next_ailment.get("duration_ms", 4000)) * trauma_duration_multiplier * ailment_duration_multiplier),
+            )
+        elif ailment_type in {"shock", "wilt"}:
+            if added_base_ailment_damage > 0:
+                key = "base_value" if ailment_type == "shock" else "base_damage_per_second"
+                next_ailment[key] = float(next_ailment.get(key, 0.0)) + added_base_ailment_damage
+        if ailment_type in {"ignite", "shock", "trauma", "wilt"} and ailment_damage_multiplier > 1.0:
+            for key in ("base_damage_per_second", "base_value"):
+                if key in next_ailment:
+                    next_ailment[key] = float(next_ailment[key]) * ailment_damage_multiplier
+        result.append(next_ailment)
+    return tuple(result)
+
+
+def _scaled_secondary_hit(
+    hit: dict[str, Any],
+    level_damage_scale: float,
+    weapon_attack_base_damage: float,
+    *,
+    weapon_attack_percent_scale: float = 1.0,
+) -> dict[str, Any]:
+    result = dict(hit)
+    base_damage_already_scaled = False
+    component_scale = level_damage_scale
+    if result.get("damage_basis") == "weapon_attack":
+        weapon_attack_percent = float(result.get("weapon_attack_percent", result.get("base_damage", 0.0)))
+        weapon_attack_percent *= weapon_attack_percent_scale
+        result["weapon_attack_percent"] = weapon_attack_percent
+        result["base_damage"] = weapon_attack_base_damage * weapon_attack_percent / 100.0
+        components = result.get("damage_components")
+        if isinstance(components, dict):
+            component_total = sum(
+                float(amount)
+                for amount in components.values()
+                if isinstance(amount, (int, float)) and not isinstance(amount, bool)
+            )
+            if component_total > 0:
+                component_scale = float(result["base_damage"]) / component_total
+            else:
+                component_scale = weapon_attack_percent_scale
+        base_damage_already_scaled = True
+    if (
+        not base_damage_already_scaled
+        and isinstance(result.get("base_damage"), (int, float))
+        and not isinstance(result.get("base_damage"), bool)
+    ):
+        result["base_damage"] = float(result["base_damage"]) * level_damage_scale
+    components = result.get("damage_components")
+    if isinstance(components, dict):
+        result["damage_components"] = {
+            str(damage_type): float(amount) * component_scale
+            for damage_type, amount in components.items()
+            if isinstance(amount, (int, float)) and not isinstance(amount, bool)
+        }
+    return result
 
 
 def _clamp(value: float, minimum: float, maximum: float) -> float:
@@ -952,3 +1450,14 @@ def _level_number(level_values: dict[str, object], key: str, fallback: float | i
 
 def _definition_level_number(definition: GemDefinition, level: int, key: str, fallback: float | int) -> float:
     return _level_number(_definition_level_values(definition, level), key, fallback)
+
+
+def _effective_gem_level(instance: GemInstance, modifiers: list[AppliedModifier], stat: str) -> int:
+    level_add = sum(
+        modifier.value
+        for modifier in modifiers
+        if modifier.applied
+        and modifier.target_instance_id == instance.instance_id
+        and modifier.stat == stat
+    )
+    return max(1, min(40, int(round(instance.level + level_add))))

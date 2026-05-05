@@ -77,7 +77,7 @@ class GemCombinationReportTest(unittest.TestCase):
         self.assertTrue(case["checks"]["max_life_increased"])
         self.assertTrue(case["checks"]["move_speed_increased"])
         self.assertEqual(case["player_stats"]["max_life"]["value"], 525)
-        self.assertEqual(case["player_stats"]["move_speed"]["value"], 1.1)
+        self.assertEqual(case["player_stats"]["move_speed"]["value"], 275.0)
 
     def test_markdown_report_summarizes_cases(self) -> None:
         markdown = report_to_markdown(generate_gem_combination_report(self.config_root))

@@ -1,5 +1,5 @@
 id: melee_arc
-allowed_params: ["arc_angle", "arc_radius", "windup_ms", "hit_at_ms", "max_targets", "facing_policy", "hit_shape", "status_chance_scale", "slash_vfx_key"]
+allowed_params: ["arc_angle", "arc_radius", "windup_ms", "hit_at_ms", "max_targets", "facing_policy", "hit_shape", "status_chance_scale", "slash_vfx_key", "shotgun_falloff_coeff", "slash_chance_percent", "flame_wave_count", "flame_wave_count_per_area_step", "flame_wave_area_step_percent", "flame_wave_distance_bonus_per_area_step_percent", "flame_wave_distance", "flame_wave_spread_angle", "flame_wave_arc_angle", "allow_same_target_projectile_hits"]
 param_constraints:
   arc_angle:
     type: number
@@ -29,6 +29,39 @@ param_constraints:
     maximum: 10
   slash_vfx_key:
     type: key
+  shotgun_falloff_coeff:
+    type: number
+    minimum: 0
+    maximum: 1
+  slash_chance_percent:
+    type: number
+    minimum: 0
+    maximum: 100
+  flame_wave_count:
+    type: integer
+    minimum: 1
+  flame_wave_count_per_area_step:
+    type: integer
+    minimum: 0
+  flame_wave_area_step_percent:
+    type: number
+    minimum: 1
+  flame_wave_distance_bonus_per_area_step_percent:
+    type: number
+    minimum: 0
+  flame_wave_distance:
+    type: number
+    minimum: 1
+  flame_wave_spread_angle:
+    type: number
+    minimum: 0
+    maximum: 180
+  flame_wave_arc_angle:
+    type: number
+    minimum: 1
+    maximum: 180
+  allow_same_target_projectile_hits:
+    type: boolean
 events: ["cast_start", "melee_arc", "damage", "hit_vfx", "floating_text"]
 damage_timing: on_melee_hit
 allow_hit_during_windup: false

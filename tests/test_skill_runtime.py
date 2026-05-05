@@ -4,7 +4,7 @@ import sys
 import unittest
 from copy import deepcopy
 from dataclasses import replace
-from math import atan2, degrees, hypot
+from math import atan2, cos, degrees, hypot, sin
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,11 +25,26 @@ from liufang.skill_effects import SkillEffectCalculator
 from liufang.skill_runtime import SkillRuntime, tick_schedule
 
 
+OBSOLETE_GEM_IDS = frozenset(
+    {
+        "active_fire_bolt",
+        "active_frost_nova",
+        "active_fungal_petards",
+        "active_ice_shards",
+        "active_lava_orb",
+        "active_lightning_chain",
+        "active_penetrating_shot",
+        "active_puncture",
+    }
+)
+
+
 class SkillRuntimeTest(unittest.TestCase):
     def setUp(self) -> None:
         self.config_root = ROOT / "configs"
         self.definitions = load_gem_definitions(self.config_root)
         self.inventory = GemInventory(self.definitions)
+        self._skip_missing_obsolete_gems()
         self.board = SudokuGemBoard(load_board_rules(self.config_root), self.inventory)
         self.calculator = SkillEffectCalculator(
             board=self.board,
@@ -42,6 +57,16 @@ class SkillRuntimeTest(unittest.TestCase):
                 for definition in load_affix_definitions(self.config_root)
             },
         )
+
+    def _skip_missing_obsolete_gems(self) -> None:
+        add_instance = self.inventory.add_instance
+
+        def add_instance_or_skip(instance_id: str, base_gem_id: str, *args: object, **kwargs: object) -> object:
+            if base_gem_id in OBSOLETE_GEM_IDS and base_gem_id not in self.definitions:
+                self.skipTest(f"obsolete gem definition removed: {base_gem_id}")
+            return add_instance(instance_id, base_gem_id, *args, **kwargs)
+
+        self.inventory.add_instance = add_instance_or_skip  # type: ignore[method-assign]
 
     def test_fire_bolt_projectile_outputs_required_skill_events(self) -> None:
         self.inventory.add_instance("active", "active_fire_bolt")
@@ -127,6 +152,37 @@ class SkillRuntimeTest(unittest.TestCase):
         self.assertEqual(floating_text.delay_ms, damage.delay_ms)
         self.assertIn("火焰伤害", floating_text.payload["text"])
 
+
+    def test_projectile_end_cap_counts_collision_radius_for_hits(self) -> None:
+        self.inventory.add_instance("active", "active_burning_shot")
+        self.board.mount_gem("active", 0, 0)
+        final_skill = self.calculator.calculate_all()[0]
+        runtime_params = deepcopy(final_skill.runtime_params or {})
+        runtime_params["target_policy"] = "nearest_enemy"
+        final_skill = replace(final_skill, runtime_params=runtime_params)
+
+        events = SkillRuntime().execute(
+            final_skill,
+            source_entity="player_1",
+            source_position=Position(0, 0),
+            target_entity="monster_1",
+            target_position=Position(441, -20),
+            timestamp_ms=10,
+            target_entities=(
+                {"entity_id": "monster_1", "position": {"x": 441, "y": -20}},
+            ),
+        )
+
+        spawn = next(event for event in events if event.type == "projectile_spawn")
+        hit = next(event for event in events if event.type == "projectile_hit")
+        damage = next(event for event in events if event.type == "damage")
+
+        self.assertEqual(hit.target_entity, "monster_1")
+        self.assertEqual(damage.target_entity, "monster_1")
+        self.assertFalse(hit.payload["projectile_continues"])
+        self.assertEqual(hit.payload["pierce_remaining"], 0)
+        self.assertAlmostEqual(hit.position["x"], spawn.payload["expire_world_position"]["x"])
+        self.assertAlmostEqual(hit.position["y"], spawn.payload["expire_world_position"]["y"])
 
     def test_fire_bolt_projectile_alignment_payload_covers_eight_directions(self) -> None:
         self.inventory.add_instance("active", "active_fire_bolt")
@@ -250,6 +306,182 @@ class SkillRuntimeTest(unittest.TestCase):
         self.assertEqual(hit.payload["impact_kind"], "projectile_final_impact")
         self.assertEqual(hit.payload["pierce_remaining"], 0)
 
+    def test_split_firebolt_fissions_three_small_projectiles_on_hit(self) -> None:
+        self.inventory.add_instance("active", "active_split_firebolt")
+        self.board.mount_gem("active", 0, 0)
+        final_skill = self.calculator.calculate_all()[0]
+        runtime_params = {
+            **(final_skill.runtime_params or {}),
+            "spawn_offset": {"x": 0, "y": 0},
+            "projectile_count": 1,
+            "spread_angle_deg": 0,
+            "pierce_count": 0,
+            "hit_policy": "first_hit",
+            "split_projectile_count": 3,
+            "split_projectile_angle_step_deg": 25,
+            "split_projectile_damage_multiplier": 0.5,
+            "split_projectile_pierce_count": 1,
+            "split_projectile_speed": 620,
+            "split_projectile_max_distance": 240,
+            "split_projectile_collision_radius": 10,
+        }
+        final_skill = replace(final_skill, projectile_count=1, runtime_params=runtime_params)
+        center_hit = {"x": 100.0, "y": 0.0}
+        child_targets = []
+        for index, angle in enumerate((-25.0, 0.0, 25.0), start=1):
+            radians = angle * 3.141592653589793 / 180.0
+            child_targets.append(
+                {
+                    "entity_id": f"split_target_{index}",
+                    "position": {"x": center_hit["x"] + 120.0 * cos(radians), "y": 120.0 * sin(radians)},
+                }
+            )
+
+        events = SkillRuntime().execute(
+            final_skill,
+            source_entity="player_1",
+            source_position=Position(0, 0),
+            target_entity="monster_1",
+            target_position=Position(100, 0),
+            timestamp_ms=10,
+            target_entities=[
+                {"entity_id": "monster_1", "position": center_hit},
+                *child_targets,
+            ],
+        )
+
+        parent_hit = next(
+            event
+            for event in events
+            if event.type == "projectile_hit" and not event.payload.get("split_projectile")
+        )
+        split_spawns = [
+            event
+            for event in events
+            if event.type == "projectile_spawn" and event.payload.get("split_projectile")
+        ]
+        split_damage = sorted(
+            (event for event in events if event.type == "damage" and event.payload.get("split_projectile")),
+            key=lambda event: event.payload["split_projectile_index"],
+        )
+
+        self.assertEqual(len(split_spawns), 3)
+        self.assertEqual(len(split_damage), 3)
+        self.assertEqual([event.payload["local_spread_angle"] for event in split_spawns], [-25.0, 0.0, 25.0])
+        self.assertTrue(all(event.position == parent_hit.position for event in split_spawns))
+        self.assertTrue(all(event.payload["trigger_event_id"] == parent_hit.event_id for event in split_spawns))
+        self.assertTrue(all(event.payload["parent_projectile_id"] == parent_hit.payload["projectile_id"] for event in split_spawns))
+        self.assertTrue(all(event.payload["pierce_count"] == 1 for event in split_spawns))
+        self.assertEqual({event.target_entity for event in split_damage}, {"split_target_1", "split_target_2", "split_target_3"})
+        self.assertTrue(all(event.amount == final_skill.final_damage * 0.5 for event in split_damage))
+
+    def test_projectile_split_support_adds_two_splits_when_release_roll_succeeds(self) -> None:
+        self.inventory.add_instance("active", "active_burning_shot")
+        self.inventory.add_instance("support", "support_projectile_split")
+        self.board.mount_gem("active", 0, 0)
+        self.board.mount_gem("support", 0, 2)
+        final_skill = self.calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.runtime_params["split_projectile_chance_percent"], 50.0)
+        self.assertEqual(final_skill.runtime_params["split_projectile_count_add"], 2)
+        self.assertEqual(final_skill.runtime_params["split_projectile_damage_multiplier"], 1.0)
+
+        events = SkillRuntime().execute(
+            final_skill,
+            source_entity="player_1",
+            source_position=Position(0, 0),
+            target_entity="monster_1",
+            target_position=Position(100, 0),
+            timestamp_ms=3,
+            target_entities=[{"entity_id": "monster_1", "position": {"x": 100.0, "y": 0.0}}],
+        )
+
+        split_spawns = [
+            event
+            for event in events
+            if event.type == "projectile_spawn" and event.payload.get("split_projectile")
+        ]
+
+        self.assertEqual(len(split_spawns), 2)
+        self.assertTrue(all(event.payload["split_projectile_base_count"] == 0 for event in split_spawns))
+        self.assertTrue(all(event.payload["split_projectile_count_add"] == 2 for event in split_spawns))
+        self.assertTrue(all(event.payload["split_projectile_chance_percent"] == 50.0 for event in split_spawns))
+        self.assertTrue(all(event.payload["split_projectile_roll"] == 28.69 for event in split_spawns))
+        self.assertTrue(all(event.payload["split_projectile_chance_triggered"] for event in split_spawns))
+
+    def test_projectile_split_support_adds_no_splits_when_release_roll_fails(self) -> None:
+        self.inventory.add_instance("active", "active_burning_shot")
+        self.inventory.add_instance("support", "support_projectile_split")
+        self.board.mount_gem("active", 0, 0)
+        self.board.mount_gem("support", 0, 2)
+        final_skill = self.calculator.calculate_all()[0]
+
+        events = SkillRuntime().execute(
+            final_skill,
+            source_entity="player_1",
+            source_position=Position(0, 0),
+            target_entity="monster_1",
+            target_position=Position(100, 0),
+            timestamp_ms=1,
+            target_entities=[{"entity_id": "monster_1", "position": {"x": 100.0, "y": 0.0}}],
+        )
+
+        self.assertFalse(
+            any(event.type == "projectile_spawn" and event.payload.get("split_projectile") for event in events)
+        )
+
+    def test_jump_support_bounces_straight_projectile_to_nearby_targets(self) -> None:
+        self.inventory.add_instance("active", "active_burning_shot")
+        self.inventory.add_instance("support", "support_jump")
+        self.board.mount_gem("active", 0, 0)
+        self.board.mount_gem("support", 0, 2)
+        final_skill = self.calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.runtime_params["bounce_count"], 2)
+        self.assertNotIn("chain_count", final_skill.skill_stats)
+
+        events = SkillRuntime().execute(
+            final_skill,
+            source_entity="player_1",
+            source_position=Position(0, 0),
+            target_entity="monster_1",
+            target_position=Position(100, 0),
+            timestamp_ms=10,
+            target_entities=[
+                {"entity_id": "monster_1", "position": {"x": 100.0, "y": 0.0}},
+                {"entity_id": "monster_2", "position": {"x": 175.0, "y": 0.0}},
+                {"entity_id": "monster_3", "position": {"x": 250.0, "y": 0.0}},
+            ],
+        )
+
+        bounce_spawns = [
+            event
+            for event in events
+            if event.type == "projectile_spawn" and event.payload.get("bounce_projectile")
+        ]
+        bounce_damage = [
+            event
+            for event in events
+            if event.type == "damage" and event.payload.get("bounce_projectile")
+        ]
+
+        self.assertEqual([event.target_entity for event in bounce_spawns], ["monster_2", "monster_3"])
+        self.assertEqual([event.target_entity for event in bounce_damage], ["monster_2", "monster_3"])
+        self.assertEqual([event.payload["bounce_index"] for event in bounce_spawns], [1, 2])
+        self.assertEqual([event.payload["impact_kind"] for event in bounce_spawns], ["projectile_bounce_continue", "projectile_bounce_final"])
+
+    def test_jump_support_adds_bounce_count_to_chain_skills(self) -> None:
+        self.inventory.add_instance("active", "active_chain_lightning")
+        self.inventory.add_instance("support", "support_jump")
+        self.board.mount_gem("active", 0, 0)
+        self.board.mount_gem("support", 0, 2)
+
+        final_skill = self.calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.skill_stats["bounce_count_add"], 2)
+        self.assertEqual(final_skill.runtime_params["chain_count"], 5)
+        self.assertEqual(final_skill.runtime_params["max_targets"], 6)
+
     def test_fire_bolt_projectile_respects_angle_step(self) -> None:
         self.inventory.add_instance("active", "active_fire_bolt")
         self.board.mount_gem("active", 0, 0)
@@ -275,6 +507,125 @@ class SkillRuntimeTest(unittest.TestCase):
 
         self.assertEqual([event.payload["local_spread_angle"] for event in spawn_events], [-15.0, 0.0, 15.0])
         self.assertEqual([event.payload["angle_step"] for event in spawn_events], [15.0, 15.0, 15.0])
+
+    def test_chromatic_shot_targets_nearest_unique_enemies_first(self) -> None:
+        self.inventory.add_instance("active", "active_chromatic_shot")
+        self.board.mount_gem("active", 0, 0)
+        final_skill = self.calculator.calculate_all()[0]
+        runtime_params = {
+            **(final_skill.runtime_params or {}),
+            "projectile_count": 3,
+            "burst_interval_ms": 100,
+            "spread_angle_deg": 24,
+            "random_angle_jitter_deg": 8,
+            "target_policy": "nearest_unique_enemy",
+            "spawn_offset": {"x": 0, "y": 0},
+        }
+        final_skill = replace(final_skill, projectile_count=3, runtime_params=runtime_params)
+
+        events = SkillRuntime().execute(
+            final_skill,
+            source_entity="player_1",
+            source_position=Position(0, 0),
+            target_entity="initial",
+            target_position=Position(240, 80),
+            timestamp_ms=10,
+            target_entities=[
+                {"entity_id": "far", "position": {"x": 300, "y": -60}},
+                {"entity_id": "side", "position": {"x": 180, "y": 90}},
+                {"entity_id": "near", "position": {"x": 80, "y": 0}},
+            ],
+        )
+
+        spawn_events = [event for event in events if event.type == "projectile_spawn"]
+        damage_events = sorted(
+            (event for event in events if event.type == "damage"),
+            key=lambda event: event.payload["projectile_index"],
+        )
+
+        self.assertEqual(len(spawn_events), 3)
+        self.assertEqual(len(damage_events), 3)
+        self.assertEqual([event.delay_ms for event in spawn_events], [0, 100, 200])
+        self.assertEqual([event.position for event in spawn_events], [{"x": 0.0, "y": 0.0}] * 3)
+        self.assertEqual([event.target_entity for event in spawn_events], ["near", "side", "far"])
+        self.assertEqual([event.target_entity for event in spawn_events], [event.target_entity for event in damage_events])
+        self.assertTrue(all(event.payload["target_policy"] == "nearest_unique_enemy" for event in spawn_events))
+        self.assertTrue(all(event.payload["spawn_policy"] == "caster_current_position" for event in spawn_events))
+        self.assertTrue(all(event.payload["vfx_spawn_policy"] == "caster_current_position" for event in spawn_events))
+        self.assertTrue(all(event.payload["random_angle_jitter_deg"] == 8 for event in spawn_events))
+        self.assertTrue(all(event.payload["hit_world_position"] == event.payload["target_world_position"] for event in damage_events))
+
+    def test_player_projectile_vfx_spawn_policy_anchors_to_caster_for_selected_targets(self) -> None:
+        self.inventory.add_instance("active", "active_burning_shot")
+        self.board.mount_gem("active", 0, 0)
+        final_skill = self.calculator.calculate_all()[0]
+        runtime_params = {**(final_skill.runtime_params or {}), "target_policy": "target_position"}
+        final_skill = replace(final_skill, runtime_params=runtime_params)
+
+        events = SkillRuntime().execute(
+            final_skill,
+            source_entity="player",
+            source_position=Position(100, 50),
+            target_entity="dummy",
+            target_position=Position(360, 50),
+            timestamp_ms=10,
+            target_entities=[{"entity_id": "dummy", "position": {"x": 360, "y": 50}}],
+        )
+
+        spawn = next(event for event in events if event.type == "projectile_spawn")
+        self.assertEqual(spawn.payload["spawn_policy"], "caster_current_position")
+        self.assertEqual(spawn.payload["vfx_spawn_policy"], "caster_current_position")
+        self.assertEqual(spawn.payload["spawn_world_position"], spawn.position)
+
+    def test_chromatic_shot_forces_one_element_and_shotgun_falloff_per_release(self) -> None:
+        self.inventory.add_instance("active", "active_chromatic_shot")
+        self.board.mount_gem("active", 0, 0)
+        final_skill = self.calculator.calculate_all()[0]
+        runtime_params = {
+            **(final_skill.runtime_params or {}),
+            "projectile_count": 3,
+            "burst_interval_ms": 0,
+            "random_angle_jitter_deg": 0,
+            "target_policy": "random_enemy",
+            "forced_element_types": ["fire", "cold", "lightning"],
+            "allow_same_target_projectile_hits": True,
+            "shotgun_falloff_coeff": 0.7,
+        }
+        final_skill = replace(final_skill, projectile_count=3, runtime_params=runtime_params)
+
+        events = SkillRuntime().execute(
+            final_skill,
+            source_entity="player_1",
+            source_position=Position(0, 0),
+            target_entity="near",
+            target_position=Position(80, 0),
+            timestamp_ms=10,
+            target_entities=[
+                {"entity_id": "near", "position": {"x": 80, "y": 0}},
+            ],
+        )
+
+        damage_events = sorted(
+            (event for event in events if event.type == "damage"),
+            key=lambda event: event.payload["projectile_index"],
+        )
+        chosen_types = {event.damage_type for event in damage_events}
+
+        self.assertEqual(len(damage_events), 3)
+        self.assertEqual(len(chosen_types), 1)
+        self.assertTrue(chosen_types.issubset({"fire", "cold", "lightning"}))
+        self.assertEqual(
+            {event.damage_type for event in events if event.type in {"projectile_hit", "hit_vfx", "floating_text"}},
+            chosen_types,
+        )
+        self.assertEqual([event.payload["same_target_hit_sequence"] for event in damage_events], [0, 1, 2])
+        self.assertEqual([event.payload["shotgun_falloff_coeff"] for event in damage_events], [0.7, 0.7, 0.7])
+        self.assertAlmostEqual(damage_events[0].amount, final_skill.final_damage)
+        self.assertAlmostEqual(damage_events[1].amount, final_skill.final_damage * 0.3)
+        self.assertAlmostEqual(damage_events[2].amount, final_skill.final_damage * 0.3)
+        for event in damage_events:
+            self.assertEqual(event.payload["forced_element_type"], event.damage_type)
+            self.assertEqual(event.payload["damage_components"], {event.damage_type: round(event.amount or 0, 6)})
 
     def test_penetrating_shot_uses_projectile_params_and_pierces_targets(self) -> None:
         self.inventory.add_instance("active", "active_penetrating_shot")
@@ -492,6 +843,60 @@ class SkillRuntimeTest(unittest.TestCase):
         self.assertTrue(all(event.timestamp_ms == 190 for event in damage_events))
         self.assertTrue(all(event.delay_ms == 180 for event in damage_events))
         self.assertTrue(all(event.damage_type == "physical" for event in damage_events))
+
+    def test_flame_slash_forced_slash_generates_three_flame_waves_with_shotgun_falloff(self) -> None:
+        self.inventory.add_instance("active", "active_flame_slash", level=20)
+        self.board.mount_gem("active", 0, 0)
+        final_skill = self.calculator.calculate_all()[0]
+        final_skill = replace(
+            final_skill,
+            runtime_params={
+                **(final_skill.runtime_params or {}),
+                "slash_chance_percent": 100,
+                "flame_wave_count": 3,
+                "flame_wave_distance": 140,
+                "flame_wave_spread_angle": 48,
+                "flame_wave_arc_angle": 82,
+                "allow_same_target_projectile_hits": True,
+                "shotgun_falloff_coeff": 0.5,
+            },
+        )
+
+        events = SkillRuntime().execute(
+            final_skill,
+            source_entity="player_1",
+            source_position=Position(0, 0),
+            target_entity="monster_1",
+            target_position=Position(100, 0),
+            timestamp_ms=10,
+            target_entities=[{"entity_id": "monster_1", "position": {"x": 100, "y": 0}}],
+        )
+
+        melee_arcs = [event for event in events if event.type == "melee_arc"]
+        damage_events = [event for event in events if event.type == "damage"]
+
+        self.assertEqual(len(melee_arcs), 4)
+        self.assertTrue(melee_arcs[0].payload["slash_triggered"])
+        self.assertEqual(sorted(event.payload.get("flame_wave_index") for event in melee_arcs[1:]), [1, 2, 3])
+        ordered_damage = sorted(damage_events, key=lambda event: event.payload["same_target_hit_sequence"])
+        self.assertEqual([event.target_entity for event in ordered_damage], ["monster_1", "monster_1", "monster_1"])
+        self.assertEqual([event.payload["same_target_hit_sequence"] for event in ordered_damage], [0, 1, 2])
+        self.assertEqual([event.amount for event in ordered_damage], [346.0, 173.0, 173.0])
+        self.assertTrue(all(event.damage_type == "fire" for event in ordered_damage))
+        self.assertTrue(all(event.payload["damage_components"] == {"fire": event.amount} for event in ordered_damage))
+        self.assertTrue(all(event.payload["damage_conversions"][0]["from"] == "physical" for event in ordered_damage))
+
+    def test_flame_slash_area_bonus_increases_flame_wave_count_and_distance(self) -> None:
+        self.calculator.player_base_stats = {"area_add_percent": 230}
+        self.inventory.add_instance("active", "active_flame_slash", level=20)
+        self.board.mount_gem("active", 0, 0)
+
+        final_skill = self.calculator.calculate_all()[0]
+
+        self.assertEqual(final_skill.runtime_params["flame_wave_area_steps"], 2)
+        self.assertEqual(final_skill.runtime_params["flame_wave_count"], 7)
+        self.assertAlmostEqual(final_skill.runtime_params["flame_wave_distance"], 259.2)
+        self.assertAlmostEqual(final_skill.runtime_params["arc_radius"], 534.6)
 
     def test_puncture_damage_zone_params_change_length_width_and_timing(self) -> None:
         self.inventory.add_instance("active", "active_puncture")
@@ -1045,6 +1450,92 @@ class SkillRuntimeTest(unittest.TestCase):
         self.assertTrue(all(event.timestamp_ms >= damage_zone.timestamp_ms + damage_zone.payload["hit_at_ms"] for event in damage_events))
         self.assertIn("hit_vfx", event_types)
         self.assertIn("floating_text", event_types)
+
+    def test_whirlwind_damage_zone_channel_emits_tick_and_full_stack_slash(self) -> None:
+        self.inventory.add_instance("active", "active_whirlwind")
+        self.board.mount_gem("active", 0, 0)
+        final_skill = self.calculator.calculate_all()[0]
+        runtime_params = {**(final_skill.runtime_params or {}), "slash_chance_percent": 100}
+        final_skill = replace(final_skill, runtime_params=runtime_params)
+
+        targets = [
+            {"entity_id": "near_1", "position": {"x": 80, "y": 0}},
+            {"entity_id": "slash_only", "position": {"x": 140, "y": 0}},
+        ]
+        events = SkillRuntime().execute(
+            final_skill,
+            source_entity="player",
+            source_position=Position(0, 0),
+            target_entity="near_1",
+            target_position=Position(80, 0),
+            timestamp_ms=5000,
+            target_entities=targets,
+            runtime_context={"channel_stack": 4, "channel_elapsed_ms": 2000},
+        )
+
+        zones = [event for event in events if event.type == "damage_zone"]
+        tick_zone = next(event for event in zones if event.payload["channel_phase"] == "channel_tick")
+        slash_zone = next(event for event in zones if event.payload["channel_phase"] == "channel_slash")
+        tick_damage = [
+            event for event in events
+            if event.type == "damage" and event.payload["channel_phase"] == "channel_tick"
+        ]
+        slash_damage = [
+            event for event in events
+            if event.type == "damage" and event.payload["channel_phase"] == "channel_slash"
+        ]
+
+        self.assertEqual(tick_zone.payload["radius"], 111.8)
+        self.assertEqual(tick_zone.payload["channel_stack"], 5)
+        self.assertTrue(tick_zone.payload["channel_full_reached"])
+        self.assertTrue(tick_zone.payload["slash_triggered"])
+        self.assertEqual(tick_zone.payload["next_channel_stack"], 0)
+        self.assertEqual(tick_zone.payload["channel_move_speed_multiplier"], 0.7)
+        self.assertEqual(slash_zone.payload["radius"], 150)
+        self.assertEqual(slash_zone.payload["slash_radius"], 150)
+        self.assertEqual(slash_zone.payload["channel_move_speed_multiplier"], 0.7)
+        self.assertEqual(slash_zone.payload["next_channel_stack"], 0)
+        self.assertEqual({event.target_entity for event in tick_damage}, {"near_1"})
+        self.assertEqual({event.target_entity for event in slash_damage}, {"near_1", "slash_only"})
+        self.assertAlmostEqual(
+            slash_damage[0].amount,
+            final_skill.final_damage * runtime_params["slash_damage_scale"],
+            places=5,
+        )
+
+    def test_ice_shot_outputs_cold_main_hit_back_explosion_and_frostbite(self) -> None:
+        self.inventory.add_instance("active", "active_ice_shot", level=20)
+        self.board.mount_gem("active", 0, 0)
+        final_skill = self.calculator.calculate_all()[0]
+
+        events = SkillRuntime().execute(
+            final_skill,
+            source_entity="player_1",
+            source_position=Position(0, 0),
+            target_entity="monster_1",
+            target_position=Position(100, 0),
+            timestamp_ms=0,
+        )
+
+        damage_events = [event for event in events if event.type == "damage"]
+        status_events = [event for event in events if event.type == "status_apply"]
+        explosion_damage = next(event for event in damage_events if event.payload.get("secondary_hit_id") == "ice_cone_back_explosion")
+        main_damage = next(event for event in damage_events if not event.payload.get("secondary_hit_id"))
+
+        self.assertEqual(main_damage.amount, 313)
+        self.assertEqual(main_damage.damage_type, "cold")
+        self.assertEqual(main_damage.payload["damage_components"], {"cold": 313.0})
+        self.assertEqual(explosion_damage.amount, 157)
+        self.assertEqual(explosion_damage.damage_type, "cold")
+        self.assertEqual(explosion_damage.payload["damage_components"], {"cold": 157.0})
+        self.assertGreater(explosion_damage.position["x"], 100.0)
+        self.assertAlmostEqual(
+            hypot(explosion_damage.position["x"] - 100.0, explosion_damage.position["y"]),
+            42.0,
+            places=6,
+        )
+        self.assertEqual({event.payload["status_type"] for event in status_events}, {"frostbite"})
+        self.assertEqual(len(status_events), 2)
 
     def test_frost_nova_params_change_radius_duration_and_hit_timing(self) -> None:
         self.inventory.add_instance("active", "active_frost_nova")

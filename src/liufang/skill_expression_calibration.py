@@ -280,13 +280,13 @@ def _module_recommendations(
 
 
 def _skill_profile(skill_id: str, template: str, tags: set[str], modules: Any) -> str:
-    if skill_id == "active_penetrating_shot" or "pierce" in tags and "ranged" in tags:
+    if skill_id == "active_lightning_shot" or "pierce" in tags and "ranged" in tags:
         return "long_pierce_projectile"
-    if skill_id == "active_ice_shards":
+    if skill_id == "active_ice_shot":
         return "fan_projectile"
-    if modules and skill_id == "active_fungal_petards":
+    if modules and skill_id == "active_black_hole":
         return "delayed_area_projectile"
-    if modules and skill_id == "active_lava_orb":
+    if modules and skill_id == "active_thundercloud":
         return "orbit_area"
     if template == "damage_zone" and "area" in tags and "pierce" in tags:
         return "short_line_area"

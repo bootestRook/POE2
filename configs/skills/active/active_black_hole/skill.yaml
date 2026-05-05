@@ -5,7 +5,7 @@ source_values:
   source: "tlidb"
   tlidb_id: "Black_Hole"
   display_level: 20
-  raw_lines: ["释放该技能在指定位置形成黑洞，对一定范围内敌人造成每秒 249 持续腐蚀伤害，且周期性反向击退其中的敌人，持续 4 秒。受到该技能伤害的敌人被施加 100 点加剧值，冷却时间为 1 秒。", "释放该技能获得亢奋：", "黑洞中的敌人每有 10 点加剧值，你对其额外造成 3.5% 持续伤害,持续 4 秒", "黑洞：", "造成 249-249 持续腐蚀伤害", "该技能具有反向击退", "该技能造成持续伤害时，对敌人施加 100 点加剧值，该效果冷却时间为 1 秒", "黑洞每间隔 0.5 秒击退其中的敌人", "持续 4 秒", "释放该技能获得亢奋：", "黑洞中的敌人每有 10 点加剧值，你对其额外造成 3.5% 持续伤害,持续 4 秒"]
+  raw_lines: ["释放该技能在指定位置形成黑洞，对一定范围内敌人造成每秒 249 持续混沌伤害，且周期性反向击退其中的敌人，持续 4 秒。受到该技能伤害的敌人被施加 100 点加剧值，冷却时间为 1 秒。", "释放该技能获得亢奋：", "黑洞中的敌人每有 10 点加剧值，你对其额外造成 3.5% 持续伤害,持续 4 秒", "黑洞：", "造成 249-249 持续混沌伤害", "该技能具有反向击退", "该技能造成持续伤害时，对敌人施加 100 点加剧值，该效果冷却时间为 1 秒", "黑洞每间隔 0.5 秒击退其中的敌人", "持续 4 秒", "释放该技能获得亢奋：", "黑洞中的敌人每有 10 点加剧值，你对其额外造成 3.5% 持续伤害,持续 4 秒"]
   parsed_values:
     base_damage: 249
     mana_cost: 15
@@ -184,7 +184,7 @@ display:
 classification:
   tags: ["spell", "chaos", "area", "dot"]
   damage_type: "chaos"
-  damage_form: "spell"
+  damage_form: "damage_over_time"
 cast:
   mode: "spell"
   target_selector: "nearest_enemy"
@@ -200,18 +200,29 @@ behavior:
   template: "damage_zone"
   params:
     shape: "circle"
-    origin_policy: "caster"
+    origin_policy: "target_position"
     facing_policy: "none"
     hit_at_ms: 200
     max_targets: 10
     status_chance_scale: 1
-    zone_vfx_key: "skill_event.fungal_petards.vfx"
+    zone_vfx_key: "skill_event.black_hole.vfx"
     radius: 125
     expand_duration_ms: 200
     ring_width: 90
+    duration_ms: 4000
+    tick_interval_ms: 500
+    max_hits: 80
+    max_hits_per_target: 8
+    knockback_policy: "reverse"
+    knockback_interval_ms: 100
+    knockback_distance: 12
+    aggravation_value: 100
+    aggravation_cooldown_ms: 1000
+    dot_damage_bonus_per_10_aggravation_percent: 3.5
 hit:
   base_damage: 249
-  can_crit: true
+  ailments: []
+  can_crit: false
   can_apply_status: true
   damage_timing: "on_damage_zone_hit"
   hit_delay_ms: 160

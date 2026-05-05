@@ -1,0 +1,2297 @@
+modifier_id,affix_type,source,tier,level,weight,effect,page_url
+1507014,基础词缀,力量头部,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507015,基础词缀,力量头部,0,1,1,(16–20)% 受到的物理伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507016,基础词缀,力量头部,0,1,1,(36–45)% 受到的混沌伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507017,基础词缀,力量头部,0,1,1,对非物理伤害，+(13–14)% 护甲有效率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507010,基础词缀,力量头部,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507011,基础词缀,力量头部,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507012,基础词缀,力量头部,1,1,1,+(6–8)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507013,基础词缀,力量头部,1,1,1,+(7–8)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507018,基础词缀,力量头部,1,1,1,"造成伤害时，施加火焰渗透，对每个敌人拥有 1 秒间隔时间
+召唤物造成伤害时，施加火焰渗透，对每个敌人拥有 1 秒间隔时间",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507019,基础词缀,力量头部,1,1,1,拥有邪祟；召唤物拥有邪祟,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507000,基础词缀,力量头部,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507001,基础词缀,力量头部,2,1,1,+(760–960) 护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507002,基础词缀,力量头部,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507003,基础词缀,力量头部,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507004,基础词缀,力量头部,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507005,基础词缀,力量头部,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507006,基础词缀,力量头部,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507007,基础词缀,力量头部,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507008,基础词缀,力量头部,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507009,基础词缀,力量头部,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504015,基础词缀,力量手套,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504010,基础词缀,力量手套,1,1,1,造成伤害时，+100% 几率使目标瘫痪,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504011,基础词缀,力量手套,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504012,基础词缀,力量手套,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504013,基础词缀,力量手套,1,1,1,+(6–8)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504014,基础词缀,力量手套,1,1,1,+(7–8)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504000,基础词缀,力量手套,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504001,基础词缀,力量手套,2,1,1,+(760–960) 护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504002,基础词缀,力量手套,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504003,基础词缀,力量手套,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504004,基础词缀,力量手套,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504005,基础词缀,力量手套,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504006,基础词缀,力量手套,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504007,基础词缀,力量手套,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504008,基础词缀,力量手套,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504009,基础词缀,力量手套,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504016,基础词缀,力量手套,2,1,1,+(12–20)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508014,基础词缀,力量盾牌,0,1,1,+(4–5)% 元素和混沌抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508015,基础词缀,力量盾牌,0,1,1,(16–20)% 受到的物理伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508016,基础词缀,力量盾牌,0,1,1,(36–45)% 受到的混沌伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508010,基础词缀,力量盾牌,1,1,1,额外 +(6–8)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508011,基础词缀,力量盾牌,1,1,1,+(35–40) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508012,基础词缀,力量盾牌,1,1,1,+(35–40) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508013,基础词缀,力量盾牌,1,1,1,+(35–40) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508000,基础词缀,力量盾牌,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508001,基础词缀,力量盾牌,2,1,1,+(10–14)% 护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508002,基础词缀,力量盾牌,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508003,基础词缀,力量盾牌,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508004,基础词缀,力量盾牌,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508005,基础词缀,力量盾牌,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508006,基础词缀,力量盾牌,2,1,1,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508007,基础词缀,力量盾牌,2,1,1,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508008,基础词缀,力量盾牌,2,1,1,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508009,基础词缀,力量盾牌,2,1,1,+(8–10)% 攻击和法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506014,基础词缀,力量胸甲,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506015,基础词缀,力量胸甲,0,1,1,(16–20)% 受到的物理伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506017,基础词缀,力量胸甲,0,1,1,每 0.1 秒受到 10 点真实伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506018,基础词缀,力量胸甲,0,1,1,(36–45)% 受到的混沌伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506019,基础词缀,力量胸甲,0,1,1,对非物理伤害，+(13–14)% 护甲有效率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506010,基础词缀,力量胸甲,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506011,基础词缀,力量胸甲,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506012,基础词缀,力量胸甲,1,1,1,+(6–8)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506013,基础词缀,力量胸甲,1,1,1,+(7–8)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506000,基础词缀,力量胸甲,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506002,基础词缀,力量胸甲,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506003,基础词缀,力量胸甲,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506004,基础词缀,力量胸甲,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506005,基础词缀,力量胸甲,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506006,基础词缀,力量胸甲,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506007,基础词缀,力量胸甲,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506008,基础词缀,力量胸甲,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506009,基础词缀,力量胸甲,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506016,基础词缀,力量胸甲,2,1,1,+(12–20)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505012,基础词缀,力量鞋子,0,1,1,+(20–25)% 移动速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505013,基础词缀,力量鞋子,0,1,1,(36–45)% 受到的混沌伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505014,基础词缀,力量鞋子,0,1,1,+(17–24)% 冷却回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505015,基础词缀,力量鞋子,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505017,基础词缀,力量鞋子,0,1,1,(16–20)% 受到的物理伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505010,基础词缀,力量鞋子,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505011,基础词缀,力量鞋子,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505000,基础词缀,力量鞋子,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505001,基础词缀,力量鞋子,2,1,1,+(760–960) 护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505002,基础词缀,力量鞋子,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505003,基础词缀,力量鞋子,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505004,基础词缀,力量鞋子,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505005,基础词缀,力量鞋子,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505006,基础词缀,力量鞋子,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505007,基础词缀,力量鞋子,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505008,基础词缀,力量鞋子,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505009,基础词缀,力量鞋子,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505016,基础词缀,力量鞋子,2,1,1,+(12–20)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500814,基础词缀,匕首,0,1,1,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500815,基础词缀,匕首,0,1,1,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500816,基础词缀,匕首,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500810,基础词缀,匕首,1,1,1,+1 幻影数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500811,基础词缀,匕首,1,1,1,额外 +(6–8)% 攻击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500812,基础词缀,匕首,1,1,1,+(6–8)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500813,基础词缀,匕首,1,1,1,+(5–7)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500800,基础词缀,匕首,2,1,1,攻击附加 (10–13) - (14–19) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500801,基础词缀,匕首,2,1,1,攻击附加 (9–14) - (15–20) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500802,基础词缀,匕首,2,1,1,攻击附加 (10–13) - (14–19) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500803,基础词缀,匕首,2,1,1,攻击附加 (1–2) - (28–32) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500804,基础词缀,匕首,2,1,1,攻击附加 (11–13) - (15–18) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500805,基础词缀,匕首,2,1,1,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500806,基础词缀,匕首,2,1,1,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500807,基础词缀,匕首,2,1,1,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500808,基础词缀,匕首,2,1,1,+(20–24)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500809,基础词缀,匕首,2,1,1,+(6–8)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500817,基础词缀,匕首,2,1,1,+8% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500614,基础词缀,单手剑,0,1,1,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500615,基础词缀,单手剑,0,1,1,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500616,基础词缀,单手剑,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500610,基础词缀,单手剑,1,1,1,+(26–32)% 连续攻击几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500611,基础词缀,单手剑,1,1,1,连续攻击伤害递增 (10–16)%,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500612,基础词缀,单手剑,1,1,1,+(6–8)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500613,基础词缀,单手剑,1,1,1,+(5–7)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500600,基础词缀,单手剑,2,1,1,攻击附加 (10–13) - (14–19) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500601,基础词缀,单手剑,2,1,1,攻击附加 (9–14) - (15–20) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500602,基础词缀,单手剑,2,1,1,攻击附加 (10–13) - (14–19) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500603,基础词缀,单手剑,2,1,1,攻击附加 (1–2) - (28–32) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500604,基础词缀,单手剑,2,1,1,攻击附加 (11–13) - (15–18) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500605,基础词缀,单手剑,2,1,1,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500606,基础词缀,单手剑,2,1,1,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500607,基础词缀,单手剑,2,1,1,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500608,基础词缀,单手剑,2,1,1,+(20–24)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500609,基础词缀,单手剑,2,1,1,+(6–8)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500617,基础词缀,单手剑,2,1,1,+8% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500714,基础词缀,单手斧,0,1,1,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500715,基础词缀,单手斧,0,1,1,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500716,基础词缀,单手斧,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500710,基础词缀,单手斧,1,1,1,对创伤状态下的敌人，额外 +(6–8)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500711,基础词缀,单手斧,1,1,1,额外 +(6–9)% 斩击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500712,基础词缀,单手斧,1,1,1,+(6–8)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500713,基础词缀,单手斧,1,1,1,+(5–7)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500700,基础词缀,单手斧,2,1,1,攻击附加 (10–13) - (14–19) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500701,基础词缀,单手斧,2,1,1,攻击附加 (9–14) - (15–20) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500702,基础词缀,单手斧,2,1,1,攻击附加 (10–13) - (14–19) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500703,基础词缀,单手斧,2,1,1,攻击附加 (1–2) - (28–32) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500704,基础词缀,单手斧,2,1,1,攻击附加 (11–13) - (15–18) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500705,基础词缀,单手斧,2,1,1,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500706,基础词缀,单手斧,2,1,1,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500707,基础词缀,单手斧,2,1,1,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500708,基础词缀,单手斧,2,1,1,+(20–24)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500709,基础词缀,单手斧,2,1,1,+(6–8)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500717,基础词缀,单手斧,2,1,1,+8% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500414,基础词缀,单手锤,0,1,1,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500415,基础词缀,单手锤,0,1,1,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500416,基础词缀,单手锤,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500410,基础词缀,单手锤,1,1,1,消耗破击蓄能时，该次技能额外 +(12–16)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500411,基础词缀,单手锤,1,1,1,造成伤害时，淘汰生命值低于 (5–7)% 的敌人,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500412,基础词缀,单手锤,1,1,1,+(6–8)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500413,基础词缀,单手锤,1,1,1,+(5–7)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500400,基础词缀,单手锤,2,1,1,攻击附加 (10–13) - (14–19) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500401,基础词缀,单手锤,2,1,1,攻击附加 (9–14) - (15–20) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500402,基础词缀,单手锤,2,1,1,攻击附加 (10–13) - (14–19) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500403,基础词缀,单手锤,2,1,1,攻击附加 (1–2) - (28–32) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500404,基础词缀,单手锤,2,1,1,攻击附加 (11–13) - (15–18) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500405,基础词缀,单手锤,2,1,1,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500406,基础词缀,单手锤,2,1,1,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500407,基础词缀,单手锤,2,1,1,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500408,基础词缀,单手锤,2,1,1,+(20–24)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500409,基础词缀,单手锤,2,1,1,+(6–8)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500417,基础词缀,单手锤,2,1,1,+8% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501014,基础词缀,双手剑,0,1,1,+2 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501015,基础词缀,双手剑,0,1,1,+2 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501016,基础词缀,双手剑,0,1,1,+2 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501019,基础词缀,双手剑,0,1,1,"暴击幸运
+(-50–-40)% 暴击值",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501010,基础词缀,双手剑,1,1,1,+(60–64)% 连续攻击几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501011,基础词缀,双手剑,1,1,1,连续攻击伤害递增 (28–32)%,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501012,基础词缀,双手剑,1,1,1,+(12–16)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501013,基础词缀,双手剑,1,1,1,+(10–14)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501017,基础词缀,双手剑,1,1,1,+(48–64)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501018,基础词缀,双手剑,1,1,1,该装备附加 (64–68) - (80–84) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501000,基础词缀,双手剑,2,1,1,攻击附加 (25–30) - (33–38) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501001,基础词缀,双手剑,2,1,1,攻击附加 (24–29) - (34–39) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501002,基础词缀,双手剑,2,1,1,攻击附加 (24–29) - (34–39) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501003,基础词缀,双手剑,2,1,1,攻击附加 (1–3) - (60–65) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501004,基础词缀,双手剑,2,1,1,攻击附加 (26–31) - (32–37) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501005,基础词缀,双手剑,2,1,1,+(40–48)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501006,基础词缀,双手剑,2,1,1,+(40–48)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501007,基础词缀,双手剑,2,1,1,+(40–48)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501008,基础词缀,双手剑,2,1,1,+(40–48)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501009,基础词缀,双手剑,2,1,1,+(12–16)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501020,基础词缀,双手剑,2,1,1,+16% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501314,基础词缀,双手斧,0,1,1,+2 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501315,基础词缀,双手斧,0,1,1,+2 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501316,基础词缀,双手斧,0,1,1,+2 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501319,基础词缀,双手斧,0,1,1,"暴击幸运
+(-50–-40)% 暴击值",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501310,基础词缀,双手斧,1,1,1,对创伤状态下的敌人，额外 +(12–16)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501311,基础词缀,双手斧,1,1,1,额外 +(12–18)% 斩击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501312,基础词缀,双手斧,1,1,1,+(12–16)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501313,基础词缀,双手斧,1,1,1,+(10–14)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501317,基础词缀,双手斧,1,1,1,+(48–64)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501318,基础词缀,双手斧,1,1,1,该装备附加 (64–68) - (80–84) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501300,基础词缀,双手斧,2,1,1,攻击附加 (25–30) - (33–38) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501301,基础词缀,双手斧,2,1,1,攻击附加 (24–29) - (34–39) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501302,基础词缀,双手斧,2,1,1,攻击附加 (24–29) - (34–39) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501303,基础词缀,双手斧,2,1,1,攻击附加 (1–3) - (60–65) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501304,基础词缀,双手斧,2,1,1,攻击附加 (26–31) - (32–37) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501305,基础词缀,双手斧,2,1,1,+(40–48)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501306,基础词缀,双手斧,2,1,1,+(40–48)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501307,基础词缀,双手斧,2,1,1,+(40–48)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501308,基础词缀,双手斧,2,1,1,+(40–48)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501309,基础词缀,双手斧,2,1,1,+(12–16)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501320,基础词缀,双手斧,2,1,1,+16% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501114,基础词缀,双手锤,0,1,1,+2 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501115,基础词缀,双手锤,0,1,1,+2 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501116,基础词缀,双手锤,0,1,1,+2 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501119,基础词缀,双手锤,0,1,1,"暴击幸运
+(-50–-40)% 暴击值",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501120,基础词缀,双手锤,0,1,1,攻击或者法术击败敌人时 (20–25)% 几率爆炸，对半径 6 米内的敌人造成被击败的敌人最大生命 (250–300)% 的真实伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501110,基础词缀,双手锤,1,1,1,消耗破击蓄能时，该次技能额外 +(28–32)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501111,基础词缀,双手锤,1,1,1,造成伤害时，淘汰生命值低于 (10–14)% 的敌人,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501112,基础词缀,双手锤,1,1,1,+(12–16)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501113,基础词缀,双手锤,1,1,1,+(10–14)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501117,基础词缀,双手锤,1,1,1,+(48–64)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501118,基础词缀,双手锤,1,1,1,该装备附加 (64–68) - (80–84) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501100,基础词缀,双手锤,2,1,1,攻击附加 (25–30) - (33–38) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501101,基础词缀,双手锤,2,1,1,攻击附加 (24–29) - (34–39) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501102,基础词缀,双手锤,2,1,1,攻击附加 (24–29) - (34–39) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501103,基础词缀,双手锤,2,1,1,攻击附加 (1–3) - (60–65) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501104,基础词缀,双手锤,2,1,1,攻击附加 (26–31) - (32–37) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501105,基础词缀,双手锤,2,1,1,+(40–48)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501106,基础词缀,双手锤,2,1,1,+(40–48)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501107,基础词缀,双手锤,2,1,1,+(40–48)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501108,基础词缀,双手锤,2,1,1,+(40–48)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501109,基础词缀,双手锤,2,1,1,+(12–16)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501121,基础词缀,双手锤,2,1,1,+16% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500914,基础词缀,弓,0,1,1,+2 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500915,基础词缀,弓,0,1,1,+2 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500916,基础词缀,弓,0,1,1,+2 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500919,基础词缀,弓,0,1,1,"暴击幸运
+(-50–-40)% 暴击值",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500920,基础词缀,弓,0,1,1,攻击或者法术击败敌人时 (20–25)% 几率爆炸，对半径 6 米内的敌人造成被击败的敌人最大生命 (250–300)% 的真实伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500910,基础词缀,弓,1,1,1,+2 投射物数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500911,基础词缀,弓,1,1,1,+2 直射投射物穿透次数,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500912,基础词缀,弓,1,1,1,+(12–16)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500913,基础词缀,弓,1,1,1,+(10–14)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500917,基础词缀,弓,1,1,1,+(48–64)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500918,基础词缀,弓,1,1,1,该装备附加 (64–68) - (80–84) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500900,基础词缀,弓,2,1,1,攻击附加 (25–30) - (33–38) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500901,基础词缀,弓,2,1,1,攻击附加 (24–29) - (34–39) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500902,基础词缀,弓,2,1,1,攻击附加 (24–29) - (34–39) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500903,基础词缀,弓,2,1,1,攻击附加 (1–3) - (60–65) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500904,基础词缀,弓,2,1,1,攻击附加 (26–31) - (32–37) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500905,基础词缀,弓,2,1,1,+(40–48)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500906,基础词缀,弓,2,1,1,+(40–48)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500907,基础词缀,弓,2,1,1,+(40–48)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500908,基础词缀,弓,2,1,1,+(40–48)% 远程伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500909,基础词缀,弓,2,1,1,+(12–16)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500921,基础词缀,弓,2,1,1,+16% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502914,基础词缀,弩,0,1,1,+2 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502915,基础词缀,弩,0,1,1,+2 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502916,基础词缀,弩,0,1,1,+2 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502919,基础词缀,弩,0,1,1,"暴击幸运
+(-50–-40)% 暴击值",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502910,基础词缀,弩,1,1,1,+2 投射物数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502911,基础词缀,弩,1,1,1,+2 直射投射物穿透次数,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502912,基础词缀,弩,1,1,1,+(12–16)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502913,基础词缀,弩,1,1,1,+(10–14)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502917,基础词缀,弩,1,1,1,+(48–64)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502918,基础词缀,弩,1,1,1,该装备附加 (64–68) - (80–84) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502900,基础词缀,弩,2,1,1,攻击附加 (25–30) - (33–38) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502901,基础词缀,弩,2,1,1,攻击附加 (24–29) - (34–39) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502902,基础词缀,弩,2,1,1,攻击附加 (24–29) - (34–39) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502903,基础词缀,弩,2,1,1,攻击附加 (1–3) - (60–65) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502904,基础词缀,弩,2,1,1,攻击附加 (26–31) - (32–37) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502905,基础词缀,弩,2,1,1,+(40–48)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502906,基础词缀,弩,2,1,1,+(40–48)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502907,基础词缀,弩,2,1,1,+(40–48)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502908,基础词缀,弩,2,1,1,+(40–48)% 远程伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502909,基础词缀,弩,2,1,1,+(12–16)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502920,基础词缀,弩,2,1,1,+16% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502113,基础词缀,戒指,0,1,1,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502114,基础词缀,戒指,0,1,1,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502115,基础词缀,戒指,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502116,基础词缀,戒指,0,1,1,周围 15 米内敌人受到 20 级不祥诅咒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502117,基础词缀,戒指,0,1,1,造成伤害时，触发 20 级胆怯诅咒，冷却时间为 0.2 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502118,基础词缀,戒指,0,1,1,造成伤害时，触发 20 级苦痛纠缠诅咒，冷却时间为 0.2 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502122,基础词缀,戒指,0,1,1,免疫诅咒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502123,基础词缀,戒指,0,1,1,附加 (18–20)% 物理伤害的火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502124,基础词缀,戒指,0,1,1,附加 (18–20)% 物理伤害的冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502125,基础词缀,戒指,0,1,1,附加 (18–20)% 物理伤害的闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502126,基础词缀,戒指,0,1,1,附加 (18–20)% 物理伤害的混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502110,基础词缀,戒指,1,1,1,+(8–10)% 移动速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502111,基础词缀,戒指,1,1,1,释放轰炸技能时，有 +(20–25)% 概率该次轰炸技能总波次+1,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502112,基础词缀,戒指,1,1,1,+(15–20)% 战意效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502120,基础词缀,戒指,1,1,1,免疫创伤,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502121,基础词缀,戒指,1,1,1,免疫凋零,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502127,基础词缀,戒指,1,1,1,释放法术技能时，获得法术激进,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502128,基础词缀,戒指,1,1,1,释放攻击技能时，获得攻击激进,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502129,基础词缀,戒指,1,1,1,+(12–16)% 迷踪效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502100,基础词缀,戒指,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502101,基础词缀,戒指,2,1,1,+(87–117) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502102,基础词缀,戒指,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502103,基础词缀,戒指,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502104,基础词缀,戒指,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502105,基础词缀,戒指,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502106,基础词缀,戒指,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502107,基础词缀,戒指,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502108,基础词缀,戒指,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502109,基础词缀,戒指,2,1,1,+(6–8)% 攻击和施法速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500314,基础词缀,手杖,0,1,1,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500315,基础词缀,手杖,0,1,1,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500316,基础词缀,手杖,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500310,基础词缀,手杖,1,1,1,+1 投射物数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500311,基础词缀,手杖,1,1,1,额外 +(6–8)% 投射物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500312,基础词缀,手杖,1,1,1,+(6–8)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500313,基础词缀,手杖,1,1,1,+(5–7)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500300,基础词缀,手杖,2,1,1,攻击附加 (10–13) - (14–19) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500301,基础词缀,手杖,2,1,1,攻击附加 (9–14) - (15–20) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500302,基础词缀,手杖,2,1,1,攻击附加 (10–13) - (14–19) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500303,基础词缀,手杖,2,1,1,攻击附加 (1–2) - (28–32) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500304,基础词缀,手杖,2,1,1,攻击附加 (11–13) - (15–18) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500305,基础词缀,手杖,2,1,1,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500306,基础词缀,手杖,2,1,1,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500307,基础词缀,手杖,2,1,1,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500308,基础词缀,手杖,2,1,1,+(20–24)% 远程伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500309,基础词缀,手杖,2,1,1,+(6–8)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500317,基础词缀,手杖,2,1,1,+8% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502614,基础词缀,手枪,0,1,1,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502615,基础词缀,手枪,0,1,1,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502616,基础词缀,手枪,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502610,基础词缀,手枪,1,1,1,+1 投射物数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502611,基础词缀,手枪,1,1,1,+1 抛射投射物分裂数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502612,基础词缀,手枪,1,1,1,+(6–8)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502613,基础词缀,手枪,1,1,1,+(5–7)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502600,基础词缀,手枪,2,1,1,攻击附加 (10–13) - (14–19) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502601,基础词缀,手枪,2,1,1,攻击附加 (9–14) - (15–20) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502602,基础词缀,手枪,2,1,1,攻击附加 (10–13) - (14–19) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502603,基础词缀,手枪,2,1,1,攻击附加 (1–2) - (28–32) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502604,基础词缀,手枪,2,1,1,攻击附加 (11–13) - (15–18) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502605,基础词缀,手枪,2,1,1,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502606,基础词缀,手枪,2,1,1,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502607,基础词缀,手枪,2,1,1,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502608,基础词缀,手枪,2,1,1,+(20–24)% 远程伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502609,基础词缀,手枪,2,1,1,+(6–8)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502617,基础词缀,手枪,2,1,1,+8% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507114,基础词缀,敏捷头部,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507115,基础词缀,敏捷头部,0,1,1,(16–20)% 受到的物理伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507116,基础词缀,敏捷头部,0,1,1,(36–45)% 受到的混沌伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507110,基础词缀,敏捷头部,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507111,基础词缀,敏捷头部,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507112,基础词缀,敏捷头部,1,1,1,+(6–8)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507113,基础词缀,敏捷头部,1,1,1,+(7–8)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507117,基础词缀,敏捷头部,1,1,1,"造成伤害时，施加闪电渗透，对每个敌人拥有 1 秒间隔时间
+召唤物造成伤害时，施加闪电渗透，对每个敌人拥有 1 秒间隔时间",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507118,基础词缀,敏捷头部,1,1,1,拥有邪祟；召唤物拥有邪祟,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507100,基础词缀,敏捷头部,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507101,基础词缀,敏捷头部,2,1,1,+(760–960) 闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507102,基础词缀,敏捷头部,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507103,基础词缀,敏捷头部,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507104,基础词缀,敏捷头部,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507105,基础词缀,敏捷头部,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507106,基础词缀,敏捷头部,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507107,基础词缀,敏捷头部,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507108,基础词缀,敏捷头部,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507109,基础词缀,敏捷头部,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504115,基础词缀,敏捷手套,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504110,基础词缀,敏捷手套,1,1,1,造成伤害时，+100% 几率使目标瘫痪,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504111,基础词缀,敏捷手套,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504112,基础词缀,敏捷手套,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504113,基础词缀,敏捷手套,1,1,1,+(6–8)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504114,基础词缀,敏捷手套,1,1,1,+(7–8)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504100,基础词缀,敏捷手套,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504101,基础词缀,敏捷手套,2,1,1,+(760–960) 闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504102,基础词缀,敏捷手套,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504103,基础词缀,敏捷手套,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504104,基础词缀,敏捷手套,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504105,基础词缀,敏捷手套,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504106,基础词缀,敏捷手套,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504107,基础词缀,敏捷手套,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504108,基础词缀,敏捷手套,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504109,基础词缀,敏捷手套,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504116,基础词缀,敏捷手套,2,1,1,+(12–20)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508114,基础词缀,敏捷盾牌,0,1,1,+(4–5)% 元素和混沌抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508115,基础词缀,敏捷盾牌,0,1,1,(16–20)% 受到的物理伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508116,基础词缀,敏捷盾牌,0,1,1,(36–45)% 受到的混沌伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508110,基础词缀,敏捷盾牌,1,1,1,额外 +(6–8)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508111,基础词缀,敏捷盾牌,1,1,1,+(35–40) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508112,基础词缀,敏捷盾牌,1,1,1,+(35–40) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508113,基础词缀,敏捷盾牌,1,1,1,+(35–40) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508100,基础词缀,敏捷盾牌,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508101,基础词缀,敏捷盾牌,2,1,1,+(10–14)% 闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508102,基础词缀,敏捷盾牌,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508103,基础词缀,敏捷盾牌,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508104,基础词缀,敏捷盾牌,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508105,基础词缀,敏捷盾牌,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508106,基础词缀,敏捷盾牌,2,1,1,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508107,基础词缀,敏捷盾牌,2,1,1,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508108,基础词缀,敏捷盾牌,2,1,1,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508109,基础词缀,敏捷盾牌,2,1,1,+(8–10)% 攻击和法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506114,基础词缀,敏捷胸甲,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506115,基础词缀,敏捷胸甲,0,1,1,(16–20)% 受到的物理伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506117,基础词缀,敏捷胸甲,0,1,1,每 0.1 秒受到 10 点真实伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506118,基础词缀,敏捷胸甲,0,1,1,(36–45)% 受到的混沌伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506110,基础词缀,敏捷胸甲,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506111,基础词缀,敏捷胸甲,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506112,基础词缀,敏捷胸甲,1,1,1,+(6–8)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506113,基础词缀,敏捷胸甲,1,1,1,+(7–8)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506100,基础词缀,敏捷胸甲,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506102,基础词缀,敏捷胸甲,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506103,基础词缀,敏捷胸甲,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506104,基础词缀,敏捷胸甲,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506105,基础词缀,敏捷胸甲,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506106,基础词缀,敏捷胸甲,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506107,基础词缀,敏捷胸甲,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506108,基础词缀,敏捷胸甲,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506109,基础词缀,敏捷胸甲,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506116,基础词缀,敏捷胸甲,2,1,1,+(12–20)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505112,基础词缀,敏捷鞋子,0,1,1,+(20–25)% 移动速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505113,基础词缀,敏捷鞋子,0,1,1,(36–45)% 受到的混沌伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505114,基础词缀,敏捷鞋子,0,1,1,+(17–24)% 冷却回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505115,基础词缀,敏捷鞋子,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505117,基础词缀,敏捷鞋子,0,1,1,(16–20)% 受到的物理伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505110,基础词缀,敏捷鞋子,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505111,基础词缀,敏捷鞋子,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505100,基础词缀,敏捷鞋子,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505101,基础词缀,敏捷鞋子,2,1,1,+(760–960) 闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505102,基础词缀,敏捷鞋子,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505103,基础词缀,敏捷鞋子,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505104,基础词缀,敏捷鞋子,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505105,基础词缀,敏捷鞋子,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505106,基础词缀,敏捷鞋子,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505107,基础词缀,敏捷鞋子,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505108,基础词缀,敏捷鞋子,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505109,基础词缀,敏捷鞋子,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505116,基础词缀,敏捷鞋子,2,1,1,+(12–20)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507214,基础词缀,智慧头部,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507215,基础词缀,智慧头部,0,1,1,(16–20)% 受到的物理伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507216,基础词缀,智慧头部,0,1,1,(36–45)% 受到的混沌伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507210,基础词缀,智慧头部,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507211,基础词缀,智慧头部,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507212,基础词缀,智慧头部,1,1,1,+(6–8)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507213,基础词缀,智慧头部,1,1,1,+(7–8)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507217,基础词缀,智慧头部,1,1,1,"造成伤害时，施加冰霜渗透，对每个敌人拥有 1 秒间隔时间
+召唤物造成伤害时，施加冰霜渗透，对每个敌人拥有 1 秒间隔时间",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507218,基础词缀,智慧头部,1,1,1,拥有邪祟；召唤物拥有邪祟,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507200,基础词缀,智慧头部,2,1,1,+(87–117) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507201,基础词缀,智慧头部,2,1,1,+(15–20)% 护盾充能速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507202,基础词缀,智慧头部,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507203,基础词缀,智慧头部,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507204,基础词缀,智慧头部,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507205,基础词缀,智慧头部,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507206,基础词缀,智慧头部,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507207,基础词缀,智慧头部,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507208,基础词缀,智慧头部,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1507209,基础词缀,智慧头部,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504215,基础词缀,智慧手套,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504210,基础词缀,智慧手套,1,1,1,造成伤害时，+100% 几率使目标瘫痪,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504211,基础词缀,智慧手套,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504212,基础词缀,智慧手套,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504213,基础词缀,智慧手套,1,1,1,+(6–8)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504214,基础词缀,智慧手套,1,1,1,+(7–8)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504200,基础词缀,智慧手套,2,1,1,+(87–117) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504201,基础词缀,智慧手套,2,1,1,+(15–20)% 护盾充能速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504202,基础词缀,智慧手套,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504203,基础词缀,智慧手套,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504204,基础词缀,智慧手套,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504205,基础词缀,智慧手套,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504206,基础词缀,智慧手套,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504207,基础词缀,智慧手套,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504208,基础词缀,智慧手套,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504209,基础词缀,智慧手套,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1504216,基础词缀,智慧手套,2,1,1,+(12–20)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508214,基础词缀,智慧盾牌,0,1,1,+(4–5)% 元素和混沌抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508215,基础词缀,智慧盾牌,0,1,1,(16–20)% 受到的物理伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508216,基础词缀,智慧盾牌,0,1,1,(36–45)% 受到的混沌伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508210,基础词缀,智慧盾牌,1,1,1,额外 +(6–8)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508211,基础词缀,智慧盾牌,1,1,1,+(35–40) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508212,基础词缀,智慧盾牌,1,1,1,+(35–40) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508213,基础词缀,智慧盾牌,1,1,1,+(35–40) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508200,基础词缀,智慧盾牌,2,1,1,+(87–117) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508201,基础词缀,智慧盾牌,2,1,1,+(15–20)% 护盾充能速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508202,基础词缀,智慧盾牌,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508203,基础词缀,智慧盾牌,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508204,基础词缀,智慧盾牌,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508205,基础词缀,智慧盾牌,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508206,基础词缀,智慧盾牌,2,1,1,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508207,基础词缀,智慧盾牌,2,1,1,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508208,基础词缀,智慧盾牌,2,1,1,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1508209,基础词缀,智慧盾牌,2,1,1,+(8–10)% 攻击和法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506214,基础词缀,智慧胸甲,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506215,基础词缀,智慧胸甲,0,1,1,(16–20)% 受到的物理伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506217,基础词缀,智慧胸甲,0,1,1,每 0.1 秒受到 10 点真实伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506218,基础词缀,智慧胸甲,0,1,1,(36–45)% 受到的混沌伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506210,基础词缀,智慧胸甲,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506211,基础词缀,智慧胸甲,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506212,基础词缀,智慧胸甲,1,1,1,+(6–8)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506213,基础词缀,智慧胸甲,1,1,1,+(7–8)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506200,基础词缀,智慧胸甲,2,1,1,+(87–117) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506201,基础词缀,智慧胸甲,2,1,1,+(15–20)% 护盾充能速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506202,基础词缀,智慧胸甲,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506203,基础词缀,智慧胸甲,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506204,基础词缀,智慧胸甲,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506205,基础词缀,智慧胸甲,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506206,基础词缀,智慧胸甲,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506207,基础词缀,智慧胸甲,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506208,基础词缀,智慧胸甲,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506209,基础词缀,智慧胸甲,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1506216,基础词缀,智慧胸甲,2,1,1,+(12–20)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505212,基础词缀,智慧鞋子,0,1,1,+(20–25)% 移动速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505213,基础词缀,智慧鞋子,0,1,1,(36–45)% 受到的混沌伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505214,基础词缀,智慧鞋子,0,1,1,+(17–24)% 冷却回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505215,基础词缀,智慧鞋子,0,1,1,+(3–5)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505217,基础词缀,智慧鞋子,0,1,1,(16–20)% 受到的物理伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505210,基础词缀,智慧鞋子,1,1,1,"+(6–8)% 元素和混沌抗性穿透
+召唤物 +(6–8)% 元素和混沌抗性穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505211,基础词缀,智慧鞋子,1,1,1,"+(5–7)% 护甲减伤穿透
+召唤物 +(5–7)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505200,基础词缀,智慧鞋子,2,1,1,+(87–117) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505201,基础词缀,智慧鞋子,2,1,1,+(15–20)% 护盾充能速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505202,基础词缀,智慧鞋子,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505203,基础词缀,智慧鞋子,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505204,基础词缀,智慧鞋子,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505205,基础词缀,智慧鞋子,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505206,基础词缀,智慧鞋子,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505207,基础词缀,智慧鞋子,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505208,基础词缀,智慧鞋子,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505209,基础词缀,智慧鞋子,2,1,1,+(20–24)% 技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1505216,基础词缀,智慧鞋子,2,1,1,+(12–20)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501414,基础词缀,武杖,0,1,1,+2 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501415,基础词缀,武杖,0,1,1,+2 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501416,基础词缀,武杖,0,1,1,+2 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501419,基础词缀,武杖,0,1,1,"暴击幸运
+(-50–-40)% 暴击值",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501410,基础词缀,武杖,1,1,1,额外 +(12–16)% 攻击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501411,基础词缀,武杖,1,1,1,引导时， 额外 +(12–16)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501412,基础词缀,武杖,1,1,1,+(12–16)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501413,基础词缀,武杖,1,1,1,+(10–14)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501417,基础词缀,武杖,1,1,1,+(48–64)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501418,基础词缀,武杖,1,1,1,该装备附加 (64–68) - (80–84) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501400,基础词缀,武杖,2,1,1,攻击附加 (25–30) - (33–38) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501401,基础词缀,武杖,2,1,1,攻击附加 (24–29) - (34–39) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501402,基础词缀,武杖,2,1,1,攻击附加 (24–29) - (34–39) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501403,基础词缀,武杖,2,1,1,攻击附加 (1–3) - (60–65) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501404,基础词缀,武杖,2,1,1,攻击附加 (26–31) - (32–37) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501405,基础词缀,武杖,2,1,1,+(40–48)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501406,基础词缀,武杖,2,1,1,+(40–48)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501407,基础词缀,武杖,2,1,1,+(40–48)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501408,基础词缀,武杖,2,1,1,+(40–48)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501409,基础词缀,武杖,2,1,1,+(12–16)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501420,基础词缀,武杖,2,1,1,+16% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503214,基础词缀,法杖,0,1,1,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503215,基础词缀,法杖,0,1,1,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503216,基础词缀,法杖,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503210,基础词缀,法杖,1,1,1,+1 投射物数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503211,基础词缀,法杖,1,1,1,+1 抛射投射物分裂数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503212,基础词缀,法杖,1,1,1,+(6–8)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503213,基础词缀,法杖,1,1,1,+(5–7)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503200,基础词缀,法杖,2,1,1,法术附加 (10–13) - (14–19) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503201,基础词缀,法杖,2,1,1,法术附加 (9–14) - (15–20) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503202,基础词缀,法杖,2,1,1,法术附加 (10–13) - (14–19) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503203,基础词缀,法杖,2,1,1,法术附加 (1–2) - (28–32) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503204,基础词缀,法杖,2,1,1,法术附加 (11–13) - (15–18) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503205,基础词缀,法杖,2,1,1,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503206,基础词缀,法杖,2,1,1,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503207,基础词缀,法杖,2,1,1,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503208,基础词缀,法杖,2,1,1,+(20–24)% 法术伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503209,基础词缀,法杖,2,1,1,+(6–8)% 施法速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503217,基础词缀,法杖,2,1,1,+8% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502714,基础词缀,火枪,0,1,1,+2 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502715,基础词缀,火枪,0,1,1,+2 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502716,基础词缀,火枪,0,1,1,+2 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502719,基础词缀,火枪,0,1,1,"暴击幸运
+(-50–-40)% 暴击值",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502710,基础词缀,火枪,1,1,1,+2 投射物数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502711,基础词缀,火枪,1,1,1,+2 直射投射物穿透次数,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502712,基础词缀,火枪,1,1,1,+(12–16)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502713,基础词缀,火枪,1,1,1,+(10–14)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502717,基础词缀,火枪,1,1,1,+(48–64)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502718,基础词缀,火枪,1,1,1,该装备附加 (64–68) - (80–84) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502700,基础词缀,火枪,2,1,1,攻击附加 (25–30) - (33–38) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502701,基础词缀,火枪,2,1,1,攻击附加 (24–29) - (34–39) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502702,基础词缀,火枪,2,1,1,攻击附加 (24–29) - (34–39) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502703,基础词缀,火枪,2,1,1,攻击附加 (1–3) - (60–65) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502704,基础词缀,火枪,2,1,1,攻击附加 (26–31) - (32–37) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502705,基础词缀,火枪,2,1,1,+(40–48)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502706,基础词缀,火枪,2,1,1,+(40–48)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502707,基础词缀,火枪,2,1,1,+(40–48)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502708,基础词缀,火枪,2,1,1,+(40–48)% 远程伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502709,基础词缀,火枪,2,1,1,+(12–16)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502720,基础词缀,火枪,2,1,1,+16% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502814,基础词缀,火炮,0,1,1,+2 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502815,基础词缀,火炮,0,1,1,+2 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502816,基础词缀,火炮,0,1,1,+2 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502819,基础词缀,火炮,0,1,1,"暴击幸运
+(-50–-40)% 暴击值",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502820,基础词缀,火炮,0,1,1,攻击或者法术击败敌人时 (20–25)% 几率爆炸，对半径 6 米内的敌人造成被击败的敌人最大生命 (250–300)% 的真实伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502810,基础词缀,火炮,1,1,1,+2 投射物数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502811,基础词缀,火炮,1,1,1,+2 抛射投射物分裂数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502812,基础词缀,火炮,1,1,1,+(12–16)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502813,基础词缀,火炮,1,1,1,+(10–14)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502817,基础词缀,火炮,1,1,1,+(48–64)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502818,基础词缀,火炮,1,1,1,该装备附加 (64–68) - (80–84) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502800,基础词缀,火炮,2,1,1,攻击附加 (25–30) - (33–38) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502801,基础词缀,火炮,2,1,1,攻击附加 (24–29) - (34–39) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502802,基础词缀,火炮,2,1,1,攻击附加 (24–29) - (34–39) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502803,基础词缀,火炮,2,1,1,攻击附加 (1–3) - (60–65) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502804,基础词缀,火炮,2,1,1,攻击附加 (26–31) - (32–37) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502805,基础词缀,火炮,2,1,1,+(40–48)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502806,基础词缀,火炮,2,1,1,+(40–48)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502807,基础词缀,火炮,2,1,1,+(40–48)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502808,基础词缀,火炮,2,1,1,+(40–48)% 远程伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502809,基础词缀,火炮,2,1,1,+(12–16)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502821,基础词缀,火炮,2,1,1,+16% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509013,基础词缀,灵戒,0,1,1,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509014,基础词缀,灵戒,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509015,基础词缀,灵戒,0,1,1,周围 15 米内敌人受到 20 级不祥诅咒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509016,基础词缀,灵戒,0,1,1,召唤物造成伤害时，触发 20 级胆怯诅咒，冷却时间为 0.2 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509017,基础词缀,灵戒,0,1,1,召唤物造成伤害时，触发 20 级苦痛纠缠诅咒，冷却时间为 0.2 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509021,基础词缀,灵戒,0,1,1,免疫诅咒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509010,基础词缀,灵戒,1,1,1,+(8–10)% 移动速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509011,基础词缀,灵戒,1,1,1,每秒统御值增加 3 点,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509012,基础词缀,灵戒,1,1,1,魔灵 +32 初始生长值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509019,基础词缀,灵戒,1,1,1,免疫创伤,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509020,基础词缀,灵戒,1,1,1,免疫凋零,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509022,基础词缀,灵戒,1,1,1,召唤物攻击暴击时，获得攻击激进,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509023,基础词缀,灵戒,1,1,1,召唤物法术暴击时，获得法术激进,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509000,基础词缀,灵戒,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509001,基础词缀,灵戒,2,1,1,+(87–117) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509002,基础词缀,灵戒,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509003,基础词缀,灵戒,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509004,基础词缀,灵戒,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509005,基础词缀,灵戒,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509006,基础词缀,灵戒,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509007,基础词缀,灵戒,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509008,基础词缀,灵戒,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1509009,基础词缀,灵戒,2,1,1,+(6–8)% 召唤物移动速度，攻击速度和施法速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503315,基础词缀,灵杖,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503310,基础词缀,灵杖,1,1,1,释放召唤技能时，+100% 几率获得 1 层坚韧祝福，间隔 1 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503311,基础词缀,灵杖,1,1,1,释放召唤技能时，+100% 几率获得 1 层聚能祝福，间隔 1 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503312,基础词缀,灵杖,1,1,1,额外 +(6–8)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503313,基础词缀,灵杖,1,1,1,召唤物伤害穿透 (6–8)% 元素抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503314,基础词缀,灵杖,1,1,1,召唤物 +(5–7)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503300,基础词缀,灵杖,2,1,1,召唤物附加 (10–13) - (14–19) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503301,基础词缀,灵杖,2,1,1,召唤物附加 (9–14) - (15–20) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503302,基础词缀,灵杖,2,1,1,召唤物附加 (10–13) - (14–19) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503303,基础词缀,灵杖,2,1,1,召唤物附加 (1–2) - (28–32) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503304,基础词缀,灵杖,2,1,1,召唤物附加 (11–13) - (15–18) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503305,基础词缀,灵杖,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503306,基础词缀,灵杖,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503307,基础词缀,灵杖,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503308,基础词缀,灵杖,2,1,1,+(20–24)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503309,基础词缀,灵杖,2,1,1,+(6–8)% 召唤物攻击与施法速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500114,基础词缀,爪,0,1,1,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500115,基础词缀,爪,0,1,1,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500116,基础词缀,爪,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500110,基础词缀,爪,1,1,11,+1 幻影数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500111,基础词缀,爪,1,1,11,额外 +(6–8)% 攻击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500112,基础词缀,爪,1,1,11,+(6–8)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500113,基础词缀,爪,1,1,11,+(5–7)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500100,基础词缀,爪,2,1,30,攻击附加 (10–13) - (14–19) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500101,基础词缀,爪,2,1,30,攻击附加 (9–14) - (15–20) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500102,基础词缀,爪,2,1,30,攻击附加 (10–13) - (14–19) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500103,基础词缀,爪,2,1,30,攻击附加 (1–2) - (28–32) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500104,基础词缀,爪,2,1,30,攻击附加 (11–13) - (15–18) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500105,基础词缀,爪,2,1,30,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500106,基础词缀,爪,2,1,30,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500107,基础词缀,爪,2,1,30,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500108,基础词缀,爪,2,1,30,+(20–24)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500109,基础词缀,爪,2,1,30,+(6–8)% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1500117,基础词缀,爪,2,1,1,+8% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502312,基础词缀,腰带,0,1,1,+(20–25)% 冷却回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502313,基础词缀,腰带,0,1,1,+(20–25)% 技能效果持续时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502319,基础词缀,腰带,0,1,1,释放灵药技能时，获得 1 层所有祝福,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502320,基础词缀,腰带,0,1,1,拥有迅捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502310,基础词缀,腰带,1,1,1,+(8–10)% 移动速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502314,基础词缀,腰带,1,1,1,+(6–8)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502315,基础词缀,腰带,1,1,1,+(7–8)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502316,基础词缀,腰带,1,1,1,"免疫瘫痪
+免疫致盲",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502317,基础词缀,腰带,1,1,1,"免疫减速
+免疫虚弱",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502318,基础词缀,腰带,1,1,1,灵药技能每秒获得 1.5 充能进度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502300,基础词缀,腰带,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502301,基础词缀,腰带,2,1,1,+(40–60) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502302,基础词缀,腰带,2,1,1,+(87–117) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502303,基础词缀,腰带,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502304,基础词缀,腰带,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502305,基础词缀,腰带,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502306,基础词缀,腰带,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501214,基础词缀,锡杖,0,1,1,+2 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501215,基础词缀,锡杖,0,1,1,+2 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501216,基础词缀,锡杖,0,1,1,+2 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501217,基础词缀,锡杖,0,1,1,攻击或者法术击败敌人时 (20–25)% 几率爆炸，对半径 6 米内的敌人造成被击败的敌人最大生命 (250–300)% 的真实伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501210,基础词缀,锡杖,1,1,1,额外 +(12–16)% 法术伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501211,基础词缀,锡杖,1,1,1,引导时， 额外 +(12–16)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501212,基础词缀,锡杖,1,1,1,+(12–16)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501213,基础词缀,锡杖,1,1,1,+(10–14)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501218,基础词缀,锡杖,1,1,1,+2 投射物数量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501200,基础词缀,锡杖,2,1,1,法术附加 (25–30) - (33–38) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501201,基础词缀,锡杖,2,1,1,法术附加 (24–29) - (34–39) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501202,基础词缀,锡杖,2,1,1,法术附加 (24–29) - (34–39) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501203,基础词缀,锡杖,2,1,1,法术附加 (1–3) - (60–65) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501204,基础词缀,锡杖,2,1,1,法术附加 (26–31) - (32–37) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501205,基础词缀,锡杖,2,1,1,+(40–48)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501206,基础词缀,锡杖,2,1,1,+(40–48)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501207,基础词缀,锡杖,2,1,1,+(40–48)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501208,基础词缀,锡杖,2,1,1,+(40–48)% 法术伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501209,基础词缀,锡杖,2,1,1,+(12–16)% 施法速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1501219,基础词缀,锡杖,2,1,1,+16% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502016,基础词缀,项链,0,1,1,造成伤害时，触发 20 级易伤诅咒，冷却时间为 0.2 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502017,基础词缀,项链,0,1,1,造成伤害时，触发 20 级炽热诅咒，冷却时间为 0.2 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502018,基础词缀,项链,0,1,1,造成伤害时，触发 20 级蚀骨之寒诅咒，冷却时间为 0.2 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502019,基础词缀,项链,0,1,1,造成伤害时，触发 20 级感电诅咒，冷却时间为 0.2 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502020,基础词缀,项链,0,1,1,造成伤害时，触发 20 级邪恶侵蚀诅咒，冷却时间为 0.2 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502023,基础词缀,项链,0,1,1,免疫冰结,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502011,基础词缀,项链,1,1,1,+(8–10)% 移动速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502012,基础词缀,项链,1,1,1,每拥有 1 层任意祝福， +(2–3)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502013,基础词缀,项链,1,1,1,每 27 点属性， +1% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502014,基础词缀,项链,1,1,1,附加 10 - 10 异常基础伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502015,基础词缀,项链,1,1,1,+(6–8)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502022,基础词缀,项链,1,1,1,+(26–30)% 几率避免元素异常状态,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502024,基础词缀,项链,1,1,1,拥有邪祟；召唤物拥有邪祟,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502000,基础词缀,项链,2,1,1,+(54–74) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502001,基础词缀,项链,2,1,1,+(87–117) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502002,基础词缀,项链,2,1,1,+(5–10)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502003,基础词缀,项链,2,1,1,+(5–10)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502004,基础词缀,项链,2,1,1,+(5–10)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502005,基础词缀,项链,2,1,1,+(5–10)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502006,基础词缀,项链,2,1,1,+(3–4)% 元素抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502007,基础词缀,项链,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502008,基础词缀,项链,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502009,基础词缀,项链,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1502010,基础词缀,项链,2,1,1,"+(20–24)% 伤害
++(20–24)% 召唤物伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503412,基础词缀,魔杖,0,1,1,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503413,基础词缀,魔杖,0,1,1,+(36–40)% 迷踪效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503414,基础词缀,魔杖,0,1,1,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503415,基础词缀,魔杖,0,1,1,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503409,基础词缀,魔杖,1,1,1,+(15–20)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503410,基础词缀,魔杖,1,1,1,额外 +(6–8)% 持续伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503411,基础词缀,魔杖,1,1,1,+(6–8)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503400,基础词缀,魔杖,2,1,1,+(15–20) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503401,基础词缀,魔杖,2,1,1,+(15–20) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503402,基础词缀,魔杖,2,1,1,+(15–20) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503403,基础词缀,魔杖,2,1,1,+(20–24)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503404,基础词缀,魔杖,2,1,1,+(20–24)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503405,基础词缀,魔杖,2,1,1,+(20–24)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503406,基础词缀,魔杖,2,1,1,+(20–24)% 法术伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503407,基础词缀,魔杖,2,1,1,+(10–14)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+1503408,基础词缀,魔杖,2,1,1,+(8–10)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104700001,初阶前缀,力量头部,1,86,100,+(154–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105700001,初阶前缀,力量头部,1,86,100,+(2017–2880) 该装备护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140700101,初阶前缀,力量头部,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140700201,初阶前缀,力量头部,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140723301,初阶前缀,力量头部,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104400001,初阶前缀,力量手套,1,86,100,+(155–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105400001,初阶前缀,力量手套,1,86,100,+(2017–2880) 该装备护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140400001,初阶前缀,力量手套,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140401001,初阶前缀,力量手套,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140402701,初阶前缀,力量手套,1,86,100,+(43–60)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140722901,初阶前缀,力量手套,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104800001,初阶前缀,力量盾牌,1,86,100,+(232–330) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105800001,初阶前缀,力量盾牌,1,86,100,+(3025–4320) 该装备护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105800201,初阶前缀,力量盾牌,1,86,100,+(14–19)% 攻击与法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115800201,初阶前缀,力量盾牌,1,86,100,额外 (-12–-10)% 受到的物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140800001,初阶前缀,力量盾牌,1,86,100,"+(77–108)% 伤害
++(77–108)% 召唤物伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104600001,初阶前缀,力量胸甲,1,86,100,+(154–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105600001,初阶前缀,力量胸甲,1,86,100,+(2353–3360) 该装备护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105600201,初阶前缀,力量胸甲,1,86,100,+(43–60)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107600201,初阶前缀,力量胸甲,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115600001,初阶前缀,力量胸甲,1,86,100,+(12–16)% 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140600001,初阶前缀,力量胸甲,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140721201,初阶前缀,力量胸甲,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104500001,初阶前缀,力量鞋子,1,86,100,+(154–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105500001,初阶前缀,力量鞋子,1,86,100,+(2017–2880) 该装备护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140500001,初阶前缀,力量鞋子,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140500301,初阶前缀,力量鞋子,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140502401,初阶前缀,力量鞋子,1,86,100,+(43–60)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140723101,初阶前缀,力量鞋子,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106080001,初阶前缀,匕首,1,86,100,该装备附加 (36–38) - (44–46) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106080101,初阶前缀,匕首,1,86,100,该装备附加 (123–125) - (160–169) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106080201,初阶前缀,匕首,1,86,100,该装备附加 (125–127) - (165–167) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106080301,初阶前缀,匕首,1,86,100,该装备附加 (14–16) - (276–278) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106080401,初阶前缀,匕首,1,86,100,该装备附加 (133–135) - (157–159) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140080401,初阶前缀,匕首,1,86,100,+(77–108)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140081601,初阶前缀,匕首,1,86,100,附加 56 - 67 基础凋零伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140081901,初阶前缀,匕首,1,86,100,造成持续伤害时，收割 (0.13–0.18) 秒凋零伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106060001,初阶前缀,单手剑,1,86,100,该装备附加 (36–38) - (44–46) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106060101,初阶前缀,单手剑,1,86,100,该装备附加 (123–125) - (160–169) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106060201,初阶前缀,单手剑,1,86,100,该装备附加 (125–127) - (165–167) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106060301,初阶前缀,单手剑,1,86,100,该装备附加 (14–16) - (276–278) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106060401,初阶前缀,单手剑,1,86,100,该装备附加 (133–135) - (157–159) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140060401,初阶前缀,单手剑,1,86,100,+(77–108)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140061301,初阶前缀,单手剑,1,86,100,附加 350 - 650 基础点燃伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140061401,初阶前缀,单手剑,1,86,100,造成持续伤害时，收割 (0.13–0.18) 秒点燃伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106070001,初阶前缀,单手斧,1,86,100,该装备附加 (36–38) - (44–46) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106070101,初阶前缀,单手斧,1,86,100,该装备附加 (123–125) - (160–169) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106070201,初阶前缀,单手斧,1,86,100,该装备附加 (125–127) - (165–167) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106070301,初阶前缀,单手斧,1,86,100,该装备附加 (14–16) - (276–278) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140070401,初阶前缀,单手斧,1,86,100,+(77–108)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140071501,初阶前缀,单手斧,1,86,100,附加 480 - 1120 基础创伤伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140071701,初阶前缀,单手斧,1,86,100,该装备附加 (133–135) - (157–159) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140071801,初阶前缀,单手斧,1,86,100,造成持续伤害时，收割 (0.13–0.18) 秒创伤伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106040001,初阶前缀,单手锤,1,86,100,该装备附加 (36–38) - (44–46) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106040101,初阶前缀,单手锤,1,86,100,该装备附加 (123–125) - (160–169) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106040201,初阶前缀,单手锤,1,86,100,该装备附加 (125–127) - (165–167) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106040301,初阶前缀,单手锤,1,86,100,该装备附加 (14–16) - (276–278) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140040401,初阶前缀,单手锤,1,86,100,+(77–108)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140041701,初阶前缀,单手锤,1,86,100,该装备附加 (133–135) - (157–159) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106100001,初阶前缀,双手剑,1,86,100,该装备附加 (71–73) - (87–89) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106100101,初阶前缀,双手剑,1,86,100,该装备附加 (152–154) - (197–208) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106100201,初阶前缀,双手剑,1,86,100,该装备附加 (154–156) - (204–206) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106100301,初阶前缀,双手剑,1,86,100,该装备附加 (17–19) - (341–343) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106100401,初阶前缀,双手剑,1,86,100,该装备附加 (165–167) - (193–195) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140100401,初阶前缀,双手剑,1,86,100,+(152–216)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140101701,初阶前缀,双手剑,1,86,100,附加 700 - 1300 基础点燃伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140101801,初阶前缀,双手剑,1,86,100,造成持续伤害时，收割 (0.25–0.36) 秒点燃伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106130001,初阶前缀,双手斧,1,86,100,该装备附加 (71–73) - (87–89) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106130101,初阶前缀,双手斧,1,86,100,该装备附加 (152–154) - (197–208) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106130201,初阶前缀,双手斧,1,86,100,该装备附加 (154–156) - (204–206) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106130301,初阶前缀,双手斧,1,86,100,该装备附加 (17–19) - (341–343) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140130401,初阶前缀,双手斧,1,86,100,+(152–216)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140131901,初阶前缀,双手斧,1,86,100,附加 960 - 2240 基础创伤伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140132001,初阶前缀,双手斧,1,86,100,造成持续伤害时，收割 (0.25–0.36) 秒创伤伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140132101,初阶前缀,双手斧,1,86,100,该装备附加 (165–167) - (193–195) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106110001,初阶前缀,双手锤,1,86,100,该装备附加 (71–73) - (87–89) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106110101,初阶前缀,双手锤,1,86,100,该装备附加 (152–154) - (197–208) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106110201,初阶前缀,双手锤,1,86,100,该装备附加 (154–156) - (204–206) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106110301,初阶前缀,双手锤,1,86,100,该装备附加 (17–19) - (341–343) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140110401,初阶前缀,双手锤,1,86,100,+(152–216)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140111801,初阶前缀,双手锤,1,86,100,该装备附加 (165–167) - (193–195) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106090001,初阶前缀,弓,1,86,100,该装备附加 (71–73) - (87–89) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106090101,初阶前缀,弓,1,86,100,该装备附加 (152–154) - (197–208) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106090201,初阶前缀,弓,1,86,100,该装备附加 (154–156) - (204–206) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106090301,初阶前缀,弓,1,86,100,该装备附加 (17–19) - (341–343) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106090401,初阶前缀,弓,1,86,100,该装备附加 (165–167) - (193–195) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140090401,初阶前缀,弓,1,86,100,+(152–216)% 投射物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106290001,初阶前缀,弩,1,86,100,该装备附加 (71–73) - (87–89) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106290101,初阶前缀,弩,1,86,100,该装备附加 (152–154) - (197–208) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106290201,初阶前缀,弩,1,86,100,该装备附加 (154–156) - (204–206) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106290301,初阶前缀,弩,1,86,100,该装备附加 (17–19) - (341–343) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106290401,初阶前缀,弩,1,86,100,该装备附加 (165–167) - (193–195) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140290401,初阶前缀,弩,1,86,100,+(152–216)% 投射物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140291901,初阶前缀,弩,1,86,100,附加 960 - 2240 基础创伤伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140292101,初阶前缀,弩,1,86,100,造成持续伤害时，收割 (0.25–0.36) 秒创伤伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104210001,初阶前缀,戒指,1,86,100,+(155–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105210201,初阶前缀,戒指,1,86,100,+(245–350) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140210101,初阶前缀,戒指,1,86,100,+(27–36)% 护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140210201,初阶前缀,戒指,1,86,100,+(27–36)% 闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140210301,初阶前缀,戒指,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140722001,初阶前缀,戒指,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106030001,初阶前缀,手杖,1,86,100,该装备附加 (36–38) - (44–46) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106030101,初阶前缀,手杖,1,86,100,该装备附加 (123–125) - (160–169) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106030201,初阶前缀,手杖,1,86,100,该装备附加 (125–127) - (165–167) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106030301,初阶前缀,手杖,1,86,100,该装备附加 (14–16) - (276–278) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106030401,初阶前缀,手杖,1,86,100,该装备附加 (133–135) - (157–159) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140030401,初阶前缀,手杖,1,86,100,+(78–108)% 投射物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106260001,初阶前缀,手枪,1,86,100,该装备附加 (36–38) - (44–46) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106260101,初阶前缀,手枪,1,86,100,该装备附加 (123–125) - (160–169) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106260201,初阶前缀,手枪,1,86,100,该装备附加 (125–127) - (165–167) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106260301,初阶前缀,手枪,1,86,100,该装备附加 (14–16) - (276–278) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106260401,初阶前缀,手枪,1,86,100,该装备附加 (133–135) - (157–159) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140260401,初阶前缀,手枪,1,86,100,+(78–108)% 投射物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140261801,初阶前缀,手枪,1,86,100,附加 56 - 67 基础凋零伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140262101,初阶前缀,手枪,1,86,100,造成持续伤害时，收割 (0.13–0.18) 秒凋零伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104710001,初阶前缀,敏捷头部,1,86,100,+(154–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105710001,初阶前缀,敏捷头部,1,86,100,+(2017–2880) 该装备闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140710101,初阶前缀,敏捷头部,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140710201,初阶前缀,敏捷头部,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140721401,初阶前缀,敏捷头部,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104410001,初阶前缀,敏捷手套,1,86,100,+(155–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105410001,初阶前缀,敏捷手套,1,86,100,+(2017–2880) 该装备闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140410001,初阶前缀,敏捷手套,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140411001,初阶前缀,敏捷手套,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140412701,初阶前缀,敏捷手套,1,86,100,+(43–60)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140723001,初阶前缀,敏捷手套,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104810001,初阶前缀,敏捷盾牌,1,86,100,+(232–330) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105810001,初阶前缀,敏捷盾牌,1,86,100,+(3025–4320) 该装备闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105810201,初阶前缀,敏捷盾牌,1,86,100,+(14–19)% 攻击与法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115810101,初阶前缀,敏捷盾牌,1,86,100,额外 (-12–-10)% 受到的物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140810001,初阶前缀,敏捷盾牌,1,86,100,"+(77–108)% 伤害
++(77–108)% 召唤物伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104610001,初阶前缀,敏捷胸甲,1,86,100,+(154–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105610001,初阶前缀,敏捷胸甲,1,86,100,+(2353–3360) 该装备闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107610201,初阶前缀,敏捷胸甲,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140610001,初阶前缀,敏捷胸甲,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140610601,初阶前缀,敏捷胸甲,1,86,100,+(12–16)% 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140610801,初阶前缀,敏捷胸甲,1,86,100,+(43–60)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140721301,初阶前缀,敏捷胸甲,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104510001,初阶前缀,敏捷鞋子,1,86,100,+(154–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105510001,初阶前缀,敏捷鞋子,1,86,100,+(2017–2880) 该装备闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140510001,初阶前缀,敏捷鞋子,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140510301,初阶前缀,敏捷鞋子,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140512401,初阶前缀,敏捷鞋子,1,86,100,+(43–60)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140723201,初阶前缀,敏捷鞋子,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104720401,初阶前缀,智慧头部,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105720001,初阶前缀,智慧头部,1,86,100,+(239–340) 该装备护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105720101,初阶前缀,智慧头部,1,86,100,+(47–66)% 该装备护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140720101,初阶前缀,智慧头部,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140720201,初阶前缀,智慧头部,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140721801,初阶前缀,智慧头部,1,86,100,+(155–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104420301,初阶前缀,智慧手套,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104420401,初阶前缀,智慧手套,1,86,100,+(43–60)% 魔力自然回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105420001,初阶前缀,智慧手套,1,86,100,+(239–340) 该装备护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105420101,初阶前缀,智慧手套,1,86,100,+(47–66)% 该装备护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140420001,初阶前缀,智慧手套,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140421001,初阶前缀,智慧手套,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140422701,初阶前缀,智慧手套,1,86,100,+(43–60)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140721501,初阶前缀,智慧手套,1,86,100,+(155–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104820401,初阶前缀,智慧盾牌,1,86,100,+(127–180) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105820201,初阶前缀,智慧盾牌,1,86,100,+(14–19)% 攻击与法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115820201,初阶前缀,智慧盾牌,1,86,100,额外 (-12–-10)% 受到的物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140820001,初阶前缀,智慧盾牌,1,86,100,"+(77–108)% 伤害
++(77–108)% 召唤物伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140820801,初阶前缀,智慧盾牌,1,86,100,+(239–340) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104620301,初阶前缀,智慧胸甲,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105620001,初阶前缀,智慧胸甲,1,86,100,+(281–400) 该装备护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105620101,初阶前缀,智慧胸甲,1,86,100,+(47–66)% 该装备护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105620301,初阶前缀,智慧胸甲,1,86,100,+(43–60)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107620201,初阶前缀,智慧胸甲,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140620001,初阶前缀,智慧胸甲,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140721701,初阶前缀,智慧胸甲,1,86,100,+(155–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104520301,初阶前缀,智慧鞋子,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105520001,初阶前缀,智慧鞋子,1,86,100,+(239–340) 该装备护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105520101,初阶前缀,智慧鞋子,1,86,100,+(47–66)% 该装备护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140520001,初阶前缀,智慧鞋子,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140520301,初阶前缀,智慧鞋子,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140522401,初阶前缀,智慧鞋子,1,86,100,+(43–60)% 暴击伤害减免,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140721601,初阶前缀,智慧鞋子,1,86,100,+(155–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106140001,初阶前缀,武杖,1,86,100,该装备附加 (71–73) - (87–89) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106140101,初阶前缀,武杖,1,86,100,该装备附加 (152–154) - (197–208) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106140201,初阶前缀,武杖,1,86,100,该装备附加 (154–156) - (204–206) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106140301,初阶前缀,武杖,1,86,100,该装备附加 (17–19) - (341–343) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106140401,初阶前缀,武杖,1,86,100,该装备附加 (165–167) - (193–195) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140140401,初阶前缀,武杖,1,86,100,+(152–216)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104320001,初阶前缀,法杖,1,86,100,+(127–180) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106320001,初阶前缀,法杖,1,86,100,法术附加 (63–65) - (82–87) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106320101,初阶前缀,法杖,1,86,100,法术附加 (64–66) - (85–87) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106320201,初阶前缀,法杖,1,86,100,法术附加 (7–9) - (142–144) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106320301,初阶前缀,法杖,1,86,100,法术附加 (67–69) - (82–84) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107320001,初阶前缀,法杖,1,86,100,+(77–108)% 法术伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140320901,初阶前缀,法杖,1,86,100,法术附加 (67–69) - (82–84) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106270001,初阶前缀,火枪,1,86,100,该装备附加 (71–73) - (87–89) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106270101,初阶前缀,火枪,1,86,100,该装备附加 (152–154) - (197–208) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106270201,初阶前缀,火枪,1,86,100,该装备附加 (154–156) - (204–206) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106270301,初阶前缀,火枪,1,86,100,该装备附加 (17–19) - (341–343) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106270401,初阶前缀,火枪,1,86,100,该装备附加 (165–167) - (193–195) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140270401,初阶前缀,火枪,1,86,100,+(152–216)% 投射物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140271701,初阶前缀,火枪,1,86,100,附加 700 - 1300 基础点燃伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140272001,初阶前缀,火枪,1,86,100,造成持续伤害时，收割 (0.25–0.36) 秒点燃伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106280001,初阶前缀,火炮,1,86,100,该装备附加 (71–73) - (87–89) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106280101,初阶前缀,火炮,1,86,100,该装备附加 (152–154) - (197–208) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106280201,初阶前缀,火炮,1,86,100,该装备附加 (154–156) - (204–206) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106280301,初阶前缀,火炮,1,86,100,该装备附加 (17–19) - (341–343) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106280401,初阶前缀,火炮,1,86,100,该装备附加 (165–167) - (193–195) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140280401,初阶前缀,火炮,1,86,100,+(152–216)% 投射物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140281901,初阶前缀,火炮,1,86,100,附加 112 - 134 基础凋零伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140282201,初阶前缀,火炮,1,86,100,造成持续伤害时，收割 (0.25–0.36) 秒凋零伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104900001,初阶前缀,灵戒,1,86,100,+(155–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104900201,初阶前缀,灵戒,1,86,100,+(11–16)% 生命自然回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104900301,初阶前缀,灵戒,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104900401,初阶前缀,灵戒,1,86,100,+(18–24)% 召唤物生命自然回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105900201,初阶前缀,灵戒,1,86,100,+(245–350) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107900401,初阶前缀,灵戒,1,86,100,+(52–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140900001,初阶前缀,灵戒,1,86,100,+(27–36)% 护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140900101,初阶前缀,灵戒,1,86,100,+(27–36)% 闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106330001,初阶前缀,灵杖,1,86,100,召唤物附加 (63–65) - (82–87) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106330101,初阶前缀,灵杖,1,86,100,召唤物附加 (64–66) - (85–87) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106330201,初阶前缀,灵杖,1,86,100,召唤物附加 (7–9) - (142–144) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106330301,初阶前缀,灵杖,1,86,100,召唤物附加 (67–69) - (82–84) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107330101,初阶前缀,灵杖,1,86,100,+(77–108)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140330701,初阶前缀,灵杖,1,86,100,召唤物附加 (67–69) - (82–84) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140330801,初阶前缀,灵杖,1,86,100,+(33–45)% 召唤物最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106010001,初阶前缀,爪,1,86,100,该装备附加 (36–38) - (44–46) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106010101,初阶前缀,爪,1,86,100,该装备附加 (123–125) - (160–169) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106010201,初阶前缀,爪,1,86,100,该装备附加 (125–127) - (165–167) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106010301,初阶前缀,爪,1,86,100,该装备附加 (14–16) - (276–278) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106010401,初阶前缀,爪,1,86,100,该装备附加 (133–135) - (157–159) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140010401,初阶前缀,爪,1,86,100,+(77–108)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140011601,初阶前缀,爪,1,86,100,附加 480 - 1120 基础创伤伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140012101,初阶前缀,爪,1,86,100,造成持续伤害时，收割 (0.13–0.18) 秒创伤伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104230001,初阶前缀,腰带,1,86,100,+(155–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104230301,初阶前缀,腰带,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105230201,初阶前缀,腰带,1,86,100,+(246–350) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140230301,初阶前缀,腰带,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140230401,初阶前缀,腰带,1,86,100,击中时， +(17–23)% 几率对敌人造成嘲讽,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140231101,初阶前缀,腰带,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104120001,初阶前缀,锡杖,1,86,100,+(253–360) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106120001,初阶前缀,锡杖,1,86,100,法术附加 (127–129) - (164–174) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106120101,初阶前缀,锡杖,1,86,100,法术附加 (128–130) - (170–172) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106120201,初阶前缀,锡杖,1,86,100,法术附加 (14–16) - (284–286) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106120301,初阶前缀,锡杖,1,86,100,法术附加 (137–139) - (161–163) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140120501,初阶前缀,锡杖,1,86,100,+(152–216)% 法术伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140120901,初阶前缀,锡杖,1,86,100,法术附加 (137–139) - (161–163) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104200001,初阶前缀,项链,1,86,100,+(155–220) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105200201,初阶前缀,项链,1,86,100,+(245–350) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140200101,初阶前缀,项链,1,86,100,+(27–36)% 护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140200201,初阶前缀,项链,1,86,100,+(27–36)% 闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140200301,初阶前缀,项链,1,86,100,+(51–72)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140200401,初阶前缀,项链,1,86,100,+(51–72)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140721901,初阶前缀,项链,1,86,100,+(85–120) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104340001,初阶前缀,魔杖,1,86,100,+(127–180) 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107340601,初阶前缀,魔杖,1,86,100,+(77–108)% 持续伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116340201,初阶前缀,魔杖,1,86,100,+(120–144) 每秒施加加剧值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130340301,初阶前缀,魔杖,1,86,100,造成持续伤害时，收割 (0.13–0.18) 秒持续伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140340701,初阶前缀,魔杖,1,86,100,+(232–330) 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140340801,初阶前缀,魔杖,1,86,100,+(369–525) 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104700101,初阶后缀,力量头部,1,86,100,每秒自然回复 (239–340) 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108700001,初阶后缀,力量头部,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108700101,初阶后缀,力量头部,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108700201,初阶后缀,力量头部,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108700301,初阶后缀,力量头部,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110700001,初阶后缀,力量头部,1,86,100,+(87–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111700301,初阶后缀,力量头部,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140904501,初阶后缀,力量头部,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104400101,初阶后缀,力量手套,1,86,100,每秒自然回复 (239–340) 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108400001,初阶后缀,力量手套,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108400101,初阶后缀,力量手套,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108400201,初阶后缀,力量手套,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108400301,初阶后缀,力量手套,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110400001,初阶后缀,力量手套,1,86,100,+(85–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140401101,初阶后缀,力量手套,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140904001,初阶后缀,力量手套,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104800101,初阶后缀,力量盾牌,1,86,100,每秒自然回复 (358–510) 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108800001,初阶后缀,力量盾牌,1,86,100,+(29–40)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108800101,初阶后缀,力量盾牌,1,86,100,+(29–40)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108800201,初阶后缀,力量盾牌,1,86,100,+(29–40)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108800301,初阶后缀,力量盾牌,1,86,100,+(29–40)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115800301,初阶后缀,力量盾牌,1,86,100,格挡时，回复 4% 生命，间隔 0.3 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140800201,初阶后缀,力量盾牌,1,86,100,+(10–14)% 元素抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104600201,初阶后缀,力量胸甲,1,86,100,每秒自然回复 (5–6)% 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108600001,初阶后缀,力量胸甲,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108600101,初阶后缀,力量胸甲,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108600201,初阶后缀,力量胸甲,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108600301,初阶后缀,力量胸甲,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110600001,初阶后缀,力量胸甲,1,86,100,+(87–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140600101,初阶后缀,力量胸甲,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140903501,初阶后缀,力量胸甲,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108500001,初阶后缀,力量鞋子,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108500101,初阶后缀,力量鞋子,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108500201,初阶后缀,力量鞋子,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108500301,初阶后缀,力量鞋子,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140500401,初阶后缀,力量鞋子,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140500501,初阶后缀,力量鞋子,1,86,100,+(87–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140904301,初阶后缀,力量鞋子,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110080001,初阶后缀,匕首,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140080901,初阶后缀,匕首,1,86,100,+(12–15)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140080905,初阶后缀,匕首,1,86,100,+(12–15)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140081201,初阶后缀,匕首,1,86,100,+(77–108)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140081301,初阶后缀,匕首,1,86,100,+(77–108)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140081401,初阶后缀,匕首,1,86,100,+(77–108)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110060001,初阶后缀,单手剑,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140060601,初阶后缀,单手剑,1,86,100,+(12–15)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140060701,初阶后缀,单手剑,1,86,100,+(12–15)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140060801,初阶后缀,单手剑,1,86,100,+(77–108)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140060901,初阶后缀,单手剑,1,86,100,+(77–108)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140061001,初阶后缀,单手剑,1,86,100,+(77–108)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110070001,初阶后缀,单手斧,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140070801,初阶后缀,单手斧,1,86,100,+(12–15)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140070805,初阶后缀,单手斧,1,86,100,+(12–15)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140070901,初阶后缀,单手斧,1,86,100,+(77–108)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140071001,初阶后缀,单手斧,1,86,100,+(77–108)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140071101,初阶后缀,单手斧,1,86,100,+(77–108)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110040001,初阶后缀,单手锤,1,86,100,静止 0.1 秒后，额外 +(55–63)% 攻击伤害；额外 -20% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140040801,初阶后缀,单手锤,1,86,100,+(12–15)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140040901,初阶后缀,单手锤,1,86,100,+(12–15)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140041201,初阶后缀,单手锤,1,86,100,+(77–108)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140041301,初阶后缀,单手锤,1,86,100,+(77–108)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140041401,初阶后缀,单手锤,1,86,100,+(77–108)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110100001,初阶后缀,双手剑,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140101001,初阶后缀,双手剑,1,86,100,+(22–30)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140101101,初阶后缀,双手剑,1,86,100,+(22–30)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140101201,初阶后缀,双手剑,1,86,100,+(152–216)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140101301,初阶后缀,双手剑,1,86,100,+(152–216)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140101401,初阶后缀,双手剑,1,86,100,+(152–216)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110130001,初阶后缀,双手斧,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140131001,初阶后缀,双手斧,1,86,100,+(22–30)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140131101,初阶后缀,双手斧,1,86,100,+(22–30)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140131201,初阶后缀,双手斧,1,86,100,+(152–216)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140131301,初阶后缀,双手斧,1,86,100,+(152–216)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140131401,初阶后缀,双手斧,1,86,100,+(152–216)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110110001,初阶后缀,双手锤,1,86,100,静止 0.1 秒后，额外 +(80–100)% 攻击伤害；额外 -20% 攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140111001,初阶后缀,双手锤,1,86,100,+(22–30)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140111101,初阶后缀,双手锤,1,86,100,+(22–30)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140111201,初阶后缀,双手锤,1,86,100,+(152–216)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140111301,初阶后缀,双手锤,1,86,100,+(152–216)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140111401,初阶后缀,双手锤,1,86,100,+(152–216)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110090101,初阶后缀,弓,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140091001,初阶后缀,弓,1,86,100,+(22–30)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140091101,初阶后缀,弓,1,86,100,+(22–30)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140091201,初阶后缀,弓,1,86,100,+(152–216)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140091301,初阶后缀,弓,1,86,100,+(152–216)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140091401,初阶后缀,弓,1,86,100,+(152–216)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110290101,初阶后缀,弩,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140291001,初阶后缀,弩,1,86,100,+(22–30)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140291101,初阶后缀,弩,1,86,100,+(22–30)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140291201,初阶后缀,弩,1,86,100,+(152–216)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140291301,初阶后缀,弩,1,86,100,+(152–216)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140291401,初阶后缀,弩,1,86,100,+(152–216)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108210001,初阶后缀,戒指,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108210101,初阶后缀,戒指,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108210201,初阶后缀,戒指,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108210301,初阶后缀,戒指,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110210001,初阶后缀,戒指,1,86,100,+(87–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110030101,初阶后缀,手杖,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140031001,初阶后缀,手杖,1,86,100,+(12–15)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140031101,初阶后缀,手杖,1,86,100,+(12–15)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140031201,初阶后缀,手杖,1,86,100,+(77–108)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140031301,初阶后缀,手杖,1,86,100,+(77–108)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140031401,初阶后缀,手杖,1,86,100,+(77–108)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110260101,初阶后缀,手枪,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140261001,初阶后缀,手枪,1,86,100,+(12–15)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140261101,初阶后缀,手枪,1,86,100,+(12–15)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140261201,初阶后缀,手枪,1,86,100,+(77–108)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140261301,初阶后缀,手枪,1,86,100,+(77–108)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140261401,初阶后缀,手枪,1,86,100,+(77–108)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104710101,初阶后缀,敏捷头部,1,86,100,每秒自然回复 (239–340) 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108710001,初阶后缀,敏捷头部,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108710101,初阶后缀,敏捷头部,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108710201,初阶后缀,敏捷头部,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108710301,初阶后缀,敏捷头部,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110710001,初阶后缀,敏捷头部,1,86,100,+(87–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111710301,初阶后缀,敏捷头部,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140904601,初阶后缀,敏捷头部,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104410101,初阶后缀,敏捷手套,1,86,100,每秒自然回复 (239–340) 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108410001,初阶后缀,敏捷手套,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108410101,初阶后缀,敏捷手套,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108410201,初阶后缀,敏捷手套,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108410301,初阶后缀,敏捷手套,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110410001,初阶后缀,敏捷手套,1,86,100,+(85–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140411101,初阶后缀,敏捷手套,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140904101,初阶后缀,敏捷手套,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104810101,初阶后缀,敏捷盾牌,1,86,100,每秒自然回复 (358–510) 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108810001,初阶后缀,敏捷盾牌,1,86,100,+(29–40)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108810101,初阶后缀,敏捷盾牌,1,86,100,+(29–40)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108810201,初阶后缀,敏捷盾牌,1,86,100,+(29–40)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108810301,初阶后缀,敏捷盾牌,1,86,100,+(29–40)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115810301,初阶后缀,敏捷盾牌,1,86,100,格挡时，回复 4% 生命，间隔 0.3 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140810201,初阶后缀,敏捷盾牌,1,86,100,+(10–14)% 元素抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108610001,初阶后缀,敏捷胸甲,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108610101,初阶后缀,敏捷胸甲,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108610201,初阶后缀,敏捷胸甲,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108610301,初阶后缀,敏捷胸甲,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110610001,初阶后缀,敏捷胸甲,1,86,100,+(87–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140610101,初阶后缀,敏捷胸甲,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140610701,初阶后缀,敏捷胸甲,1,86,100,每秒自然回复 (5–6)% 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140903601,初阶后缀,敏捷胸甲,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108510001,初阶后缀,敏捷鞋子,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108510101,初阶后缀,敏捷鞋子,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108510201,初阶后缀,敏捷鞋子,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108510301,初阶后缀,敏捷鞋子,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140510401,初阶后缀,敏捷鞋子,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140510501,初阶后缀,敏捷鞋子,1,86,100,+(87–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140903301,初阶后缀,敏捷鞋子,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104720501,初阶后缀,智慧头部,1,86,100,+(42–60)% 魔力自然回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108720001,初阶后缀,智慧头部,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108720101,初阶后缀,智慧头部,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108720201,初阶后缀,智慧头部,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108720301,初阶后缀,智慧头部,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110720001,初阶后缀,智慧头部,1,86,100,+(87–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111720401,初阶后缀,智慧头部,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140904701,初阶后缀,智慧头部,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108420001,初阶后缀,智慧手套,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108420101,初阶后缀,智慧手套,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108420201,初阶后缀,智慧手套,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108420301,初阶后缀,智慧手套,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110420001,初阶后缀,智慧手套,1,86,100,+(85–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140421101,初阶后缀,智慧手套,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140904201,初阶后缀,智慧手套,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108820001,初阶后缀,智慧盾牌,1,86,100,+(29–40)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108820101,初阶后缀,智慧盾牌,1,86,100,+(29–40)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108820201,初阶后缀,智慧盾牌,1,86,100,+(29–40)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108820301,初阶后缀,智慧盾牌,1,86,100,+(29–40)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115820301,初阶后缀,智慧盾牌,1,86,100,格挡时，回复 4% 护盾，间隔 0.3 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140820201,初阶后缀,智慧盾牌,1,86,100,+(10–14)% 元素抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140820501,初阶后缀,智慧盾牌,1,86,100,+(33–45)% 护盾充能速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108620001,初阶后缀,智慧胸甲,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108620101,初阶后缀,智慧胸甲,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108620201,初阶后缀,智慧胸甲,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108620301,初阶后缀,智慧胸甲,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110620001,初阶后缀,智慧胸甲,1,86,100,+(87–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140620101,初阶后缀,智慧胸甲,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140620901,初阶后缀,智慧胸甲,1,86,100,+(43–60)% 魔力自然回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140903701,初阶后缀,智慧胸甲,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104520501,初阶后缀,智慧鞋子,1,86,100,移动时，每秒回复 3% 护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108520001,初阶后缀,智慧鞋子,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108520101,初阶后缀,智慧鞋子,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108520201,初阶后缀,智慧鞋子,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108520301,初阶后缀,智慧鞋子,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140520401,初阶后缀,智慧鞋子,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140520501,初阶后缀,智慧鞋子,1,86,100,+(87–120)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140903401,初阶后缀,智慧鞋子,1,86,100,+(8–10)% 生命返还与护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110140001,初阶后缀,武杖,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140140805,初阶后缀,武杖,1,86,100,+(22–30)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140141101,初阶后缀,武杖,1,86,100,+(22–30)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140141201,初阶后缀,武杖,1,86,100,+(152–216)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140141301,初阶后缀,武杖,1,86,100,+(152–216)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140141401,初阶后缀,武杖,1,86,100,+(152–216)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110320101,初阶后缀,法杖,1,86,100,"+(26–36)% 施法速度
++(26–36)% 召唤物施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140320101,初阶后缀,法杖,1,86,100,+(78–108)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140320201,初阶后缀,法杖,1,86,100,+(78–108)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140320301,初阶后缀,法杖,1,86,100,+(77–108)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140320401,初阶后缀,法杖,1,86,100,+(12–15)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140320501,初阶后缀,法杖,1,86,100,+(12–15)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140322501,初阶后缀,法杖,1,86,100,+(38–47)% 法术迸发充能速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110270101,初阶后缀,火枪,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140271001,初阶后缀,火枪,1,86,100,+(22–30)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140271101,初阶后缀,火枪,1,86,100,+(22–30)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140271201,初阶后缀,火枪,1,86,100,+(152–216)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140271301,初阶后缀,火枪,1,86,100,+(152–216)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140271401,初阶后缀,火枪,1,86,100,+(152–216)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110280101,初阶后缀,火炮,1,86,100,+(23–32)% 该装备攻击速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140281001,初阶后缀,火炮,1,86,100,+(22–30)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140281101,初阶后缀,火炮,1,86,100,+(22–30)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140281201,初阶后缀,火炮,1,86,100,+(152–216)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140281301,初阶后缀,火炮,1,86,100,+(152–216)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140281401,初阶后缀,火炮,1,86,100,+(152–216)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108900001,初阶后缀,灵戒,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108900101,初阶后缀,灵戒,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108900201,初阶后缀,灵戒,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108900301,初阶后缀,灵戒,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140900901,初阶后缀,灵戒,1,86,100,+(87–120)% 召唤物暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107330001,初阶后缀,灵杖,1,86,100,召唤物 +(77–108)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107330201,初阶后缀,灵杖,1,86,100,+(77–108)% 召唤物元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107330601,初阶后缀,灵杖,1,86,100,+(77–108)% 召唤物混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110330001,初阶后缀,灵杖,1,86,100,"+(27–36)% 攻击与施法速度
++(27–36)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140330201,初阶后缀,灵杖,1,86,100,每秒自然回复 (358–510) 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140330301,初阶后缀,灵杖,1,86,100,+(33–45)% 护盾充能速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110010001,初阶后缀,爪,1,86,100,+(43–52)% 该装备攻击速度；额外 (-13–-12)% 攻击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140011001,初阶后缀,爪,1,86,100,+(12–15)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140011101,初阶后缀,爪,1,86,100,+(12–15)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140011201,初阶后缀,爪,1,86,100,+(77–108)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140011301,初阶后缀,爪,1,86,100,+(77–108)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140011401,初阶后缀,爪,1,86,100,+(77–108)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108230001,初阶后缀,腰带,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108230101,初阶后缀,腰带,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108230201,初阶后缀,腰带,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108230301,初阶后缀,腰带,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140230501,初阶后缀,腰带,1,86,100,造成创伤时，收割 0.12 秒持续伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140230601,初阶后缀,腰带,1,86,100,造成点燃时，收割 0.12 秒持续伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140230701,初阶后缀,腰带,1,86,100,造成凋零时，收割 0.12 秒持续伤害，该效果对同一目标有 1 秒回复时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110120101,初阶后缀,锡杖,1,86,100,"+(51–72)% 施法速度
++(51–72)% 召唤物施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140120001,初阶后缀,锡杖,1,86,100,+(22–30)% 生命返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140120101,初阶后缀,锡杖,1,86,100,+(22–30)% 护盾返还,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140120201,初阶后缀,锡杖,1,86,100,+(152–216)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140120301,初阶后缀,锡杖,1,86,100,+(152–216)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140120401,初阶后缀,锡杖,1,86,100,+(152–216)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140121601,初阶后缀,锡杖,1,86,100,+(76–95)% 法术迸发充能速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108200001,初阶后缀,项链,1,86,100,+(19–27)% 火焰抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108200101,初阶后缀,项链,1,86,100,+(19–27)% 冰霜抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108200201,初阶后缀,项链,1,86,100,+(19–27)% 闪电抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108200301,初阶后缀,项链,1,86,100,+(19–27)% 混沌抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140200001,初阶后缀,项链,1,86,100,+(33–45)% 投射物速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110340301,初阶后缀,魔杖,1,86,100,+(33–45)% 护盾充能速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115341001,初阶后缀,魔杖,1,86,100,附加 56 - 67 基础凋零伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116340301,初阶后缀,魔杖,1,86,100,+(54–75)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140340001,初阶后缀,魔杖,1,86,100,附加 480 - 1120 基础创伤伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140340101,初阶后缀,魔杖,1,86,100,附加 350 - 650 基础点燃伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140340901,初阶后缀,魔杖,1,86,100,+(78–108)% 物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140341001,初阶后缀,魔杖,1,86,100,+(78–108)% 元素伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140341101,初阶后缀,魔杖,1,86,100,+(77–108)% 混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105700201,进阶前缀,力量头部,1,86,100,+(10–13)% 格挡比例,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109700001,进阶前缀,力量头部,1,86,100,+(43–60) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109700301,进阶前缀,力量头部,1,86,100,+(43–60) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109700401,进阶前缀,力量头部,1,86,100,+(43–60) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140700301,进阶前缀,力量头部,1,86,100,+(33–45)% 投射物速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140700801,进阶前缀,力量头部,1,86,100,击败时，+(37–50)% 几率获得 1 层坚韧祝福,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140701001,进阶前缀,力量头部,1,86,100,+(43–60)% 屏障吸收量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140400401,进阶前缀,力量手套,1,86,100,攻击和法术附加 (44–46) - (54–56) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140400501,进阶前缀,力量手套,1,86,100,攻击和法术附加 (42–44) - (54–59) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140400601,进阶前缀,力量手套,1,86,100,攻击和法术附加 (42–44) - (56–58) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140400701,进阶前缀,力量手套,1,86,100,攻击和法术附加 (4–6) - (94–96) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140401701,进阶前缀,力量手套,1,86,100,附加 (9–12)% 物理伤害的火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140401801,进阶前缀,力量手套,1,86,100,附加 (9–12)% 火焰伤害的混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140401901,进阶前缀,力量手套,1,86,100,攻击和法术附加 (42–44) - (56–58) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104820301,进阶前缀,力量盾牌,1,86,100,+(18–24)% 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105800401,进阶前缀,力量盾牌,1,86,100,+(12–15)% 格挡比例,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109800001,进阶前缀,力量盾牌,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109800301,进阶前缀,力量盾牌,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109800401,进阶前缀,力量盾牌,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104600101,进阶前缀,力量胸甲,1,86,100,+(12–15)% 攻击与法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109600001,进阶前缀,力量胸甲,1,86,100,+(42–60) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109600301,进阶前缀,力量胸甲,1,86,100,+(43–60) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109600401,进阶前缀,力量胸甲,1,86,100,+(43–60) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140600201,进阶前缀,力量胸甲,1,86,100,+(33–45)% 投射物速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104500101,进阶前缀,力量鞋子,1,86,100,+(12–15)% 攻击与法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119500101,进阶前缀,力量鞋子,1,86,100,+1 物理技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119500201,进阶前缀,力量鞋子,1,86,100,+1 火焰技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140500201,进阶前缀,力量鞋子,1,86,100,+(33–45)% 投射物速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140500601,进阶前缀,力量鞋子,1,86,100,+1 冰霜技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140500701,进阶前缀,力量鞋子,1,86,100,+1 闪电技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140500801,进阶前缀,力量鞋子,1,86,100,+1 混沌技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140500901,进阶前缀,力量鞋子,1,86,100,+1 召唤召唤物的技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107080001,进阶前缀,匕首,1,86,100,+(56–100)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109080001,进阶前缀,匕首,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109080101,进阶前缀,匕首,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109080301,进阶前缀,匕首,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107060001,进阶前缀,单手剑,1,86,100,+(56–100)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109060001,进阶前缀,单手剑,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109060101,进阶前缀,单手剑,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109060201,进阶前缀,单手剑,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107070001,进阶前缀,单手斧,1,86,100,+(56–100)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109070001,进阶前缀,单手斧,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109070101,进阶前缀,单手斧,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109070301,进阶前缀,单手斧,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107040001,进阶前缀,单手锤,1,86,100,+(56–100)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109040001,进阶前缀,单手锤,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109040101,进阶前缀,单手锤,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109040301,进阶前缀,单手锤,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107100001,进阶前缀,双手剑,1,86,100,+(49–80)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109100001,进阶前缀,双手剑,1,86,100,+(127–180) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109100101,进阶前缀,双手剑,1,86,100,+(127–180) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109100201,进阶前缀,双手剑,1,86,100,+(127–180) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107130001,进阶前缀,双手斧,1,86,100,+(49–80)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109130001,进阶前缀,双手斧,1,86,100,+(127–180) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109130101,进阶前缀,双手斧,1,86,100,+(127–180) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109130301,进阶前缀,双手斧,1,86,100,+(127–180) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107110001,进阶前缀,双手锤,1,86,100,+(49–80)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109110001,进阶前缀,双手锤,1,86,100,+(127–180) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109110101,进阶前缀,双手锤,1,86,100,+(127–180) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109110301,进阶前缀,双手锤,1,86,100,+(127–180) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107090001,进阶前缀,弓,1,86,100,+(49–80)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109090001,进阶前缀,弓,1,86,100,+(127–180) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109090101,进阶前缀,弓,1,86,100,+(127–180) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109090201,进阶前缀,弓,1,86,100,+(127–180) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107290001,进阶前缀,弩,1,86,100,+(49–80)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109290001,进阶前缀,弩,1,86,100,+(127–180) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109290101,进阶前缀,弩,1,86,100,+(127–180) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109290301,进阶前缀,弩,1,86,100,+(127–180) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104210101,进阶前缀,戒指,1,86,100,+(12–15)% 攻击与法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106210401,进阶前缀,戒指,1,86,100,攻击和法术附加 (44–46) - (54–56) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106210501,进阶前缀,戒指,1,86,100,攻击和法术附加 (42–44) - (54–59) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106210601,进阶前缀,戒指,1,86,100,攻击和法术附加 (42–44) - (56–58) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+106210701,进阶前缀,戒指,1,86,100,攻击和法术附加 (4–6) - (94–96) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109210001,进阶前缀,戒指,1,86,100,+(43–60) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109210101,进阶前缀,戒指,1,86,100,+(43–60) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109210201,进阶前缀,戒指,1,86,100,+(43–60) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140210501,进阶前缀,戒指,1,86,100,攻击和法术附加 (42–44) - (56–58) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140211301,进阶前缀,戒指,1,86,100,+(41–50)% 恶兆累计效率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140902201,进阶前缀,戒指,1,86,100,+(23–32)% 恶化几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107030001,进阶前缀,手杖,1,86,100,+(56–100)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109030001,进阶前缀,手杖,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109030101,进阶前缀,手杖,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109030201,进阶前缀,手杖,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107260001,进阶前缀,手枪,1,86,100,+(56–100)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109260001,进阶前缀,手枪,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109260101,进阶前缀,手枪,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109260301,进阶前缀,手枪,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105710201,进阶前缀,敏捷头部,1,86,100,+(10–13)% 格挡比例,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109710001,进阶前缀,敏捷头部,1,86,100,+(43–60) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109710301,进阶前缀,敏捷头部,1,86,100,+(43–60) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109710401,进阶前缀,敏捷头部,1,86,100,+(43–60) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140710301,进阶前缀,敏捷头部,1,86,100,+(33–45)% 投射物速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140710801,进阶前缀,敏捷头部,1,86,100,击败时， +(37–50)% 几率获得 1 层灵动祝福,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140711001,进阶前缀,敏捷头部,1,86,100,+(43–60)% 屏障吸收量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140410401,进阶前缀,敏捷手套,1,86,100,攻击和法术附加 (44–46) - (54–56) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140410501,进阶前缀,敏捷手套,1,86,100,攻击和法术附加 (42–44) - (54–59) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140410601,进阶前缀,敏捷手套,1,86,100,攻击和法术附加 (42–44) - (56–58) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140410701,进阶前缀,敏捷手套,1,86,100,攻击和法术附加 (4–6) - (94–96) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140411701,进阶前缀,敏捷手套,1,86,100,附加 (9–12)% 物理伤害的闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140411801,进阶前缀,敏捷手套,1,86,100,附加 (9–12)% 闪电伤害的混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140411901,进阶前缀,敏捷手套,1,86,100,攻击和法术附加 (42–44) - (56–58) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104810301,进阶前缀,敏捷盾牌,1,86,100,+(18–24)% 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105810401,进阶前缀,敏捷盾牌,1,86,100,+(12–15)% 格挡比例,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109810001,进阶前缀,敏捷盾牌,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109810301,进阶前缀,敏捷盾牌,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109810401,进阶前缀,敏捷盾牌,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104610101,进阶前缀,敏捷胸甲,1,86,100,+(12–15)% 攻击与法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109610001,进阶前缀,敏捷胸甲,1,86,100,+(43–60) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109610301,进阶前缀,敏捷胸甲,1,86,100,+(43–60) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109610401,进阶前缀,敏捷胸甲,1,86,100,+(43–60) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140610201,进阶前缀,敏捷胸甲,1,86,100,+(33–45)% 投射物速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104510101,进阶前缀,敏捷鞋子,1,86,100,+(12–15)% 攻击与法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119510101,进阶前缀,敏捷鞋子,1,86,100,+1 闪电技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119510201,进阶前缀,敏捷鞋子,1,86,100,+1 混沌技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140510201,进阶前缀,敏捷鞋子,1,86,100,+(33–45)% 投射物速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140510601,进阶前缀,敏捷鞋子,1,86,100,+1 物理技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140510701,进阶前缀,敏捷鞋子,1,86,100,+1 火焰技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140510801,进阶前缀,敏捷鞋子,1,86,100,+1 冰霜技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140510901,进阶前缀,敏捷鞋子,1,86,100,+1 召唤召唤物的技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105720301,进阶前缀,智慧头部,1,86,100,+(10–13)% 格挡比例,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109720001,进阶前缀,智慧头部,1,86,100,+(43–60) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109720301,进阶前缀,智慧头部,1,86,100,+(43–60) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109720401,进阶前缀,智慧头部,1,86,100,+(43–60) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140720301,进阶前缀,智慧头部,1,86,100,+(33–45)% 投射物速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140720801,进阶前缀,智慧头部,1,86,100,击败时，+(37–50)% 几率获得 1 层聚能祝福,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140721001,进阶前缀,智慧头部,1,86,100,+(43–60)% 屏障吸收量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140420401,进阶前缀,智慧手套,1,86,100,攻击和法术附加 (44–46) - (54–56) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140420501,进阶前缀,智慧手套,1,86,100,攻击和法术附加 (42–44) - (54–59) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140420601,进阶前缀,智慧手套,1,86,100,攻击和法术附加 (42–44) - (56–58) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140420701,进阶前缀,智慧手套,1,86,100,攻击和法术附加 (4–6) - (94–96) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140421701,进阶前缀,智慧手套,1,86,100,附加 (9–12)% 物理伤害的冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140421801,进阶前缀,智慧手套,1,86,100,附加 (9–12)% 冰霜伤害的混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140421901,进阶前缀,智慧手套,1,86,100,攻击和法术附加 (42–44) - (56–58) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+105820401,进阶前缀,智慧盾牌,1,86,100,+(12–15)% 格挡比例,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109820001,进阶前缀,智慧盾牌,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109820301,进阶前缀,智慧盾牌,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109820401,进阶前缀,智慧盾牌,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140820701,进阶前缀,智慧盾牌,1,86,100,+(18–24)% 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104620101,进阶前缀,智慧胸甲,1,86,100,+(12–15)% 攻击与法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109620001,进阶前缀,智慧胸甲,1,86,100,+(43–60) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109620301,进阶前缀,智慧胸甲,1,86,100,+(43–60) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109620401,进阶前缀,智慧胸甲,1,86,100,+(43–60) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140620201,进阶前缀,智慧胸甲,1,86,100,+(33–45)% 投射物速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104520101,进阶前缀,智慧鞋子,1,86,100,+(12–15)% 攻击与法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119520101,进阶前缀,智慧鞋子,1,86,100,+1 冰霜技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119520201,进阶前缀,智慧鞋子,1,86,100,+1 召唤召唤物的技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140520201,进阶前缀,智慧鞋子,1,86,100,+(33–45)% 投射物速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140520601,进阶前缀,智慧鞋子,1,86,100,+1 物理技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140520701,进阶前缀,智慧鞋子,1,86,100,+1 火焰技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140520801,进阶前缀,智慧鞋子,1,86,100,+1 闪电技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140520901,进阶前缀,智慧鞋子,1,86,100,+1 混沌技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107140001,进阶前缀,武杖,1,86,100,+(49–80)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109140001,进阶前缀,武杖,1,86,100,+(127–180) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109140101,进阶前缀,武杖,1,86,100,+(127–180) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109140201,进阶前缀,武杖,1,86,100,+(127–180) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109320001,进阶前缀,法杖,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109320301,进阶前缀,法杖,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109320401,进阶前缀,法杖,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115320201,进阶前缀,法杖,1,86,100,+2 物理技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115320301,进阶前缀,法杖,1,86,100,+2 闪电技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115320401,进阶前缀,法杖,1,86,100,+2 冰霜技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115320501,进阶前缀,法杖,1,86,100,+2 火焰技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115320601,进阶前缀,法杖,1,86,100,+2 混沌技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107270001,进阶前缀,火枪,1,86,100,+(49–80)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109270001,进阶前缀,火枪,1,86,100,+(127–180) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109270101,进阶前缀,火枪,1,86,100,+(127–180) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109270201,进阶前缀,火枪,1,86,100,+(127–180) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107280001,进阶前缀,火炮,1,86,100,+(49–80)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109280001,进阶前缀,火炮,1,86,100,+(127–180) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109280301,进阶前缀,火炮,1,86,100,+(127–180) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109280401,进阶前缀,火炮,1,86,100,+(127–180) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109900001,进阶前缀,灵戒,1,86,100,+(43–60) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109900101,进阶前缀,灵戒,1,86,100,+(43–60) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109900201,进阶前缀,灵戒,1,86,100,+(43–60) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140900201,进阶前缀,灵戒,1,86,100,召唤物附加 (42–44) - (54–59) 点火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140900301,进阶前缀,灵戒,1,86,100,召唤物附加 (42–44) - (56–58) 点冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140900401,进阶前缀,灵戒,1,86,100,召唤物附加 (4–6) - (94–96) 点闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140900501,进阶前缀,灵戒,1,86,100,召唤物附加 (44–46) - (54–56) 点混沌伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140900601,进阶前缀,灵戒,1,86,100,召唤物附加 (44–46) - (54–56) 点物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140902901,进阶前缀,灵戒,1,86,100,"召唤物攻击暴击时，获得攻击激进
+额外 +(3–4)% 召唤物伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140903001,进阶前缀,灵戒,1,86,100,"召唤物法术暴击时，获得法术激进
+额外 +(3–4)% 召唤物伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109330001,进阶前缀,灵杖,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109330301,进阶前缀,灵杖,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109330401,进阶前缀,灵杖,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140330001,进阶前缀,灵杖,1,86,100,魔灵 +(22–30)% 强化技能使用几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140330101,进阶前缀,灵杖,1,86,100,"+1 智械召唤物数量上限
+额外 +(6–8)% 召唤物伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+107010001,进阶前缀,爪,1,86,100,+(56–100)% 该装备物理伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109010001,进阶前缀,爪,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109010101,进阶前缀,爪,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109010301,进阶前缀,爪,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104230101,进阶前缀,腰带,1,86,100,+(12–15)% 攻击与法术格挡率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109230001,进阶前缀,腰带,1,86,100,+(43–60) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109230101,进阶前缀,腰带,1,86,100,+(43–60) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109230201,进阶前缀,腰带,1,86,100,+(43–60) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115230401,进阶前缀,腰带,1,86,100,+(15–20)% 防御值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140231201,进阶前缀,腰带,1,86,100,轰炸技能 +(20–25)% 每波伤害递增,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140231601,进阶前缀,腰带,1,86,100,"使用近战技能时，获得一层强硬
+额外 (-5–-3)% 受到的伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140231701,进阶前缀,腰带,1,86,100,"拥有邪祟；召唤物拥有邪祟
++(20–30)% 混沌伤害
++(20–30)% 召唤物混沌伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140902501,进阶前缀,腰带,1,86,100,+(23–32)% 恶化几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109120001,进阶前缀,锡杖,1,86,100,+(127–180) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109120401,进阶前缀,锡杖,1,86,100,+(127–180) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109120501,进阶前缀,锡杖,1,86,100,+(127–180) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140120601,进阶前缀,锡杖,1,86,100,+4 核心技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109200001,进阶前缀,项链,1,86,100,+(43–60) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109200101,进阶前缀,项链,1,86,100,+(43–60) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109200201,进阶前缀,项链,1,86,100,+(43–60) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116200901,进阶前缀,项链,1,86,100,魔灵 +(35–48) 初始生长值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130200201,进阶前缀,项链,1,86,100,+(15–20)% 防御值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140200501,进阶前缀,项链,1,86,100,+(22–30)% 坚固魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140200601,进阶前缀,项链,1,86,100,+(22–30)% 灵敏魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140200701,进阶前缀,项链,1,86,100,+(22–30)% 能量壁垒魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140201101,进阶前缀,项链,1,86,100,"释放攻击技能时，获得攻击激进
++(10–30)% 攻击激进效果",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140201201,进阶前缀,项链,1,86,100,"释放法术技能时，获得法术激进
++(10–30)% 法术激进效果",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140201301,进阶前缀,项链,1,86,100,"拥有邪祟；召唤物拥有邪祟
++(20–30)% 混沌伤害
++(20–30)% 召唤物混沌伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140201501,进阶前缀,项链,1,86,100,+(41–50)% 恶兆累计效率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140901901,进阶前缀,项链,1,86,100,+(23–32)% 恶化几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109340001,进阶前缀,魔杖,1,86,100,+(64–90) 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109340301,进阶前缀,魔杖,1,86,100,+(64–90) 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+109340401,进阶前缀,魔杖,1,86,100,+(64–90) 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115340201,进阶前缀,魔杖,1,86,100,+2 物理技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115340301,进阶前缀,魔杖,1,86,100,+2 闪电技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115340401,进阶前缀,魔杖,1,86,100,+2 冰霜技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115340501,进阶前缀,魔杖,1,86,100,+2 火焰技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115340601,进阶前缀,魔杖,1,86,100,+2 混沌技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110700101,进阶后缀,力量头部,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111700001,进阶后缀,力量头部,1,86,100,"+(35–48)% 技能范围
++(35–48)% 召唤物技能范围",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140700401,进阶后缀,力量头部,1,86,100,"+(18–24)% 攻击与施法速度
++(18–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140700501,进阶后缀,力量头部,1,86,100,+(36–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140700901,进阶后缀,力量头部,1,86,100,"+(14–18)% 护甲值
++(78–110) 最大生命",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140701401,进阶后缀,力量头部,1,86,100,+(26–36)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110400101,进阶后缀,力量手套,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110400201,进阶后缀,力量手套,1,86,100,"+(17–24)% 攻击与施法速度
++(17–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140400801,进阶后缀,力量手套,1,86,100,+(37–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140401201,进阶后缀,力量手套,1,86,100,"+(35–48)% 技能范围
++(35–48)% 召唤物技能范围",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110800001,进阶后缀,力量盾牌,1,86,100,"+(26–36)% 攻击与施法速度
++(26–36)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110800201,进阶后缀,力量盾牌,1,86,100,+(127–180)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110800301,进阶后缀,力量盾牌,1,86,100,+(64–90)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116800101,进阶后缀,力量盾牌,1,86,100,+1 战吼技能充能点数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116800201,进阶后缀,力量盾牌,1,86,100,+(37–48)% 战吼技能的效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140800301,进阶后缀,力量盾牌,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108600401,进阶后缀,力量胸甲,1,86,100,+(8–10)% 元素抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110600101,进阶后缀,力量胸甲,1,86,100,"+(18–24)% 攻击与施法速度
++(18–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140600301,进阶后缀,力量胸甲,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140600401,进阶后缀,力量胸甲,1,86,100,+(36–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140600701,进阶后缀,力量胸甲,1,86,100,+(14–18)% 力量,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140601201,进阶后缀,力量胸甲,1,86,100,"造成伤害时，施加火焰渗透，对每个敌人拥有 1 秒间隔时间
+召唤物造成伤害时，施加火焰渗透，对每个敌人拥有 1 秒间隔时间
++(10–30)% 火焰渗透效果",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110500001,进阶后缀,力量鞋子,1,86,100,+(29–40)% 移动速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140501101,进阶后缀,力量鞋子,1,86,100,"+(18–24)% 攻击与施法速度
++(18–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140501201,进阶后缀,力量鞋子,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140501301,进阶后缀,力量鞋子,1,86,100,+(36–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140502801,进阶后缀,力量鞋子,1,86,100,"拥有迅捷
+拥有迅捷时， +(5–8)% 攻击速度、施法速度和移动速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110080101,进阶后缀,匕首,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110080501,进阶后缀,匕首,1,86,100,+(128–180)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110080601,进阶后缀,匕首,1,86,100,"+(26–36)% 攻击与施法速度
++(26–36)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111080401,进阶后缀,匕首,1,86,100,+(64–90)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140080601,进阶后缀,匕首,1,86,100,+(57–72)% 连续攻击几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140081501,进阶后缀,匕首,1,86,100,+(54–75)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140082101,进阶后缀,匕首,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110060101,进阶后缀,单手剑,1,86,100,+(52–72)% 连续攻击几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110060201,进阶后缀,单手剑,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110060601,进阶后缀,单手剑,1,86,100,+(128–180)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110060701,进阶后缀,单手剑,1,86,100,"+(26–36)% 攻击与施法速度
++(26–36)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111060401,进阶后缀,单手剑,1,86,100,+(64–90)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140061101,进阶后缀,单手剑,1,86,100,+(54–75)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140061601,进阶后缀,单手剑,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110070101,进阶后缀,单手斧,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110070501,进阶后缀,单手斧,1,86,100,+(128–180)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110070601,进阶后缀,单手斧,1,86,100,"+(26–36)% 攻击与施法速度
++(26–36)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111070401,进阶后缀,单手斧,1,86,100,+(64–90)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140071201,进阶后缀,单手斧,1,86,100,+(54–75)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140072001,进阶后缀,单手斧,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110040101,进阶后缀,单手锤,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110040601,进阶后缀,单手锤,1,86,100,+(128–180)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110040701,进阶后缀,单手锤,1,86,100,"+(26–36)% 攻击与施法速度
++(26–36)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111040401,进阶后缀,单手锤,1,86,100,+(64–90)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140041501,进阶后缀,单手锤,1,86,100,+(54–75)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140041901,进阶后缀,单手锤,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110100201,进阶后缀,双手剑,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110100601,进阶后缀,双手剑,1,86,100,+(252–360)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110100701,进阶后缀,双手剑,1,86,100,"+(51–72)% 攻击与施法速度
++(51–72)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111100301,进阶后缀,双手剑,1,86,100,+(127–180)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140100601,进阶后缀,双手剑,1,86,100,+(102–144)% 连续攻击几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140101501,进阶后缀,双手剑,1,86,100,+(106–150)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140102101,进阶后缀,双手剑,1,86,100,+(90–110)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110130101,进阶后缀,双手斧,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110130501,进阶后缀,双手斧,1,86,100,+(252–360)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110130601,进阶后缀,双手斧,1,86,100,"+(51–72)% 攻击与施法速度
++(51–72)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111130401,进阶后缀,双手斧,1,86,100,+(127–180)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140131501,进阶后缀,双手斧,1,86,100,+(106–150)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140132401,进阶后缀,双手斧,1,86,100,+(90–110)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110100801,进阶后缀,双手锤,1,86,100,"+(51–72)% 攻击与施法速度
++(51–72)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110110101,进阶后缀,双手锤,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110110701,进阶后缀,双手锤,1,86,100,+(252–360)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111110401,进阶后缀,双手锤,1,86,100,+(127–180)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140111501,进阶后缀,双手锤,1,86,100,+(106–150)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140112201,进阶后缀,双手锤,1,86,100,+(90–110)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110090201,进阶后缀,弓,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110090501,进阶后缀,弓,1,86,100,+(252–360)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110090601,进阶后缀,弓,1,86,100,"+(51–72)% 攻击与施法速度
++(51–72)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111090401,进阶后缀,弓,1,86,100,+(127–180)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140090001,进阶后缀,弓,1,86,100,+(106–150)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140090601,进阶后缀,弓,1,86,100,+(102–144)% 连续攻击几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140092101,进阶后缀,弓,1,86,100,+(90–110)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110290201,进阶后缀,弩,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110290601,进阶后缀,弩,1,86,100,+(252–360)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110290701,进阶后缀,弩,1,86,100,"+(51–72)% 攻击与施法速度
++(51–72)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111290401,进阶后缀,弩,1,86,100,+(127–180)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140291501,进阶后缀,弩,1,86,100,+(106–150)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140292301,进阶后缀,弩,1,86,100,+(90–110)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111210001,进阶后缀,戒指,1,86,100,+(35–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111210101,进阶后缀,戒指,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115211101,进阶后缀,戒指,1,86,100,+(37–50)% 地面蓄能回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130210301,进阶后缀,戒指,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140210801,进阶后缀,戒指,1,86,100,+(26–36)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140211001,进阶后缀,戒指,1,86,100,"+1 点连携起手技获得的连携点
+额外 +(1–2)% 伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140211201,进阶后缀,戒指,1,86,100,+(15–20) 冰结值上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140722101,进阶后缀,戒指,1,86,100,+(23–32)% 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140902701,进阶后缀,戒指,1,86,100,每移动 5 米， 100% 几率获得屏障,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110030201,进阶后缀,手杖,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110030501,进阶后缀,手杖,1,86,100,+(128–180)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110030601,进阶后缀,手杖,1,86,100,"+(26–36)% 攻击与施法速度
++(26–36)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111030401,进阶后缀,手杖,1,86,100,+(64–90)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140031601,进阶后缀,手杖,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110260201,进阶后缀,手枪,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110260501,进阶后缀,手枪,1,86,100,+(128–180)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110260601,进阶后缀,手枪,1,86,100,"+(26–36)% 攻击与施法速度
++(26–36)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111260401,进阶后缀,手枪,1,86,100,+(64–90)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140260601,进阶后缀,手枪,1,86,100,+(57–72)% 连续攻击几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140261501,进阶后缀,手枪,1,86,100,+(54–75)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140262201,进阶后缀,手枪,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110710101,进阶后缀,敏捷头部,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111710001,进阶后缀,敏捷头部,1,86,100,"+(35–48)% 技能范围
++(35–48)% 召唤物技能范围",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140710401,进阶后缀,敏捷头部,1,86,100,"+(18–24)% 攻击与施法速度
++(18–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140710501,进阶后缀,敏捷头部,1,86,100,+(36–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140710901,进阶后缀,敏捷头部,1,86,100,"+(14–18)% 闪避值
++(78–110) 最大生命",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140711401,进阶后缀,敏捷头部,1,86,100,+(26–36)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110410101,进阶后缀,敏捷手套,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110410201,进阶后缀,敏捷手套,1,86,100,"+(17–24)% 攻击与施法速度
++(17–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140410801,进阶后缀,敏捷手套,1,86,100,+(37–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140411201,进阶后缀,敏捷手套,1,86,100,"+(35–48)% 技能范围
++(35–48)% 召唤物技能范围",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110810101,进阶后缀,敏捷盾牌,1,86,100,"+(26–36)% 攻击与施法速度
++(26–36)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110810301,进阶后缀,敏捷盾牌,1,86,100,+(127–180)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110810401,进阶后缀,敏捷盾牌,1,86,100,+(64–90)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140810301,进阶后缀,敏捷盾牌,1,86,100,+1 战吼技能充能点数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140810401,进阶后缀,敏捷盾牌,1,86,100,+(37–48)% 战吼技能的效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140810501,进阶后缀,敏捷盾牌,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108610401,进阶后缀,敏捷胸甲,1,86,100,+(8–10)% 元素抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110610101,进阶后缀,敏捷胸甲,1,86,100,"+(18–24)% 攻击与施法速度
++(18–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140610301,进阶后缀,敏捷胸甲,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140610401,进阶后缀,敏捷胸甲,1,86,100,+(36–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140611001,进阶后缀,敏捷胸甲,1,86,100,+(14–18)% 敏捷,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140611501,进阶后缀,敏捷胸甲,1,86,100,"造成伤害时，施加闪电渗透，对每个敌人拥有 1 秒间隔时间
+召唤物造成伤害时，施加闪电渗透，对每个敌人拥有 1 秒间隔时间
++(10–30)% 闪电渗透效果",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110510001,进阶后缀,敏捷鞋子,1,86,100,+(29–40)% 移动速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140511101,进阶后缀,敏捷鞋子,1,86,100,"+(18–24)% 攻击与施法速度
++(18–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140511201,进阶后缀,敏捷鞋子,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140511301,进阶后缀,敏捷鞋子,1,86,100,+(36–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140512901,进阶后缀,敏捷鞋子,1,86,100,"拥有迅捷
+拥有迅捷时， +(5–8)% 攻击速度、施法速度和移动速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110720101,进阶后缀,智慧头部,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111720001,进阶后缀,智慧头部,1,86,100,"+(35–48)% 技能范围
++(35–48)% 召唤物技能范围",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140720401,进阶后缀,智慧头部,1,86,100,"+(18–24)% 攻击与施法速度
++(18–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140720501,进阶后缀,智慧头部,1,86,100,+(36–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140721101,进阶后缀,智慧头部,1,86,100,+(12–16)% 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140723601,进阶后缀,智慧头部,1,86,100,+(26–36)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110420101,进阶后缀,智慧手套,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110420201,进阶后缀,智慧手套,1,86,100,"+(17–24)% 攻击与施法速度
++(17–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140420801,进阶后缀,智慧手套,1,86,100,+(37–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140421201,进阶后缀,智慧手套,1,86,100,"+(35–48)% 技能范围
++(35–48)% 召唤物技能范围",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110820001,进阶后缀,智慧盾牌,1,86,100,"+(26–36)% 攻击与施法速度
++(26–36)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110820201,进阶后缀,智慧盾牌,1,86,100,+(127–180)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110820301,进阶后缀,智慧盾牌,1,86,100,+(64–90)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140820301,进阶后缀,智慧盾牌,1,86,100,+1 战吼技能充能点数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140820401,进阶后缀,智慧盾牌,1,86,100,+(37–48)% 战吼技能的效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140820601,进阶后缀,智慧盾牌,1,86,100,+(19–24)% 魔力自然回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140820901,进阶后缀,智慧盾牌,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+108620401,进阶后缀,智慧胸甲,1,86,100,+(8–10)% 元素抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110620101,进阶后缀,智慧胸甲,1,86,100,"+(18–24)% 攻击与施法速度
++(18–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140620301,进阶后缀,智慧胸甲,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140620401,进阶后缀,智慧胸甲,1,86,100,+(36–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140620701,进阶后缀,智慧胸甲,1,86,100,+(14–18)% 智慧,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140621201,进阶后缀,智慧胸甲,1,86,100,"造成伤害时，施加冰霜渗透，对每个敌人拥有 1 秒间隔时间
+召唤物造成伤害时，施加冰霜渗透，对每个敌人拥有 1 秒间隔时间
++(10–30)% 冰霜渗透效果",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110520001,进阶后缀,智慧鞋子,1,86,100,+(29–40)% 移动速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140521101,进阶后缀,智慧鞋子,1,86,100,"+(18–24)% 攻击与施法速度
++(18–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140521201,进阶后缀,智慧鞋子,1,86,100,+(44–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140521301,进阶后缀,智慧鞋子,1,86,100,+(36–50)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140522801,进阶后缀,智慧鞋子,1,86,100,"拥有迅捷
+拥有迅捷时， +(5–8)% 攻击速度、施法速度和移动速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110140101,进阶后缀,武杖,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110140501,进阶后缀,武杖,1,86,100,+(252–360)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110140601,进阶后缀,武杖,1,86,100,"+(51–72)% 攻击与施法速度
++(51–72)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111140501,进阶后缀,武杖,1,86,100,+(127–180)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140140301,进阶后缀,武杖,1,86,100,+(106–150)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140141701,进阶后缀,武杖,1,86,100,+(90–110)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104320101,进阶后缀,法杖,1,86,100,+(64–90)% 魔力自然回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104320201,进阶后缀,法杖,1,86,100,+(34–48)% 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110320301,进阶后缀,法杖,1,86,100,+(89–125) 法术暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111320501,进阶后缀,法杖,1,86,100,+(64–90)% 法术暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140320801,进阶后缀,法杖,1,86,100,+(127–180)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140322201,进阶后缀,法杖,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140322901,进阶后缀,法杖,1,86,100,+(54–75)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110270201,进阶后缀,火枪,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110270501,进阶后缀,火枪,1,86,100,+(252–360)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110270601,进阶后缀,火枪,1,86,100,"+(51–72)% 攻击与施法速度
++(51–72)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111270401,进阶后缀,火枪,1,86,100,+(127–180)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140271501,进阶后缀,火枪,1,86,100,+(106–150)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140272301,进阶后缀,火枪,1,86,100,+(90–110)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110280201,进阶后缀,火炮,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110280501,进阶后缀,火炮,1,86,100,+(252–360)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110280601,进阶后缀,火炮,1,86,100,"+(51–72)% 攻击与施法速度
++(51–72)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111280401,进阶后缀,火炮,1,86,100,+(127–180)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140281501,进阶后缀,火炮,1,86,100,+(106–150)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140282501,进阶后缀,火炮,1,86,100,+(90–110)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140901001,进阶后缀,灵戒,1,86,100,+(44–60)% 召唤物暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140901101,进阶后缀,灵戒,1,86,100,"+(18–24)% 攻击与施法速度
++(18–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140901301,进阶后缀,灵戒,1,86,100,+(40–55)% 召唤物最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140901701,进阶后缀,灵戒,1,86,100,魔灵重聚时，每秒自然回复 (12–15)% 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140903101,进阶后缀,灵戒,1,86,100,"召唤物暴击时，获得迅捷
+额外 +(3–4)% 召唤物攻击和施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140903201,进阶后缀,灵戒,1,86,100,+(15–20) 冰结值上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110330601,进阶后缀,灵杖,1,86,100,+(127–180)% 召唤物暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140330401,进阶后缀,灵杖,1,86,100,+(89–125) 召唤物暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140330501,进阶后缀,灵杖,1,86,100,+(51–72)% 召唤物技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110010101,进阶后缀,爪,1,86,100,+(36–50)% 该装备攻击暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110010501,进阶后缀,爪,1,86,100,+(128–180)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110010601,进阶后缀,爪,1,86,100,"+(26–36)% 攻击与施法速度
++(26–36)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111010301,进阶后缀,爪,1,86,100,+(64–90)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140010301,进阶后缀,爪,1,86,100,+(54–75)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140010601,进阶后缀,爪,1,86,100,+(52–72)% 连续攻击几率,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140011801,进阶后缀,爪,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111230201,进阶后缀,腰带,1,86,100,+(16–24)% 异常状态持续时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116230601,进阶后缀,腰带,1,86,100,+(36–50)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130230101,进阶后缀,腰带,1,86,100,"战吼立即释放
++1 战吼技能充能点数上限",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130230301,进阶后缀,腰带,1,86,100,"+(7–9)% 元素抗性
++(12–15)% 几率避免元素异常",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140231401,进阶后缀,腰带,1,86,100,魔灵 +(35–48) 初始生长值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140231501,进阶后缀,腰带,1,86,100,+(26–36)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140722201,进阶后缀,腰带,1,86,100,+(23–32)% 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104120101,进阶后缀,锡杖,1,86,100,+(127–180)% 魔力自然回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+104120201,进阶后缀,锡杖,1,86,100,+(68–96)% 最大魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110120301,进阶后缀,锡杖,1,86,100,+(176–250) 法术暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111120601,进阶后缀,锡杖,1,86,100,+(127–180)% 法术暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140120801,进阶后缀,锡杖,1,86,100,+(253–360)% 暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140121301,进阶后缀,锡杖,1,86,100,+(90–110)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140121901,进阶后缀,锡杖,1,86,100,+(106–150)% 加剧效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110200101,进阶后缀,项链,1,86,100,+(42–60)% 暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110200401,进阶后缀,项链,1,86,100,"+(18–24)% 攻击与施法速度
++(18–24)% 召唤物攻击与施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115200901,进阶后缀,项链,1,86,100,使用地面技能时， 60% 几率获得 1 层蓄能层数,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116200201,进阶后缀,项链,1,86,100,+(8–10)% 元素抗性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140200801,进阶后缀,项链,1,86,100,+(14–18)% 祝福持续时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140200901,进阶后缀,项链,1,86,100,+(8–10)% 全属性,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140201001,进阶后缀,项链,1,86,100,每移动 5 米， 100% 几率获得屏障,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110340101,进阶后缀,魔杖,1,86,100,"+(26–36)% 施法速度
++(26–36)% 召唤物施法速度",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140340301,进阶后缀,魔杖,1,86,100,+(36–48)% 点燃持续时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140340401,进阶后缀,魔杖,1,86,100,+(36–48)% 创伤持续时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140340501,进阶后缀,魔杖,1,86,100,+(36–48)% 凋零持续时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140340601,进阶后缀,魔杖,1,86,100,+(54–75)% 收割时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140341401,进阶后缀,魔杖,1,86,100,+(45–54)% 贯注速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115700101,至臻前缀,力量头部,1,100,100,(16–20)% 受到的物理伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116700601,至臻前缀,力量头部,1,100,100,法术迸发上限 +1,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116700801,至臻前缀,力量头部,1,100,100,+1 地面蓄能层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130700001,至臻前缀,力量头部,1,100,100,+(15–20)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130700501,至臻前缀,力量头部,1,100,100,周围敌人额外 (-15–-12)% 造成的伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140701101,至臻前缀,力量头部,1,100,100,(36–45)% 受到的混沌伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140701201,至臻前缀,力量头部,1,100,100,至少拥有 50000 点护甲值时，额外 -40% 受到的持续伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140722401,至臻前缀,力量头部,1,100,100,(15–20)% 的伤害优先抵扣魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140401301,至臻前缀,力量手套,1,100,100,+2 主动技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140402001,至臻前缀,力量手套,1,100,100,至少拥有 8 层坚韧祝福时，额外 +(6–8)% 火焰伤害，+(12–15)% 火焰穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140402101,至臻前缀,力量手套,1,100,100,至少拥有 8 层灵动祝福时，额外 +(6–8)% 闪电伤害，+(12–15)% 闪电穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140402201,至臻前缀,力量手套,1,100,100,至少拥有 8 层聚能祝福时，额外 +(6–8)% 冰霜伤害，+(12–15)% 冰霜穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140402301,至臻前缀,力量手套,1,100,100,具有 (1–8) 个召唤物时，额外 +(21–25)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130800001,至臻前缀,力量盾牌,1,100,100,"+(22–30)% 元素和混沌抗性穿透
+召唤物伤害穿透 (22–30)% 元素抗性",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130800101,至臻前缀,力量盾牌,1,100,100,+3 主动技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140800101,至臻前缀,力量盾牌,1,100,100,"+(19–25)% 护甲减伤穿透
+召唤物 +(19–25)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115600101,至臻前缀,力量胸甲,1,100,100,(16–20)% 受到的物理伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119600101,至臻前缀,力量胸甲,1,100,100,+(15–20)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+120600001,至臻前缀,力量胸甲,1,100,100,你可以施加 1 个额外诅咒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130600001,至臻前缀,力量胸甲,1,100,100,攻击或者法术击败敌人时 (10–15)% 几率爆炸，对半径 6 米内的敌人造成被击败的敌人最大生命 (200–250)% 的真实伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140600601,至臻前缀,力量胸甲,1,100,100,额外 +(15–20)% 护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140600801,至臻前缀,力量胸甲,1,100,100,(15–20)% 的伤害优先抵扣魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140601001,至臻前缀,力量胸甲,1,100,100,(36–45)% 受到的混沌伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140601301,至臻前缀,力量胸甲,1,100,100,至少拥有 50000 点护甲值时，额外 -40% 受到的持续伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140501401,至臻前缀,力量鞋子,1,100,100,额外 +(12–15)% 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140501501,至臻前缀,力量鞋子,1,100,100,"+(19–24)% 迷踪效果
+每移动 (5–10) 米， 50% 几率获得迷踪",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140501601,至臻前缀,力量鞋子,1,100,100,+(26–30)% 几率避免法术伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140502001,至臻前缀,力量鞋子,1,100,100,至少拥有 50000 点护甲值时，额外 -40% 受到的持续伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140502101,至臻前缀,力量鞋子,1,100,100,"+(21–30)% 法术迸发充能速度
+使用技能时，+10% 几率立即获得 1 层法术迸发充能，间隔 0.03 秒",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140502201,至臻前缀,力量鞋子,1,100,100,静止时， 触发 (6–10) 级瞄准，间隔 1 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140502501,至臻前缀,力量鞋子,1,100,100,(16–20)% 受到的物理伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140502601,至臻前缀,力量鞋子,1,100,100,(36–45)% 受到的混沌伤害转化为火焰伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140722301,至臻前缀,力量鞋子,1,100,100,(15–20)% 的伤害优先抵扣魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115080501,至臻前缀,匕首,1,100,100,+(18–25)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130080101,至臻前缀,匕首,1,100,100,+(22–30)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140080501,至臻前缀,匕首,1,100,100,连续攻击伤害递增 (43–60)%,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140081801,至臻前缀,匕首,1,100,100,+3 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140082001,至臻前缀,匕首,1,100,100,"该装备附加 (47–49) - (272–274) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140082301,至臻前缀,匕首,1,100,100,额外 +(22–30)% 凋零伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115060601,至臻前缀,单手剑,1,100,100,+(18–25)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119060101,至臻前缀,单手剑,1,100,100,+3 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130060101,至臻前缀,单手剑,1,100,100,+(22–30)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140060501,至臻前缀,单手剑,1,100,100,连续攻击伤害递增 (43–60)%,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140061501,至臻前缀,单手剑,1,100,100,"该装备附加 (47–49) - (272–274) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140062001,至臻前缀,单手剑,1,100,100,额外 +(22–30)% 点燃伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115070401,至臻前缀,单手斧,1,100,100,+(18–25)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119070101,至臻前缀,单手斧,1,100,100,+3 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140071401,至臻前缀,单手斧,1,100,100,+(22–30)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140071901,至臻前缀,单手斧,1,100,100,"该装备附加 (47–49) - (272–274) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140072301,至臻前缀,单手斧,1,100,100,额外 +(22–30)% 创伤伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115040501,至臻前缀,单手锤,1,100,100,+(18–25)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119040001,至臻前缀,单手锤,1,100,100,+(22–30)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130040101,至臻前缀,单手锤,1,100,100,+3 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140041801,至臻前缀,单手锤,1,100,100,"该装备附加 (47–49) - (272–274) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115100801,至臻前缀,双手剑,1,100,100,+(36–50)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130100101,至臻前缀,双手剑,1,100,100,+(43–60)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140100501,至臻前缀,双手剑,1,100,100,连续攻击伤害递增 (85–120)%,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140100901,至臻前缀,双手剑,1,100,100,+6 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140101901,至臻前缀,双手剑,1,100,100,"+(77–110)% 该装备物理伤害
+该装备附加 (53–55) - (65–67) 点物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140102001,至臻前缀,双手剑,1,100,100,"该装备附加 (59–61) - (337–339) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140102401,至臻前缀,双手剑,1,100,100,额外 +(43–60)% 点燃伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115130401,至臻前缀,双手斧,1,100,100,+(36–50)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140130901,至臻前缀,双手斧,1,100,100,+6 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140131801,至臻前缀,双手斧,1,100,100,+(43–60)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140132201,至臻前缀,双手斧,1,100,100,"+(77–110)% 该装备物理伤害
+该装备附加 (53–55) - (65–67) 点物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140132301,至臻前缀,双手斧,1,100,100,"该装备附加 (59–61) - (337–339) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140132701,至臻前缀,双手斧,1,100,100,额外 +(43–60)% 创伤伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115110501,至臻前缀,双手锤,1,100,100,+(36–50)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119110001,至臻前缀,双手锤,1,100,100,+(43–60)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140110901,至臻前缀,双手锤,1,100,100,+6 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140111901,至臻前缀,双手锤,1,100,100,"+(77–110)% 该装备物理伤害
+该装备附加 (53–55) - (65–67) 点物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140112101,至臻前缀,双手锤,1,100,100,"该装备附加 (59–61) - (337–339) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115090601,至臻前缀,弓,1,100,100,+(36–50)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130090201,至臻前缀,弓,1,100,100,+(43–60)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140090501,至臻前缀,弓,1,100,100,连续攻击伤害递增 (85–120)%,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140090901,至臻前缀,弓,1,100,100,+6 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140091901,至臻前缀,弓,1,100,100,"+(77–110)% 该装备物理伤害
+该装备附加 (53–55) - (65–67) 点物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140092001,至臻前缀,弓,1,100,100,"该装备附加 (59–61) - (337–339) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115290501,至臻前缀,弩,1,100,100,+(36–50)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140290901,至臻前缀,弩,1,100,100,+6 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140291801,至臻前缀,弩,1,100,100,+(43–60)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140292201,至臻前缀,弩,1,100,100,"+(77–110)% 该装备物理伤害
+该装备附加 (53–55) - (65–67) 点物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140292601,至臻前缀,弩,1,100,100,额外 +(43–60)% 创伤伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140292701,至臻前缀,弩,1,100,100,"+(58–80)% 击退距离
+额外 +10% 伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+149292301,至臻前缀,弩,1,100,100,"该装备附加 (59–61) - (337–339) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115210801,至臻前缀,戒指,1,100,100,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115210901,至臻前缀,戒指,1,100,100,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115211001,至臻前缀,戒指,1,100,100,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115211301,至臻前缀,戒指,1,100,100,+10% 最大魔力， +80 技能消耗,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140210401,至臻前缀,戒指,1,100,100,+(15–20)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140210901,至臻前缀,戒指,1,100,100,+(13–17)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140902101,至臻前缀,戒指,1,100,100,+(36–50)% 恶化伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115030601,至臻前缀,手杖,1,100,100,+(18–25)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119030201,至臻前缀,手杖,1,100,100,+3 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119030301,至臻前缀,手杖,1,100,100,+(22–30)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140031501,至臻前缀,手杖,1,100,100,"该装备附加 (47–49) - (272–274) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115260801,至臻前缀,手枪,1,100,100,+(18–25)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130260101,至臻前缀,手枪,1,100,100,+(22–30)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140260501,至臻前缀,手枪,1,100,100,连续攻击伤害递增 (43–60)%,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140261701,至臻前缀,手枪,1,100,100,+3 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140262401,至臻前缀,手枪,1,100,100,额外 +(22–30)% 凋零伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140902801,至臻前缀,手枪,1,100,100,"该装备附加 (47–49) - (272–274) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115710201,至臻前缀,敏捷头部,1,100,100,(16–20)% 受到的物理伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116710601,至臻前缀,敏捷头部,1,100,100,法术迸发上限 +1,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116710801,至臻前缀,敏捷头部,1,100,100,+1 地面蓄能层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130710001,至臻前缀,敏捷头部,1,100,100,+(15–20)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130710501,至臻前缀,敏捷头部,1,100,100,周围敌人额外 (-15–-12)% 造成的伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140711101,至臻前缀,敏捷头部,1,100,100,至少拥有 50000 点闪避值时， 额外 -40% 受到的持续伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140711201,至臻前缀,敏捷头部,1,100,100,(36–45)% 受到的混沌伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140722701,至臻前缀,敏捷头部,1,100,100,(15–20)% 的伤害优先抵扣魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140411301,至臻前缀,敏捷手套,1,100,100,+2 主动技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140412001,至臻前缀,敏捷手套,1,100,100,至少拥有 8 层坚韧祝福时，额外 +(6–8)% 火焰伤害，+(12–15)% 火焰穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140412101,至臻前缀,敏捷手套,1,100,100,至少拥有 8 层灵动祝福时，额外 +(6–8)% 闪电伤害，+(12–15)% 闪电穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140412201,至臻前缀,敏捷手套,1,100,100,至少拥有 8 层聚能祝福时，额外 +(6–8)% 冰霜伤害，+(12–15)% 冰霜穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140412301,至臻前缀,敏捷手套,1,100,100,具有 (1–8) 个召唤物时，额外 +(21–25)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130810001,至臻前缀,敏捷盾牌,1,100,100,"+(22–30)% 元素和混沌抗性穿透
+召唤物伤害穿透 (22–30)% 元素抗性",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130810101,至臻前缀,敏捷盾牌,1,100,100,+3 主动技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140810101,至臻前缀,敏捷盾牌,1,100,100,"+(19–25)% 护甲减伤穿透
+召唤物 +(19–25)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115610101,至臻前缀,敏捷胸甲,1,100,100,(16–20)% 受到的物理伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119610101,至臻前缀,敏捷胸甲,1,100,100,+(15–20)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+120610001,至臻前缀,敏捷胸甲,1,100,100,你可以施加 1 个额外诅咒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130610001,至臻前缀,敏捷胸甲,1,100,100,攻击或者法术击败敌人时 (10–15)% 几率爆炸，对半径 6 米内的敌人造成被击败的敌人最大生命 (200–250)% 的真实伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140610901,至臻前缀,敏捷胸甲,1,100,100,额外 +(15–20)% 闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140611101,至臻前缀,敏捷胸甲,1,100,100,(15–20)% 的伤害优先抵扣魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140611301,至臻前缀,敏捷胸甲,1,100,100,(36–45)% 受到的混沌伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140611601,至臻前缀,敏捷胸甲,1,100,100,至少拥有 50000 点闪避值时， 额外 -40% 受到的持续伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140511401,至臻前缀,敏捷鞋子,1,100,100,额外 +(12–15)% 最大生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140511501,至臻前缀,敏捷鞋子,1,100,100,"+(19–24)% 迷踪效果
+每移动 (5–10) 米， 50% 几率获得迷踪",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140511601,至臻前缀,敏捷鞋子,1,100,100,+(26–30)% 几率避免法术伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140512101,至臻前缀,敏捷鞋子,1,100,100,"+(21–30)% 法术迸发充能速度
+使用技能时，+10% 几率立即获得 1 层法术迸发充能，间隔 0.03 秒",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140512201,至臻前缀,敏捷鞋子,1,100,100,静止时， 触发 (6–10) 级瞄准，间隔 1 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140512501,至臻前缀,敏捷鞋子,1,100,100,(16–20)% 受到的物理伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140512601,至臻前缀,敏捷鞋子,1,100,100,(36–45)% 受到的混沌伤害转化为闪电伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140512801,至臻前缀,敏捷鞋子,1,100,100,至少拥有 50000 点闪避值时， 额外 -40% 受到的持续伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140722501,至臻前缀,敏捷鞋子,1,100,100,(15–20)% 的伤害优先抵扣魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115720201,至臻前缀,智慧头部,1,100,100,(16–20)% 受到的物理伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116720701,至臻前缀,智慧头部,1,100,100,法术迸发上限 +1,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116720901,至臻前缀,智慧头部,1,100,100,+1 地面蓄能层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130720001,至臻前缀,智慧头部,1,100,100,+(15–20)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130720501,至臻前缀,智慧头部,1,100,100,周围敌人额外 (-15–-12)% 造成的伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140722801,至臻前缀,智慧头部,1,100,100,(15–20)% 的伤害优先抵扣魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140723401,至臻前缀,智慧头部,1,100,100,(36–45)% 受到的混沌伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140723701,至臻前缀,智慧头部,1,100,100,至少拥有 8000 点最大护盾时， 额外 -40% 受到的持续伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140421301,至臻前缀,智慧手套,1,100,100,+2 主动技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140422001,至臻前缀,智慧手套,1,100,100,至少拥有 8 层坚韧祝福时，额外 +(6–8)% 火焰伤害，+(12–15)% 火焰穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140422101,至臻前缀,智慧手套,1,100,100,至少拥有 8 层灵动祝福时，额外 +(6–8)% 闪电伤害，+(12–15)% 闪电穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140422201,至臻前缀,智慧手套,1,100,100,至少拥有 8 层聚能祝福时，额外 +(6–8)% 冰霜伤害，+(12–15)% 冰霜穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140422301,至臻前缀,智慧手套,1,100,100,具有 (1–8) 个召唤物时，额外 +(21–25)% 召唤物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130820001,至臻前缀,智慧盾牌,1,100,100,"+(22–30)% 元素和混沌抗性穿透
+召唤物伤害穿透 (22–30)% 元素抗性",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130820101,至臻前缀,智慧盾牌,1,100,100,+3 主动技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140820101,至臻前缀,智慧盾牌,1,100,100,"+(19–25)% 护甲减伤穿透
+召唤物 +(19–25)% 护甲减伤穿透",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115620101,至臻前缀,智慧胸甲,1,100,100,(16–20)% 受到的物理伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119620001,至臻前缀,智慧胸甲,1,100,100,攻击或者法术击败敌人时 (10–15)% 几率爆炸，对半径 6 米内的敌人造成被击败的敌人最大生命 (200–250)% 的真实伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+119620101,至臻前缀,智慧胸甲,1,100,100,+(15–20)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+120620001,至臻前缀,智慧胸甲,1,100,100,你可以施加 1 个额外诅咒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140620601,至臻前缀,智慧胸甲,1,100,100,额外 +(12–15)% 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140620801,至臻前缀,智慧胸甲,1,100,100,(15–20)% 的伤害优先抵扣魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140621001,至臻前缀,智慧胸甲,1,100,100,(36–45)% 受到的混沌伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140621301,至臻前缀,智慧胸甲,1,100,100,至少拥有 8000 点最大护盾时， 额外 -40% 受到的持续伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140521401,至臻前缀,智慧鞋子,1,100,100,额外 +(12–15)% 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140521501,至臻前缀,智慧鞋子,1,100,100,"+(19–24)% 迷踪效果
+每移动 (5–10) 米， 50% 几率获得迷踪",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140521601,至臻前缀,智慧鞋子,1,100,100,+(26–30)% 几率避免法术伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140522101,至臻前缀,智慧鞋子,1,100,100,"+(21–30)% 法术迸发充能速度
+使用技能时，+10% 几率立即获得 1 层法术迸发充能，间隔 0.03 秒",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140522201,至臻前缀,智慧鞋子,1,100,100,静止时， 触发 (6–10) 级瞄准，间隔 1 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140522501,至臻前缀,智慧鞋子,1,100,100,(16–20)% 受到的物理伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140522601,至臻前缀,智慧鞋子,1,100,100,(36–45)% 受到的混沌伤害转化为冰霜伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140522901,至臻前缀,智慧鞋子,1,100,100,至少拥有 8000 点最大护盾时， 额外 -40% 受到的持续伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140722601,至臻前缀,智慧鞋子,1,100,100,(15–20)% 的伤害优先抵扣魔力,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115140501,至臻前缀,武杖,1,100,100,+(36–50)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130140101,至臻前缀,武杖,1,100,100,+(43–60)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140140901,至臻前缀,武杖,1,100,100,+6 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140141501,至臻前缀,武杖,1,100,100,"+(77–110)% 该装备物理伤害
+该装备附加 (53–55) - (65–67) 点物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140141601,至臻前缀,武杖,1,100,100,"该装备附加 (59–61) - (337–339) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115321201,至臻前缀,法杖,1,100,100,+(18–25)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130320001,至臻前缀,法杖,1,100,100,+3 法术技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130320101,至臻前缀,法杖,1,100,100,+(22–30)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140321001,至臻前缀,法杖,1,100,100,+2 地面蓄能层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140321101,至臻前缀,法杖,1,100,100,"+2 弹射次数
+额外 +(8–10)% 伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115270801,至臻前缀,火枪,1,100,100,+(36–50)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130270101,至臻前缀,火枪,1,100,100,+(43–60)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140270901,至臻前缀,火枪,1,100,100,+6 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140272101,至臻前缀,火枪,1,100,100,"+(77–110)% 该装备物理伤害
+该装备附加 (53–55) - (65–67) 点物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140272201,至臻前缀,火枪,1,100,100,"该装备附加 (59–61) - (337–339) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140272501,至臻前缀,火枪,1,100,100,额外 +(43–60)% 点燃伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115280401,至臻前缀,火炮,1,100,100,+(36–50)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140280901,至臻前缀,火炮,1,100,100,+6 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140281801,至臻前缀,火炮,1,100,100,+(43–60)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140282301,至臻前缀,火炮,1,100,100,"+(77–110)% 该装备物理伤害
+该装备附加 (53–55) - (65–67) 点物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140282401,至臻前缀,火炮,1,100,100,"该装备附加 (59–61) - (337–339) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140282701,至臻前缀,火炮,1,100,100,额外 +(43–60)% 凋零伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115900801,至臻前缀,灵戒,1,100,100,+1 坚韧祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115900901,至臻前缀,灵戒,1,100,100,+1 灵动祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115901001,至臻前缀,灵戒,1,100,100,+1 聚能祝福层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140900701,至臻前缀,灵戒,1,100,100,召唤物 +(15–20)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140900801,至臻前缀,灵戒,1,100,100,召唤物 +(13–17)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115330701,至臻前缀,灵杖,1,100,100,+3 召唤召唤物的技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115331201,至臻前缀,灵杖,1,100,100,召唤物 +(18–25)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130330001,至臻前缀,灵杖,1,100,100,+3 核心技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130330101,至臻前缀,灵杖,1,100,100,召唤物 +(22–30)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115010501,至臻前缀,爪,1,100,100,+(18–25)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130010101,至臻前缀,爪,1,100,100,+(22–30)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140010501,至臻前缀,爪,1,100,100,连续攻击伤害递增 (43–60)%,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140011501,至臻前缀,爪,1,100,100,+3 攻击技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140011701,至臻前缀,爪,1,100,100,"该装备附加 (47–49) - (272–274) 点元素伤害
+-100% 该装备物理伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140012001,至臻前缀,爪,1,100,100,额外 +(22–30)% 创伤伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115230001,至臻前缀,腰带,1,100,100,低魔时，额外 (-15–-12)% 受到的伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140230001,至臻前缀,腰带,1,100,100,+1 引导层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140230101,至臻前缀,腰带,1,100,100,+1 引导层数下限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140230801,至臻前缀,腰带,1,100,100,"对创伤状态下的敌人， +(271–385)% 暴击值
+额外 -30% 击中伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140231001,至臻前缀,腰带,1,100,100,+1 点燃上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140902401,至臻前缀,腰带,1,100,100,+(36–50)% 恶化伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115120701,至臻前缀,锡杖,1,100,100,+(36–50)% 护甲减伤穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116120001,至臻前缀,锡杖,1,100,100,+4 引导层数下限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116120901,至臻前缀,锡杖,1,100,100,+4 引导层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130120001,至臻前缀,锡杖,1,100,100,+(44–60)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130120101,至臻前缀,锡杖,1,100,100,+6 法术技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140121001,至臻前缀,锡杖,1,100,100,+(3–4) 地面蓄能层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140121201,至臻前缀,锡杖,1,100,100,"+4 弹射次数
+额外 +(18–20)% 伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115200601,至臻前缀,项链,1,100,100,+2 召唤召唤物的技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116200801,至臻前缀,项链,1,100,100,法术迸发上限 +1,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130200001,至臻前缀,项链,1,100,100,+(1–2) 主动技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130200601,至臻前缀,项链,1,100,100,拥有战意,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130200701,至臻前缀,项链,1,100,100,连续攻击伤害递增 (28–40)%,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140201401,至臻前缀,项链,1,100,100,"你可以对敌人附着 1 个额外纠缠
++(5–8)% 纠缠伤害加深",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140901801,至臻前缀,项链,1,100,100,+(36–50)% 恶化伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110340801,至臻前缀,魔杖,1,100,100,+2 地面蓄能层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130340001,至臻前缀,魔杖,1,100,100,+3 法术技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130340101,至臻前缀,魔杖,1,100,100,+(22–30)% 元素和混沌抗性穿透,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130340201,至臻前缀,魔杖,1,100,100,对生命造成额外 (22–30)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130700101,至臻后缀,力量头部,1,100,100,+(6–9) 辅助技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140700001,至臻后缀,力量头部,1,100,100,额外 +(18–24)% 周围敌人受到的伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140700601,至臻后缀,力量头部,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140700701,至臻后缀,力量头部,1,100,100,+(40–50)% 麻痹效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140701301,至臻后缀,力量头部,1,100,100,+(30–45)% 几率避免元素异常状态,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140401601,至臻后缀,力量手套,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140402401,至臻后缀,力量手套,1,100,100,"+1 弹射次数
+每弹射 1 次，额外 +(4–5)% 伤害（叠乘）",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140402501,至臻后缀,力量手套,1,100,100,拥有战意时，额外 +(21–25)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140402601,至臻后缀,力量手套,1,100,100,"+(24–30)% 迷踪效果
+失去迷踪 1 秒后获得迷踪",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116800401,至臻后缀,力量盾牌,1,100,100,+1 哨卫数量上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130800201,至臻后缀,力量盾牌,1,100,100,额外 +(22–30)% 从盾牌获得的防御值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130800301,至臻后缀,力量盾牌,1,100,100,+(7–8)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130800401,至臻后缀,力量盾牌,1,100,100,每 5% 攻击格挡， +3% 暴击值和暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140800401,至臻后缀,力量盾牌,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140800501,至臻后缀,力量盾牌,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(40–50)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140800601,至臻后缀,力量盾牌,1,100,100,+(40–50)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+120600201,至臻后缀,力量胸甲,1,100,100,+(15–20)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+120600301,至臻后缀,力量胸甲,1,100,100,+(96–135) 攻击和法术暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140600501,至臻后缀,力量胸甲,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140600901,至臻后缀,力量胸甲,1,100,100,受到持续伤害时，每秒自然回复 (7–8)% 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140601101,至臻后缀,力量胸甲,1,100,100,+(30–45)% 几率避免元素异常状态,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130500301,至臻后缀,力量鞋子,1,100,100,+(19–26)% 冷却回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140500101,至臻后缀,力量鞋子,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140501801,至臻后缀,力量鞋子,1,100,100,每移动 6 米，获得 1 层偏斜,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140501901,至臻后缀,力量鞋子,1,100,100,移动时，额外 +(17–22)% 护甲值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140502301,至臻后缀,力量鞋子,1,100,100,开始移动时， 触发 (6–10) 级迅疾之风，间隔 1 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140502701,至臻后缀,力量鞋子,1,100,100,+(30–45)% 几率避免元素异常状态,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130080501,至臻后缀,匕首,1,100,100,+(29–40)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140080801,至臻后缀,匕首,1,100,100,"+2 幻影数量
+额外 -5% 幻影伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140082201,至臻后缀,匕首,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140082401,至臻后缀,匕首,1,100,100,+(40–50)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130060501,至臻后缀,单手剑,1,100,100,+(29–40)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140061201,至臻后缀,单手剑,1,100,100,"+23% 斩击几率
+额外 +(16–22)% 斩击伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140061701,至臻后缀,单手剑,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140061801,至臻后缀,单手剑,1,100,100,"+2 幻影数量
+额外 -5% 幻影伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140061901,至臻后缀,单手剑,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(40–50)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140062101,至臻后缀,单手剑,1,100,100,+(40–50)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130070501,至臻后缀,单手斧,1,100,100,+(29–40)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140071301,至臻后缀,单手斧,1,100,100,"+23% 斩击几率
+额外 +(16–22)% 斩击伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140072101,至臻后缀,单手斧,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140072201,至臻后缀,单手斧,1,100,100,+(89–125)% 破击蓄能回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140072401,至臻后缀,单手斧,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(40–50)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140072501,至臻后缀,单手斧,1,100,100,+(40–50)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130040501,至臻后缀,单手锤,1,100,100,+(29–40)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140041601,至臻后缀,单手锤,1,100,100,+(89–125)% 破击蓄能回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140042001,至臻后缀,单手锤,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140042101,至臻后缀,单手锤,1,100,100,"+23% 斩击几率
+额外 +(16–22)% 斩击伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140042301,至臻后缀,单手锤,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(40–50)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130100201,至臻后缀,双手剑,1,100,100,对生命造成额外 (43–60)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140101601,至臻后缀,双手剑,1,100,100,"+46% 斩击几率
+额外 +(35–48)% 斩击伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140102201,至臻后缀,双手剑,1,100,100,+(70–90)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140102301,至臻后缀,双手剑,1,100,100,+(176–250)% 破击蓄能回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140102501,至臻后缀,双手剑,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(80–100)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140102601,至臻后缀,双手剑,1,100,100,+(80–100)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130130201,至臻后缀,双手斧,1,100,100,对生命造成额外 (43–60)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140131601,至臻后缀,双手斧,1,100,100,"+46% 斩击几率
+额外 +(35–48)% 斩击伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140132501,至臻后缀,双手斧,1,100,100,+(70–90)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140132601,至臻后缀,双手斧,1,100,100,+(176–250)% 破击蓄能回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140132801,至臻后缀,双手斧,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(80–100)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140132901,至臻后缀,双手斧,1,100,100,+(80–100)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130110201,至臻后缀,双手锤,1,100,100,对生命造成额外 (43–60)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140111601,至臻后缀,双手锤,1,100,100,+(176–250)% 破击蓄能回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140112001,至臻后缀,双手锤,1,100,100,额外 +(43–60)% 近战伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140112301,至臻后缀,双手锤,1,100,100,+(70–90)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140112401,至臻后缀,双手锤,1,100,100,"+46% 斩击几率
+额外 +(35–48)% 斩击伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140112501,至臻后缀,双手锤,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(80–100)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140091601,至臻后缀,弓,1,100,100,+2 哨卫数量上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140091801,至臻后缀,弓,1,100,100,额外 +(43–60)% 投射物伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140092201,至臻后缀,弓,1,100,100,+(70–90)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130290101,至臻后缀,弩,1,100,100,对生命造成额外 (43–60)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140292401,至臻后缀,弩,1,100,100,+(70–90)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140292801,至臻后缀,弩,1,100,100,+(80–100)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+111210301,至臻后缀,戒指,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130210401,至臻后缀,戒指,1,100,100,"+(9–12)% 元素抗性
++(9–12)% 混沌抗性",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130210601,至臻后缀,戒指,1,100,100,+(36–50)% 战意效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140210601,至臻后缀,戒指,1,100,100,+(19–26)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140210701,至臻后缀,戒指,1,100,100,额外 +(18–23)% 主手武器伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140211101,至臻后缀,戒指,1,100,100,对冰封的敌人额外 +(18–23)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140211401,至臻后缀,戒指,1,100,100,+(29–40)% 迷踪效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140902301,至臻后缀,戒指,1,100,100,+(23–32)% 恶化持续时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130030501,至臻后缀,手杖,1,100,100,+(29–40)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140031701,至臻后缀,手杖,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130260501,至臻后缀,手枪,1,100,100,+(29–40)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140262001,至臻后缀,手枪,1,100,100,"+1 地面数量上限
+额外 +1% 伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140262301,至臻后缀,手枪,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140262501,至臻后缀,手枪,1,100,100,+(40–50)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130710101,至臻后缀,敏捷头部,1,100,100,+(6–9) 辅助技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140710001,至臻后缀,敏捷头部,1,100,100,额外 +(18–24)% 周围敌人受到的伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140710601,至臻后缀,敏捷头部,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140710701,至臻后缀,敏捷头部,1,100,100,+(40–50)% 麻痹效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140711301,至臻后缀,敏捷头部,1,100,100,+(30–45)% 几率避免元素异常状态,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140411601,至臻后缀,敏捷手套,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140412401,至臻后缀,敏捷手套,1,100,100,"+1 弹射次数
+每弹射 1 次，额外 +(4–5)% 伤害（叠乘）",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140412501,至臻后缀,敏捷手套,1,100,100,拥有战意时，额外 +(21–25)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140412601,至臻后缀,敏捷手套,1,100,100,"+(24–30)% 迷踪效果
+失去迷踪 1 秒后获得迷踪",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116810401,至臻后缀,敏捷盾牌,1,100,100,+1 哨卫数量上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130810201,至臻后缀,敏捷盾牌,1,100,100,额外 +(22–30)% 从盾牌获得的防御值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130810301,至臻后缀,敏捷盾牌,1,100,100,+(7–8)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130810401,至臻后缀,敏捷盾牌,1,100,100,每 (7–8)% 攻击或法术格挡， +1% 攻击速度和移动速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140810601,至臻后缀,敏捷盾牌,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140810701,至臻后缀,敏捷盾牌,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(40–50)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140810801,至臻后缀,敏捷盾牌,1,100,100,+(40–50)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+120610201,至臻后缀,敏捷胸甲,1,100,100,+(15–20)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+120610301,至臻后缀,敏捷胸甲,1,100,100,+(96–135) 攻击和法术暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140601401,至臻后缀,敏捷胸甲,1,100,100,+(30–45)% 几率避免元素异常状态,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140610501,至臻后缀,敏捷胸甲,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140611201,至臻后缀,敏捷胸甲,1,100,100,受到持续伤害时，每秒自然回复 (7–8)% 生命,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130510301,至臻后缀,敏捷鞋子,1,100,100,+(19–26)% 冷却回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140510101,至臻后缀,敏捷鞋子,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140511801,至臻后缀,敏捷鞋子,1,100,100,每移动 6 米，获得 1 层偏斜,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140511901,至臻后缀,敏捷鞋子,1,100,100,移动时，额外 +(17–22)% 闪避值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140512301,至臻后缀,敏捷鞋子,1,100,100,开始移动时， 触发 (6–10) 级迅疾之风，间隔 1 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140512701,至臻后缀,敏捷鞋子,1,100,100,+(30–45)% 几率避免元素异常状态,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130720101,至臻后缀,智慧头部,1,100,100,+(6–9) 辅助技能等级,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140720001,至臻后缀,智慧头部,1,100,100,额外 +(18–24)% 周围敌人受到的伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140720601,至臻后缀,智慧头部,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140720701,至臻后缀,智慧头部,1,100,100,+(40–50)% 麻痹效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140723501,至臻后缀,智慧头部,1,100,100,+(30–45)% 几率避免元素异常状态,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140421601,至臻后缀,智慧手套,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140422401,至臻后缀,智慧手套,1,100,100,"+1 弹射次数
+每弹射 1 次，额外 +(4–5)% 伤害（叠乘）",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140422501,至臻后缀,智慧手套,1,100,100,拥有战意时，额外 +(21–25)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140422601,至臻后缀,智慧手套,1,100,100,"+(24–30)% 迷踪效果
+失去迷踪 1 秒后获得迷踪",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116820401,至臻后缀,智慧盾牌,1,100,100,+1 哨卫数量上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130820201,至臻后缀,智慧盾牌,1,100,100,额外 +(19–25)% 从盾牌获得的防御值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130820301,至臻后缀,智慧盾牌,1,100,100,+(7–8)% 元素抗性上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130820401,至臻后缀,智慧盾牌,1,100,100,每 3% 法术格挡， +1% 施法速度和技能范围,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140821001,至臻后缀,智慧盾牌,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140821101,至臻后缀,智慧盾牌,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(40–50)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140821201,至臻后缀,智慧盾牌,1,100,100,+(40–50)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+120620201,至臻后缀,智慧胸甲,1,100,100,+(15–20)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+120620301,至臻后缀,智慧胸甲,1,100,100,+(96–135) 攻击和法术暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140620501,至臻后缀,智慧胸甲,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140621101,至臻后缀,智慧胸甲,1,100,100,+(30–45)% 几率避免元素异常状态,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130520301,至臻后缀,智慧鞋子,1,100,100,+(19–26)% 冷却回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140520101,至臻后缀,智慧鞋子,1,100,100,+(59–83)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140521801,至臻后缀,智慧鞋子,1,100,100,每移动 6 米，获得 1 层偏斜,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140521901,至臻后缀,智慧鞋子,1,100,100,移动时，额外 +(13–17)% 最大护盾,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140522301,至臻后缀,智慧鞋子,1,100,100,开始移动时， 触发 (6–10) 级迅疾之风，间隔 1 秒,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140522701,至臻后缀,智慧鞋子,1,100,100,+(30–45)% 几率避免元素异常状态,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116140101,至臻后缀,武杖,1,100,100,+(1–2) 引导层数上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130140201,至臻后缀,武杖,1,100,100,对生命造成额外 (43–60)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140141001,至臻后缀,武杖,1,100,100,+(1–2) 引导层数下限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140141801,至臻后缀,武杖,1,100,100,+(70–90)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140141901,至臻后缀,武杖,1,100,100,+(176–250)% 破击蓄能回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140142001,至臻后缀,武杖,1,100,100,"+46% 斩击几率
+额外 +(35–48)% 斩击伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116320601,至臻后缀,法杖,1,100,100,法术迸发释放的技能额外 +(48–68)% 击中伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130320401,至臻后缀,法杖,1,100,100,+(29–40)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140320001,至臻后缀,法杖,1,100,100,"+1 抛射投射物分裂数量
+额外 +(12–16)% 投射物伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140320601,至臻后缀,法杖,1,100,100,"额外 -15% 施法速度
+额外 +(38–53)% 法术伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140320701,至臻后缀,法杖,1,100,100,"+1 地面数量上限
+额外 +1% 伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140322301,至臻后缀,法杖,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140322601,至臻后缀,法杖,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(40–50)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140322701,至臻后缀,法杖,1,100,100,+(40–50)% 纠缠伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140322801,至臻后缀,法杖,1,100,100,+1 哨卫数量上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130270201,至臻后缀,火枪,1,100,100,对生命造成额外 (43–60)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140271901,至臻后缀,火枪,1,100,100,"+2 地面数量上限
+额外 +1% 伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140272401,至臻后缀,火枪,1,100,100,+(70–90)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140272601,至臻后缀,火枪,1,100,100,+(80–100)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130280201,至臻后缀,火炮,1,100,100,对生命造成额外 (43–60)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140282101,至臻后缀,火炮,1,100,100,"+2 地面数量上限
+额外 +1% 伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140282601,至臻后缀,火炮,1,100,100,+(70–90)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140282801,至臻后缀,火炮,1,100,100,+(80–100)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115900501,至臻后缀,灵戒,1,100,100,每秒统御值增加 (8–10) 点,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130900401,至臻后缀,灵戒,1,100,100,"+(9–12)% 元素抗性
++(9–12)% 混沌抗性",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140901401,至臻后缀,灵戒,1,100,100,魔灵 +(57–80) 初始生长值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140901501,至臻后缀,灵戒,1,100,100,+(89–125) 召唤物暴击值,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140901601,至臻后缀,灵戒,1,100,100,召唤物 +(19–26)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+110330701,至臻后缀,灵杖,1,100,100,+(106–150)% 召唤物暴击伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116330801,至臻后缀,灵杖,1,100,100,额外 +(29–40)%魔灵强化技能伤害和强化技能造成的异常伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+116330901,至臻后缀,灵杖,1,100,100,额外 +(43–60)% 魔灵终极技能伤害和终极技能造成的异常伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130330501,至臻后缀,灵杖,1,100,100,召唤物 +(29–40)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140330601,至臻后缀,灵杖,1,100,100,至少拥有 40 点统御值时，智械召唤物额外 +(26–35)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130010501,至臻后缀,爪,1,100,100,+(29–40)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140010801,至臻后缀,爪,1,100,100,"+2 幻影数量
+额外 -5% 幻影伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140011901,至臻后缀,爪,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140012201,至臻后缀,爪,1,100,100,+(40–50)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130230001,至臻后缀,腰带,1,100,100,+(18–24)% 技能效果持续时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130230401,至臻后缀,腰带,1,100,100,+(17–24)% 冷却回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140230201,至臻后缀,腰带,1,100,100,+(19–26)% 几率造成双倍伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140230901,至臻后缀,腰带,1,100,100,+(37–52)% 凋零持续时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140231301,至臻后缀,腰带,1,100,100,释放轰炸技能时，有 +(30–37)% 概率该次轰炸技能总波次+1,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140902601,至臻后缀,腰带,1,100,100,+(23–32)% 恶化持续时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+115120801,至臻后缀,锡杖,1,100,100,"+4 射线条数
+额外 +(5–10)% 伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130120201,至臻后缀,锡杖,1,100,100,对生命造成额外 (43–60)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140120701,至臻后缀,锡杖,1,100,100,引导时， 额外 +(44–60)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140121101,至臻后缀,锡杖,1,100,100,"+2 地面数量上限
+额外 +1% 伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140121401,至臻后缀,锡杖,1,100,100,+(70–90)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140121501,至臻后缀,锡杖,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(80–100)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140121701,至臻后缀,锡杖,1,100,100,+(80–100)% 纠缠伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140121801,至臻后缀,锡杖,1,100,100,+2 哨卫数量上限,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+120200001,至臻后缀,项链,1,100,100,每拥有 1 层任意祝福， +(5–6)% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130200101,至臻后缀,项链,1,100,100,+(15–20)% 魔力封印补偿,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130200301,至臻后缀,项链,1,100,100,+(15–20)% 光环效果,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+130200401,至臻后缀,项链,1,100,100,每 12 点属性， +1% 伤害,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140902001,至臻后缀,项链,1,100,100,+(23–32)% 恶化持续时间,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140340201,至臻后缀,魔杖,1,100,100,+(89–125)% 收割回复速度,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140341201,至臻后缀,魔杖,1,100,100,"+1 地面数量上限
+额外 +1% 伤害",https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140341501,至臻后缀,魔杖,1,100,100,+(35–45)% 贯注伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140341601,至臻后缀,魔杖,1,100,100,若最近释放的连携终结技至少消耗了 8 点连携点，+(40–50)% 连携伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80
+140341701,至臻后缀,魔杖,1,100,100,+(40–50)% 异常伤害加深,https://tlidb.com/cn/Craft#%E8%AF%8D%E7%BC%80

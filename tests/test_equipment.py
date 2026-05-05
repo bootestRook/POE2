@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import random
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -38,6 +39,16 @@ class EquipmentAffixGenerationTest(unittest.TestCase):
         self.assertEqual(item.base_affix.library, "base")
         self.assertEqual(item.base_affix.gen, "base")
         self.assertEqual(item.ordinary_affixes, ())
+        self.assertNotRegex(item.base_affix.effect, re.compile(r"\d+\s*[–-]\s*\d+"))
+
+    def test_roll_instantiates_numeric_ranges_on_equipment_instance(self) -> None:
+        item = self.generator.generate("力量头部", 86, "粉色", instance_id="str_head")
+        range_pattern = re.compile(r"\d+\s*[–-]\s*\d+")
+
+        self.assertNotRegex(item.base_affix.effect, range_pattern)
+        self.assertTrue(item.ordinary_affixes)
+        for affix in item.ordinary_affixes:
+            self.assertNotRegex(affix.effect, range_pattern)
 
     def test_prefix_suffix_capacity_by_level(self) -> None:
         self.assertEqual(prefix_suffix_capacity(1), (1, 0))

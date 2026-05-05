@@ -12,94 +12,94 @@ source_values:
   display_level: 20
   raw_lines: ["辅助近战挥斩技能。", "被辅助技能 +21% 斩击几率 (Lv1:21) (Lv21:41) (Lv41:51)", "被辅助技能 +21% 斩击几率 (Lv1:21) (Lv21:41) (Lv41:51)"]
   parsed_values:
-    status_chance_add_percent: 21
+    slash_chance_add_percent: 21
   anchors:
-    status_chance_add_percent:
+    slash_chance_add_percent:
       20: 21
 level_table:
   levels:
     1:
-      status_chance_add_percent: 2.1
+      slash_chance_add_percent: 21
     2:
-      status_chance_add_percent: 3.09
+      slash_chance_add_percent: 22
     3:
-      status_chance_add_percent: 4.09
+      slash_chance_add_percent: 23
     4:
-      status_chance_add_percent: 5.08
+      slash_chance_add_percent: 24
     5:
-      status_chance_add_percent: 6.08
+      slash_chance_add_percent: 25
     6:
-      status_chance_add_percent: 7.07
+      slash_chance_add_percent: 26
     7:
-      status_chance_add_percent: 8.07
+      slash_chance_add_percent: 27
     8:
-      status_chance_add_percent: 9.06
+      slash_chance_add_percent: 28
     9:
-      status_chance_add_percent: 10.06
+      slash_chance_add_percent: 29
     10:
-      status_chance_add_percent: 11.05
+      slash_chance_add_percent: 30
     11:
-      status_chance_add_percent: 12.05
+      slash_chance_add_percent: 31
     12:
-      status_chance_add_percent: 13.04
+      slash_chance_add_percent: 32
     13:
-      status_chance_add_percent: 14.04
+      slash_chance_add_percent: 33
     14:
-      status_chance_add_percent: 15.03
+      slash_chance_add_percent: 34
     15:
-      status_chance_add_percent: 16.03
+      slash_chance_add_percent: 35
     16:
-      status_chance_add_percent: 17.02
+      slash_chance_add_percent: 36
     17:
-      status_chance_add_percent: 18.02
+      slash_chance_add_percent: 37
     18:
-      status_chance_add_percent: 19.01
+      slash_chance_add_percent: 38
     19:
-      status_chance_add_percent: 20.01
+      slash_chance_add_percent: 39
     20:
-      status_chance_add_percent: 21.0
+      slash_chance_add_percent: 40
     21:
-      status_chance_add_percent: 21.1
+      slash_chance_add_percent: 41
     22:
-      status_chance_add_percent: 21.21
+      slash_chance_add_percent: 41.5
     23:
-      status_chance_add_percent: 21.31
+      slash_chance_add_percent: 42
     24:
-      status_chance_add_percent: 21.42
+      slash_chance_add_percent: 42.5
     25:
-      status_chance_add_percent: 21.52
+      slash_chance_add_percent: 43
     26:
-      status_chance_add_percent: 21.63
+      slash_chance_add_percent: 43.5
     27:
-      status_chance_add_percent: 21.73
+      slash_chance_add_percent: 44
     28:
-      status_chance_add_percent: 21.84
+      slash_chance_add_percent: 44.5
     29:
-      status_chance_add_percent: 21.95
+      slash_chance_add_percent: 45
     30:
-      status_chance_add_percent: 22.05
+      slash_chance_add_percent: 45.5
     31:
-      status_chance_add_percent: 22.15
+      slash_chance_add_percent: 46
     32:
-      status_chance_add_percent: 22.26
+      slash_chance_add_percent: 46.5
     33:
-      status_chance_add_percent: 22.36
+      slash_chance_add_percent: 47
     34:
-      status_chance_add_percent: 22.47
+      slash_chance_add_percent: 47.5
     35:
-      status_chance_add_percent: 22.57
+      slash_chance_add_percent: 48
     36:
-      status_chance_add_percent: 22.68
+      slash_chance_add_percent: 48.5
     37:
-      status_chance_add_percent: 22.79
+      slash_chance_add_percent: 49
     38:
-      status_chance_add_percent: 22.89
+      slash_chance_add_percent: 49.5
     39:
-      status_chance_add_percent: 23.0
+      slash_chance_add_percent: 50
     40:
-      status_chance_add_percent: 23.1
+      slash_chance_add_percent: 50.5
 tags: ["gem", "support_gem", "loot_gem", "gem_type_7", "support_shape"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["melee"]
-effect_stats: ["status_chance_add_percent"]
+effect_stats: ["slash_chance_add_percent"]

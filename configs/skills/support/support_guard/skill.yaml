@@ -13,93 +13,179 @@ source_values:
   raw_lines: ["辅助引导技能。", "被辅助技能额外 15.5% 伤害 (Lv1:31/2) (Lv21:51/2) (Lv41:71/2)", "每使用 5 次被辅助技能，如果没有屏障则获得屏障，触发该效果的间隔为 6 秒", "被辅助技能额外 15.5% 伤害 (Lv1:31/2) (Lv21:51/2) (Lv41:71/2)", "每使用 5 次被辅助技能，如果没有屏障则获得屏障，触发该效果的间隔为 6 秒"]
   parsed_values:
     damage_final_percent: 15.5
+    guard_trigger_count: 5
+    guard_internal_cooldown_ms: 6000
   anchors:
     damage_final_percent:
       20: 15.5
+    guard_trigger_count:
+      20: 5
+    guard_internal_cooldown_ms:
+      20: 6000
 level_table:
   levels:
     1:
-      damage_final_percent: 1.55
-    2:
-      damage_final_percent: 2.28
-    3:
-      damage_final_percent: 3.02
-    4:
-      damage_final_percent: 3.75
-    5:
-      damage_final_percent: 4.49
-    6:
-      damage_final_percent: 5.22
-    7:
-      damage_final_percent: 5.96
-    8:
-      damage_final_percent: 6.69
-    9:
-      damage_final_percent: 7.42
-    10:
-      damage_final_percent: 8.16
-    11:
-      damage_final_percent: 8.89
-    12:
-      damage_final_percent: 9.63
-    13:
-      damage_final_percent: 10.36
-    14:
-      damage_final_percent: 11.09
-    15:
-      damage_final_percent: 11.83
-    16:
-      damage_final_percent: 12.56
-    17:
-      damage_final_percent: 13.3
-    18:
-      damage_final_percent: 14.03
-    19:
-      damage_final_percent: 14.77
-    20:
       damage_final_percent: 15.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    2:
+      damage_final_percent: 16
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    3:
+      damage_final_percent: 16.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    4:
+      damage_final_percent: 17
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    5:
+      damage_final_percent: 17.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    6:
+      damage_final_percent: 18
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    7:
+      damage_final_percent: 18.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    8:
+      damage_final_percent: 19
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    9:
+      damage_final_percent: 19.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    10:
+      damage_final_percent: 20
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    11:
+      damage_final_percent: 20.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    12:
+      damage_final_percent: 21
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    13:
+      damage_final_percent: 21.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    14:
+      damage_final_percent: 22
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    15:
+      damage_final_percent: 22.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    16:
+      damage_final_percent: 23
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    17:
+      damage_final_percent: 23.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    18:
+      damage_final_percent: 24
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    19:
+      damage_final_percent: 24.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
+    20:
+      damage_final_percent: 25
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     21:
-      damage_final_percent: 15.58
+      damage_final_percent: 25.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     22:
-      damage_final_percent: 15.65
+      damage_final_percent: 26
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     23:
-      damage_final_percent: 15.73
+      damage_final_percent: 26.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     24:
-      damage_final_percent: 15.81
+      damage_final_percent: 27
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     25:
-      damage_final_percent: 15.89
+      damage_final_percent: 27.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     26:
-      damage_final_percent: 15.96
+      damage_final_percent: 28
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     27:
-      damage_final_percent: 16.04
+      damage_final_percent: 28.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     28:
-      damage_final_percent: 16.12
+      damage_final_percent: 29
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     29:
-      damage_final_percent: 16.2
+      damage_final_percent: 29.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     30:
-      damage_final_percent: 16.28
+      damage_final_percent: 30
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     31:
-      damage_final_percent: 16.35
+      damage_final_percent: 30.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     32:
-      damage_final_percent: 16.43
+      damage_final_percent: 31
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     33:
-      damage_final_percent: 16.51
+      damage_final_percent: 31.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     34:
-      damage_final_percent: 16.59
+      damage_final_percent: 32
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     35:
-      damage_final_percent: 16.66
+      damage_final_percent: 32.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     36:
-      damage_final_percent: 16.74
+      damage_final_percent: 33
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     37:
-      damage_final_percent: 16.82
+      damage_final_percent: 33.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     38:
-      damage_final_percent: 16.89
+      damage_final_percent: 34
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     39:
-      damage_final_percent: 16.97
+      damage_final_percent: 34.5
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
     40:
-      damage_final_percent: 17.05
+      damage_final_percent: 35
+      guard_trigger_count: 5
+      guard_internal_cooldown_ms: 6000
 tags: ["gem", "support_gem", "loot_gem", "gem_type_6", "support_damage"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]
   tags_any: ["attack", "spell", "projectile", "area", "melee", "ranged", "aura"]
-effect_stats: ["damage_final_percent"]
+effect_stats: ["damage_final_percent", "guard_trigger_count", "guard_internal_cooldown_ms"]

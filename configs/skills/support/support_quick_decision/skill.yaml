@@ -19,85 +19,125 @@ source_values:
 level_table:
   levels:
     1:
-      attack_speed_add_percent: 1.5
+      attack_speed_add_percent: 15
+      cast_speed_add_percent: 15
     2:
-      attack_speed_add_percent: 2.21
+      attack_speed_add_percent: 15.5
+      cast_speed_add_percent: 15.5
     3:
-      attack_speed_add_percent: 2.92
+      attack_speed_add_percent: 16
+      cast_speed_add_percent: 16
     4:
-      attack_speed_add_percent: 3.63
-    5:
-      attack_speed_add_percent: 4.34
-    6:
-      attack_speed_add_percent: 5.05
-    7:
-      attack_speed_add_percent: 5.76
-    8:
-      attack_speed_add_percent: 6.47
-    9:
-      attack_speed_add_percent: 7.18
-    10:
-      attack_speed_add_percent: 7.89
-    11:
-      attack_speed_add_percent: 8.61
-    12:
-      attack_speed_add_percent: 9.32
-    13:
-      attack_speed_add_percent: 10.03
-    14:
-      attack_speed_add_percent: 10.74
-    15:
-      attack_speed_add_percent: 11.45
-    16:
-      attack_speed_add_percent: 12.16
-    17:
-      attack_speed_add_percent: 12.87
-    18:
-      attack_speed_add_percent: 13.58
-    19:
-      attack_speed_add_percent: 14.29
-    20:
-      attack_speed_add_percent: 15.0
-    21:
-      attack_speed_add_percent: 15.07
-    22:
-      attack_speed_add_percent: 15.15
-    23:
-      attack_speed_add_percent: 15.22
-    24:
-      attack_speed_add_percent: 15.3
-    25:
-      attack_speed_add_percent: 15.37
-    26:
-      attack_speed_add_percent: 15.45
-    27:
-      attack_speed_add_percent: 15.52
-    28:
-      attack_speed_add_percent: 15.6
-    29:
-      attack_speed_add_percent: 15.67
-    30:
-      attack_speed_add_percent: 15.75
-    31:
-      attack_speed_add_percent: 15.82
-    32:
-      attack_speed_add_percent: 15.9
-    33:
-      attack_speed_add_percent: 15.97
-    34:
-      attack_speed_add_percent: 16.05
-    35:
-      attack_speed_add_percent: 16.12
-    36:
-      attack_speed_add_percent: 16.2
-    37:
-      attack_speed_add_percent: 16.27
-    38:
-      attack_speed_add_percent: 16.35
-    39:
-      attack_speed_add_percent: 16.43
-    40:
       attack_speed_add_percent: 16.5
+      cast_speed_add_percent: 16.5
+    5:
+      attack_speed_add_percent: 17
+      cast_speed_add_percent: 17
+    6:
+      attack_speed_add_percent: 17.5
+      cast_speed_add_percent: 17.5
+    7:
+      attack_speed_add_percent: 18
+      cast_speed_add_percent: 18
+    8:
+      attack_speed_add_percent: 18.5
+      cast_speed_add_percent: 18.5
+    9:
+      attack_speed_add_percent: 19
+      cast_speed_add_percent: 19
+    10:
+      attack_speed_add_percent: 19.5
+      cast_speed_add_percent: 19.5
+    11:
+      attack_speed_add_percent: 20
+      cast_speed_add_percent: 20
+    12:
+      attack_speed_add_percent: 20.5
+      cast_speed_add_percent: 20.5
+    13:
+      attack_speed_add_percent: 21
+      cast_speed_add_percent: 21
+    14:
+      attack_speed_add_percent: 21.5
+      cast_speed_add_percent: 21.5
+    15:
+      attack_speed_add_percent: 22
+      cast_speed_add_percent: 22
+    16:
+      attack_speed_add_percent: 22.5
+      cast_speed_add_percent: 22.5
+    17:
+      attack_speed_add_percent: 23
+      cast_speed_add_percent: 23
+    18:
+      attack_speed_add_percent: 23.5
+      cast_speed_add_percent: 23.5
+    19:
+      attack_speed_add_percent: 24
+      cast_speed_add_percent: 24
+    20:
+      attack_speed_add_percent: 24.5
+      cast_speed_add_percent: 24.5
+    21:
+      attack_speed_add_percent: 25
+      cast_speed_add_percent: 25
+    22:
+      attack_speed_add_percent: 25.5
+      cast_speed_add_percent: 25.5
+    23:
+      attack_speed_add_percent: 26
+      cast_speed_add_percent: 26
+    24:
+      attack_speed_add_percent: 26.5
+      cast_speed_add_percent: 26.5
+    25:
+      attack_speed_add_percent: 27
+      cast_speed_add_percent: 27
+    26:
+      attack_speed_add_percent: 27.5
+      cast_speed_add_percent: 27.5
+    27:
+      attack_speed_add_percent: 28
+      cast_speed_add_percent: 28
+    28:
+      attack_speed_add_percent: 28.5
+      cast_speed_add_percent: 28.5
+    29:
+      attack_speed_add_percent: 29
+      cast_speed_add_percent: 29
+    30:
+      attack_speed_add_percent: 29.5
+      cast_speed_add_percent: 29.5
+    31:
+      attack_speed_add_percent: 30
+      cast_speed_add_percent: 30
+    32:
+      attack_speed_add_percent: 30.5
+      cast_speed_add_percent: 30.5
+    33:
+      attack_speed_add_percent: 31
+      cast_speed_add_percent: 31
+    34:
+      attack_speed_add_percent: 31.5
+      cast_speed_add_percent: 31.5
+    35:
+      attack_speed_add_percent: 32
+      cast_speed_add_percent: 32
+    36:
+      attack_speed_add_percent: 32.5
+      cast_speed_add_percent: 32.5
+    37:
+      attack_speed_add_percent: 33
+      cast_speed_add_percent: 33
+    38:
+      attack_speed_add_percent: 33.5
+      cast_speed_add_percent: 33.5
+    39:
+      attack_speed_add_percent: 34
+      cast_speed_add_percent: 34
+    40:
+      attack_speed_add_percent: 34.5
+      cast_speed_add_percent: 34.5
 tags: ["gem", "support_gem", "loot_gem", "gem_type_3", "support_speed"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]

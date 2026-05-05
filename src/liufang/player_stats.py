@@ -56,6 +56,9 @@ def aggregate_player_stats(
     _derive(values, trace, "cast_speed_add_percent", dexterity * 0.2)
     _derive(values, trace, "evasion_add_percent", dexterity * 0.2)
     _derive(values, trace, "max_mana", intelligence * 0.5)
+    energy_shield_add_percent = _numeric(values, "max_energy_shield_add_percent")
+    if energy_shield_add_percent:
+        _derive(values, trace, "max_energy_shield", _numeric(values, "max_energy_shield") * energy_shield_add_percent / 100.0)
     _derive(values, trace, "max_energy_shield", _numeric(values, "max_energy_shield") * intelligence * 0.002)
 
     base_crit = _numeric(values, "base_crit_chance_percent")

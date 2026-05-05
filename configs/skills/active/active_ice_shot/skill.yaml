@@ -5,7 +5,7 @@ source_values:
   source: "tlidb"
   tlidb_id: "Ice_Shot"
   display_level: 20
-  raw_lines: ["释放该技能向前发射 1 个冰锥，击中时造成 313% 武器攻击伤害。", "冰锥击中敌人时在其身后产生爆炸，击中时造成 157% 武器攻击伤害。", "该技能全部物理伤害转化为冰冷伤害。", "冰锥：", "造成 313% 武器攻击伤害", "基础发射 1 个投射物", "爆炸：", "造成 157% 武器攻击伤害", "该技能 100% 物理伤害转化为冰冷伤害", "该技能造成击中冰冷伤害时，施加冰结"]
+  raw_lines: ["释放该技能向前发射 1 个冰锥，击中时造成 313% 武器攻击伤害。", "冰锥击中敌人时在其身后产生爆炸，击中时造成 157% 武器攻击伤害。", "该技能全部物理伤害转化为冰霜伤害。", "冰锥：", "造成 313% 武器攻击伤害", "基础发射 1 个投射物", "爆炸：", "造成 157% 武器攻击伤害", "该技能 100% 物理伤害转化为冰霜伤害", "该技能造成击中冰霜伤害时，施加冰结"]
   parsed_values:
     base_damage: 313
     mana_cost: 5
@@ -218,6 +218,13 @@ behavior:
     max_duration_ms: 2200
 hit:
   base_damage: 313
+  damage_basis: "weapon_attack"
+  weapon_attack_percent: 313
+  damage_components:
+    physical: 313
+  damage_conversions: [{"from": "physical", "to": "cold", "percent": 100}]
+  ailments: [{"type": "frostbite", "source_damage_type": "cold", "chance_percent": 100, "duration_ms": 4000, "base_value": 10, "max_stacks": 999, "effect_per_stack": 1, "threshold": 100}]
+  secondary_hits: [{"id": "ice_cone_back_explosion", "trigger": "on_projectile_hit", "shape": "circle", "placement": "behind_target", "offset_distance": 42, "radius": 64, "base_damage": 157, "damage_basis": "weapon_attack", "weapon_attack_percent": 157, "damage_components": {"physical": 157}, "damage_conversions": [{"from": "physical", "to": "cold", "percent": 100}], "ailments": [{"type": "frostbite", "source_damage_type": "cold", "chance_percent": 100, "duration_ms": 4000, "base_value": 10, "max_stacks": 999, "effect_per_stack": 1, "threshold": 100}], "max_targets": 8, "delay_ms": 0, "vfx_key": "skill_event.ice_shot.vfx", "reason_key": "skill_event.ice_shot.damage_reason"}]
   can_crit: true
   can_apply_status: true
   damage_timing: "on_projectile_hit"

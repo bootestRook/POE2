@@ -1,5 +1,5 @@
 id: player_nova
-allowed_params: ["radius", "expand_duration_ms", "hit_at_ms", "max_targets", "center_policy", "damage_falloff_by_distance", "ring_width", "status_chance_scale"]
+allowed_params: ["radius", "expand_duration_ms", "hit_at_ms", "max_targets", "center_policy", "damage_falloff_by_distance", "ring_width", "status_chance_scale", "guard_absorb_percent", "guard_absorb_amount", "guard_duration_ms", "guard_exclude_damage_over_time", "on_kill_recast_chance_percent", "on_kill_recast_max_per_area", "suppress_hit_vfx"]
 param_constraints:
   radius:
     type: number
@@ -26,5 +26,26 @@ param_constraints:
     type: number
     minimum: 0
     maximum: 10
+  guard_absorb_percent:
+    type: number
+    minimum: 0
+    maximum: 100
+  guard_absorb_amount:
+    type: number
+    minimum: 0
+  guard_duration_ms:
+    type: integer
+    minimum: 1
+  guard_exclude_damage_over_time:
+    type: boolean
+  on_kill_recast_chance_percent:
+    type: number
+    minimum: 0
+    maximum: 100
+  on_kill_recast_max_per_area:
+    type: integer
+    minimum: 1
+  suppress_hit_vfx:
+    type: boolean
 events: ["cast_start", "area_spawn", "damage", "hit_vfx", "floating_text"]
 damage_timing: on_area_hit

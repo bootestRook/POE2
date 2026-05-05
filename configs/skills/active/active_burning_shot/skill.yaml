@@ -191,7 +191,7 @@ cast:
   search_range: 420
   cooldown_ms: 0
   release_interval_ms: 1000
-  base_cooldown_ms: 0
+  base_cooldown_ms: 1000
   trigger_interval_ms: 0
   mana_cost: 5
   windup_ms: 0
@@ -216,8 +216,18 @@ behavior:
     max_targets: 1
     min_duration_ms: 80
     max_duration_ms: 2200
+    on_ignited_hit_explosion_radius: 60
+    on_ignited_hit_true_damage_percent_of_ignite_dps: 100
+    on_ignited_hit_indirect_fire_damage: 5
+    on_ignited_hit_cooldown_ms: 5000
 hit:
   base_damage: 256
+  damage_basis: "weapon_attack"
+  weapon_attack_percent: 256
+  damage_components:
+    physical: 256
+  damage_conversions: [{"from": "physical", "to": "fire", "percent": 100}]
+  ailments: [{"type": "ignite", "source_damage_type": "fire", "chance_percent": 25, "duration_ms": 4000, "base_damage_per_second": 25.6, "damage_over_time_more_percent": 30}]
   can_crit: true
   can_apply_status: true
   damage_timing: "on_projectile_hit"

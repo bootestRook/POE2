@@ -19,85 +19,125 @@ source_values:
 level_table:
   levels:
     1:
-      area_add_percent: -3.0
+      area_add_percent: -30
+      damage_final_percent: 22.5
     2:
-      area_add_percent: -4.42
+      area_add_percent: -30
+      damage_final_percent: 23
     3:
-      area_add_percent: -5.84
+      area_add_percent: -30
+      damage_final_percent: 23.5
     4:
-      area_add_percent: -7.26
+      area_add_percent: -30
+      damage_final_percent: 24
     5:
-      area_add_percent: -8.68
+      area_add_percent: -30
+      damage_final_percent: 24.5
     6:
-      area_add_percent: -10.11
+      area_add_percent: -30
+      damage_final_percent: 25
     7:
-      area_add_percent: -11.53
+      area_add_percent: -30
+      damage_final_percent: 25.5
     8:
-      area_add_percent: -12.95
+      area_add_percent: -30
+      damage_final_percent: 26
     9:
-      area_add_percent: -14.37
+      area_add_percent: -30
+      damage_final_percent: 26.5
     10:
-      area_add_percent: -15.79
+      area_add_percent: -30
+      damage_final_percent: 27
     11:
-      area_add_percent: -17.21
+      area_add_percent: -30
+      damage_final_percent: 27.5
     12:
-      area_add_percent: -18.63
+      area_add_percent: -30
+      damage_final_percent: 28
     13:
-      area_add_percent: -20.05
+      area_add_percent: -30
+      damage_final_percent: 28.5
     14:
-      area_add_percent: -21.47
+      area_add_percent: -30
+      damage_final_percent: 29
     15:
-      area_add_percent: -22.89
+      area_add_percent: -30
+      damage_final_percent: 29.5
     16:
-      area_add_percent: -24.32
+      area_add_percent: -30
+      damage_final_percent: 30
     17:
-      area_add_percent: -25.74
+      area_add_percent: -30
+      damage_final_percent: 30.5
     18:
-      area_add_percent: -27.16
+      area_add_percent: -30
+      damage_final_percent: 31
     19:
-      area_add_percent: -28.58
+      area_add_percent: -30
+      damage_final_percent: 31.5
     20:
-      area_add_percent: -30.0
+      area_add_percent: -30
+      damage_final_percent: 32
     21:
-      area_add_percent: -30.15
+      area_add_percent: -30
+      damage_final_percent: 32.5
     22:
-      area_add_percent: -30.3
+      area_add_percent: -30
+      damage_final_percent: 33
     23:
-      area_add_percent: -30.45
+      area_add_percent: -30
+      damage_final_percent: 33.5
     24:
-      area_add_percent: -30.6
+      area_add_percent: -30
+      damage_final_percent: 34
     25:
-      area_add_percent: -30.75
+      area_add_percent: -30
+      damage_final_percent: 34.5
     26:
-      area_add_percent: -30.9
+      area_add_percent: -30
+      damage_final_percent: 35
     27:
-      area_add_percent: -31.05
+      area_add_percent: -30
+      damage_final_percent: 35.5
     28:
-      area_add_percent: -31.2
+      area_add_percent: -30
+      damage_final_percent: 36
     29:
-      area_add_percent: -31.35
+      area_add_percent: -30
+      damage_final_percent: 36.5
     30:
-      area_add_percent: -31.5
+      area_add_percent: -30
+      damage_final_percent: 37
     31:
-      area_add_percent: -31.65
+      area_add_percent: -30
+      damage_final_percent: 37.5
     32:
-      area_add_percent: -31.8
+      area_add_percent: -30
+      damage_final_percent: 38
     33:
-      area_add_percent: -31.95
+      area_add_percent: -30
+      damage_final_percent: 38.5
     34:
-      area_add_percent: -32.1
+      area_add_percent: -30
+      damage_final_percent: 39
     35:
-      area_add_percent: -32.25
+      area_add_percent: -30
+      damage_final_percent: 39.5
     36:
-      area_add_percent: -32.4
+      area_add_percent: -30
+      damage_final_percent: 40
     37:
-      area_add_percent: -32.55
+      area_add_percent: -30
+      damage_final_percent: 40.5
     38:
-      area_add_percent: -32.7
+      area_add_percent: -30
+      damage_final_percent: 41
     39:
-      area_add_percent: -32.85
+      area_add_percent: -30
+      damage_final_percent: 41.5
     40:
-      area_add_percent: -33.0
+      area_add_percent: -30
+      damage_final_percent: 42
 tags: ["gem", "support_gem", "loot_gem", "gem_type_6", "support_area", "support_damage"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]

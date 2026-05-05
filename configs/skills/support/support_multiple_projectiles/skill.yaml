@@ -19,85 +19,125 @@ source_values:
 level_table:
   levels:
     1:
-      projectile_count_add: 0.2
+      projectile_count_add: 2
+      damage_final_percent: 7.4
     2:
-      projectile_count_add: 0.29
+      projectile_count_add: 2
+      damage_final_percent: 7.8
     3:
-      projectile_count_add: 0.39
+      projectile_count_add: 2
+      damage_final_percent: 8.2
     4:
-      projectile_count_add: 0.48
+      projectile_count_add: 2
+      damage_final_percent: 8.6
     5:
-      projectile_count_add: 0.58
+      projectile_count_add: 2
+      damage_final_percent: 9
     6:
-      projectile_count_add: 0.67
+      projectile_count_add: 2
+      damage_final_percent: 9.4
     7:
-      projectile_count_add: 0.77
+      projectile_count_add: 2
+      damage_final_percent: 9.8
     8:
-      projectile_count_add: 0.86
+      projectile_count_add: 2
+      damage_final_percent: 10.2
     9:
-      projectile_count_add: 0.96
+      projectile_count_add: 2
+      damage_final_percent: 10.6
     10:
-      projectile_count_add: 1.05
+      projectile_count_add: 2
+      damage_final_percent: 11
     11:
-      projectile_count_add: 1.15
+      projectile_count_add: 2
+      damage_final_percent: 11.4
     12:
-      projectile_count_add: 1.24
+      projectile_count_add: 2
+      damage_final_percent: 11.8
     13:
-      projectile_count_add: 1.34
+      projectile_count_add: 2
+      damage_final_percent: 12.2
     14:
-      projectile_count_add: 1.43
+      projectile_count_add: 2
+      damage_final_percent: 12.6
     15:
-      projectile_count_add: 1.53
+      projectile_count_add: 2
+      damage_final_percent: 13
     16:
-      projectile_count_add: 1.62
+      projectile_count_add: 2
+      damage_final_percent: 13.4
     17:
-      projectile_count_add: 1.72
+      projectile_count_add: 2
+      damage_final_percent: 13.8
     18:
-      projectile_count_add: 1.81
+      projectile_count_add: 2
+      damage_final_percent: 14.2
     19:
-      projectile_count_add: 1.91
+      projectile_count_add: 2
+      damage_final_percent: 14.6
     20:
-      projectile_count_add: 2.0
+      projectile_count_add: 2
+      damage_final_percent: 15
     21:
-      projectile_count_add: 2.01
+      projectile_count_add: 2
+      damage_final_percent: 15.4
     22:
-      projectile_count_add: 2.02
+      projectile_count_add: 2
+      damage_final_percent: 15.8
     23:
-      projectile_count_add: 2.03
+      projectile_count_add: 2
+      damage_final_percent: 16.2
     24:
-      projectile_count_add: 2.04
+      projectile_count_add: 2
+      damage_final_percent: 16.6
     25:
-      projectile_count_add: 2.05
+      projectile_count_add: 2
+      damage_final_percent: 17
     26:
-      projectile_count_add: 2.06
+      projectile_count_add: 2
+      damage_final_percent: 17.4
     27:
-      projectile_count_add: 2.07
+      projectile_count_add: 2
+      damage_final_percent: 17.8
     28:
-      projectile_count_add: 2.08
+      projectile_count_add: 2
+      damage_final_percent: 18.2
     29:
-      projectile_count_add: 2.09
+      projectile_count_add: 2
+      damage_final_percent: 18.6
     30:
-      projectile_count_add: 2.1
+      projectile_count_add: 2
+      damage_final_percent: 19
     31:
-      projectile_count_add: 2.11
+      projectile_count_add: 2
+      damage_final_percent: 19.4
     32:
-      projectile_count_add: 2.12
+      projectile_count_add: 2
+      damage_final_percent: 19.8
     33:
-      projectile_count_add: 2.13
+      projectile_count_add: 2
+      damage_final_percent: 20.2
     34:
-      projectile_count_add: 2.14
+      projectile_count_add: 2
+      damage_final_percent: 20.6
     35:
-      projectile_count_add: 2.15
+      projectile_count_add: 2
+      damage_final_percent: 21
     36:
-      projectile_count_add: 2.16
+      projectile_count_add: 2
+      damage_final_percent: 21.4
     37:
-      projectile_count_add: 2.17
+      projectile_count_add: 2
+      damage_final_percent: 21.8
     38:
-      projectile_count_add: 2.18
+      projectile_count_add: 2
+      damage_final_percent: 22.2
     39:
-      projectile_count_add: 2.19
+      projectile_count_add: 2
+      damage_final_percent: 22.6
     40:
-      projectile_count_add: 2.2
+      projectile_count_add: 2
+      damage_final_percent: 23
 tags: ["gem", "support_gem", "loot_gem", "gem_type_5", "support_projectile", "support_damage"]
 apply_filter:
   target_kinds: ["active_skill", "passive_skill"]

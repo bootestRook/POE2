@@ -13,93 +13,136 @@ source_values:
   raw_lines: ["辅助能造成伤害的技能。", "被辅助技能无法造成点燃、冰结和麻痹", "被辅助技能额外 25.5% 元素伤害 (Lv1:51/2) (Lv21:71/2) (Lv41:91/2)", "被辅助技能无法造成点燃、冰结和麻痹", "被辅助技能额外 25.5% 元素伤害 (Lv1:51/2) (Lv21:71/2) (Lv41:91/2)"]
   parsed_values:
     elemental_damage_add_percent: 25.5
+    prevent_elemental_ailments: true
   anchors:
     elemental_damage_add_percent:
       20: 25.5
+    prevent_elemental_ailments:
+      20: true
 level_table:
   levels:
     1:
-      elemental_damage_add_percent: 2.55
-    2:
-      elemental_damage_add_percent: 3.76
-    3:
-      elemental_damage_add_percent: 4.97
-    4:
-      elemental_damage_add_percent: 6.17
-    5:
-      elemental_damage_add_percent: 7.38
-    6:
-      elemental_damage_add_percent: 8.59
-    7:
-      elemental_damage_add_percent: 9.8
-    8:
-      elemental_damage_add_percent: 11.01
-    9:
-      elemental_damage_add_percent: 12.21
-    10:
-      elemental_damage_add_percent: 13.42
-    11:
-      elemental_damage_add_percent: 14.63
-    12:
-      elemental_damage_add_percent: 15.84
-    13:
-      elemental_damage_add_percent: 17.04
-    14:
-      elemental_damage_add_percent: 18.25
-    15:
-      elemental_damage_add_percent: 19.46
-    16:
-      elemental_damage_add_percent: 20.67
-    17:
-      elemental_damage_add_percent: 21.88
-    18:
-      elemental_damage_add_percent: 23.08
-    19:
-      elemental_damage_add_percent: 24.29
-    20:
       elemental_damage_add_percent: 25.5
+      prevent_elemental_ailments: true
+    2:
+      elemental_damage_add_percent: 26
+      prevent_elemental_ailments: true
+    3:
+      elemental_damage_add_percent: 26.5
+      prevent_elemental_ailments: true
+    4:
+      elemental_damage_add_percent: 27
+      prevent_elemental_ailments: true
+    5:
+      elemental_damage_add_percent: 27.5
+      prevent_elemental_ailments: true
+    6:
+      elemental_damage_add_percent: 28
+      prevent_elemental_ailments: true
+    7:
+      elemental_damage_add_percent: 28.5
+      prevent_elemental_ailments: true
+    8:
+      elemental_damage_add_percent: 29
+      prevent_elemental_ailments: true
+    9:
+      elemental_damage_add_percent: 29.5
+      prevent_elemental_ailments: true
+    10:
+      elemental_damage_add_percent: 30
+      prevent_elemental_ailments: true
+    11:
+      elemental_damage_add_percent: 30.5
+      prevent_elemental_ailments: true
+    12:
+      elemental_damage_add_percent: 31
+      prevent_elemental_ailments: true
+    13:
+      elemental_damage_add_percent: 31.5
+      prevent_elemental_ailments: true
+    14:
+      elemental_damage_add_percent: 32
+      prevent_elemental_ailments: true
+    15:
+      elemental_damage_add_percent: 32.5
+      prevent_elemental_ailments: true
+    16:
+      elemental_damage_add_percent: 33
+      prevent_elemental_ailments: true
+    17:
+      elemental_damage_add_percent: 33.5
+      prevent_elemental_ailments: true
+    18:
+      elemental_damage_add_percent: 34
+      prevent_elemental_ailments: true
+    19:
+      elemental_damage_add_percent: 34.5
+      prevent_elemental_ailments: true
+    20:
+      elemental_damage_add_percent: 35
+      prevent_elemental_ailments: true
     21:
-      elemental_damage_add_percent: 25.63
+      elemental_damage_add_percent: 35.5
+      prevent_elemental_ailments: true
     22:
-      elemental_damage_add_percent: 25.75
+      elemental_damage_add_percent: 36
+      prevent_elemental_ailments: true
     23:
-      elemental_damage_add_percent: 25.88
+      elemental_damage_add_percent: 36.5
+      prevent_elemental_ailments: true
     24:
-      elemental_damage_add_percent: 26.01
+      elemental_damage_add_percent: 37
+      prevent_elemental_ailments: true
     25:
-      elemental_damage_add_percent: 26.14
+      elemental_damage_add_percent: 37.5
+      prevent_elemental_ailments: true
     26:
-      elemental_damage_add_percent: 26.27
+      elemental_damage_add_percent: 38
+      prevent_elemental_ailments: true
     27:
-      elemental_damage_add_percent: 26.39
+      elemental_damage_add_percent: 38.5
+      prevent_elemental_ailments: true
     28:
-      elemental_damage_add_percent: 26.52
+      elemental_damage_add_percent: 39
+      prevent_elemental_ailments: true
     29:
-      elemental_damage_add_percent: 26.65
+      elemental_damage_add_percent: 39.5
+      prevent_elemental_ailments: true
     30:
-      elemental_damage_add_percent: 26.78
+      elemental_damage_add_percent: 40
+      prevent_elemental_ailments: true
     31:
-      elemental_damage_add_percent: 26.9
+      elemental_damage_add_percent: 40.5
+      prevent_elemental_ailments: true
     32:
-      elemental_damage_add_percent: 27.03
+      elemental_damage_add_percent: 41
+      prevent_elemental_ailments: true
     33:
-      elemental_damage_add_percent: 27.16
+      elemental_damage_add_percent: 41.5
+      prevent_elemental_ailments: true
     34:
-      elemental_damage_add_percent: 27.29
+      elemental_damage_add_percent: 42
+      prevent_elemental_ailments: true
     35:
-      elemental_damage_add_percent: 27.41
+      elemental_damage_add_percent: 42.5
+      prevent_elemental_ailments: true
     36:
-      elemental_damage_add_percent: 27.54
+      elemental_damage_add_percent: 43
+      prevent_elemental_ailments: true
     37:
-      elemental_damage_add_percent: 27.67
+      elemental_damage_add_percent: 43.5
+      prevent_elemental_ailments: true
     38:
-      elemental_damage_add_percent: 27.8
+      elemental_damage_add_percent: 44
+      prevent_elemental_ailments: true
     39:
-      elemental_damage_add_percent: 27.92
+      elemental_damage_add_percent: 44.5
+      prevent_elemental_ailments: true
     40:
-      elemental_damage_add_percent: 28.05
+      elemental_damage_add_percent: 45
+      prevent_elemental_ailments: true
 tags: ["gem", "support_gem", "loot_gem", "gem_type_4", "support_damage"]
 apply_filter:
-  target_kinds: ["active_skill", "passive_skill"]
+  target_kinds: ["active_skill"]
   tags_any: ["fire", "cold", "lightning"]
-effect_stats: ["elemental_damage_add_percent", "cannot_crit"]
+effect_stats: ["elemental_damage_add_percent", "prevent_elemental_ailments"]
