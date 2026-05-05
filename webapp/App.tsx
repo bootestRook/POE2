@@ -1596,21 +1596,34 @@ function frontendSkillPreviewForGemLevel(skill: SkillPreview, gem: Gem): SkillPr
   const sourceContext = frontendRecord(skill.source_context);
   const templateLevel = Math.max(1, Math.floor(Number(sourceContext.effective_gem_level ?? sourceContext.base_gem_level ?? 1)));
   const targetLevel = frontendSkillClampedLevel(skill, Math.max(1, Math.floor(Number(gem.level ?? templateLevel))));
-  if (targetLevel === templateLevel) return skill;
+  const levelValues = frontendSkillLevelTableValues(skill, targetLevel);
 
   const currentBaseDamage = frontendSkillLevelValue(skill, "base_damage", templateLevel, Number(skill.base_damage ?? skill.final_damage ?? 0), templateLevel);
-  const targetBaseDamage = frontendSkillLevelValue(skill, "base_damage", targetLevel, currentBaseDamage, templateLevel);
+  const targetBaseDamage = frontendLevelValueNumber(levelValues, "base_damage", frontendSkillLevelValue(skill, "base_damage", targetLevel, currentBaseDamage, templateLevel));
   const damageScale = currentBaseDamage > 0 && targetBaseDamage > 0 ? targetBaseDamage / currentBaseDamage : 1;
-  const levelValues = frontendSkillLevelTableValues(skill, targetLevel);
   const nextHit = { ...(skill.hit ?? {}) };
+  const hitComponentTotal = frontendDamageMapTotal(nextHit.damage_components);
+  const hitConfigScale = hitComponentTotal > 0 && targetBaseDamage > 0 ? targetBaseDamage / hitComponentTotal : damageScale;
   if (typeof nextHit.base_damage === "number") nextHit.base_damage = targetBaseDamage;
+  if (nextHit.damage_components && typeof nextHit.damage_components === "object" && !Array.isArray(nextHit.damage_components)) {
+    nextHit.damage_components = frontendLevelDamageComponents(levelValues, "hit_damage_component_") ?? normalizeFrontendDamageMapTotal(nextHit.damage_components, targetBaseDamage);
+  }
+  if (Array.isArray(nextHit.ailments)) {
+    nextHit.ailments = applyFrontendAilmentLevelValues(nextHit.ailments, levelValues, "hit_ailment_");
+  }
   if (Array.isArray(nextHit.secondary_hits)) {
-    nextHit.secondary_hits = nextHit.secondary_hits.map((secondary) => scaleFrontendSkillHitDamage(secondary, damageScale));
+    nextHit.secondary_hits = nextHit.secondary_hits.map((secondary) => scaleFrontendSkillHitDamage(secondary, hitConfigScale, levelValues));
   }
   const nextRuntimeParams = { ...(skill.runtime_params ?? {}) };
   for (const [key, value] of Object.entries(levelValues)) {
     if (["base_damage", "mana_cost", "release_interval_ms", "base_cooldown_ms", "trigger_interval_ms"].includes(key)) continue;
     nextRuntimeParams[key] = value;
+  }
+  if (Array.isArray(nextRuntimeParams.modules)) {
+    nextRuntimeParams.modules = applyFrontendModuleLevelValues(nextRuntimeParams.modules, levelValues);
+  }
+  if (Number(nextRuntimeParams.split_projectile_base_damage ?? 0) > 0 && targetBaseDamage > 0) {
+    nextRuntimeParams.split_projectile_damage_multiplier = Number(nextRuntimeParams.split_projectile_base_damage) / targetBaseDamage;
   }
   return {
     ...skill,
@@ -1658,6 +1671,11 @@ function frontendSkillLevelTableValues(skill: SkillPreview, level: number): Reco
   return { ...(table?.[level] ?? {}) };
 }
 
+function frontendLevelValueNumber(levelValues: Record<string, number>, key: string, fallback: number) {
+  const value = levelValues[key];
+  return Number.isFinite(value) ? value : fallback;
+}
+
 function scaleFrontendDamageMap(value: unknown, scale: number) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return value;
   return Object.fromEntries(
@@ -1665,11 +1683,91 @@ function scaleFrontendDamageMap(value: unknown, scale: number) {
   );
 }
 
-function scaleFrontendSkillHitDamage<T extends Record<string, unknown>>(hit: T, scale: number): T {
+function normalizeFrontendDamageMapTotal(value: unknown, targetTotal: number) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return value;
+  const entries = Object.entries(value as Record<string, unknown>)
+    .map(([damageType, amount]) => [damageType, Number(amount ?? 0)] as const)
+    .filter(([, amount]) => Number.isFinite(amount) && amount > 0);
+  const currentTotal = frontendDamageMapEntriesTotal(entries);
+  if (currentTotal <= 0 || targetTotal <= 0) return value;
+  const scale = targetTotal / currentTotal;
+  return Object.fromEntries(entries.map(([damageType, amount]) => [damageType, amount * scale]));
+}
+
+function frontendDamageMapTotal(value: unknown) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return 0;
+  return frontendDamageMapEntriesTotal(
+    Object.entries(value as Record<string, unknown>)
+      .map(([, amount]) => Number(amount ?? 0))
+      .filter((amount) => Number.isFinite(amount) && amount > 0)
+  );
+}
+
+function frontendDamageMapEntriesTotal(entries: readonly (readonly [string, number])[] | readonly number[]) {
+  return entries.reduce((total, entry) => total + (Array.isArray(entry) ? entry[1] : entry), 0);
+}
+
+function scaleFrontendSkillHitDamage<T extends Record<string, unknown>>(hit: T, scale: number, levelValues: Record<string, number> = {}): T {
   const next = { ...hit };
-  if (typeof next.base_damage === "number") next.base_damage *= scale;
-  if (typeof next.weapon_attack_percent === "number") next.weapon_attack_percent *= scale;
+  const hitId = frontendSafeLevelKeyFragment(String(next.id ?? "secondary_hit"));
+  const prefix = `secondary_hit_${hitId}`;
+  const levelBaseDamage = frontendOptionalLevelNumber(levelValues, `${prefix}_base_damage`);
+  const levelWeaponAttackPercent = frontendOptionalLevelNumber(levelValues, `${prefix}_weapon_attack_percent`);
+  if (typeof next.base_damage === "number") next.base_damage = levelBaseDamage ?? next.base_damage * scale;
+  if (typeof next.weapon_attack_percent === "number") next.weapon_attack_percent = levelWeaponAttackPercent ?? next.weapon_attack_percent * scale;
+  if (next.damage_components && typeof next.damage_components === "object" && !Array.isArray(next.damage_components)) {
+    next.damage_components = frontendLevelDamageComponents(levelValues, `${prefix}_damage_component_`) ?? scaleFrontendDamageMap(next.damage_components, scale);
+  }
+  if (Array.isArray(next.ailments)) {
+    next.ailments = applyFrontendAilmentLevelValues(next.ailments, levelValues, `${prefix}_ailment_`);
+  }
   return next;
+}
+
+function frontendLevelDamageComponents(levelValues: Record<string, number>, prefix: string): Record<string, number> | null {
+  const entries = Object.entries(levelValues)
+    .filter(([key, value]) => key.startsWith(prefix) && Number.isFinite(value))
+    .map(([key, value]) => [key.slice(prefix.length), value] as const)
+    .filter(([damageType]) => damageType.length > 0);
+  return entries.length > 0 ? Object.fromEntries(entries) : null;
+}
+
+function frontendOptionalLevelNumber(levelValues: Record<string, number>, key: string): number | null {
+  const value = levelValues[key];
+  return Number.isFinite(value) ? value : null;
+}
+
+function frontendSafeLevelKeyFragment(value: string) {
+  return value.replace(/[^0-9A-Za-z_]+/g, "_").replace(/^_+|_+$/g, "").toLowerCase();
+}
+
+function applyFrontendAilmentLevelValues(ailments: unknown[], levelValues: Record<string, number>, prefix: string): unknown[] {
+  return ailments.map((ailment) => {
+    if (!ailment || typeof ailment !== "object" || Array.isArray(ailment)) return ailment;
+    const next = { ...(ailment as Record<string, unknown>) };
+    const type = frontendSafeLevelKeyFragment(String(next.type ?? "unknown"));
+    const baseDamagePerSecond = frontendOptionalLevelNumber(levelValues, `${prefix}${type}_base_damage_per_second`);
+    if (baseDamagePerSecond !== null) next.base_damage_per_second = baseDamagePerSecond;
+    return next;
+  });
+}
+
+function applyFrontendModuleLevelValues(modules: unknown[], levelValues: Record<string, number>): unknown[] {
+  return modules.map((module) => {
+    if (!module || typeof module !== "object" || Array.isArray(module)) return module;
+    const next = { ...(module as Record<string, unknown>) };
+    const moduleId = frontendSafeLevelKeyFragment(String(next.id ?? "module"));
+    const params = next.params;
+    if (params && typeof params === "object" && !Array.isArray(params)) {
+      const nextParams = { ...(params as Record<string, unknown>) };
+      for (const key of Object.keys(nextParams)) {
+        const levelValue = frontendOptionalLevelNumber(levelValues, `module_${moduleId}_${key}`);
+        if (levelValue !== null) nextParams[key] = levelValue;
+      }
+      next.params = nextParams;
+    }
+    return next;
+  });
 }
 
 function frontendSupportEffectiveLevel(sourceGem: Gem, supportLevelAdd: number) {
@@ -1760,12 +1858,6 @@ function applyFrontendEquipmentSkillModifiers(
   addFrontendDamageComponent(baseComponents, "lightning", statValue(skillStats, "added_lightning_damage") * addedDamageEffectiveness);
   addFrontendDamageComponent(baseComponents, "chaos", statValue(skillStats, "added_chaos_damage") * addedDamageEffectiveness);
   if (tags.has("attack")) {
-    addFrontendDamageComponent(baseComponents, damageType, statValue(skillStats, "equipment_attack_added_damage") * addedDamageEffectiveness);
-    addFrontendDamageComponent(baseComponents, "physical", statValue(skillStats, "equipment_attack_added_physical_damage") * addedDamageEffectiveness);
-    addFrontendDamageComponent(baseComponents, "fire", statValue(skillStats, "equipment_attack_added_fire_damage") * addedDamageEffectiveness);
-    addFrontendDamageComponent(baseComponents, "cold", statValue(skillStats, "equipment_attack_added_cold_damage") * addedDamageEffectiveness);
-    addFrontendDamageComponent(baseComponents, "lightning", statValue(skillStats, "equipment_attack_added_lightning_damage") * addedDamageEffectiveness);
-    addFrontendDamageComponent(baseComponents, "chaos", statValue(skillStats, "equipment_attack_added_chaos_damage") * addedDamageEffectiveness);
     addFrontendDamageComponent(baseComponents, "physical", statValue(skillStats, "weapon_attack_base_damage"));
   }
   const convertedComponents = convertFrontendDamageComponents(baseComponents, frontendDamageConversions(skill));
@@ -1785,6 +1877,8 @@ function applyFrontendEquipmentSkillModifiers(
       Object.assign(runtimeParams, modifier.payload);
     }
   }
+  const grantedEffects = frontendEquipmentGrantedEffects(modifiers, skillStats, tags, finalPercent, addedDamageEffectiveness, damageType);
+  if (grantedEffects.length > 0) runtimeParams.frontend_equipment_granted_effects = grantedEffects;
   for (const key of [
     "armor_reduction_penetration_percent",
     "cull_threshold_percent",
@@ -1858,6 +1952,58 @@ function frontendEquipmentAttackAddedDamageStat(modifier: FrontendEquipmentStatM
   if (modifier.stat === "added_damage") return "equipment_attack_added_damage";
   const match = modifier.stat.match(/^added_(physical|fire|cold|lightning|chaos)_damage$/);
   return match ? `equipment_attack_added_${match[1]}_damage` : "";
+}
+
+function frontendEquipmentGrantedEffects(
+  modifiers: FrontendEquipmentStatModifier[],
+  skillStats: Record<string, number | boolean>,
+  tags: Set<string>,
+  finalPercent: number,
+  addedDamageEffectiveness: number,
+  primaryDamageType: string
+) {
+  return modifiers
+    .map((modifier) => frontendEquipmentGrantedEffect(modifier, skillStats, tags, finalPercent, addedDamageEffectiveness, primaryDamageType))
+    .filter((effect): effect is Record<string, unknown> => Boolean(effect));
+}
+
+function frontendEquipmentGrantedEffect(
+  modifier: FrontendEquipmentStatModifier,
+  skillStats: Record<string, number | boolean>,
+  tags: Set<string>,
+  finalPercent: number,
+  addedDamageEffectiveness: number,
+  primaryDamageType: string
+) {
+  if (modifier.reason_key !== "modifier.equipment_affix" || modifier.kind !== "damage_stat") return null;
+  const damageType = frontendAddedDamageStatType(modifier.stat);
+  if (!damageType) return null;
+  const resolvedDamageType = damageType === "generic" ? primaryDamageType : damageType;
+  const multiplier = addedDamageEffectiveness * (1 + frontendComponentAdditivePercent(resolvedDamageType, skillStats, tags) / 100) * (1 + finalPercent / 100);
+  return {
+    id: `equipment_affix.${modifier.source_modifier_id}.${modifier.stat}`,
+    effect_kind: "direct_damage",
+    trigger_condition: frontendEquipmentGrantedEffectTriggerCondition(modifier),
+    direct_damage_module_id: `equipment_affix.${modifier.source_modifier_id}.direct_damage`,
+    damage_type: damageType,
+    value: modifier.value,
+    value_min: modifier.value_min ?? modifier.value,
+    value_max: modifier.value_max ?? modifier.value,
+    damage_multiplier: multiplier,
+    source_modifier_id: modifier.source_modifier_id,
+  };
+}
+
+function frontendAddedDamageStatType(stat: string) {
+  if (stat === "added_damage") return "generic";
+  const match = stat.match(/^added_(physical|fire|cold|lightning|chaos)_damage$/);
+  return match?.[1] ?? "";
+}
+
+function frontendEquipmentGrantedEffectTriggerCondition(modifier: FrontendEquipmentStatModifier) {
+  const payloadCondition = modifier.payload?.trigger_condition;
+  if (typeof payloadCondition === "string" && payloadCondition) return payloadCondition;
+  return "attack_hit";
 }
 
 function attributeScaledDamageAddPercent(skillStats: Record<string, number | boolean>) {
@@ -6552,6 +6698,17 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
 
   function damagePayloadComponents(skill: SkillPreview, amount: number, damageType: string, hitConfig?: Record<string, unknown>) {
     const explicitComponents = hitConfig?.damage_components;
+    if (
+      skill.final_damage_components
+      && typeof skill.final_damage_components === "object"
+      && !Array.isArray(skill.final_damage_components)
+      && !damageComponentsContainTrueDamage(explicitComponents)
+    ) {
+      const ratio = Number(skill.final_damage ?? 0) > 0 ? amount / Number(skill.final_damage) : 1;
+      return Object.fromEntries(Object.entries(skill.final_damage_components)
+        .map(([componentType, componentAmount]) => [componentType, Math.max(0, Number(componentAmount ?? 0) * ratio)])
+        .filter(([, componentAmount]) => componentAmount > 0));
+    }
     if (explicitComponents && typeof explicitComponents === "object" && !Array.isArray(explicitComponents)) {
       return convertFrontendDamageComponents(
         Object.fromEntries(Object.entries(explicitComponents as Record<string, unknown>)
@@ -6559,13 +6716,81 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         frontendDamageConversions(skill, hitConfig)
       );
     }
-    if (skill.final_damage_components && typeof skill.final_damage_components === "object" && !Array.isArray(skill.final_damage_components)) {
-      const ratio = Number(skill.final_damage ?? 0) > 0 ? amount / Number(skill.final_damage) : 1;
-      return Object.fromEntries(Object.entries(skill.final_damage_components)
-        .map(([componentType, componentAmount]) => [componentType, Math.max(0, Number(componentAmount ?? 0) * ratio)])
-        .filter(([, componentAmount]) => componentAmount > 0));
-    }
     return { [damageType]: amount };
+  }
+
+  function damageComponentsContainTrueDamage(components: unknown) {
+    return Boolean(components && typeof components === "object" && !Array.isArray(components) && "true" in components);
+  }
+
+  function mergeFrontendDamageComponents(...componentMaps: Record<string, number>[]) {
+    const merged: Record<string, number> = {};
+    for (const components of componentMaps) {
+      for (const [damageType, amount] of Object.entries(components)) {
+        addFrontendDamageComponent(merged, damageType, Number(amount ?? 0));
+      }
+    }
+    return merged;
+  }
+
+  function frontendEquipmentGrantedDamageComponents(
+    skill: SkillPreview,
+    target: Enemy,
+    payload: Record<string, unknown>,
+    primaryDamageType: string
+  ) {
+    const effects = Array.isArray(skill.runtime_params?.frontend_equipment_granted_effects)
+      ? skill.runtime_params.frontend_equipment_granted_effects as Record<string, unknown>[]
+      : [];
+    const components: Record<string, number> = {};
+    const floatingComponents: Record<string, unknown>[] = [];
+    const applied: Record<string, unknown>[] = [];
+    effects.forEach((effect, index) => {
+      if (effect.effect_kind !== "direct_damage") return;
+      if (!frontendGrantedEffectTriggerMatches(skill, effect)) return;
+      const damageType = String(effect.damage_type ?? primaryDamageType);
+      const resolvedDamageType = damageType === "generic" ? primaryDamageType : damageType;
+      const min = Number(effect.value_min ?? effect.value ?? 0);
+      const max = Number(effect.value_max ?? effect.value ?? min);
+      const low = Math.min(min, max);
+      const high = Math.max(min, max);
+      const seed = [
+        skill.active_gem_instance_id,
+        target.id,
+        payload.marker_id ?? payload.projectile_id ?? payload.secondary_hit_id ?? payload.area_id ?? "hit",
+        effect.id ?? effect.source_modifier_id ?? index,
+        Math.round(elapsedRef.current * 1000)
+      ].join(":");
+      const rolled = low + (high - low) * stablePercent(seed) / 100;
+      const amount = rolled * Math.max(0, Number(effect.damage_multiplier ?? 1));
+      if (amount <= 0) return;
+      addFrontendDamageComponent(components, resolvedDamageType, amount);
+      floatingComponents.push({
+        source: "equipment_granted_direct_damage",
+        id: effect.id,
+        direct_damage_module_id: effect.direct_damage_module_id,
+        trigger_condition: effect.trigger_condition,
+        damage_type: resolvedDamageType,
+        amount
+      });
+      applied.push({
+        id: effect.id,
+        trigger_condition: effect.trigger_condition,
+        direct_damage_module_id: effect.direct_damage_module_id,
+        damage_type: resolvedDamageType,
+        amount
+      });
+    });
+    return { components, floatingComponents, applied };
+  }
+
+  function frontendGrantedEffectTriggerMatches(skill: SkillPreview, effect: Record<string, unknown>) {
+    const condition = String(effect.trigger_condition ?? "hit");
+    const tags = new Set(Array.isArray(skill.runtime_params?.frontend_skill_tags) ? skill.runtime_params.frontend_skill_tags.map(String) : []);
+    if (condition === "hit") return true;
+    if (condition === "attack_hit") return tags.has("attack");
+    if (condition === "spell_hit") return tags.has("spell");
+    return false;
   }
 
   function ailmentConfigsForHit(skill: SkillPreview, hitConfig?: Record<string, unknown>) {
@@ -6666,21 +6891,31 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     const damageType = convertedDamageType(skill, hitConfig);
     const hitVfxKey = String(payload.hit_vfx_key ?? payload.vfx_key ?? frontendSkillVfxKey(skill, "hit"));
     const emitHitVfx = payload.emit_hit_vfx !== false && !payload.tick_interval_ms;
+    const baseDamageComponents = damagePayloadComponents(skill, amount, damageType, hitConfig);
+    const grantedDamage = frontendEquipmentGrantedDamageComponents(skill, target, payload, damageType);
+    const damageComponents = mergeFrontendDamageComponents(baseDamageComponents, grantedDamage.components);
+    const floatingDamageComponents = [
+      ...frontendFloatingDamageComponentPayload(baseDamageComponents, "skill_direct_damage"),
+      ...grantedDamage.floatingComponents
+    ];
     const damagePayload = {
-      damage_components: damagePayloadComponents(skill, amount, damageType, hitConfig),
+      ...payload,
       damage_conversions: hitConfig?.damage_conversions ?? skill.hit?.damage_conversions ?? [],
       armor_reduction_penetration_percent: skill.runtime_params?.armor_reduction_penetration_percent,
       resistance_penetration_percent: skill.runtime_params?.resistance_penetration_percent,
       cull_threshold_percent: skill.runtime_params?.cull_threshold_percent,
       double_damage_chance_percent: skill.runtime_params?.double_damage_chance_percent,
       numbed_effect_add_percent: skill.runtime_params?.numbed_effect_add_percent,
+      equipment_granted_direct_damage: grantedDamage.applied,
+      damage_components: damageComponents,
+      floating_damage_components: floatingDamageComponents,
       hit_world_position: position,
-      hit_vfx_key: hitVfxKey,
-      ...payload
+      hit_vfx_key: hitVfxKey
     };
+    const eventAmount = frontendDamageMapTotal(damageComponents) || amount;
     const events = [
-      frontendSkillEvent(skill, "damage", target, position, direction, amount, damageType, damagePayload, 0, delayMs),
-      frontendSkillEvent(skill, "floating_text", target, { x: position.x, y: position.y - 28 }, direction, amount, damageType, damagePayload, 800, delayMs),
+      frontendSkillEvent(skill, "damage", target, position, direction, eventAmount, damageType, damagePayload, 0, delayMs),
+      frontendSkillEvent(skill, "floating_text", target, { x: position.x, y: position.y - 28 }, direction, eventAmount, damageType, damagePayload, 800, delayMs),
       ...frontendStatusEventsForTarget(skill, target, position, direction, hitConfig, delayMs)
     ];
     if (emitHitVfx) {
@@ -6692,6 +6927,16 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       }, 360, delayMs));
     }
     return events;
+  }
+
+  function frontendFloatingDamageComponentPayload(components: Record<string, number>, source: string) {
+    return Object.entries(components)
+      .map(([damageType, amount]) => ({
+        source,
+        damage_type: damageType,
+        amount: Number(amount ?? 0)
+      }))
+      .filter((item) => Number.isFinite(item.amount) && item.amount > 0);
   }
 
   function frontendSecondaryHitAmount(skill: SkillPreview, secondary: SecondaryHitConfig) {
@@ -9373,7 +9618,8 @@ async function placeFloatingItem(current: FloatingGem, target: DropTarget, event
 
   function onGemHover(event: MouseEvent, gem: Gem, source: "board" | "inventory" | "equipment", slotIndex?: number) {
     setHoveredGemId(gem.instance_id);
-    setTooltip({ gem, ...resolveTooltipPosition(event.currentTarget as HTMLElement, source, slotIndex) });
+    const preview = state?.skill_preview.find((skill) => skill.active_gem_instance_id === gem.instance_id);
+    setTooltip({ gem: gemWithFrontendSkillPreviewTooltip(gem, preview), ...resolveTooltipPosition(event.currentTarget as HTMLElement, source, slotIndex) });
   }
 
   const linkedGemIds = useLinkedGemIds(state, hoveredGemId);
@@ -15599,6 +15845,30 @@ function isWeaponSlot(slot: typeof EQUIPMENT_SLOT_SPECS[number] | undefined) {
 
 function isWeaponItem(item: Gem) {
   if (equipmentSourceSlotId(item) === "weapon") return true;
+  const source = equipmentSourceText(item);
+  if ([
+    "\u6b66\u5668",
+    "\u76fe\u724c",
+    "\u5315\u9996",
+    "\u5355\u624b\u5251",
+    "\u5355\u624b\u65a7",
+    "\u5355\u624b\u9524",
+    "\u53cc\u624b\u5251",
+    "\u53cc\u624b\u65a7",
+    "\u53cc\u624b\u9524",
+    "\u5f13",
+    "\u5f29",
+    "\u624b\u6756",
+    "\u624b\u67aa",
+    "\u6b66\u6756",
+    "\u6cd5\u6756",
+    "\u706b\u67aa",
+    "\u706b\u70ae",
+    "\u7075\u6756",
+    "\u722a",
+    "\u9521\u6756",
+    "\u9b54\u6756"
+  ].some((keyword) => source.includes(keyword))) return true;
   const searchable = equipmentSearchText(item);
   return [
     "weapon",
@@ -15632,6 +15902,15 @@ function isWeaponItem(item: Gem) {
 
 function isTwoHandedWeapon(item: Gem) {
   const source = equipmentSourceText(item);
+  if ([
+    "\u53cc\u624b\u5251",
+    "\u53cc\u624b\u65a7",
+    "\u53cc\u624b\u9524",
+    "\u5f13",
+    "\u5f29",
+    "\u6cd5\u6756",
+    "\u706b\u70ae"
+  ].some((keyword) => source.includes(keyword))) return true;
   if (["双手剑", "双手斧", "双手锤", "弓", "弩", "法杖", "火炮"].some((keyword) => source.includes(keyword))) return true;
   const searchable = equipmentSearchText(item);
   return [
@@ -15657,6 +15936,8 @@ function isTwoHandedWeapon(item: Gem) {
 function equipmentSourceSlotId(item: Gem): string {
   const source = equipmentSourceText(item);
   if (!source) return "";
+  const sourceSlot = frontendEquipmentSourceSlotIdFromText(source);
+  if (sourceSlot) return sourceSlot;
   if (source.includes("头部")) return "head";
   if (source.includes("胸甲")) return "chest";
   if (source.includes("手套")) return "gloves";
@@ -15698,6 +15979,38 @@ function equipmentSourceText(item: Gem) {
     item.tooltip_view?.subtitle_text ?? "",
     item.name_text
   ].join(" ");
+}
+
+function frontendEquipmentSourceSlotIdFromText(source: string) {
+  if (source.includes("\u5934\u90e8")) return "head";
+  if (source.includes("\u80f8\u7532")) return "chest";
+  if (source.includes("\u624b\u5957")) return "gloves";
+  if (source.includes("\u978b\u5b50")) return "boots";
+  if (source.includes("\u8170\u5e26")) return "belt";
+  if (source.includes("\u9879\u94fe")) return "amulet";
+  if (source.includes("\u6212\u6307") || source.includes("\u7075\u6212")) return "ring";
+  if (source.includes("\u76fe\u724c")) return "weapon";
+  return [
+    "\u5315\u9996",
+    "\u5355\u624b\u5251",
+    "\u5355\u624b\u65a7",
+    "\u5355\u624b\u9524",
+    "\u53cc\u624b\u5251",
+    "\u53cc\u624b\u65a7",
+    "\u53cc\u624b\u9524",
+    "\u5f13",
+    "\u5f29",
+    "\u624b\u6756",
+    "\u624b\u67aa",
+    "\u6b66\u6756",
+    "\u6cd5\u6756",
+    "\u706b\u67aa",
+    "\u706b\u70ae",
+    "\u7075\u6756",
+    "\u722a",
+    "\u9521\u6756",
+    "\u9b54\u6756"
+  ].some((keyword) => source.includes(keyword)) ? "weapon" : "";
 }
 
 function equipmentSearchText(item: Gem) {
@@ -16239,6 +16552,91 @@ function buildGemTooltipViewModel(gem: Gem) {
   return normalizeActiveTooltipView(gem, view);
 }
 
+function gemWithFrontendSkillPreviewTooltip(gem: Gem, skill?: SkillPreview): Gem {
+  const view = gem.tooltip_view;
+  if (!skill || !view || view.variant !== "active") return gem;
+  const componentLines = [
+    ...frontendDamageComponentTooltipLines(skill.final_damage_components),
+    ...frontendEquipmentGrantedTooltipLines(skill.runtime_params?.frontend_equipment_granted_effects)
+  ];
+  if (componentLines.length === 0) return gem;
+  return {
+    ...gem,
+    tooltip_view: {
+      ...view,
+      sections: {
+        ...view.sections,
+        stats: {
+          ...view.sections.stats,
+          lines: mergeFrontendSkillPreviewTooltipLines(view.sections.stats.lines, skill, componentLines)
+        }
+      }
+    }
+  };
+}
+
+function mergeFrontendSkillPreviewTooltipLines(lines: TooltipStatLine[], skill: SkillPreview, componentLines: TooltipStatLine[]) {
+  const nextLines = lines.map((line) => isPrimaryDamageTooltipLine(line.label_text)
+    ? { ...line, value_text: formatPreviewNumber(skill.final_damage ?? line.value_text) }
+    : line);
+  const insertAfter = nextLines.findIndex((line) => isPrimaryDamageTooltipLine(line.label_text));
+  const existingLabels = new Set(nextLines.map((line) => line.label_text));
+  const missingComponentLines = componentLines.filter((line) => !existingLabels.has(line.label_text));
+  if (missingComponentLines.length === 0) return nextLines;
+  if (insertAfter < 0) return [...nextLines, ...missingComponentLines];
+  return [...nextLines.slice(0, insertAfter + 1), ...missingComponentLines, ...nextLines.slice(insertAfter + 1)];
+}
+
+function isPrimaryDamageTooltipLine(labelText: string) {
+  return labelText.includes("\u4f24\u5bb3") || labelText.includes("\u6d5c\u3085");
+}
+
+function frontendDamageComponentTooltipLines(components?: Record<string, number>) {
+  if (!components || typeof components !== "object" || Array.isArray(components)) return [];
+  return Object.entries(components)
+    .map(([damageType, amount]) => ({
+      label_text: frontendDamageTypeLabel(damageType),
+      value_text: formatPreviewNumber(amount),
+    }))
+    .filter((line) => line.label_text && Number(line.value_text) > 0);
+}
+
+function frontendEquipmentGrantedTooltipLines(effects: unknown) {
+  if (!Array.isArray(effects)) return [];
+  return effects
+    .map((effect) => {
+      if (!effect || typeof effect !== "object" || Array.isArray(effect)) return null;
+      const record = effect as Record<string, unknown>;
+      if (record.effect_kind !== "direct_damage") return null;
+      const damageType = String(record.damage_type ?? "");
+      const resolvedDamageType = damageType === "generic" ? "" : damageType;
+      const multiplier = Math.max(0, Number(record.damage_multiplier ?? 1));
+      const min = Number(record.value_min ?? record.value ?? 0) * multiplier;
+      const max = Number(record.value_max ?? record.value ?? min) * multiplier;
+      const low = Math.min(min, max);
+      const high = Math.max(min, max);
+      if (!Number.isFinite(low) || !Number.isFinite(high) || high <= 0) return null;
+      return {
+        label_text: `\u88c5\u5907\u9644\u52a0${frontendDamageTypeLabel(resolvedDamageType || "generic")}`,
+        value_text: Math.round(low) === Math.round(high)
+          ? formatPreviewNumber(high)
+          : `${formatPreviewNumber(low)} - ${formatPreviewNumber(high)}`,
+      };
+    })
+    .filter((line): line is TooltipStatLine => Boolean(line));
+}
+
+function frontendDamageTypeLabel(damageType: string) {
+  if (damageType === "generic") return "\u4f24\u5bb3";
+  if (damageType === "physical") return "\u7269\u7406\u4f24\u5bb3";
+  if (damageType === "fire") return "\u706b\u7130\u4f24\u5bb3";
+  if (damageType === "cold") return "\u51b0\u971c\u4f24\u5bb3";
+  if (damageType === "lightning") return "\u95ea\u7535\u4f24\u5bb3";
+  if (damageType === "chaos") return "\u6df7\u6c8c\u4f24\u5bb3";
+  if (damageType === "true") return "\u771f\u5b9e\u4f24\u5bb3";
+  return `${damageType}\u4f24\u5bb3`;
+}
+
 const HIDDEN_ACTIVE_TOOLTIP_TAG_IDS = new Set(["bow", "gun", "cannon"]);
 const RELEASE_INTERVAL_LABELS = new Set(["攻击间隔", "施法时间", "实际释放间隔", "释放间隔", "基础释放间隔"]);
 
@@ -16502,6 +16900,17 @@ function damageNumberText(amount: unknown) {
 }
 
 function floatingTextDamageComponents(event: SkillEvent): [string, number][] {
+  const floatingComponents = event.payload?.floating_damage_components;
+  if (Array.isArray(floatingComponents)) {
+    const rows = floatingComponents
+      .map((component) => {
+        if (!component || typeof component !== "object" || Array.isArray(component)) return null;
+        const record = component as Record<string, unknown>;
+        return [String(record.damage_type ?? event.damage_type), Number(record.amount ?? 0)] as [string, number];
+      })
+      .filter((row): row is [string, number] => Boolean(row) && Number.isFinite(row[1]) && row[1] > 0);
+    if (rows.length > 0) return rows;
+  }
   const components = event.payload?.damage_components;
   if (!components || typeof components !== "object" || Array.isArray(components)) {
     return [[event.damage_type, Number(event.amount ?? 0)]];

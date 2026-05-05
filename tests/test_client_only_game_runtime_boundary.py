@@ -169,8 +169,18 @@ def test_frontend_equipment_runtime_consumes_recent_affix_effects() -> None:
         "damagePayloadComponents(skill, amount, damageType, skill.hit as Record<string, unknown>)",
         "floatingTextDamageComponents",
         "frontendEquipmentAttackAddedDamageStat",
-        "equipment_attack_added_lightning_damage",
+        "frontendEquipmentGrantedEffects",
+        "frontend_equipment_granted_effects",
+        "frontendEquipmentGrantedDamageComponents",
+        "equipment_granted_direct_damage",
+        "floating_damage_components",
+        "trigger_condition",
+        "direct_damage_module_id",
         "modifier.reason_key === \"modifier.equipment_affix\"",
+        "damageComponentsContainTrueDamage",
+        "gemWithFrontendSkillPreviewTooltip",
+        "frontendDamageComponentTooltipLines",
+        "frontendEquipmentGrantedTooltipLines",
     ]:
         assert token in source
     for token in [
