@@ -17,162 +17,202 @@ level_table:
   levels:
     1:
       base_damage: 84.25
+      split_projectile_base_damage: 42.125
       mana_cost: 8
       release_interval_ms: 650
     2:
       base_damage: 124.16
+      split_projectile_base_damage: 62.08
       mana_cost: 8
       release_interval_ms: 650
     3:
       base_damage: 164.07
+      split_projectile_base_damage: 82.035
       mana_cost: 8
       release_interval_ms: 650
     4:
       base_damage: 203.97
+      split_projectile_base_damage: 101.985
       mana_cost: 8
       release_interval_ms: 650
     5:
       base_damage: 243.88
+      split_projectile_base_damage: 121.94
       mana_cost: 8
       release_interval_ms: 650
     6:
       base_damage: 283.79
+      split_projectile_base_damage: 141.895
       mana_cost: 8
       release_interval_ms: 650
     7:
       base_damage: 323.7
+      split_projectile_base_damage: 161.85
       mana_cost: 8
       release_interval_ms: 650
     8:
       base_damage: 363.61
+      split_projectile_base_damage: 181.805
       mana_cost: 8
       release_interval_ms: 650
     9:
       base_damage: 403.51
+      split_projectile_base_damage: 201.755
       mana_cost: 8
       release_interval_ms: 650
     10:
       base_damage: 443.42
+      split_projectile_base_damage: 221.71
       mana_cost: 8
       release_interval_ms: 650
     11:
       base_damage: 483.33
+      split_projectile_base_damage: 241.665
       mana_cost: 8
       release_interval_ms: 650
     12:
       base_damage: 523.24
+      split_projectile_base_damage: 261.62
       mana_cost: 8
       release_interval_ms: 650
     13:
       base_damage: 563.14
+      split_projectile_base_damage: 281.57
       mana_cost: 8
       release_interval_ms: 650
     14:
       base_damage: 603.05
+      split_projectile_base_damage: 301.525
       mana_cost: 8
       release_interval_ms: 650
     15:
       base_damage: 642.96
+      split_projectile_base_damage: 321.48
       mana_cost: 8
       release_interval_ms: 650
     16:
       base_damage: 682.87
+      split_projectile_base_damage: 341.435
       mana_cost: 8
       release_interval_ms: 650
     17:
       base_damage: 722.78
+      split_projectile_base_damage: 361.39
       mana_cost: 8
       release_interval_ms: 650
     18:
       base_damage: 762.68
+      split_projectile_base_damage: 381.34
       mana_cost: 8
       release_interval_ms: 650
     19:
       base_damage: 802.59
+      split_projectile_base_damage: 401.295
       mana_cost: 8
       release_interval_ms: 650
     20:
       base_damage: 842.5
+      split_projectile_base_damage: 421.25
       mana_cost: 8
       release_interval_ms: 650
     21:
       base_damage: 846.71
+      split_projectile_base_damage: 423.355
       mana_cost: 8
       release_interval_ms: 650
     22:
       base_damage: 850.92
+      split_projectile_base_damage: 425.46
       mana_cost: 8
       release_interval_ms: 650
     23:
       base_damage: 855.14
+      split_projectile_base_damage: 427.57
       mana_cost: 8
       release_interval_ms: 650
     24:
       base_damage: 859.35
+      split_projectile_base_damage: 429.675
       mana_cost: 8
       release_interval_ms: 650
     25:
       base_damage: 863.56
+      split_projectile_base_damage: 431.78
       mana_cost: 8
       release_interval_ms: 650
     26:
       base_damage: 867.77
+      split_projectile_base_damage: 433.885
       mana_cost: 8
       release_interval_ms: 650
     27:
       base_damage: 871.99
+      split_projectile_base_damage: 435.995
       mana_cost: 8
       release_interval_ms: 650
     28:
       base_damage: 876.2
+      split_projectile_base_damage: 438.1
       mana_cost: 8
       release_interval_ms: 650
     29:
       base_damage: 880.41
+      split_projectile_base_damage: 440.205
       mana_cost: 8
       release_interval_ms: 650
     30:
       base_damage: 884.62
+      split_projectile_base_damage: 442.31
       mana_cost: 8
       release_interval_ms: 650
     31:
       base_damage: 888.84
+      split_projectile_base_damage: 444.42
       mana_cost: 8
       release_interval_ms: 650
     32:
       base_damage: 893.05
+      split_projectile_base_damage: 446.525
       mana_cost: 8
       release_interval_ms: 650
     33:
       base_damage: 897.26
+      split_projectile_base_damage: 448.63
       mana_cost: 8
       release_interval_ms: 650
     34:
       base_damage: 901.48
+      split_projectile_base_damage: 450.74
       mana_cost: 8
       release_interval_ms: 650
     35:
       base_damage: 905.69
+      split_projectile_base_damage: 452.845
       mana_cost: 8
       release_interval_ms: 650
     36:
       base_damage: 909.9
+      split_projectile_base_damage: 454.95
       mana_cost: 8
       release_interval_ms: 650
     37:
       base_damage: 914.11
+      split_projectile_base_damage: 457.055
       mana_cost: 8
       release_interval_ms: 650
     38:
       base_damage: 918.33
+      split_projectile_base_damage: 459.165
       mana_cost: 8
       release_interval_ms: 650
     39:
       base_damage: 922.54
+      split_projectile_base_damage: 461.27
       mana_cost: 8
       release_interval_ms: 650
     40:
       base_damage: 926.75
+      split_projectile_base_damage: 463.375
       mana_cost: 8
       release_interval_ms: 650
 auto_release:

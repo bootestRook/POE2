@@ -100,7 +100,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "release_interval_ms": 800
     },
     "20": {
-      "base_damage": 249.0,
+      "base_damage": 249,
       "mana_cost": 15,
       "release_interval_ms": 800
     },
@@ -302,7 +302,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "release_interval_ms": 900
     },
     "20": {
-      "base_damage": 253.0,
+      "base_damage": 253,
       "mana_cost": 8,
       "release_interval_ms": 900
     },
@@ -410,201 +410,361 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
   "active_burning_shot": {
     "1": {
       "base_damage": 25.6,
+      "weapon_attack_percent": 25.6,
+      "hit_damage_component_physical": 25.6,
+      "hit_ailment_ignite_base_damage_per_second": 2.56,
+      "on_ignited_hit_indirect_fire_damage": 0.5,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "2": {
       "base_damage": 37.73,
+      "weapon_attack_percent": 37.73,
+      "hit_damage_component_physical": 37.73,
+      "hit_ailment_ignite_base_damage_per_second": 3.773,
+      "on_ignited_hit_indirect_fire_damage": 0.7369,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "3": {
       "base_damage": 49.85,
+      "weapon_attack_percent": 49.85,
+      "hit_damage_component_physical": 49.85,
+      "hit_ailment_ignite_base_damage_per_second": 4.985,
+      "on_ignited_hit_indirect_fire_damage": 0.9736,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "4": {
       "base_damage": 61.98,
+      "weapon_attack_percent": 61.98,
+      "hit_damage_component_physical": 61.98,
+      "hit_ailment_ignite_base_damage_per_second": 6.198,
+      "on_ignited_hit_indirect_fire_damage": 1.2105,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "5": {
       "base_damage": 74.11,
+      "weapon_attack_percent": 74.11,
+      "hit_damage_component_physical": 74.11,
+      "hit_ailment_ignite_base_damage_per_second": 7.411,
+      "on_ignited_hit_indirect_fire_damage": 1.4475,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "6": {
       "base_damage": 86.23,
+      "weapon_attack_percent": 86.23,
+      "hit_damage_component_physical": 86.23,
+      "hit_ailment_ignite_base_damage_per_second": 8.623,
+      "on_ignited_hit_indirect_fire_damage": 1.6842,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "7": {
       "base_damage": 98.36,
+      "weapon_attack_percent": 98.36,
+      "hit_damage_component_physical": 98.36,
+      "hit_ailment_ignite_base_damage_per_second": 9.836,
+      "on_ignited_hit_indirect_fire_damage": 1.9211,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "8": {
       "base_damage": 110.48,
+      "weapon_attack_percent": 110.48,
+      "hit_damage_component_physical": 110.48,
+      "hit_ailment_ignite_base_damage_per_second": 11.048,
+      "on_ignited_hit_indirect_fire_damage": 2.1578,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "9": {
       "base_damage": 122.61,
+      "weapon_attack_percent": 122.61,
+      "hit_damage_component_physical": 122.61,
+      "hit_ailment_ignite_base_damage_per_second": 12.261,
+      "on_ignited_hit_indirect_fire_damage": 2.3947,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "10": {
       "base_damage": 134.74,
+      "weapon_attack_percent": 134.74,
+      "hit_damage_component_physical": 134.74,
+      "hit_ailment_ignite_base_damage_per_second": 13.474,
+      "on_ignited_hit_indirect_fire_damage": 2.6316,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "11": {
       "base_damage": 146.86,
+      "weapon_attack_percent": 146.86,
+      "hit_damage_component_physical": 146.86,
+      "hit_ailment_ignite_base_damage_per_second": 14.686,
+      "on_ignited_hit_indirect_fire_damage": 2.8684,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "12": {
       "base_damage": 158.99,
+      "weapon_attack_percent": 158.99,
+      "hit_damage_component_physical": 158.99,
+      "hit_ailment_ignite_base_damage_per_second": 15.899,
+      "on_ignited_hit_indirect_fire_damage": 3.1053,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "13": {
       "base_damage": 171.12,
+      "weapon_attack_percent": 171.12,
+      "hit_damage_component_physical": 171.12,
+      "hit_ailment_ignite_base_damage_per_second": 17.112,
+      "on_ignited_hit_indirect_fire_damage": 3.3422,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "14": {
       "base_damage": 183.24,
+      "weapon_attack_percent": 183.24,
+      "hit_damage_component_physical": 183.24,
+      "hit_ailment_ignite_base_damage_per_second": 18.324,
+      "on_ignited_hit_indirect_fire_damage": 3.5789,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "15": {
       "base_damage": 195.37,
+      "weapon_attack_percent": 195.37,
+      "hit_damage_component_physical": 195.37,
+      "hit_ailment_ignite_base_damage_per_second": 19.537,
+      "on_ignited_hit_indirect_fire_damage": 3.8158,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "16": {
       "base_damage": 207.49,
+      "weapon_attack_percent": 207.49,
+      "hit_damage_component_physical": 207.49,
+      "hit_ailment_ignite_base_damage_per_second": 20.749,
+      "on_ignited_hit_indirect_fire_damage": 4.0525,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "17": {
       "base_damage": 219.62,
+      "weapon_attack_percent": 219.62,
+      "hit_damage_component_physical": 219.62,
+      "hit_ailment_ignite_base_damage_per_second": 21.962,
+      "on_ignited_hit_indirect_fire_damage": 4.2895,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "18": {
       "base_damage": 231.75,
+      "weapon_attack_percent": 231.75,
+      "hit_damage_component_physical": 231.75,
+      "hit_ailment_ignite_base_damage_per_second": 23.175,
+      "on_ignited_hit_indirect_fire_damage": 4.5264,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "19": {
       "base_damage": 243.87,
+      "weapon_attack_percent": 243.87,
+      "hit_damage_component_physical": 243.87,
+      "hit_ailment_ignite_base_damage_per_second": 24.387,
+      "on_ignited_hit_indirect_fire_damage": 4.7631,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "20": {
-      "base_damage": 256.0,
+      "base_damage": 256,
+      "weapon_attack_percent": 256,
+      "hit_damage_component_physical": 256,
+      "hit_ailment_ignite_base_damage_per_second": 25.6,
+      "on_ignited_hit_indirect_fire_damage": 5,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "21": {
       "base_damage": 257.28,
+      "weapon_attack_percent": 257.28,
+      "hit_damage_component_physical": 257.28,
+      "hit_ailment_ignite_base_damage_per_second": 25.728,
+      "on_ignited_hit_indirect_fire_damage": 5.025,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "22": {
       "base_damage": 258.56,
+      "weapon_attack_percent": 258.56,
+      "hit_damage_component_physical": 258.56,
+      "hit_ailment_ignite_base_damage_per_second": 25.856,
+      "on_ignited_hit_indirect_fire_damage": 5.05,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "23": {
       "base_damage": 259.84,
+      "weapon_attack_percent": 259.84,
+      "hit_damage_component_physical": 259.84,
+      "hit_ailment_ignite_base_damage_per_second": 25.984,
+      "on_ignited_hit_indirect_fire_damage": 5.075,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "24": {
       "base_damage": 261.12,
+      "weapon_attack_percent": 261.12,
+      "hit_damage_component_physical": 261.12,
+      "hit_ailment_ignite_base_damage_per_second": 26.112,
+      "on_ignited_hit_indirect_fire_damage": 5.1,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "25": {
       "base_damage": 262.4,
+      "weapon_attack_percent": 262.4,
+      "hit_damage_component_physical": 262.4,
+      "hit_ailment_ignite_base_damage_per_second": 26.24,
+      "on_ignited_hit_indirect_fire_damage": 5.125,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "26": {
       "base_damage": 263.68,
+      "weapon_attack_percent": 263.68,
+      "hit_damage_component_physical": 263.68,
+      "hit_ailment_ignite_base_damage_per_second": 26.368,
+      "on_ignited_hit_indirect_fire_damage": 5.15,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "27": {
       "base_damage": 264.96,
+      "weapon_attack_percent": 264.96,
+      "hit_damage_component_physical": 264.96,
+      "hit_ailment_ignite_base_damage_per_second": 26.496,
+      "on_ignited_hit_indirect_fire_damage": 5.175,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "28": {
       "base_damage": 266.24,
+      "weapon_attack_percent": 266.24,
+      "hit_damage_component_physical": 266.24,
+      "hit_ailment_ignite_base_damage_per_second": 26.624,
+      "on_ignited_hit_indirect_fire_damage": 5.2,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "29": {
       "base_damage": 267.52,
+      "weapon_attack_percent": 267.52,
+      "hit_damage_component_physical": 267.52,
+      "hit_ailment_ignite_base_damage_per_second": 26.752,
+      "on_ignited_hit_indirect_fire_damage": 5.225,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "30": {
       "base_damage": 268.8,
+      "weapon_attack_percent": 268.8,
+      "hit_damage_component_physical": 268.8,
+      "hit_ailment_ignite_base_damage_per_second": 26.88,
+      "on_ignited_hit_indirect_fire_damage": 5.25,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "31": {
       "base_damage": 270.08,
+      "weapon_attack_percent": 270.08,
+      "hit_damage_component_physical": 270.08,
+      "hit_ailment_ignite_base_damage_per_second": 27.008,
+      "on_ignited_hit_indirect_fire_damage": 5.275,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "32": {
       "base_damage": 271.36,
+      "weapon_attack_percent": 271.36,
+      "hit_damage_component_physical": 271.36,
+      "hit_ailment_ignite_base_damage_per_second": 27.136,
+      "on_ignited_hit_indirect_fire_damage": 5.3,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "33": {
       "base_damage": 272.64,
+      "weapon_attack_percent": 272.64,
+      "hit_damage_component_physical": 272.64,
+      "hit_ailment_ignite_base_damage_per_second": 27.264,
+      "on_ignited_hit_indirect_fire_damage": 5.325,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "34": {
       "base_damage": 273.92,
+      "weapon_attack_percent": 273.92,
+      "hit_damage_component_physical": 273.92,
+      "hit_ailment_ignite_base_damage_per_second": 27.392,
+      "on_ignited_hit_indirect_fire_damage": 5.35,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "35": {
       "base_damage": 275.2,
+      "weapon_attack_percent": 275.2,
+      "hit_damage_component_physical": 275.2,
+      "hit_ailment_ignite_base_damage_per_second": 27.52,
+      "on_ignited_hit_indirect_fire_damage": 5.375,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "36": {
       "base_damage": 276.48,
+      "weapon_attack_percent": 276.48,
+      "hit_damage_component_physical": 276.48,
+      "hit_ailment_ignite_base_damage_per_second": 27.648,
+      "on_ignited_hit_indirect_fire_damage": 5.4,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "37": {
       "base_damage": 277.76,
+      "weapon_attack_percent": 277.76,
+      "hit_damage_component_physical": 277.76,
+      "hit_ailment_ignite_base_damage_per_second": 27.776,
+      "on_ignited_hit_indirect_fire_damage": 5.425,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "38": {
       "base_damage": 279.04,
+      "weapon_attack_percent": 279.04,
+      "hit_damage_component_physical": 279.04,
+      "hit_ailment_ignite_base_damage_per_second": 27.904,
+      "on_ignited_hit_indirect_fire_damage": 5.45,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "39": {
       "base_damage": 280.32,
+      "weapon_attack_percent": 280.32,
+      "hit_damage_component_physical": 280.32,
+      "hit_ailment_ignite_base_damage_per_second": 28.032,
+      "on_ignited_hit_indirect_fire_damage": 5.475,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "40": {
       "base_damage": 281.6,
+      "weapon_attack_percent": 281.6,
+      "hit_damage_component_physical": 281.6,
+      "hit_ailment_ignite_base_damage_per_second": 28.16,
+      "on_ignited_hit_indirect_fire_damage": 5.5,
       "mana_cost": 5,
       "release_interval_ms": 1000
     }
@@ -706,7 +866,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "release_interval_ms": 650
     },
     "20": {
-      "base_damage": 733.0,
+      "base_damage": 733,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
@@ -908,7 +1068,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "release_interval_ms": 650
     },
     "20": {
-      "base_damage": 846.0,
+      "base_damage": 846,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
@@ -1016,201 +1176,361 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
   "active_corrosive_shot": {
     "1": {
       "base_damage": 9.5,
+      "weapon_attack_percent": 9.5,
+      "hit_damage_component_physical": 9.5,
+      "hit_ailment_wilt_base_damage_per_second": 0.57,
+      "module_corrosive_ground_damage_amount": 0.741,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "2": {
-      "base_damage": 14.0,
+      "base_damage": 14,
+      "weapon_attack_percent": 14,
+      "hit_damage_component_physical": 14,
+      "hit_ailment_wilt_base_damage_per_second": 0.84,
+      "module_corrosive_ground_damage_amount": 1.092,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "3": {
       "base_damage": 18.5,
+      "weapon_attack_percent": 18.5,
+      "hit_damage_component_physical": 18.5,
+      "hit_ailment_wilt_base_damage_per_second": 1.11,
+      "module_corrosive_ground_damage_amount": 1.443,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "4": {
-      "base_damage": 23.0,
+      "base_damage": 23,
+      "weapon_attack_percent": 23,
+      "hit_damage_component_physical": 23,
+      "hit_ailment_wilt_base_damage_per_second": 1.38,
+      "module_corrosive_ground_damage_amount": 1.794,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "5": {
       "base_damage": 27.5,
+      "weapon_attack_percent": 27.5,
+      "hit_damage_component_physical": 27.5,
+      "hit_ailment_wilt_base_damage_per_second": 1.65,
+      "module_corrosive_ground_damage_amount": 2.145,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "6": {
-      "base_damage": 32.0,
+      "base_damage": 32,
+      "weapon_attack_percent": 32,
+      "hit_damage_component_physical": 32,
+      "hit_ailment_wilt_base_damage_per_second": 1.92,
+      "module_corrosive_ground_damage_amount": 2.496,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "7": {
       "base_damage": 36.5,
+      "weapon_attack_percent": 36.5,
+      "hit_damage_component_physical": 36.5,
+      "hit_ailment_wilt_base_damage_per_second": 2.19,
+      "module_corrosive_ground_damage_amount": 2.847,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "8": {
-      "base_damage": 41.0,
+      "base_damage": 41,
+      "weapon_attack_percent": 41,
+      "hit_damage_component_physical": 41,
+      "hit_ailment_wilt_base_damage_per_second": 2.46,
+      "module_corrosive_ground_damage_amount": 3.198,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "9": {
       "base_damage": 45.5,
+      "weapon_attack_percent": 45.5,
+      "hit_damage_component_physical": 45.5,
+      "hit_ailment_wilt_base_damage_per_second": 2.73,
+      "module_corrosive_ground_damage_amount": 3.549,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "10": {
-      "base_damage": 50.0,
+      "base_damage": 50,
+      "weapon_attack_percent": 50,
+      "hit_damage_component_physical": 50,
+      "hit_ailment_wilt_base_damage_per_second": 3,
+      "module_corrosive_ground_damage_amount": 3.9,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "11": {
       "base_damage": 54.5,
+      "weapon_attack_percent": 54.5,
+      "hit_damage_component_physical": 54.5,
+      "hit_ailment_wilt_base_damage_per_second": 3.27,
+      "module_corrosive_ground_damage_amount": 4.251,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "12": {
-      "base_damage": 59.0,
+      "base_damage": 59,
+      "weapon_attack_percent": 59,
+      "hit_damage_component_physical": 59,
+      "hit_ailment_wilt_base_damage_per_second": 3.54,
+      "module_corrosive_ground_damage_amount": 4.602,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "13": {
       "base_damage": 63.5,
+      "weapon_attack_percent": 63.5,
+      "hit_damage_component_physical": 63.5,
+      "hit_ailment_wilt_base_damage_per_second": 3.81,
+      "module_corrosive_ground_damage_amount": 4.953,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "14": {
-      "base_damage": 68.0,
+      "base_damage": 68,
+      "weapon_attack_percent": 68,
+      "hit_damage_component_physical": 68,
+      "hit_ailment_wilt_base_damage_per_second": 4.08,
+      "module_corrosive_ground_damage_amount": 5.304,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "15": {
       "base_damage": 72.5,
+      "weapon_attack_percent": 72.5,
+      "hit_damage_component_physical": 72.5,
+      "hit_ailment_wilt_base_damage_per_second": 4.35,
+      "module_corrosive_ground_damage_amount": 5.655,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "16": {
-      "base_damage": 77.0,
+      "base_damage": 77,
+      "weapon_attack_percent": 77,
+      "hit_damage_component_physical": 77,
+      "hit_ailment_wilt_base_damage_per_second": 4.62,
+      "module_corrosive_ground_damage_amount": 6.006,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "17": {
       "base_damage": 81.5,
+      "weapon_attack_percent": 81.5,
+      "hit_damage_component_physical": 81.5,
+      "hit_ailment_wilt_base_damage_per_second": 4.89,
+      "module_corrosive_ground_damage_amount": 6.357,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "18": {
-      "base_damage": 86.0,
+      "base_damage": 86,
+      "weapon_attack_percent": 86,
+      "hit_damage_component_physical": 86,
+      "hit_ailment_wilt_base_damage_per_second": 5.16,
+      "module_corrosive_ground_damage_amount": 6.708,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "19": {
       "base_damage": 90.5,
+      "weapon_attack_percent": 90.5,
+      "hit_damage_component_physical": 90.5,
+      "hit_ailment_wilt_base_damage_per_second": 5.43,
+      "module_corrosive_ground_damage_amount": 7.059,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "20": {
-      "base_damage": 95.0,
+      "base_damage": 95,
+      "weapon_attack_percent": 95,
+      "hit_damage_component_physical": 95,
+      "hit_ailment_wilt_base_damage_per_second": 5.7,
+      "module_corrosive_ground_damage_amount": 7.41,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "21": {
       "base_damage": 95.47,
+      "weapon_attack_percent": 95.47,
+      "hit_damage_component_physical": 95.47,
+      "hit_ailment_wilt_base_damage_per_second": 5.7282,
+      "module_corrosive_ground_damage_amount": 7.4467,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "22": {
       "base_damage": 95.95,
+      "weapon_attack_percent": 95.95,
+      "hit_damage_component_physical": 95.95,
+      "hit_ailment_wilt_base_damage_per_second": 5.757,
+      "module_corrosive_ground_damage_amount": 7.4841,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "23": {
       "base_damage": 96.42,
+      "weapon_attack_percent": 96.42,
+      "hit_damage_component_physical": 96.42,
+      "hit_ailment_wilt_base_damage_per_second": 5.7852,
+      "module_corrosive_ground_damage_amount": 7.5208,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "24": {
       "base_damage": 96.9,
+      "weapon_attack_percent": 96.9,
+      "hit_damage_component_physical": 96.9,
+      "hit_ailment_wilt_base_damage_per_second": 5.814,
+      "module_corrosive_ground_damage_amount": 7.5582,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "25": {
       "base_damage": 97.37,
+      "weapon_attack_percent": 97.37,
+      "hit_damage_component_physical": 97.37,
+      "hit_ailment_wilt_base_damage_per_second": 5.8422,
+      "module_corrosive_ground_damage_amount": 7.5949,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "26": {
       "base_damage": 97.85,
+      "weapon_attack_percent": 97.85,
+      "hit_damage_component_physical": 97.85,
+      "hit_ailment_wilt_base_damage_per_second": 5.871,
+      "module_corrosive_ground_damage_amount": 7.6323,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "27": {
       "base_damage": 98.32,
+      "weapon_attack_percent": 98.32,
+      "hit_damage_component_physical": 98.32,
+      "hit_ailment_wilt_base_damage_per_second": 5.8992,
+      "module_corrosive_ground_damage_amount": 7.669,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "28": {
       "base_damage": 98.8,
+      "weapon_attack_percent": 98.8,
+      "hit_damage_component_physical": 98.8,
+      "hit_ailment_wilt_base_damage_per_second": 5.928,
+      "module_corrosive_ground_damage_amount": 7.7064,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "29": {
       "base_damage": 99.27,
+      "weapon_attack_percent": 99.27,
+      "hit_damage_component_physical": 99.27,
+      "hit_ailment_wilt_base_damage_per_second": 5.9562,
+      "module_corrosive_ground_damage_amount": 7.7431,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "30": {
       "base_damage": 99.75,
+      "weapon_attack_percent": 99.75,
+      "hit_damage_component_physical": 99.75,
+      "hit_ailment_wilt_base_damage_per_second": 5.985,
+      "module_corrosive_ground_damage_amount": 7.7805,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "31": {
       "base_damage": 100.22,
+      "weapon_attack_percent": 100.22,
+      "hit_damage_component_physical": 100.22,
+      "hit_ailment_wilt_base_damage_per_second": 6.0132,
+      "module_corrosive_ground_damage_amount": 7.8172,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "32": {
       "base_damage": 100.7,
+      "weapon_attack_percent": 100.7,
+      "hit_damage_component_physical": 100.7,
+      "hit_ailment_wilt_base_damage_per_second": 6.042,
+      "module_corrosive_ground_damage_amount": 7.8546,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "33": {
       "base_damage": 101.17,
+      "weapon_attack_percent": 101.17,
+      "hit_damage_component_physical": 101.17,
+      "hit_ailment_wilt_base_damage_per_second": 6.0702,
+      "module_corrosive_ground_damage_amount": 7.8913,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "34": {
       "base_damage": 101.65,
+      "weapon_attack_percent": 101.65,
+      "hit_damage_component_physical": 101.65,
+      "hit_ailment_wilt_base_damage_per_second": 6.099,
+      "module_corrosive_ground_damage_amount": 7.9287,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "35": {
       "base_damage": 102.12,
+      "weapon_attack_percent": 102.12,
+      "hit_damage_component_physical": 102.12,
+      "hit_ailment_wilt_base_damage_per_second": 6.1272,
+      "module_corrosive_ground_damage_amount": 7.9654,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "36": {
       "base_damage": 102.6,
+      "weapon_attack_percent": 102.6,
+      "hit_damage_component_physical": 102.6,
+      "hit_ailment_wilt_base_damage_per_second": 6.156,
+      "module_corrosive_ground_damage_amount": 8.0028,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "37": {
       "base_damage": 103.08,
+      "weapon_attack_percent": 103.08,
+      "hit_damage_component_physical": 103.08,
+      "hit_ailment_wilt_base_damage_per_second": 6.1848,
+      "module_corrosive_ground_damage_amount": 8.0402,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "38": {
       "base_damage": 103.55,
+      "weapon_attack_percent": 103.55,
+      "hit_damage_component_physical": 103.55,
+      "hit_ailment_wilt_base_damage_per_second": 6.213,
+      "module_corrosive_ground_damage_amount": 8.0769,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "39": {
       "base_damage": 104.02,
+      "weapon_attack_percent": 104.02,
+      "hit_damage_component_physical": 104.02,
+      "hit_ailment_wilt_base_damage_per_second": 6.2412,
+      "module_corrosive_ground_damage_amount": 8.1136,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "40": {
       "base_damage": 104.5,
+      "weapon_attack_percent": 104.5,
+      "hit_damage_component_physical": 104.5,
+      "hit_ailment_wilt_base_damage_per_second": 6.27,
+      "module_corrosive_ground_damage_amount": 8.151,
       "mana_cost": 5,
       "release_interval_ms": 1000
     }
@@ -1218,201 +1538,281 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
   "active_flame_slash": {
     "1": {
       "base_damage": 34.6,
+      "weapon_attack_percent": 34.6,
+      "hit_damage_component_physical": 34.6,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "2": {
       "base_damage": 50.99,
+      "weapon_attack_percent": 50.99,
+      "hit_damage_component_physical": 50.99,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "3": {
       "base_damage": 67.38,
+      "weapon_attack_percent": 67.38,
+      "hit_damage_component_physical": 67.38,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "4": {
       "base_damage": 83.77,
+      "weapon_attack_percent": 83.77,
+      "hit_damage_component_physical": 83.77,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "5": {
       "base_damage": 100.16,
+      "weapon_attack_percent": 100.16,
+      "hit_damage_component_physical": 100.16,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "6": {
       "base_damage": 116.55,
+      "weapon_attack_percent": 116.55,
+      "hit_damage_component_physical": 116.55,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "7": {
       "base_damage": 132.94,
+      "weapon_attack_percent": 132.94,
+      "hit_damage_component_physical": 132.94,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "8": {
       "base_damage": 149.33,
+      "weapon_attack_percent": 149.33,
+      "hit_damage_component_physical": 149.33,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "9": {
       "base_damage": 165.72,
+      "weapon_attack_percent": 165.72,
+      "hit_damage_component_physical": 165.72,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "10": {
       "base_damage": 182.11,
+      "weapon_attack_percent": 182.11,
+      "hit_damage_component_physical": 182.11,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "11": {
       "base_damage": 198.49,
+      "weapon_attack_percent": 198.49,
+      "hit_damage_component_physical": 198.49,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "12": {
       "base_damage": 214.88,
+      "weapon_attack_percent": 214.88,
+      "hit_damage_component_physical": 214.88,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "13": {
       "base_damage": 231.27,
+      "weapon_attack_percent": 231.27,
+      "hit_damage_component_physical": 231.27,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "14": {
       "base_damage": 247.66,
+      "weapon_attack_percent": 247.66,
+      "hit_damage_component_physical": 247.66,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "15": {
       "base_damage": 264.05,
+      "weapon_attack_percent": 264.05,
+      "hit_damage_component_physical": 264.05,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "16": {
       "base_damage": 280.44,
+      "weapon_attack_percent": 280.44,
+      "hit_damage_component_physical": 280.44,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "17": {
       "base_damage": 296.83,
+      "weapon_attack_percent": 296.83,
+      "hit_damage_component_physical": 296.83,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "18": {
       "base_damage": 313.22,
+      "weapon_attack_percent": 313.22,
+      "hit_damage_component_physical": 313.22,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "19": {
       "base_damage": 329.61,
+      "weapon_attack_percent": 329.61,
+      "hit_damage_component_physical": 329.61,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "20": {
-      "base_damage": 346.0,
+      "base_damage": 346,
+      "weapon_attack_percent": 346,
+      "hit_damage_component_physical": 346,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "21": {
       "base_damage": 347.73,
+      "weapon_attack_percent": 347.73,
+      "hit_damage_component_physical": 347.73,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "22": {
       "base_damage": 349.46,
+      "weapon_attack_percent": 349.46,
+      "hit_damage_component_physical": 349.46,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "23": {
       "base_damage": 351.19,
+      "weapon_attack_percent": 351.19,
+      "hit_damage_component_physical": 351.19,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "24": {
       "base_damage": 352.92,
+      "weapon_attack_percent": 352.92,
+      "hit_damage_component_physical": 352.92,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "25": {
       "base_damage": 354.65,
+      "weapon_attack_percent": 354.65,
+      "hit_damage_component_physical": 354.65,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "26": {
       "base_damage": 356.38,
+      "weapon_attack_percent": 356.38,
+      "hit_damage_component_physical": 356.38,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "27": {
       "base_damage": 358.11,
+      "weapon_attack_percent": 358.11,
+      "hit_damage_component_physical": 358.11,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "28": {
       "base_damage": 359.84,
+      "weapon_attack_percent": 359.84,
+      "hit_damage_component_physical": 359.84,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "29": {
       "base_damage": 361.57,
+      "weapon_attack_percent": 361.57,
+      "hit_damage_component_physical": 361.57,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "30": {
       "base_damage": 363.3,
+      "weapon_attack_percent": 363.3,
+      "hit_damage_component_physical": 363.3,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "31": {
       "base_damage": 365.03,
+      "weapon_attack_percent": 365.03,
+      "hit_damage_component_physical": 365.03,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "32": {
       "base_damage": 366.76,
+      "weapon_attack_percent": 366.76,
+      "hit_damage_component_physical": 366.76,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "33": {
       "base_damage": 368.49,
+      "weapon_attack_percent": 368.49,
+      "hit_damage_component_physical": 368.49,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "34": {
       "base_damage": 370.22,
+      "weapon_attack_percent": 370.22,
+      "hit_damage_component_physical": 370.22,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "35": {
       "base_damage": 371.95,
+      "weapon_attack_percent": 371.95,
+      "hit_damage_component_physical": 371.95,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "36": {
       "base_damage": 373.68,
+      "weapon_attack_percent": 373.68,
+      "hit_damage_component_physical": 373.68,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "37": {
       "base_damage": 375.41,
+      "weapon_attack_percent": 375.41,
+      "hit_damage_component_physical": 375.41,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "38": {
       "base_damage": 377.14,
+      "weapon_attack_percent": 377.14,
+      "hit_damage_component_physical": 377.14,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "39": {
       "base_damage": 378.87,
+      "weapon_attack_percent": 378.87,
+      "hit_damage_component_physical": 378.87,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "40": {
       "base_damage": 380.6,
+      "weapon_attack_percent": 380.6,
+      "hit_damage_component_physical": 380.6,
       "mana_cost": 5,
       "release_interval_ms": 1000
     }
@@ -1420,201 +1820,401 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
   "active_ice_shot": {
     "1": {
       "base_damage": 31.3,
+      "weapon_attack_percent": 31.3,
+      "hit_damage_component_physical": 31.3,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 15.7,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 15.7,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 15.7,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "2": {
       "base_damage": 46.13,
+      "weapon_attack_percent": 46.13,
+      "hit_damage_component_physical": 46.13,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 23.1387,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 23.1387,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 23.1387,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "3": {
       "base_damage": 60.95,
+      "weapon_attack_percent": 60.95,
+      "hit_damage_component_physical": 60.95,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 30.5724,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 30.5724,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 30.5724,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "4": {
       "base_damage": 75.78,
+      "weapon_attack_percent": 75.78,
+      "hit_damage_component_physical": 75.78,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 38.0111,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 38.0111,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 38.0111,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "5": {
       "base_damage": 90.61,
+      "weapon_attack_percent": 90.61,
+      "hit_damage_component_physical": 90.61,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 45.4497,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 45.4497,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 45.4497,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "6": {
       "base_damage": 105.43,
+      "weapon_attack_percent": 105.43,
+      "hit_damage_component_physical": 105.43,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 52.8834,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 52.8834,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 52.8834,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "7": {
       "base_damage": 120.26,
+      "weapon_attack_percent": 120.26,
+      "hit_damage_component_physical": 120.26,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 60.3221,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 60.3221,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 60.3221,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "8": {
       "base_damage": 135.08,
+      "weapon_attack_percent": 135.08,
+      "hit_damage_component_physical": 135.08,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 67.7558,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 67.7558,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 67.7558,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "9": {
       "base_damage": 149.91,
+      "weapon_attack_percent": 149.91,
+      "hit_damage_component_physical": 149.91,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 75.1945,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 75.1945,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 75.1945,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "10": {
       "base_damage": 164.74,
+      "weapon_attack_percent": 164.74,
+      "hit_damage_component_physical": 164.74,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 82.6332,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 82.6332,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 82.6332,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "11": {
       "base_damage": 179.56,
+      "weapon_attack_percent": 179.56,
+      "hit_damage_component_physical": 179.56,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 90.0668,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 90.0668,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 90.0668,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "12": {
       "base_damage": 194.39,
+      "weapon_attack_percent": 194.39,
+      "hit_damage_component_physical": 194.39,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 97.5055,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 97.5055,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 97.5055,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "13": {
       "base_damage": 209.22,
+      "weapon_attack_percent": 209.22,
+      "hit_damage_component_physical": 209.22,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 104.9442,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 104.9442,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 104.9442,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "14": {
       "base_damage": 224.04,
+      "weapon_attack_percent": 224.04,
+      "hit_damage_component_physical": 224.04,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 112.3779,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 112.3779,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 112.3779,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "15": {
       "base_damage": 238.87,
+      "weapon_attack_percent": 238.87,
+      "hit_damage_component_physical": 238.87,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 119.8166,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 119.8166,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 119.8166,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "16": {
       "base_damage": 253.69,
+      "weapon_attack_percent": 253.69,
+      "hit_damage_component_physical": 253.69,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 127.2503,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 127.2503,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 127.2503,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "17": {
       "base_damage": 268.52,
+      "weapon_attack_percent": 268.52,
+      "hit_damage_component_physical": 268.52,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 134.6889,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 134.6889,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 134.6889,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "18": {
       "base_damage": 283.35,
+      "weapon_attack_percent": 283.35,
+      "hit_damage_component_physical": 283.35,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 142.1276,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 142.1276,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 142.1276,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "19": {
       "base_damage": 298.17,
+      "weapon_attack_percent": 298.17,
+      "hit_damage_component_physical": 298.17,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 149.5613,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 149.5613,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 149.5613,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "20": {
-      "base_damage": 313.0,
+      "base_damage": 313,
+      "weapon_attack_percent": 313,
+      "hit_damage_component_physical": 313,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 157,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 157,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 157,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "21": {
       "base_damage": 314.56,
+      "weapon_attack_percent": 314.56,
+      "hit_damage_component_physical": 314.56,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 157.7825,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 157.7825,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 157.7825,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "22": {
       "base_damage": 316.13,
+      "weapon_attack_percent": 316.13,
+      "hit_damage_component_physical": 316.13,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 158.57,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 158.57,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 158.57,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "23": {
       "base_damage": 317.69,
+      "weapon_attack_percent": 317.69,
+      "hit_damage_component_physical": 317.69,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 159.3525,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 159.3525,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 159.3525,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "24": {
       "base_damage": 319.26,
+      "weapon_attack_percent": 319.26,
+      "hit_damage_component_physical": 319.26,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 160.14,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 160.14,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 160.14,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "25": {
       "base_damage": 320.82,
+      "weapon_attack_percent": 320.82,
+      "hit_damage_component_physical": 320.82,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 160.9225,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 160.9225,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 160.9225,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "26": {
       "base_damage": 322.39,
+      "weapon_attack_percent": 322.39,
+      "hit_damage_component_physical": 322.39,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 161.71,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 161.71,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 161.71,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "27": {
       "base_damage": 323.95,
+      "weapon_attack_percent": 323.95,
+      "hit_damage_component_physical": 323.95,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 162.4925,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 162.4925,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 162.4925,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "28": {
       "base_damage": 325.52,
+      "weapon_attack_percent": 325.52,
+      "hit_damage_component_physical": 325.52,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 163.28,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 163.28,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 163.28,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "29": {
       "base_damage": 327.08,
+      "weapon_attack_percent": 327.08,
+      "hit_damage_component_physical": 327.08,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 164.0625,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 164.0625,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 164.0625,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "30": {
       "base_damage": 328.65,
+      "weapon_attack_percent": 328.65,
+      "hit_damage_component_physical": 328.65,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 164.85,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 164.85,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 164.85,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "31": {
       "base_damage": 330.21,
+      "weapon_attack_percent": 330.21,
+      "hit_damage_component_physical": 330.21,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 165.6325,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 165.6325,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 165.6325,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "32": {
       "base_damage": 331.78,
+      "weapon_attack_percent": 331.78,
+      "hit_damage_component_physical": 331.78,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 166.42,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 166.42,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 166.42,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "33": {
       "base_damage": 333.34,
+      "weapon_attack_percent": 333.34,
+      "hit_damage_component_physical": 333.34,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 167.2025,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 167.2025,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 167.2025,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "34": {
       "base_damage": 334.91,
+      "weapon_attack_percent": 334.91,
+      "hit_damage_component_physical": 334.91,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 167.99,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 167.99,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 167.99,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "35": {
       "base_damage": 336.47,
+      "weapon_attack_percent": 336.47,
+      "hit_damage_component_physical": 336.47,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 168.7725,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 168.7725,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 168.7725,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "36": {
       "base_damage": 338.04,
+      "weapon_attack_percent": 338.04,
+      "hit_damage_component_physical": 338.04,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 169.56,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 169.56,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 169.56,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "37": {
       "base_damage": 339.6,
+      "weapon_attack_percent": 339.6,
+      "hit_damage_component_physical": 339.6,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 170.3425,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 170.3425,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 170.3425,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "38": {
       "base_damage": 341.17,
+      "weapon_attack_percent": 341.17,
+      "hit_damage_component_physical": 341.17,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 171.13,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 171.13,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 171.13,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "39": {
       "base_damage": 342.74,
+      "weapon_attack_percent": 342.74,
+      "hit_damage_component_physical": 342.74,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 171.9175,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 171.9175,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 171.9175,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "40": {
       "base_damage": 344.3,
+      "weapon_attack_percent": 344.3,
+      "hit_damage_component_physical": 344.3,
+      "secondary_hit_ice_cone_back_explosion_base_damage": 172.7,
+      "secondary_hit_ice_cone_back_explosion_damage_component_physical": 172.7,
+      "secondary_hit_ice_cone_back_explosion_weapon_attack_percent": 172.7,
       "mana_cost": 5,
       "release_interval_ms": 1000
     }
@@ -1622,201 +2222,401 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
   "active_lightning_shot": {
     "1": {
       "base_damage": 33.4,
+      "weapon_attack_percent": 33.4,
+      "hit_damage_component_physical": 33.4,
+      "secondary_hit_forked_lightning_base_damage": 33.4,
+      "secondary_hit_forked_lightning_damage_component_physical": 33.4,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 33.4,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "2": {
       "base_damage": 49.22,
+      "weapon_attack_percent": 49.22,
+      "hit_damage_component_physical": 49.22,
+      "secondary_hit_forked_lightning_base_damage": 49.22,
+      "secondary_hit_forked_lightning_damage_component_physical": 49.22,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 49.22,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "3": {
       "base_damage": 65.04,
+      "weapon_attack_percent": 65.04,
+      "hit_damage_component_physical": 65.04,
+      "secondary_hit_forked_lightning_base_damage": 65.04,
+      "secondary_hit_forked_lightning_damage_component_physical": 65.04,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 65.04,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "4": {
       "base_damage": 80.86,
+      "weapon_attack_percent": 80.86,
+      "hit_damage_component_physical": 80.86,
+      "secondary_hit_forked_lightning_base_damage": 80.86,
+      "secondary_hit_forked_lightning_damage_component_physical": 80.86,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 80.86,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "5": {
       "base_damage": 96.68,
+      "weapon_attack_percent": 96.68,
+      "hit_damage_component_physical": 96.68,
+      "secondary_hit_forked_lightning_base_damage": 96.68,
+      "secondary_hit_forked_lightning_damage_component_physical": 96.68,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 96.68,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "6": {
       "base_damage": 112.51,
+      "weapon_attack_percent": 112.51,
+      "hit_damage_component_physical": 112.51,
+      "secondary_hit_forked_lightning_base_damage": 112.51,
+      "secondary_hit_forked_lightning_damage_component_physical": 112.51,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 112.51,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "7": {
       "base_damage": 128.33,
+      "weapon_attack_percent": 128.33,
+      "hit_damage_component_physical": 128.33,
+      "secondary_hit_forked_lightning_base_damage": 128.33,
+      "secondary_hit_forked_lightning_damage_component_physical": 128.33,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 128.33,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "8": {
       "base_damage": 144.15,
+      "weapon_attack_percent": 144.15,
+      "hit_damage_component_physical": 144.15,
+      "secondary_hit_forked_lightning_base_damage": 144.15,
+      "secondary_hit_forked_lightning_damage_component_physical": 144.15,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 144.15,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "9": {
       "base_damage": 159.97,
+      "weapon_attack_percent": 159.97,
+      "hit_damage_component_physical": 159.97,
+      "secondary_hit_forked_lightning_base_damage": 159.97,
+      "secondary_hit_forked_lightning_damage_component_physical": 159.97,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 159.97,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "10": {
       "base_damage": 175.79,
+      "weapon_attack_percent": 175.79,
+      "hit_damage_component_physical": 175.79,
+      "secondary_hit_forked_lightning_base_damage": 175.79,
+      "secondary_hit_forked_lightning_damage_component_physical": 175.79,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 175.79,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "11": {
       "base_damage": 191.61,
+      "weapon_attack_percent": 191.61,
+      "hit_damage_component_physical": 191.61,
+      "secondary_hit_forked_lightning_base_damage": 191.61,
+      "secondary_hit_forked_lightning_damage_component_physical": 191.61,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 191.61,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "12": {
       "base_damage": 207.43,
+      "weapon_attack_percent": 207.43,
+      "hit_damage_component_physical": 207.43,
+      "secondary_hit_forked_lightning_base_damage": 207.43,
+      "secondary_hit_forked_lightning_damage_component_physical": 207.43,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 207.43,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "13": {
       "base_damage": 223.25,
+      "weapon_attack_percent": 223.25,
+      "hit_damage_component_physical": 223.25,
+      "secondary_hit_forked_lightning_base_damage": 223.25,
+      "secondary_hit_forked_lightning_damage_component_physical": 223.25,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 223.25,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "14": {
       "base_damage": 239.07,
+      "weapon_attack_percent": 239.07,
+      "hit_damage_component_physical": 239.07,
+      "secondary_hit_forked_lightning_base_damage": 239.07,
+      "secondary_hit_forked_lightning_damage_component_physical": 239.07,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 239.07,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "15": {
       "base_damage": 254.89,
+      "weapon_attack_percent": 254.89,
+      "hit_damage_component_physical": 254.89,
+      "secondary_hit_forked_lightning_base_damage": 254.89,
+      "secondary_hit_forked_lightning_damage_component_physical": 254.89,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 254.89,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "16": {
       "base_damage": 270.72,
+      "weapon_attack_percent": 270.72,
+      "hit_damage_component_physical": 270.72,
+      "secondary_hit_forked_lightning_base_damage": 270.72,
+      "secondary_hit_forked_lightning_damage_component_physical": 270.72,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 270.72,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "17": {
       "base_damage": 286.54,
+      "weapon_attack_percent": 286.54,
+      "hit_damage_component_physical": 286.54,
+      "secondary_hit_forked_lightning_base_damage": 286.54,
+      "secondary_hit_forked_lightning_damage_component_physical": 286.54,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 286.54,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "18": {
       "base_damage": 302.36,
+      "weapon_attack_percent": 302.36,
+      "hit_damage_component_physical": 302.36,
+      "secondary_hit_forked_lightning_base_damage": 302.36,
+      "secondary_hit_forked_lightning_damage_component_physical": 302.36,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 302.36,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "19": {
       "base_damage": 318.18,
+      "weapon_attack_percent": 318.18,
+      "hit_damage_component_physical": 318.18,
+      "secondary_hit_forked_lightning_base_damage": 318.18,
+      "secondary_hit_forked_lightning_damage_component_physical": 318.18,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 318.18,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "20": {
-      "base_damage": 334.0,
+      "base_damage": 334,
+      "weapon_attack_percent": 334,
+      "hit_damage_component_physical": 334,
+      "secondary_hit_forked_lightning_base_damage": 334,
+      "secondary_hit_forked_lightning_damage_component_physical": 334,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 334,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "21": {
       "base_damage": 335.67,
+      "weapon_attack_percent": 335.67,
+      "hit_damage_component_physical": 335.67,
+      "secondary_hit_forked_lightning_base_damage": 335.67,
+      "secondary_hit_forked_lightning_damage_component_physical": 335.67,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 335.67,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "22": {
       "base_damage": 337.34,
+      "weapon_attack_percent": 337.34,
+      "hit_damage_component_physical": 337.34,
+      "secondary_hit_forked_lightning_base_damage": 337.34,
+      "secondary_hit_forked_lightning_damage_component_physical": 337.34,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 337.34,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "23": {
       "base_damage": 339.01,
+      "weapon_attack_percent": 339.01,
+      "hit_damage_component_physical": 339.01,
+      "secondary_hit_forked_lightning_base_damage": 339.01,
+      "secondary_hit_forked_lightning_damage_component_physical": 339.01,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 339.01,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "24": {
       "base_damage": 340.68,
+      "weapon_attack_percent": 340.68,
+      "hit_damage_component_physical": 340.68,
+      "secondary_hit_forked_lightning_base_damage": 340.68,
+      "secondary_hit_forked_lightning_damage_component_physical": 340.68,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 340.68,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "25": {
       "base_damage": 342.35,
+      "weapon_attack_percent": 342.35,
+      "hit_damage_component_physical": 342.35,
+      "secondary_hit_forked_lightning_base_damage": 342.35,
+      "secondary_hit_forked_lightning_damage_component_physical": 342.35,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 342.35,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "26": {
       "base_damage": 344.02,
+      "weapon_attack_percent": 344.02,
+      "hit_damage_component_physical": 344.02,
+      "secondary_hit_forked_lightning_base_damage": 344.02,
+      "secondary_hit_forked_lightning_damage_component_physical": 344.02,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 344.02,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "27": {
       "base_damage": 345.69,
+      "weapon_attack_percent": 345.69,
+      "hit_damage_component_physical": 345.69,
+      "secondary_hit_forked_lightning_base_damage": 345.69,
+      "secondary_hit_forked_lightning_damage_component_physical": 345.69,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 345.69,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "28": {
       "base_damage": 347.36,
+      "weapon_attack_percent": 347.36,
+      "hit_damage_component_physical": 347.36,
+      "secondary_hit_forked_lightning_base_damage": 347.36,
+      "secondary_hit_forked_lightning_damage_component_physical": 347.36,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 347.36,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "29": {
       "base_damage": 349.03,
+      "weapon_attack_percent": 349.03,
+      "hit_damage_component_physical": 349.03,
+      "secondary_hit_forked_lightning_base_damage": 349.03,
+      "secondary_hit_forked_lightning_damage_component_physical": 349.03,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 349.03,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "30": {
       "base_damage": 350.7,
+      "weapon_attack_percent": 350.7,
+      "hit_damage_component_physical": 350.7,
+      "secondary_hit_forked_lightning_base_damage": 350.7,
+      "secondary_hit_forked_lightning_damage_component_physical": 350.7,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 350.7,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "31": {
       "base_damage": 352.37,
+      "weapon_attack_percent": 352.37,
+      "hit_damage_component_physical": 352.37,
+      "secondary_hit_forked_lightning_base_damage": 352.37,
+      "secondary_hit_forked_lightning_damage_component_physical": 352.37,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 352.37,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "32": {
       "base_damage": 354.04,
+      "weapon_attack_percent": 354.04,
+      "hit_damage_component_physical": 354.04,
+      "secondary_hit_forked_lightning_base_damage": 354.04,
+      "secondary_hit_forked_lightning_damage_component_physical": 354.04,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 354.04,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "33": {
       "base_damage": 355.71,
+      "weapon_attack_percent": 355.71,
+      "hit_damage_component_physical": 355.71,
+      "secondary_hit_forked_lightning_base_damage": 355.71,
+      "secondary_hit_forked_lightning_damage_component_physical": 355.71,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 355.71,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "34": {
       "base_damage": 357.38,
+      "weapon_attack_percent": 357.38,
+      "hit_damage_component_physical": 357.38,
+      "secondary_hit_forked_lightning_base_damage": 357.38,
+      "secondary_hit_forked_lightning_damage_component_physical": 357.38,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 357.38,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "35": {
       "base_damage": 359.05,
+      "weapon_attack_percent": 359.05,
+      "hit_damage_component_physical": 359.05,
+      "secondary_hit_forked_lightning_base_damage": 359.05,
+      "secondary_hit_forked_lightning_damage_component_physical": 359.05,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 359.05,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "36": {
       "base_damage": 360.72,
+      "weapon_attack_percent": 360.72,
+      "hit_damage_component_physical": 360.72,
+      "secondary_hit_forked_lightning_base_damage": 360.72,
+      "secondary_hit_forked_lightning_damage_component_physical": 360.72,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 360.72,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "37": {
       "base_damage": 362.39,
+      "weapon_attack_percent": 362.39,
+      "hit_damage_component_physical": 362.39,
+      "secondary_hit_forked_lightning_base_damage": 362.39,
+      "secondary_hit_forked_lightning_damage_component_physical": 362.39,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 362.39,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "38": {
       "base_damage": 364.06,
+      "weapon_attack_percent": 364.06,
+      "hit_damage_component_physical": 364.06,
+      "secondary_hit_forked_lightning_base_damage": 364.06,
+      "secondary_hit_forked_lightning_damage_component_physical": 364.06,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 364.06,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "39": {
       "base_damage": 365.73,
+      "weapon_attack_percent": 365.73,
+      "hit_damage_component_physical": 365.73,
+      "secondary_hit_forked_lightning_base_damage": 365.73,
+      "secondary_hit_forked_lightning_damage_component_physical": 365.73,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 365.73,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "40": {
       "base_damage": 367.4,
+      "weapon_attack_percent": 367.4,
+      "hit_damage_component_physical": 367.4,
+      "secondary_hit_forked_lightning_base_damage": 367.4,
+      "secondary_hit_forked_lightning_damage_component_physical": 367.4,
+      "secondary_hit_forked_lightning_weapon_attack_percent": 367.4,
       "mana_cost": 5,
       "release_interval_ms": 1000
     }
@@ -1824,201 +2624,281 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
   "active_rain_of_arrows": {
     "1": {
       "base_damage": 13.4,
+      "weapon_attack_percent": 13.4,
+      "hit_damage_component_physical": 13.4,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "2": {
       "base_damage": 19.75,
+      "weapon_attack_percent": 19.75,
+      "hit_damage_component_physical": 19.75,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "3": {
       "base_damage": 26.09,
+      "weapon_attack_percent": 26.09,
+      "hit_damage_component_physical": 26.09,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "4": {
       "base_damage": 32.44,
+      "weapon_attack_percent": 32.44,
+      "hit_damage_component_physical": 32.44,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "5": {
       "base_damage": 38.79,
+      "weapon_attack_percent": 38.79,
+      "hit_damage_component_physical": 38.79,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "6": {
       "base_damage": 45.14,
+      "weapon_attack_percent": 45.14,
+      "hit_damage_component_physical": 45.14,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "7": {
       "base_damage": 51.48,
+      "weapon_attack_percent": 51.48,
+      "hit_damage_component_physical": 51.48,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "8": {
       "base_damage": 57.83,
+      "weapon_attack_percent": 57.83,
+      "hit_damage_component_physical": 57.83,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "9": {
       "base_damage": 64.18,
+      "weapon_attack_percent": 64.18,
+      "hit_damage_component_physical": 64.18,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "10": {
       "base_damage": 70.53,
+      "weapon_attack_percent": 70.53,
+      "hit_damage_component_physical": 70.53,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "11": {
       "base_damage": 76.87,
+      "weapon_attack_percent": 76.87,
+      "hit_damage_component_physical": 76.87,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "12": {
       "base_damage": 83.22,
+      "weapon_attack_percent": 83.22,
+      "hit_damage_component_physical": 83.22,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "13": {
       "base_damage": 89.57,
+      "weapon_attack_percent": 89.57,
+      "hit_damage_component_physical": 89.57,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "14": {
       "base_damage": 95.92,
+      "weapon_attack_percent": 95.92,
+      "hit_damage_component_physical": 95.92,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "15": {
       "base_damage": 102.26,
+      "weapon_attack_percent": 102.26,
+      "hit_damage_component_physical": 102.26,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "16": {
       "base_damage": 108.61,
+      "weapon_attack_percent": 108.61,
+      "hit_damage_component_physical": 108.61,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "17": {
       "base_damage": 114.96,
+      "weapon_attack_percent": 114.96,
+      "hit_damage_component_physical": 114.96,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "18": {
       "base_damage": 121.31,
+      "weapon_attack_percent": 121.31,
+      "hit_damage_component_physical": 121.31,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "19": {
       "base_damage": 127.65,
+      "weapon_attack_percent": 127.65,
+      "hit_damage_component_physical": 127.65,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "20": {
-      "base_damage": 134.0,
+      "base_damage": 134,
+      "weapon_attack_percent": 134,
+      "hit_damage_component_physical": 134,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "21": {
       "base_damage": 134.67,
+      "weapon_attack_percent": 134.67,
+      "hit_damage_component_physical": 134.67,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "22": {
       "base_damage": 135.34,
+      "weapon_attack_percent": 135.34,
+      "hit_damage_component_physical": 135.34,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "23": {
       "base_damage": 136.01,
+      "weapon_attack_percent": 136.01,
+      "hit_damage_component_physical": 136.01,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "24": {
       "base_damage": 136.68,
+      "weapon_attack_percent": 136.68,
+      "hit_damage_component_physical": 136.68,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "25": {
       "base_damage": 137.35,
+      "weapon_attack_percent": 137.35,
+      "hit_damage_component_physical": 137.35,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "26": {
       "base_damage": 138.02,
+      "weapon_attack_percent": 138.02,
+      "hit_damage_component_physical": 138.02,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "27": {
       "base_damage": 138.69,
+      "weapon_attack_percent": 138.69,
+      "hit_damage_component_physical": 138.69,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "28": {
       "base_damage": 139.36,
+      "weapon_attack_percent": 139.36,
+      "hit_damage_component_physical": 139.36,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "29": {
       "base_damage": 140.03,
+      "weapon_attack_percent": 140.03,
+      "hit_damage_component_physical": 140.03,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "30": {
       "base_damage": 140.7,
+      "weapon_attack_percent": 140.7,
+      "hit_damage_component_physical": 140.7,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "31": {
       "base_damage": 141.37,
+      "weapon_attack_percent": 141.37,
+      "hit_damage_component_physical": 141.37,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "32": {
       "base_damage": 142.04,
+      "weapon_attack_percent": 142.04,
+      "hit_damage_component_physical": 142.04,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "33": {
       "base_damage": 142.71,
+      "weapon_attack_percent": 142.71,
+      "hit_damage_component_physical": 142.71,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "34": {
       "base_damage": 143.38,
+      "weapon_attack_percent": 143.38,
+      "hit_damage_component_physical": 143.38,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "35": {
       "base_damage": 144.05,
+      "weapon_attack_percent": 144.05,
+      "hit_damage_component_physical": 144.05,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "36": {
       "base_damage": 144.72,
+      "weapon_attack_percent": 144.72,
+      "hit_damage_component_physical": 144.72,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "37": {
       "base_damage": 145.39,
+      "weapon_attack_percent": 145.39,
+      "hit_damage_component_physical": 145.39,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "38": {
       "base_damage": 146.06,
+      "weapon_attack_percent": 146.06,
+      "hit_damage_component_physical": 146.06,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "39": {
       "base_damage": 146.73,
+      "weapon_attack_percent": 146.73,
+      "hit_damage_component_physical": 146.73,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
     "40": {
       "base_damage": 147.4,
+      "weapon_attack_percent": 147.4,
+      "hit_damage_component_physical": 147.4,
       "mana_cost": 5,
       "release_interval_ms": 1000
     }
@@ -2120,7 +3000,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "release_interval_ms": 800
     },
     "20": {
-      "base_damage": 765.0,
+      "base_damage": 765,
       "mana_cost": 8,
       "release_interval_ms": 800
     },
@@ -2430,201 +3310,241 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
   "active_split_firebolt": {
     "1": {
       "base_damage": 84.25,
+      "split_projectile_base_damage": 42.125,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "2": {
       "base_damage": 124.16,
+      "split_projectile_base_damage": 62.08,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "3": {
       "base_damage": 164.07,
+      "split_projectile_base_damage": 82.035,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "4": {
       "base_damage": 203.97,
+      "split_projectile_base_damage": 101.985,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "5": {
       "base_damage": 243.88,
+      "split_projectile_base_damage": 121.94,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "6": {
       "base_damage": 283.79,
+      "split_projectile_base_damage": 141.895,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "7": {
       "base_damage": 323.7,
+      "split_projectile_base_damage": 161.85,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "8": {
       "base_damage": 363.61,
+      "split_projectile_base_damage": 181.805,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "9": {
       "base_damage": 403.51,
+      "split_projectile_base_damage": 201.755,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "10": {
       "base_damage": 443.42,
+      "split_projectile_base_damage": 221.71,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "11": {
       "base_damage": 483.33,
+      "split_projectile_base_damage": 241.665,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "12": {
       "base_damage": 523.24,
+      "split_projectile_base_damage": 261.62,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "13": {
       "base_damage": 563.14,
+      "split_projectile_base_damage": 281.57,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "14": {
       "base_damage": 603.05,
+      "split_projectile_base_damage": 301.525,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "15": {
       "base_damage": 642.96,
+      "split_projectile_base_damage": 321.48,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "16": {
       "base_damage": 682.87,
+      "split_projectile_base_damage": 341.435,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "17": {
       "base_damage": 722.78,
+      "split_projectile_base_damage": 361.39,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "18": {
       "base_damage": 762.68,
+      "split_projectile_base_damage": 381.34,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "19": {
       "base_damage": 802.59,
+      "split_projectile_base_damage": 401.295,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "20": {
       "base_damage": 842.5,
+      "split_projectile_base_damage": 421.25,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "21": {
       "base_damage": 846.71,
+      "split_projectile_base_damage": 423.355,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "22": {
       "base_damage": 850.92,
+      "split_projectile_base_damage": 425.46,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "23": {
       "base_damage": 855.14,
+      "split_projectile_base_damage": 427.57,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "24": {
       "base_damage": 859.35,
+      "split_projectile_base_damage": 429.675,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "25": {
       "base_damage": 863.56,
+      "split_projectile_base_damage": 431.78,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "26": {
       "base_damage": 867.77,
+      "split_projectile_base_damage": 433.885,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "27": {
       "base_damage": 871.99,
+      "split_projectile_base_damage": 435.995,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "28": {
       "base_damage": 876.2,
+      "split_projectile_base_damage": 438.1,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "29": {
       "base_damage": 880.41,
+      "split_projectile_base_damage": 440.205,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "30": {
       "base_damage": 884.62,
+      "split_projectile_base_damage": 442.31,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "31": {
       "base_damage": 888.84,
+      "split_projectile_base_damage": 444.42,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "32": {
       "base_damage": 893.05,
+      "split_projectile_base_damage": 446.525,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "33": {
       "base_damage": 897.26,
+      "split_projectile_base_damage": 448.63,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "34": {
       "base_damage": 901.48,
+      "split_projectile_base_damage": 450.74,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "35": {
       "base_damage": 905.69,
+      "split_projectile_base_damage": 452.845,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "36": {
       "base_damage": 909.9,
+      "split_projectile_base_damage": 454.95,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "37": {
       "base_damage": 914.11,
+      "split_projectile_base_damage": 457.055,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "38": {
       "base_damage": 918.33,
+      "split_projectile_base_damage": 459.165,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "39": {
       "base_damage": 922.54,
+      "split_projectile_base_damage": 461.27,
       "mana_cost": 8,
       "release_interval_ms": 650
     },
     "40": {
       "base_damage": 926.75,
+      "split_projectile_base_damage": 463.375,
       "mana_cost": 8,
       "release_interval_ms": 650
     }
@@ -2928,7 +3848,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "release_interval_ms": 333
     },
     "20": {
-      "base_damage": 359.0,
+      "base_damage": 359,
       "mana_cost": 8,
       "release_interval_ms": 333
     },
@@ -3130,7 +4050,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "release_interval_ms": 1000
     },
     "20": {
-      "base_damage": 83.0,
+      "base_damage": 83,
       "mana_cost": 5,
       "release_interval_ms": 1000
     },
@@ -3294,7 +4214,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "lightning_damage_add_percent": 15.24
     },
     "20": {
-      "lightning_damage_add_percent": 16.0
+      "lightning_damage_add_percent": 16
     },
     "21": {
       "lightning_damage_add_percent": 16.08
@@ -3359,7 +4279,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
   },
   "passive_energy_fortress": {
     "1": {
-      "max_energy_shield": 12.0
+      "max_energy_shield": 12
     },
     "2": {
       "max_energy_shield": 17.68
@@ -3416,7 +4336,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "max_energy_shield": 114.32
     },
     "20": {
-      "max_energy_shield": 120.0
+      "max_energy_shield": 120
     },
     "21": {
       "max_energy_shield": 120.6
@@ -3431,7 +4351,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "max_energy_shield": 122.4
     },
     "25": {
-      "max_energy_shield": 123.0
+      "max_energy_shield": 123
     },
     "26": {
       "max_energy_shield": 123.6
@@ -3446,7 +4366,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "max_energy_shield": 125.4
     },
     "30": {
-      "max_energy_shield": 126.0
+      "max_energy_shield": 126
     },
     "31": {
       "max_energy_shield": 126.6
@@ -3461,7 +4381,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "max_energy_shield": 128.4
     },
     "35": {
-      "max_energy_shield": 129.0
+      "max_energy_shield": 129
     },
     "36": {
       "max_energy_shield": 129.6
@@ -3476,7 +4396,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "max_energy_shield": 131.4
     },
     "40": {
-      "max_energy_shield": 132.0
+      "max_energy_shield": 132
     }
   },
   "passive_fearless": {
@@ -3538,7 +4458,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "crit_rating": 58.11
     },
     "20": {
-      "crit_rating": 61.0
+      "crit_rating": 61
     },
     "21": {
       "crit_rating": 61.3
@@ -3660,7 +4580,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "cold_damage_add_percent": 15.24
     },
     "20": {
-      "cold_damage_add_percent": 16.0
+      "cold_damage_add_percent": 16
     },
     "21": {
       "cold_damage_add_percent": 16.08
@@ -3725,7 +4645,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
   },
   "passive_magical_source": {
     "1": {
-      "max_mana": 5.0
+      "max_mana": 5
     },
     "2": {
       "max_mana": 7.37
@@ -3782,7 +4702,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "max_mana": 47.63
     },
     "20": {
-      "max_mana": 50.0
+      "max_mana": 50
     },
     "21": {
       "max_mana": 50.25
@@ -3794,7 +4714,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "max_mana": 50.75
     },
     "24": {
-      "max_mana": 51.0
+      "max_mana": 51
     },
     "25": {
       "max_mana": 51.25
@@ -3806,7 +4726,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "max_mana": 51.75
     },
     "28": {
-      "max_mana": 52.0
+      "max_mana": 52
     },
     "29": {
       "max_mana": 52.25
@@ -3818,7 +4738,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "max_mana": 52.75
     },
     "32": {
-      "max_mana": 53.0
+      "max_mana": 53
     },
     "33": {
       "max_mana": 53.25
@@ -3830,7 +4750,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "max_mana": 53.75
     },
     "36": {
-      "max_mana": 54.0
+      "max_mana": 54
     },
     "37": {
       "max_mana": 54.25
@@ -3842,7 +4762,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "max_mana": 54.75
     },
     "40": {
-      "max_mana": 55.0
+      "max_mana": 55
     }
   },
   "passive_precise_projectiles": {
@@ -3904,7 +4824,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "projectile_damage_add_percent": 15.24
     },
     "20": {
-      "projectile_damage_add_percent": 16.0
+      "projectile_damage_add_percent": 16
     },
     "21": {
       "projectile_damage_add_percent": 16.08
@@ -3969,7 +4889,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
   },
   "passive_rejuvenation": {
     "1": {
-      "life_regen_flat": 4.0
+      "life_regen_flat": 4
     },
     "2": {
       "life_regen_flat": 5.89
@@ -4026,7 +4946,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "life_regen_flat": 38.11
     },
     "20": {
-      "life_regen_flat": 40.0
+      "life_regen_flat": 40
     },
     "21": {
       "life_regen_flat": 40.2
@@ -4041,7 +4961,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "life_regen_flat": 40.8
     },
     "25": {
-      "life_regen_flat": 41.0
+      "life_regen_flat": 41
     },
     "26": {
       "life_regen_flat": 41.2
@@ -4056,7 +4976,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "life_regen_flat": 41.8
     },
     "30": {
-      "life_regen_flat": 42.0
+      "life_regen_flat": 42
     },
     "31": {
       "life_regen_flat": 42.2
@@ -4071,7 +4991,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "life_regen_flat": 42.8
     },
     "35": {
-      "life_regen_flat": 43.0
+      "life_regen_flat": 43
     },
     "36": {
       "life_regen_flat": 43.2
@@ -4086,7 +5006,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "life_regen_flat": 43.8
     },
     "40": {
-      "life_regen_flat": 44.0
+      "life_regen_flat": 44
     }
   },
   "passive_spell_amplification": {
@@ -4148,7 +5068,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "spell_damage_add_percent": 15.24
     },
     "20": {
-      "spell_damage_add_percent": 16.0
+      "spell_damage_add_percent": 16
     },
     "21": {
       "spell_damage_add_percent": 16.08
@@ -4270,7 +5190,7 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "physical_damage_add_percent": 15.24
     },
     "20": {
-      "physical_damage_add_percent": 16.0
+      "physical_damage_add_percent": 16
     },
     "21": {
       "physical_damage_add_percent": 16.08
@@ -6149,6 +7069,290 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "elemental_damage_add_percent": 45
     }
   },
+  "support_enhanced_ailment": {
+    "1": {
+      "status_chance_add_percent": 0.3,
+      "ailment_damage_add_percent": 0.3
+    },
+    "2": {
+      "status_chance_add_percent": 0.6,
+      "ailment_damage_add_percent": 0.6
+    },
+    "3": {
+      "status_chance_add_percent": 0.9,
+      "ailment_damage_add_percent": 0.9
+    },
+    "4": {
+      "status_chance_add_percent": 1.2,
+      "ailment_damage_add_percent": 1.2
+    },
+    "5": {
+      "status_chance_add_percent": 1.5,
+      "ailment_damage_add_percent": 1.5
+    },
+    "6": {
+      "status_chance_add_percent": 1.8,
+      "ailment_damage_add_percent": 1.8
+    },
+    "7": {
+      "status_chance_add_percent": 2.1,
+      "ailment_damage_add_percent": 2.1
+    },
+    "8": {
+      "status_chance_add_percent": 2.4,
+      "ailment_damage_add_percent": 2.4
+    },
+    "9": {
+      "status_chance_add_percent": 2.7,
+      "ailment_damage_add_percent": 2.7
+    },
+    "10": {
+      "status_chance_add_percent": 3,
+      "ailment_damage_add_percent": 3
+    },
+    "11": {
+      "status_chance_add_percent": 3.3,
+      "ailment_damage_add_percent": 3.3
+    },
+    "12": {
+      "status_chance_add_percent": 3.6,
+      "ailment_damage_add_percent": 3.6
+    },
+    "13": {
+      "status_chance_add_percent": 3.9,
+      "ailment_damage_add_percent": 3.9
+    },
+    "14": {
+      "status_chance_add_percent": 4.2,
+      "ailment_damage_add_percent": 4.2
+    },
+    "15": {
+      "status_chance_add_percent": 4.5,
+      "ailment_damage_add_percent": 4.5
+    },
+    "16": {
+      "status_chance_add_percent": 4.8,
+      "ailment_damage_add_percent": 4.8
+    },
+    "17": {
+      "status_chance_add_percent": 5.1,
+      "ailment_damage_add_percent": 5.1
+    },
+    "18": {
+      "status_chance_add_percent": 5.4,
+      "ailment_damage_add_percent": 5.4
+    },
+    "19": {
+      "status_chance_add_percent": 5.7,
+      "ailment_damage_add_percent": 5.7
+    },
+    "20": {
+      "status_chance_add_percent": 6,
+      "ailment_damage_add_percent": 6
+    },
+    "21": {
+      "status_chance_add_percent": 6.3,
+      "ailment_damage_add_percent": 6.3
+    },
+    "22": {
+      "status_chance_add_percent": 6.4,
+      "ailment_damage_add_percent": 6.4
+    },
+    "23": {
+      "status_chance_add_percent": 6.5,
+      "ailment_damage_add_percent": 6.5
+    },
+    "24": {
+      "status_chance_add_percent": 6.6,
+      "ailment_damage_add_percent": 6.6
+    },
+    "25": {
+      "status_chance_add_percent": 6.7,
+      "ailment_damage_add_percent": 6.7
+    },
+    "26": {
+      "status_chance_add_percent": 6.8,
+      "ailment_damage_add_percent": 6.8
+    },
+    "27": {
+      "status_chance_add_percent": 6.9,
+      "ailment_damage_add_percent": 6.9
+    },
+    "28": {
+      "status_chance_add_percent": 7,
+      "ailment_damage_add_percent": 7
+    },
+    "29": {
+      "status_chance_add_percent": 7.1,
+      "ailment_damage_add_percent": 7.1
+    },
+    "30": {
+      "status_chance_add_percent": 7.2,
+      "ailment_damage_add_percent": 7.2
+    },
+    "31": {
+      "status_chance_add_percent": 7.3,
+      "ailment_damage_add_percent": 7.3
+    },
+    "32": {
+      "status_chance_add_percent": 7.4,
+      "ailment_damage_add_percent": 7.4
+    },
+    "33": {
+      "status_chance_add_percent": 7.5,
+      "ailment_damage_add_percent": 7.5
+    },
+    "34": {
+      "status_chance_add_percent": 7.6,
+      "ailment_damage_add_percent": 7.6
+    },
+    "35": {
+      "status_chance_add_percent": 7.7,
+      "ailment_damage_add_percent": 7.7
+    },
+    "36": {
+      "status_chance_add_percent": 7.8,
+      "ailment_damage_add_percent": 7.8
+    },
+    "37": {
+      "status_chance_add_percent": 7.9,
+      "ailment_damage_add_percent": 7.9
+    },
+    "38": {
+      "status_chance_add_percent": 8,
+      "ailment_damage_add_percent": 8
+    },
+    "39": {
+      "status_chance_add_percent": 8.1,
+      "ailment_damage_add_percent": 8.1
+    },
+    "40": {
+      "status_chance_add_percent": 8.2,
+      "ailment_damage_add_percent": 8.2
+    }
+  },
+  "support_extended_duration": {
+    "1": {
+      "duration_add_percent": 13
+    },
+    "2": {
+      "duration_add_percent": 13.5
+    },
+    "3": {
+      "duration_add_percent": 14
+    },
+    "4": {
+      "duration_add_percent": 14.5
+    },
+    "5": {
+      "duration_add_percent": 15
+    },
+    "6": {
+      "duration_add_percent": 15.5
+    },
+    "7": {
+      "duration_add_percent": 16
+    },
+    "8": {
+      "duration_add_percent": 16.5
+    },
+    "9": {
+      "duration_add_percent": 17
+    },
+    "10": {
+      "duration_add_percent": 17.5
+    },
+    "11": {
+      "duration_add_percent": 18
+    },
+    "12": {
+      "duration_add_percent": 18.5
+    },
+    "13": {
+      "duration_add_percent": 19
+    },
+    "14": {
+      "duration_add_percent": 19.5
+    },
+    "15": {
+      "duration_add_percent": 20
+    },
+    "16": {
+      "duration_add_percent": 20.5
+    },
+    "17": {
+      "duration_add_percent": 21
+    },
+    "18": {
+      "duration_add_percent": 21.5
+    },
+    "19": {
+      "duration_add_percent": 22
+    },
+    "20": {
+      "duration_add_percent": 22.5
+    },
+    "21": {
+      "duration_add_percent": 23
+    },
+    "22": {
+      "duration_add_percent": 23.5
+    },
+    "23": {
+      "duration_add_percent": 24
+    },
+    "24": {
+      "duration_add_percent": 24.5
+    },
+    "25": {
+      "duration_add_percent": 25
+    },
+    "26": {
+      "duration_add_percent": 25.5
+    },
+    "27": {
+      "duration_add_percent": 26
+    },
+    "28": {
+      "duration_add_percent": 26.5
+    },
+    "29": {
+      "duration_add_percent": 27
+    },
+    "30": {
+      "duration_add_percent": 27.5
+    },
+    "31": {
+      "duration_add_percent": 28
+    },
+    "32": {
+      "duration_add_percent": 28.5
+    },
+    "33": {
+      "duration_add_percent": 29
+    },
+    "34": {
+      "duration_add_percent": 29.5
+    },
+    "35": {
+      "duration_add_percent": 30
+    },
+    "36": {
+      "duration_add_percent": 30.5
+    },
+    "37": {
+      "duration_add_percent": 31
+    },
+    "38": {
+      "duration_add_percent": 31.5
+    },
+    "39": {
+      "duration_add_percent": 32
+    },
+    "40": {
+      "duration_add_percent": 32.5
+    }
+  },
   "support_glacial_freeze": {
     "1": {
       "cold_damage_add_percent": 10.3
@@ -6593,6 +7797,168 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
     },
     "40": {
       "lightning_damage_add_percent": 18.2
+    }
+  },
+  "support_improved_corrosion": {
+    "1": {
+      "deterioration_extra_stack_chance_percent": 23,
+      "deterioration_chance_add_percent": 23
+    },
+    "2": {
+      "deterioration_extra_stack_chance_percent": 23.5,
+      "deterioration_chance_add_percent": 23.5
+    },
+    "3": {
+      "deterioration_extra_stack_chance_percent": 24,
+      "deterioration_chance_add_percent": 24
+    },
+    "4": {
+      "deterioration_extra_stack_chance_percent": 24.5,
+      "deterioration_chance_add_percent": 24.5
+    },
+    "5": {
+      "deterioration_extra_stack_chance_percent": 25,
+      "deterioration_chance_add_percent": 25
+    },
+    "6": {
+      "deterioration_extra_stack_chance_percent": 25.5,
+      "deterioration_chance_add_percent": 25.5
+    },
+    "7": {
+      "deterioration_extra_stack_chance_percent": 26,
+      "deterioration_chance_add_percent": 26
+    },
+    "8": {
+      "deterioration_extra_stack_chance_percent": 26.5,
+      "deterioration_chance_add_percent": 26.5
+    },
+    "9": {
+      "deterioration_extra_stack_chance_percent": 27,
+      "deterioration_chance_add_percent": 27
+    },
+    "10": {
+      "deterioration_extra_stack_chance_percent": 27.5,
+      "deterioration_chance_add_percent": 27.5
+    },
+    "11": {
+      "deterioration_extra_stack_chance_percent": 28,
+      "deterioration_chance_add_percent": 28
+    },
+    "12": {
+      "deterioration_extra_stack_chance_percent": 28.5,
+      "deterioration_chance_add_percent": 28.5
+    },
+    "13": {
+      "deterioration_extra_stack_chance_percent": 29,
+      "deterioration_chance_add_percent": 29
+    },
+    "14": {
+      "deterioration_extra_stack_chance_percent": 29.5,
+      "deterioration_chance_add_percent": 29.5
+    },
+    "15": {
+      "deterioration_extra_stack_chance_percent": 30,
+      "deterioration_chance_add_percent": 30
+    },
+    "16": {
+      "deterioration_extra_stack_chance_percent": 30.5,
+      "deterioration_chance_add_percent": 30.5
+    },
+    "17": {
+      "deterioration_extra_stack_chance_percent": 31,
+      "deterioration_chance_add_percent": 31
+    },
+    "18": {
+      "deterioration_extra_stack_chance_percent": 31.5,
+      "deterioration_chance_add_percent": 31.5
+    },
+    "19": {
+      "deterioration_extra_stack_chance_percent": 32,
+      "deterioration_chance_add_percent": 32
+    },
+    "20": {
+      "deterioration_extra_stack_chance_percent": 32.5,
+      "deterioration_chance_add_percent": 32.5
+    },
+    "21": {
+      "deterioration_extra_stack_chance_percent": 33,
+      "deterioration_chance_add_percent": 33
+    },
+    "22": {
+      "deterioration_extra_stack_chance_percent": 33.3,
+      "deterioration_chance_add_percent": 33.3
+    },
+    "23": {
+      "deterioration_extra_stack_chance_percent": 33.6,
+      "deterioration_chance_add_percent": 33.6
+    },
+    "24": {
+      "deterioration_extra_stack_chance_percent": 33.9,
+      "deterioration_chance_add_percent": 33.9
+    },
+    "25": {
+      "deterioration_extra_stack_chance_percent": 34.2,
+      "deterioration_chance_add_percent": 34.2
+    },
+    "26": {
+      "deterioration_extra_stack_chance_percent": 34.5,
+      "deterioration_chance_add_percent": 34.5
+    },
+    "27": {
+      "deterioration_extra_stack_chance_percent": 34.8,
+      "deterioration_chance_add_percent": 34.8
+    },
+    "28": {
+      "deterioration_extra_stack_chance_percent": 35.1,
+      "deterioration_chance_add_percent": 35.1
+    },
+    "29": {
+      "deterioration_extra_stack_chance_percent": 35.4,
+      "deterioration_chance_add_percent": 35.4
+    },
+    "30": {
+      "deterioration_extra_stack_chance_percent": 35.7,
+      "deterioration_chance_add_percent": 35.7
+    },
+    "31": {
+      "deterioration_extra_stack_chance_percent": 36,
+      "deterioration_chance_add_percent": 36
+    },
+    "32": {
+      "deterioration_extra_stack_chance_percent": 36.3,
+      "deterioration_chance_add_percent": 36.3
+    },
+    "33": {
+      "deterioration_extra_stack_chance_percent": 36.6,
+      "deterioration_chance_add_percent": 36.6
+    },
+    "34": {
+      "deterioration_extra_stack_chance_percent": 36.9,
+      "deterioration_chance_add_percent": 36.9
+    },
+    "35": {
+      "deterioration_extra_stack_chance_percent": 37.2,
+      "deterioration_chance_add_percent": 37.2
+    },
+    "36": {
+      "deterioration_extra_stack_chance_percent": 37.5,
+      "deterioration_chance_add_percent": 37.5
+    },
+    "37": {
+      "deterioration_extra_stack_chance_percent": 37.8,
+      "deterioration_chance_add_percent": 37.8
+    },
+    "38": {
+      "deterioration_extra_stack_chance_percent": 38.1,
+      "deterioration_chance_add_percent": 38.1
+    },
+    "39": {
+      "deterioration_extra_stack_chance_percent": 38.4,
+      "deterioration_chance_add_percent": 38.4
+    },
+    "40": {
+      "deterioration_extra_stack_chance_percent": 38.7,
+      "deterioration_chance_add_percent": 38.7
     }
   },
   "support_increased_area": {
@@ -8739,6 +10105,208 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
       "cast_speed_add_percent": 34.5
     }
   },
+  "support_quick_mobility": {
+    "1": {
+      "attack_speed_add_percent": 10.5,
+      "cast_speed_add_percent": 20.5,
+      "cooldown_recovery_add_percent": 1.025
+    },
+    "2": {
+      "attack_speed_add_percent": 11,
+      "cast_speed_add_percent": 21,
+      "cooldown_recovery_add_percent": 2.05
+    },
+    "3": {
+      "attack_speed_add_percent": 11.5,
+      "cast_speed_add_percent": 21.5,
+      "cooldown_recovery_add_percent": 3.075
+    },
+    "4": {
+      "attack_speed_add_percent": 12,
+      "cast_speed_add_percent": 22,
+      "cooldown_recovery_add_percent": 4.1
+    },
+    "5": {
+      "attack_speed_add_percent": 12.5,
+      "cast_speed_add_percent": 22.5,
+      "cooldown_recovery_add_percent": 5.125
+    },
+    "6": {
+      "attack_speed_add_percent": 13,
+      "cast_speed_add_percent": 23,
+      "cooldown_recovery_add_percent": 6.15
+    },
+    "7": {
+      "attack_speed_add_percent": 13.5,
+      "cast_speed_add_percent": 23.5,
+      "cooldown_recovery_add_percent": 7.175
+    },
+    "8": {
+      "attack_speed_add_percent": 14,
+      "cast_speed_add_percent": 24,
+      "cooldown_recovery_add_percent": 8.2
+    },
+    "9": {
+      "attack_speed_add_percent": 14.5,
+      "cast_speed_add_percent": 24.5,
+      "cooldown_recovery_add_percent": 9.225
+    },
+    "10": {
+      "attack_speed_add_percent": 15,
+      "cast_speed_add_percent": 25,
+      "cooldown_recovery_add_percent": 10.25
+    },
+    "11": {
+      "attack_speed_add_percent": 15.5,
+      "cast_speed_add_percent": 25.5,
+      "cooldown_recovery_add_percent": 11.275
+    },
+    "12": {
+      "attack_speed_add_percent": 16,
+      "cast_speed_add_percent": 26,
+      "cooldown_recovery_add_percent": 12.3
+    },
+    "13": {
+      "attack_speed_add_percent": 16.5,
+      "cast_speed_add_percent": 26.5,
+      "cooldown_recovery_add_percent": 13.325
+    },
+    "14": {
+      "attack_speed_add_percent": 17,
+      "cast_speed_add_percent": 27,
+      "cooldown_recovery_add_percent": 14.35
+    },
+    "15": {
+      "attack_speed_add_percent": 17.5,
+      "cast_speed_add_percent": 27.5,
+      "cooldown_recovery_add_percent": 15.375
+    },
+    "16": {
+      "attack_speed_add_percent": 18,
+      "cast_speed_add_percent": 28,
+      "cooldown_recovery_add_percent": 16.4
+    },
+    "17": {
+      "attack_speed_add_percent": 18.5,
+      "cast_speed_add_percent": 28.5,
+      "cooldown_recovery_add_percent": 17.425
+    },
+    "18": {
+      "attack_speed_add_percent": 19,
+      "cast_speed_add_percent": 29,
+      "cooldown_recovery_add_percent": 18.45
+    },
+    "19": {
+      "attack_speed_add_percent": 19.5,
+      "cast_speed_add_percent": 29.5,
+      "cooldown_recovery_add_percent": 19.475
+    },
+    "20": {
+      "attack_speed_add_percent": 20,
+      "cast_speed_add_percent": 30,
+      "cooldown_recovery_add_percent": 20.5
+    },
+    "21": {
+      "attack_speed_add_percent": 20.5,
+      "cast_speed_add_percent": 30.5,
+      "cooldown_recovery_add_percent": 21.525
+    },
+    "22": {
+      "attack_speed_add_percent": 21,
+      "cast_speed_add_percent": 31,
+      "cooldown_recovery_add_percent": 22.55
+    },
+    "23": {
+      "attack_speed_add_percent": 21.5,
+      "cast_speed_add_percent": 31.5,
+      "cooldown_recovery_add_percent": 23.575
+    },
+    "24": {
+      "attack_speed_add_percent": 22,
+      "cast_speed_add_percent": 32,
+      "cooldown_recovery_add_percent": 24.6
+    },
+    "25": {
+      "attack_speed_add_percent": 22.5,
+      "cast_speed_add_percent": 32.5,
+      "cooldown_recovery_add_percent": 25.625
+    },
+    "26": {
+      "attack_speed_add_percent": 23,
+      "cast_speed_add_percent": 33,
+      "cooldown_recovery_add_percent": 26.65
+    },
+    "27": {
+      "attack_speed_add_percent": 23.5,
+      "cast_speed_add_percent": 33.5,
+      "cooldown_recovery_add_percent": 27.675
+    },
+    "28": {
+      "attack_speed_add_percent": 24,
+      "cast_speed_add_percent": 34,
+      "cooldown_recovery_add_percent": 28.7
+    },
+    "29": {
+      "attack_speed_add_percent": 24.5,
+      "cast_speed_add_percent": 34.5,
+      "cooldown_recovery_add_percent": 29.725
+    },
+    "30": {
+      "attack_speed_add_percent": 25,
+      "cast_speed_add_percent": 35,
+      "cooldown_recovery_add_percent": 30.75
+    },
+    "31": {
+      "attack_speed_add_percent": 25.5,
+      "cast_speed_add_percent": 35.5,
+      "cooldown_recovery_add_percent": 31.775
+    },
+    "32": {
+      "attack_speed_add_percent": 26,
+      "cast_speed_add_percent": 36,
+      "cooldown_recovery_add_percent": 32.8
+    },
+    "33": {
+      "attack_speed_add_percent": 26.5,
+      "cast_speed_add_percent": 36.5,
+      "cooldown_recovery_add_percent": 33.825
+    },
+    "34": {
+      "attack_speed_add_percent": 27,
+      "cast_speed_add_percent": 37,
+      "cooldown_recovery_add_percent": 34.85
+    },
+    "35": {
+      "attack_speed_add_percent": 27.5,
+      "cast_speed_add_percent": 37.5,
+      "cooldown_recovery_add_percent": 35.875
+    },
+    "36": {
+      "attack_speed_add_percent": 28,
+      "cast_speed_add_percent": 38,
+      "cooldown_recovery_add_percent": 36.9
+    },
+    "37": {
+      "attack_speed_add_percent": 28.5,
+      "cast_speed_add_percent": 38.5,
+      "cooldown_recovery_add_percent": 37.925
+    },
+    "38": {
+      "attack_speed_add_percent": 29,
+      "cast_speed_add_percent": 39,
+      "cooldown_recovery_add_percent": 38.95
+    },
+    "39": {
+      "attack_speed_add_percent": 29.5,
+      "cast_speed_add_percent": 39.5,
+      "cooldown_recovery_add_percent": 39.975
+    },
+    "40": {
+      "attack_speed_add_percent": 30,
+      "cast_speed_add_percent": 40,
+      "cooldown_recovery_add_percent": 41
+    }
+  },
   "support_raging_slash": {
     "1": {
       "slash_chance_add_percent": 21
@@ -9687,5 +11255,127 @@ export const FRONTEND_SKILL_LEVEL_TABLES = {
     "40": {
       "physical_damage_add_percent": 27
     }
+  },
+  "support_utility_cooldown_reduction": {
+    "1": {
+      "cooldown_recovery_add_percent": 13
+    },
+    "2": {
+      "cooldown_recovery_add_percent": 13.5
+    },
+    "3": {
+      "cooldown_recovery_add_percent": 14
+    },
+    "4": {
+      "cooldown_recovery_add_percent": 14.5
+    },
+    "5": {
+      "cooldown_recovery_add_percent": 15
+    },
+    "6": {
+      "cooldown_recovery_add_percent": 15.5
+    },
+    "7": {
+      "cooldown_recovery_add_percent": 16
+    },
+    "8": {
+      "cooldown_recovery_add_percent": 16.5
+    },
+    "9": {
+      "cooldown_recovery_add_percent": 17
+    },
+    "10": {
+      "cooldown_recovery_add_percent": 17.5
+    },
+    "11": {
+      "cooldown_recovery_add_percent": 18
+    },
+    "12": {
+      "cooldown_recovery_add_percent": 18.5
+    },
+    "13": {
+      "cooldown_recovery_add_percent": 19
+    },
+    "14": {
+      "cooldown_recovery_add_percent": 19.5
+    },
+    "15": {
+      "cooldown_recovery_add_percent": 20
+    },
+    "16": {
+      "cooldown_recovery_add_percent": 20.5
+    },
+    "17": {
+      "cooldown_recovery_add_percent": 21
+    },
+    "18": {
+      "cooldown_recovery_add_percent": 21.5
+    },
+    "19": {
+      "cooldown_recovery_add_percent": 22
+    },
+    "20": {
+      "cooldown_recovery_add_percent": 22.5
+    },
+    "21": {
+      "cooldown_recovery_add_percent": 23
+    },
+    "22": {
+      "cooldown_recovery_add_percent": 23.5
+    },
+    "23": {
+      "cooldown_recovery_add_percent": 24
+    },
+    "24": {
+      "cooldown_recovery_add_percent": 24.5
+    },
+    "25": {
+      "cooldown_recovery_add_percent": 25
+    },
+    "26": {
+      "cooldown_recovery_add_percent": 25.5
+    },
+    "27": {
+      "cooldown_recovery_add_percent": 26
+    },
+    "28": {
+      "cooldown_recovery_add_percent": 26.5
+    },
+    "29": {
+      "cooldown_recovery_add_percent": 27
+    },
+    "30": {
+      "cooldown_recovery_add_percent": 27.5
+    },
+    "31": {
+      "cooldown_recovery_add_percent": 28
+    },
+    "32": {
+      "cooldown_recovery_add_percent": 28.5
+    },
+    "33": {
+      "cooldown_recovery_add_percent": 29
+    },
+    "34": {
+      "cooldown_recovery_add_percent": 29.5
+    },
+    "35": {
+      "cooldown_recovery_add_percent": 30
+    },
+    "36": {
+      "cooldown_recovery_add_percent": 30.5
+    },
+    "37": {
+      "cooldown_recovery_add_percent": 31
+    },
+    "38": {
+      "cooldown_recovery_add_percent": 31.5
+    },
+    "39": {
+      "cooldown_recovery_add_percent": 32
+    },
+    "40": {
+      "cooldown_recovery_add_percent": 32.5
+    }
   }
-} as const satisfies Record<string, FrontendSkillLevelTable>;
+} satisfies Record<string, FrontendSkillLevelTable>;

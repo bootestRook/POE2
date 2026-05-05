@@ -283,7 +283,7 @@ class TlidbSkillAlignmentTest(unittest.TestCase):
             {event.payload["tick_time_ms"] for event in corrosive_ground_hits},
             set(range(1000, 21000, 1000)),
         )
-        self.assertTrue(all(event.amount == 7.41 for event in corrosive_ground_damage))
+        self.assertTrue(all(event.amount == 0.741 for event in corrosive_ground_damage))
         self.assertTrue(all(event.payload["buff_type"] == "" for event in corrosive_buffs))
         self.assertTrue(all(event.payload["effect_type"] == "damage_taken_increase" for event in corrosive_buffs))
         self.assertTrue(all(event.payload["chance_percent"] == 40 for event in corrosive_buffs))
@@ -295,10 +295,10 @@ class TlidbSkillAlignmentTest(unittest.TestCase):
         self.assertEqual(burning.final_cooldown_ms, 1000)
         self.assertEqual(burning.ailments[0]["type"], "ignite")
         self.assertEqual(burning.ailments[0]["chance_percent"], 25)
-        self.assertEqual(burning.ailments[0]["base_damage_per_second"], 25.6)
+        self.assertEqual(burning.ailments[0]["base_damage_per_second"], 2.56)
         self.assertEqual(burning.ailments[0]["damage_over_time_more_percent"], 30)
         self.assertEqual(burning.runtime_params["on_ignited_hit_explosion_radius"], 60)
-        self.assertEqual(burning.runtime_params["on_ignited_hit_indirect_fire_damage"], 5)
+        self.assertEqual(burning.runtime_params["on_ignited_hit_indirect_fire_damage"], 0.5)
         self.assertEqual(burning.runtime_params["on_ignited_hit_cooldown_ms"], 5000)
 
         chain, chain_events = self.execute("active_chain_lightning")

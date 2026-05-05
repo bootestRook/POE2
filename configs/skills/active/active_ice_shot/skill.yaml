@@ -17,162 +17,362 @@ level_table:
   levels:
     1:
       base_damage: 31.3
+      weapon_attack_percent: 31.3
+      hit_damage_component_physical: 31.3
+      secondary_hit_ice_cone_back_explosion_base_damage: 15.7
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 15.7
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 15.7
       mana_cost: 5
       release_interval_ms: 1000
     2:
       base_damage: 46.13
+      weapon_attack_percent: 46.13
+      hit_damage_component_physical: 46.13
+      secondary_hit_ice_cone_back_explosion_base_damage: 23.1387
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 23.1387
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 23.1387
       mana_cost: 5
       release_interval_ms: 1000
     3:
       base_damage: 60.95
+      weapon_attack_percent: 60.95
+      hit_damage_component_physical: 60.95
+      secondary_hit_ice_cone_back_explosion_base_damage: 30.5724
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 30.5724
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 30.5724
       mana_cost: 5
       release_interval_ms: 1000
     4:
       base_damage: 75.78
+      weapon_attack_percent: 75.78
+      hit_damage_component_physical: 75.78
+      secondary_hit_ice_cone_back_explosion_base_damage: 38.0111
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 38.0111
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 38.0111
       mana_cost: 5
       release_interval_ms: 1000
     5:
       base_damage: 90.61
+      weapon_attack_percent: 90.61
+      hit_damage_component_physical: 90.61
+      secondary_hit_ice_cone_back_explosion_base_damage: 45.4497
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 45.4497
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 45.4497
       mana_cost: 5
       release_interval_ms: 1000
     6:
       base_damage: 105.43
+      weapon_attack_percent: 105.43
+      hit_damage_component_physical: 105.43
+      secondary_hit_ice_cone_back_explosion_base_damage: 52.8834
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 52.8834
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 52.8834
       mana_cost: 5
       release_interval_ms: 1000
     7:
       base_damage: 120.26
+      weapon_attack_percent: 120.26
+      hit_damage_component_physical: 120.26
+      secondary_hit_ice_cone_back_explosion_base_damage: 60.3221
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 60.3221
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 60.3221
       mana_cost: 5
       release_interval_ms: 1000
     8:
       base_damage: 135.08
+      weapon_attack_percent: 135.08
+      hit_damage_component_physical: 135.08
+      secondary_hit_ice_cone_back_explosion_base_damage: 67.7558
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 67.7558
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 67.7558
       mana_cost: 5
       release_interval_ms: 1000
     9:
       base_damage: 149.91
+      weapon_attack_percent: 149.91
+      hit_damage_component_physical: 149.91
+      secondary_hit_ice_cone_back_explosion_base_damage: 75.1945
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 75.1945
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 75.1945
       mana_cost: 5
       release_interval_ms: 1000
     10:
       base_damage: 164.74
+      weapon_attack_percent: 164.74
+      hit_damage_component_physical: 164.74
+      secondary_hit_ice_cone_back_explosion_base_damage: 82.6332
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 82.6332
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 82.6332
       mana_cost: 5
       release_interval_ms: 1000
     11:
       base_damage: 179.56
+      weapon_attack_percent: 179.56
+      hit_damage_component_physical: 179.56
+      secondary_hit_ice_cone_back_explosion_base_damage: 90.0668
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 90.0668
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 90.0668
       mana_cost: 5
       release_interval_ms: 1000
     12:
       base_damage: 194.39
+      weapon_attack_percent: 194.39
+      hit_damage_component_physical: 194.39
+      secondary_hit_ice_cone_back_explosion_base_damage: 97.5055
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 97.5055
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 97.5055
       mana_cost: 5
       release_interval_ms: 1000
     13:
       base_damage: 209.22
+      weapon_attack_percent: 209.22
+      hit_damage_component_physical: 209.22
+      secondary_hit_ice_cone_back_explosion_base_damage: 104.9442
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 104.9442
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 104.9442
       mana_cost: 5
       release_interval_ms: 1000
     14:
       base_damage: 224.04
+      weapon_attack_percent: 224.04
+      hit_damage_component_physical: 224.04
+      secondary_hit_ice_cone_back_explosion_base_damage: 112.3779
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 112.3779
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 112.3779
       mana_cost: 5
       release_interval_ms: 1000
     15:
       base_damage: 238.87
+      weapon_attack_percent: 238.87
+      hit_damage_component_physical: 238.87
+      secondary_hit_ice_cone_back_explosion_base_damage: 119.8166
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 119.8166
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 119.8166
       mana_cost: 5
       release_interval_ms: 1000
     16:
       base_damage: 253.69
+      weapon_attack_percent: 253.69
+      hit_damage_component_physical: 253.69
+      secondary_hit_ice_cone_back_explosion_base_damage: 127.2503
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 127.2503
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 127.2503
       mana_cost: 5
       release_interval_ms: 1000
     17:
       base_damage: 268.52
+      weapon_attack_percent: 268.52
+      hit_damage_component_physical: 268.52
+      secondary_hit_ice_cone_back_explosion_base_damage: 134.6889
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 134.6889
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 134.6889
       mana_cost: 5
       release_interval_ms: 1000
     18:
       base_damage: 283.35
+      weapon_attack_percent: 283.35
+      hit_damage_component_physical: 283.35
+      secondary_hit_ice_cone_back_explosion_base_damage: 142.1276
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 142.1276
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 142.1276
       mana_cost: 5
       release_interval_ms: 1000
     19:
       base_damage: 298.17
+      weapon_attack_percent: 298.17
+      hit_damage_component_physical: 298.17
+      secondary_hit_ice_cone_back_explosion_base_damage: 149.5613
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 149.5613
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 149.5613
       mana_cost: 5
       release_interval_ms: 1000
     20:
-      base_damage: 313.0
+      base_damage: 313
+      weapon_attack_percent: 313
+      hit_damage_component_physical: 313
+      secondary_hit_ice_cone_back_explosion_base_damage: 157
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 157
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 157
       mana_cost: 5
       release_interval_ms: 1000
     21:
       base_damage: 314.56
+      weapon_attack_percent: 314.56
+      hit_damage_component_physical: 314.56
+      secondary_hit_ice_cone_back_explosion_base_damage: 157.7825
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 157.7825
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 157.7825
       mana_cost: 5
       release_interval_ms: 1000
     22:
       base_damage: 316.13
+      weapon_attack_percent: 316.13
+      hit_damage_component_physical: 316.13
+      secondary_hit_ice_cone_back_explosion_base_damage: 158.57
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 158.57
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 158.57
       mana_cost: 5
       release_interval_ms: 1000
     23:
       base_damage: 317.69
+      weapon_attack_percent: 317.69
+      hit_damage_component_physical: 317.69
+      secondary_hit_ice_cone_back_explosion_base_damage: 159.3525
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 159.3525
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 159.3525
       mana_cost: 5
       release_interval_ms: 1000
     24:
       base_damage: 319.26
+      weapon_attack_percent: 319.26
+      hit_damage_component_physical: 319.26
+      secondary_hit_ice_cone_back_explosion_base_damage: 160.14
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 160.14
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 160.14
       mana_cost: 5
       release_interval_ms: 1000
     25:
       base_damage: 320.82
+      weapon_attack_percent: 320.82
+      hit_damage_component_physical: 320.82
+      secondary_hit_ice_cone_back_explosion_base_damage: 160.9225
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 160.9225
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 160.9225
       mana_cost: 5
       release_interval_ms: 1000
     26:
       base_damage: 322.39
+      weapon_attack_percent: 322.39
+      hit_damage_component_physical: 322.39
+      secondary_hit_ice_cone_back_explosion_base_damage: 161.71
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 161.71
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 161.71
       mana_cost: 5
       release_interval_ms: 1000
     27:
       base_damage: 323.95
+      weapon_attack_percent: 323.95
+      hit_damage_component_physical: 323.95
+      secondary_hit_ice_cone_back_explosion_base_damage: 162.4925
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 162.4925
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 162.4925
       mana_cost: 5
       release_interval_ms: 1000
     28:
       base_damage: 325.52
+      weapon_attack_percent: 325.52
+      hit_damage_component_physical: 325.52
+      secondary_hit_ice_cone_back_explosion_base_damage: 163.28
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 163.28
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 163.28
       mana_cost: 5
       release_interval_ms: 1000
     29:
       base_damage: 327.08
+      weapon_attack_percent: 327.08
+      hit_damage_component_physical: 327.08
+      secondary_hit_ice_cone_back_explosion_base_damage: 164.0625
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 164.0625
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 164.0625
       mana_cost: 5
       release_interval_ms: 1000
     30:
       base_damage: 328.65
+      weapon_attack_percent: 328.65
+      hit_damage_component_physical: 328.65
+      secondary_hit_ice_cone_back_explosion_base_damage: 164.85
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 164.85
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 164.85
       mana_cost: 5
       release_interval_ms: 1000
     31:
       base_damage: 330.21
+      weapon_attack_percent: 330.21
+      hit_damage_component_physical: 330.21
+      secondary_hit_ice_cone_back_explosion_base_damage: 165.6325
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 165.6325
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 165.6325
       mana_cost: 5
       release_interval_ms: 1000
     32:
       base_damage: 331.78
+      weapon_attack_percent: 331.78
+      hit_damage_component_physical: 331.78
+      secondary_hit_ice_cone_back_explosion_base_damage: 166.42
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 166.42
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 166.42
       mana_cost: 5
       release_interval_ms: 1000
     33:
       base_damage: 333.34
+      weapon_attack_percent: 333.34
+      hit_damage_component_physical: 333.34
+      secondary_hit_ice_cone_back_explosion_base_damage: 167.2025
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 167.2025
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 167.2025
       mana_cost: 5
       release_interval_ms: 1000
     34:
       base_damage: 334.91
+      weapon_attack_percent: 334.91
+      hit_damage_component_physical: 334.91
+      secondary_hit_ice_cone_back_explosion_base_damage: 167.99
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 167.99
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 167.99
       mana_cost: 5
       release_interval_ms: 1000
     35:
       base_damage: 336.47
+      weapon_attack_percent: 336.47
+      hit_damage_component_physical: 336.47
+      secondary_hit_ice_cone_back_explosion_base_damage: 168.7725
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 168.7725
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 168.7725
       mana_cost: 5
       release_interval_ms: 1000
     36:
       base_damage: 338.04
+      weapon_attack_percent: 338.04
+      hit_damage_component_physical: 338.04
+      secondary_hit_ice_cone_back_explosion_base_damage: 169.56
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 169.56
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 169.56
       mana_cost: 5
       release_interval_ms: 1000
     37:
       base_damage: 339.6
+      weapon_attack_percent: 339.6
+      hit_damage_component_physical: 339.6
+      secondary_hit_ice_cone_back_explosion_base_damage: 170.3425
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 170.3425
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 170.3425
       mana_cost: 5
       release_interval_ms: 1000
     38:
       base_damage: 341.17
+      weapon_attack_percent: 341.17
+      hit_damage_component_physical: 341.17
+      secondary_hit_ice_cone_back_explosion_base_damage: 171.13
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 171.13
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 171.13
       mana_cost: 5
       release_interval_ms: 1000
     39:
       base_damage: 342.74
+      weapon_attack_percent: 342.74
+      hit_damage_component_physical: 342.74
+      secondary_hit_ice_cone_back_explosion_base_damage: 171.9175
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 171.9175
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 171.9175
       mana_cost: 5
       release_interval_ms: 1000
     40:
       base_damage: 344.3
+      weapon_attack_percent: 344.3
+      hit_damage_component_physical: 344.3
+      secondary_hit_ice_cone_back_explosion_base_damage: 172.7
+      secondary_hit_ice_cone_back_explosion_damage_component_physical: 172.7
+      secondary_hit_ice_cone_back_explosion_weapon_attack_percent: 172.7
       mana_cost: 5
       release_interval_ms: 1000
 auto_release:

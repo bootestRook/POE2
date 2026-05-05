@@ -131,11 +131,16 @@ def test_frontend_skill_preview_recalculates_template_damage_for_gem_level() -> 
     level_adapter_body = source.split("function frontendSkillPreviewForGemLevel", 1)[1].split("function frontendSkillClampedLevel", 1)[0]
 
     assert "frontendSkillPreviewForGemLevel(cloneFrontendData(template), fullGem)" in recalculate_body
+    assert "const levelValues = frontendSkillLevelTableValues(skill, targetLevel)" in level_adapter_body
+    assert "frontendLevelValueNumber(levelValues, \"base_damage\"" in level_adapter_body
     assert "targetLevel = frontendSkillClampedLevel" in level_adapter_body
     assert "damageScale = currentBaseDamage > 0 && targetBaseDamage > 0" in level_adapter_body
+    assert "frontendLevelDamageComponents(levelValues, \"hit_damage_component_\")" in level_adapter_body
+    assert "scaleFrontendSkillHitDamage(secondary, hitConfigScale, levelValues)" in level_adapter_body
+    assert "applyFrontendModuleLevelValues(nextRuntimeParams.modules, levelValues)" in level_adapter_body
+    assert "targetLevel === templateLevel" not in level_adapter_body
     assert "base_gem_level: targetLevel" in level_adapter_body
     assert "effective_gem_level: targetLevel" in level_adapter_body
-
 
 def test_frontend_gem_drop_pool_is_not_seed_inventory() -> None:
     source = _app_source()

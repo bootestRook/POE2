@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 from typing import Any
 
 from .config import (
@@ -727,20 +728,26 @@ class SkillEffectCalculator:
             skill_stats,
             "hit_damage_final_percent",
         ) + projectile_speed_damage_bonus_percent
-        base_damage_components = normalize_damage_components(
-            template.hit.get("damage_components"),
-            fallback_type=template.damage_type,
-            fallback_amount=base_damage,
-        )
-        component_total = sum(base_damage_components.values())
-        if component_total > 0 and abs(component_total - base_damage) > 1e-9:
-            level_damage_scale = base_damage / component_total
-            base_damage_components = {
-                damage_type: amount * level_damage_scale
-                for damage_type, amount in base_damage_components.items()
-            }
+        level_base_damage_components = _level_damage_components(level_values, "hit_damage_component_")
+        if level_base_damage_components:
+            base_damage_components = level_base_damage_components
+            component_total = sum(base_damage_components.values())
+            level_damage_scale = base_damage / component_total if component_total > 0 else 1.0
         else:
-            level_damage_scale = 1.0
+            base_damage_components = normalize_damage_components(
+                template.hit.get("damage_components"),
+                fallback_type=template.damage_type,
+                fallback_amount=base_damage,
+            )
+            component_total = sum(base_damage_components.values())
+            if component_total > 0 and abs(component_total - base_damage) > 1e-9:
+                level_damage_scale = base_damage / component_total
+                base_damage_components = {
+                    damage_type: amount * level_damage_scale
+                    for damage_type, amount in base_damage_components.items()
+                }
+            else:
+                level_damage_scale = 1.0
         base_damage_components = _add_supported_damage_components(
             base_damage_components,
             skill_stats,
@@ -824,6 +831,7 @@ class SkillEffectCalculator:
         if "width" in runtime_params:
             runtime_params["width"] = float(runtime_params["width"]) * area_multiplier
         if isinstance(runtime_params.get("modules"), list):
+            runtime_params["modules"] = _apply_module_level_values(runtime_params["modules"], level_values)
             runtime_params["modules"] = _scaled_modules(
                 runtime_params["modules"],
                 area_multiplier,
@@ -937,6 +945,11 @@ class SkillEffectCalculator:
                 runtime_params["flame_wave_distance"] = float(runtime_params["flame_wave_distance"]) * (
                     1.0 + area_steps * distance_bonus / 100.0
                 )
+        if "split_projectile_base_damage" in runtime_params and base_damage > 0:
+            runtime_params["split_projectile_damage_multiplier"] = max(
+                0.0,
+                float(runtime_params["split_projectile_base_damage"]) / base_damage,
+            )
         base_projectile_count = int(runtime_params.get("projectile_count", 1))
         projectile_count_add = round(self._numeric_stat(skill_stats, "projectile_count_add"))
         runtime_params["projectile_count"] = max(
@@ -1000,6 +1013,7 @@ class SkillEffectCalculator:
                 level_damage_scale,
                 weapon_attack_base_damage,
                 weapon_attack_percent_scale=weapon_attack_percent_scale,
+                level_values=level_values,
             )
             for hit in template.hit.get("secondary_hits", ())
             if isinstance(hit, dict)
@@ -1007,10 +1021,21 @@ class SkillEffectCalculator:
         hit_payload = {**dict(template.hit), "base_damage": base_damage}
         if template.hit.get("damage_basis") == "weapon_attack":
             hit_payload["weapon_attack_percent"] = weapon_attack_percent
+        if base_damage_components:
+            hit_payload["damage_components"] = damage_components_payload(base_damage_components)
         if secondary_hits:
             hit_payload["secondary_hits"] = [dict(hit) for hit in secondary_hits]
 
-        ailments = _scaled_ailments(tuple(dict(ailment) for ailment in template.hit.get("ailments", ()) if isinstance(ailment, dict)), skill_stats)
+        ailments = _scaled_ailments(
+            _apply_ailment_level_values(
+                tuple(dict(ailment) for ailment in template.hit.get("ailments", ()) if isinstance(ailment, dict)),
+                level_values,
+                "hit_ailment_",
+            ),
+            skill_stats,
+        )
+        if ailments:
+            hit_payload["ailments"] = [dict(ailment) for ailment in ailments]
 
         return FinalSkillInstance(
             active_gem_instance_id=active.instance_id,
@@ -1378,16 +1403,26 @@ def _scaled_secondary_hit(
     weapon_attack_base_damage: float,
     *,
     weapon_attack_percent_scale: float = 1.0,
+    level_values: dict[str, object] | None = None,
 ) -> dict[str, Any]:
     result = dict(hit)
+    level_values = level_values or {}
+    secondary_id = _safe_level_key_fragment(result.get("id", "secondary_hit"))
+    level_key_prefix = f"secondary_hit_{secondary_id}"
+    level_base_damage = _level_optional_number(level_values, f"{level_key_prefix}_base_damage")
+    level_weapon_attack_percent = _level_optional_number(level_values, f"{level_key_prefix}_weapon_attack_percent")
+    level_components = _level_damage_components(level_values, f"{level_key_prefix}_damage_component_")
     base_damage_already_scaled = False
     component_scale = level_damage_scale
     if result.get("damage_basis") == "weapon_attack":
-        weapon_attack_percent = float(result.get("weapon_attack_percent", result.get("base_damage", 0.0)))
-        weapon_attack_percent *= weapon_attack_percent_scale
+        weapon_attack_percent = (
+            level_weapon_attack_percent
+            if level_weapon_attack_percent is not None
+            else float(result.get("weapon_attack_percent", result.get("base_damage", 0.0))) * weapon_attack_percent_scale
+        )
         result["weapon_attack_percent"] = weapon_attack_percent
         result["base_damage"] = weapon_attack_base_damage * weapon_attack_percent / 100.0
-        components = result.get("damage_components")
+        components = level_components or result.get("damage_components")
         if isinstance(components, dict):
             component_total = sum(
                 float(amount)
@@ -1404,14 +1439,79 @@ def _scaled_secondary_hit(
         and isinstance(result.get("base_damage"), (int, float))
         and not isinstance(result.get("base_damage"), bool)
     ):
-        result["base_damage"] = float(result["base_damage"]) * level_damage_scale
-    components = result.get("damage_components")
+        result["base_damage"] = level_base_damage if level_base_damage is not None else float(result["base_damage"]) * level_damage_scale
+    elif not base_damage_already_scaled and level_base_damage is not None:
+        result["base_damage"] = level_base_damage
+    components = level_components or result.get("damage_components")
     if isinstance(components, dict):
         result["damage_components"] = {
             str(damage_type): float(amount) * component_scale
             for damage_type, amount in components.items()
             if isinstance(amount, (int, float)) and not isinstance(amount, bool)
         }
+    return result
+
+
+def _level_damage_components(level_values: dict[str, object], prefix: str) -> dict[str, float]:
+    result: dict[str, float] = {}
+    for key, value in level_values.items():
+        if not str(key).startswith(prefix):
+            continue
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
+            continue
+        damage_type = str(key)[len(prefix) :]
+        if damage_type:
+            result[damage_type] = float(value)
+    return result
+
+
+def _level_optional_number(level_values: dict[str, object], key: str) -> float | None:
+    value = level_values.get(key)
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return float(value)
+    return None
+
+
+def _safe_level_key_fragment(value: object) -> str:
+    return re.sub(r"[^0-9A-Za-z_]+", "_", str(value)).strip("_").lower()
+
+
+def _apply_ailment_level_values(
+    ailments: tuple[dict[str, Any], ...],
+    level_values: dict[str, object],
+    prefix: str,
+) -> tuple[dict[str, Any], ...]:
+    result: list[dict[str, Any]] = []
+    for ailment in ailments:
+        next_ailment = dict(ailment)
+        ailment_type = _safe_level_key_fragment(next_ailment.get("type", "unknown"))
+        base_damage_per_second = _level_optional_number(level_values, f"{prefix}{ailment_type}_base_damage_per_second")
+        if base_damage_per_second is not None:
+            next_ailment["base_damage_per_second"] = base_damage_per_second
+        result.append(next_ailment)
+    return tuple(result)
+
+
+def _apply_module_level_values(
+    modules: list[Any],
+    level_values: dict[str, object],
+) -> list[Any]:
+    result: list[Any] = []
+    for module in modules:
+        if not isinstance(module, dict):
+            result.append(module)
+            continue
+        next_module = dict(module)
+        module_id = _safe_level_key_fragment(next_module.get("id", "module"))
+        params = next_module.get("params")
+        if isinstance(params, dict):
+            next_params = dict(params)
+            for key in tuple(next_params):
+                level_value = _level_optional_number(level_values, f"module_{module_id}_{key}")
+                if level_value is not None:
+                    next_params[key] = level_value
+            next_module["params"] = next_params
+        result.append(next_module)
     return result
 
 

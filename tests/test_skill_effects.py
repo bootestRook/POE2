@@ -582,6 +582,35 @@ class SkillEffectTest(unittest.TestCase):
         self.assertAlmostEqual(final_skill.hit["secondary_hits"][0]["base_damage"], 15.7)
         self.assertAlmostEqual(final_skill.hit["secondary_hits"][0]["weapon_attack_percent"], 15.7)
 
+    def test_active_level_table_drives_nested_damage_outputs(self) -> None:
+        cases = [
+            ("active_flame_slash", lambda skill: self.assertEqual(skill.hit["damage_components"], {"physical": 34.6})),
+            ("active_split_firebolt", lambda skill: self.assertEqual(skill.runtime_params["split_projectile_base_damage"], 42.125)),
+            (
+                "active_corrosive_shot",
+                lambda skill: (
+                    self.assertEqual(skill.ailments[0]["base_damage_per_second"], 0.57),
+                    self.assertEqual(skill.runtime_params["modules"][1]["params"]["damage_amount"], 0.741),
+                ),
+            ),
+            (
+                "active_burning_shot",
+                lambda skill: (
+                    self.assertEqual(skill.ailments[0]["base_damage_per_second"], 2.56),
+                    self.assertEqual(skill.runtime_params["on_ignited_hit_indirect_fire_damage"], 0.5),
+                ),
+            ),
+        ]
+        for skill_id, assertion in cases:
+            with self.subTest(skill_id=skill_id):
+                inventory, board, calculator = self._fresh_calculator()
+                inventory.add_instance("active", skill_id, level=1)
+                board.mount_gem("active", 0, 0)
+
+                final_skill = calculator.calculate_all()[0]
+
+                assertion(final_skill)
+
     def test_weapon_attack_damage_basis_uses_player_weapon_attack_hook(self) -> None:
         inventory, board, calculator = self._fresh_calculator()
         calculator.player_base_stats = {"weapon_attack_base_damage": 200}

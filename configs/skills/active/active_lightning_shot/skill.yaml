@@ -17,162 +17,362 @@ level_table:
   levels:
     1:
       base_damage: 33.4
+      weapon_attack_percent: 33.4
+      hit_damage_component_physical: 33.4
+      secondary_hit_forked_lightning_base_damage: 33.4
+      secondary_hit_forked_lightning_damage_component_physical: 33.4
+      secondary_hit_forked_lightning_weapon_attack_percent: 33.4
       mana_cost: 5
       release_interval_ms: 1000
     2:
       base_damage: 49.22
+      weapon_attack_percent: 49.22
+      hit_damage_component_physical: 49.22
+      secondary_hit_forked_lightning_base_damage: 49.22
+      secondary_hit_forked_lightning_damage_component_physical: 49.22
+      secondary_hit_forked_lightning_weapon_attack_percent: 49.22
       mana_cost: 5
       release_interval_ms: 1000
     3:
       base_damage: 65.04
+      weapon_attack_percent: 65.04
+      hit_damage_component_physical: 65.04
+      secondary_hit_forked_lightning_base_damage: 65.04
+      secondary_hit_forked_lightning_damage_component_physical: 65.04
+      secondary_hit_forked_lightning_weapon_attack_percent: 65.04
       mana_cost: 5
       release_interval_ms: 1000
     4:
       base_damage: 80.86
+      weapon_attack_percent: 80.86
+      hit_damage_component_physical: 80.86
+      secondary_hit_forked_lightning_base_damage: 80.86
+      secondary_hit_forked_lightning_damage_component_physical: 80.86
+      secondary_hit_forked_lightning_weapon_attack_percent: 80.86
       mana_cost: 5
       release_interval_ms: 1000
     5:
       base_damage: 96.68
+      weapon_attack_percent: 96.68
+      hit_damage_component_physical: 96.68
+      secondary_hit_forked_lightning_base_damage: 96.68
+      secondary_hit_forked_lightning_damage_component_physical: 96.68
+      secondary_hit_forked_lightning_weapon_attack_percent: 96.68
       mana_cost: 5
       release_interval_ms: 1000
     6:
       base_damage: 112.51
+      weapon_attack_percent: 112.51
+      hit_damage_component_physical: 112.51
+      secondary_hit_forked_lightning_base_damage: 112.51
+      secondary_hit_forked_lightning_damage_component_physical: 112.51
+      secondary_hit_forked_lightning_weapon_attack_percent: 112.51
       mana_cost: 5
       release_interval_ms: 1000
     7:
       base_damage: 128.33
+      weapon_attack_percent: 128.33
+      hit_damage_component_physical: 128.33
+      secondary_hit_forked_lightning_base_damage: 128.33
+      secondary_hit_forked_lightning_damage_component_physical: 128.33
+      secondary_hit_forked_lightning_weapon_attack_percent: 128.33
       mana_cost: 5
       release_interval_ms: 1000
     8:
       base_damage: 144.15
+      weapon_attack_percent: 144.15
+      hit_damage_component_physical: 144.15
+      secondary_hit_forked_lightning_base_damage: 144.15
+      secondary_hit_forked_lightning_damage_component_physical: 144.15
+      secondary_hit_forked_lightning_weapon_attack_percent: 144.15
       mana_cost: 5
       release_interval_ms: 1000
     9:
       base_damage: 159.97
+      weapon_attack_percent: 159.97
+      hit_damage_component_physical: 159.97
+      secondary_hit_forked_lightning_base_damage: 159.97
+      secondary_hit_forked_lightning_damage_component_physical: 159.97
+      secondary_hit_forked_lightning_weapon_attack_percent: 159.97
       mana_cost: 5
       release_interval_ms: 1000
     10:
       base_damage: 175.79
+      weapon_attack_percent: 175.79
+      hit_damage_component_physical: 175.79
+      secondary_hit_forked_lightning_base_damage: 175.79
+      secondary_hit_forked_lightning_damage_component_physical: 175.79
+      secondary_hit_forked_lightning_weapon_attack_percent: 175.79
       mana_cost: 5
       release_interval_ms: 1000
     11:
       base_damage: 191.61
+      weapon_attack_percent: 191.61
+      hit_damage_component_physical: 191.61
+      secondary_hit_forked_lightning_base_damage: 191.61
+      secondary_hit_forked_lightning_damage_component_physical: 191.61
+      secondary_hit_forked_lightning_weapon_attack_percent: 191.61
       mana_cost: 5
       release_interval_ms: 1000
     12:
       base_damage: 207.43
+      weapon_attack_percent: 207.43
+      hit_damage_component_physical: 207.43
+      secondary_hit_forked_lightning_base_damage: 207.43
+      secondary_hit_forked_lightning_damage_component_physical: 207.43
+      secondary_hit_forked_lightning_weapon_attack_percent: 207.43
       mana_cost: 5
       release_interval_ms: 1000
     13:
       base_damage: 223.25
+      weapon_attack_percent: 223.25
+      hit_damage_component_physical: 223.25
+      secondary_hit_forked_lightning_base_damage: 223.25
+      secondary_hit_forked_lightning_damage_component_physical: 223.25
+      secondary_hit_forked_lightning_weapon_attack_percent: 223.25
       mana_cost: 5
       release_interval_ms: 1000
     14:
       base_damage: 239.07
+      weapon_attack_percent: 239.07
+      hit_damage_component_physical: 239.07
+      secondary_hit_forked_lightning_base_damage: 239.07
+      secondary_hit_forked_lightning_damage_component_physical: 239.07
+      secondary_hit_forked_lightning_weapon_attack_percent: 239.07
       mana_cost: 5
       release_interval_ms: 1000
     15:
       base_damage: 254.89
+      weapon_attack_percent: 254.89
+      hit_damage_component_physical: 254.89
+      secondary_hit_forked_lightning_base_damage: 254.89
+      secondary_hit_forked_lightning_damage_component_physical: 254.89
+      secondary_hit_forked_lightning_weapon_attack_percent: 254.89
       mana_cost: 5
       release_interval_ms: 1000
     16:
       base_damage: 270.72
+      weapon_attack_percent: 270.72
+      hit_damage_component_physical: 270.72
+      secondary_hit_forked_lightning_base_damage: 270.72
+      secondary_hit_forked_lightning_damage_component_physical: 270.72
+      secondary_hit_forked_lightning_weapon_attack_percent: 270.72
       mana_cost: 5
       release_interval_ms: 1000
     17:
       base_damage: 286.54
+      weapon_attack_percent: 286.54
+      hit_damage_component_physical: 286.54
+      secondary_hit_forked_lightning_base_damage: 286.54
+      secondary_hit_forked_lightning_damage_component_physical: 286.54
+      secondary_hit_forked_lightning_weapon_attack_percent: 286.54
       mana_cost: 5
       release_interval_ms: 1000
     18:
       base_damage: 302.36
+      weapon_attack_percent: 302.36
+      hit_damage_component_physical: 302.36
+      secondary_hit_forked_lightning_base_damage: 302.36
+      secondary_hit_forked_lightning_damage_component_physical: 302.36
+      secondary_hit_forked_lightning_weapon_attack_percent: 302.36
       mana_cost: 5
       release_interval_ms: 1000
     19:
       base_damage: 318.18
+      weapon_attack_percent: 318.18
+      hit_damage_component_physical: 318.18
+      secondary_hit_forked_lightning_base_damage: 318.18
+      secondary_hit_forked_lightning_damage_component_physical: 318.18
+      secondary_hit_forked_lightning_weapon_attack_percent: 318.18
       mana_cost: 5
       release_interval_ms: 1000
     20:
-      base_damage: 334.0
+      base_damage: 334
+      weapon_attack_percent: 334
+      hit_damage_component_physical: 334
+      secondary_hit_forked_lightning_base_damage: 334
+      secondary_hit_forked_lightning_damage_component_physical: 334
+      secondary_hit_forked_lightning_weapon_attack_percent: 334
       mana_cost: 5
       release_interval_ms: 1000
     21:
       base_damage: 335.67
+      weapon_attack_percent: 335.67
+      hit_damage_component_physical: 335.67
+      secondary_hit_forked_lightning_base_damage: 335.67
+      secondary_hit_forked_lightning_damage_component_physical: 335.67
+      secondary_hit_forked_lightning_weapon_attack_percent: 335.67
       mana_cost: 5
       release_interval_ms: 1000
     22:
       base_damage: 337.34
+      weapon_attack_percent: 337.34
+      hit_damage_component_physical: 337.34
+      secondary_hit_forked_lightning_base_damage: 337.34
+      secondary_hit_forked_lightning_damage_component_physical: 337.34
+      secondary_hit_forked_lightning_weapon_attack_percent: 337.34
       mana_cost: 5
       release_interval_ms: 1000
     23:
       base_damage: 339.01
+      weapon_attack_percent: 339.01
+      hit_damage_component_physical: 339.01
+      secondary_hit_forked_lightning_base_damage: 339.01
+      secondary_hit_forked_lightning_damage_component_physical: 339.01
+      secondary_hit_forked_lightning_weapon_attack_percent: 339.01
       mana_cost: 5
       release_interval_ms: 1000
     24:
       base_damage: 340.68
+      weapon_attack_percent: 340.68
+      hit_damage_component_physical: 340.68
+      secondary_hit_forked_lightning_base_damage: 340.68
+      secondary_hit_forked_lightning_damage_component_physical: 340.68
+      secondary_hit_forked_lightning_weapon_attack_percent: 340.68
       mana_cost: 5
       release_interval_ms: 1000
     25:
       base_damage: 342.35
+      weapon_attack_percent: 342.35
+      hit_damage_component_physical: 342.35
+      secondary_hit_forked_lightning_base_damage: 342.35
+      secondary_hit_forked_lightning_damage_component_physical: 342.35
+      secondary_hit_forked_lightning_weapon_attack_percent: 342.35
       mana_cost: 5
       release_interval_ms: 1000
     26:
       base_damage: 344.02
+      weapon_attack_percent: 344.02
+      hit_damage_component_physical: 344.02
+      secondary_hit_forked_lightning_base_damage: 344.02
+      secondary_hit_forked_lightning_damage_component_physical: 344.02
+      secondary_hit_forked_lightning_weapon_attack_percent: 344.02
       mana_cost: 5
       release_interval_ms: 1000
     27:
       base_damage: 345.69
+      weapon_attack_percent: 345.69
+      hit_damage_component_physical: 345.69
+      secondary_hit_forked_lightning_base_damage: 345.69
+      secondary_hit_forked_lightning_damage_component_physical: 345.69
+      secondary_hit_forked_lightning_weapon_attack_percent: 345.69
       mana_cost: 5
       release_interval_ms: 1000
     28:
       base_damage: 347.36
+      weapon_attack_percent: 347.36
+      hit_damage_component_physical: 347.36
+      secondary_hit_forked_lightning_base_damage: 347.36
+      secondary_hit_forked_lightning_damage_component_physical: 347.36
+      secondary_hit_forked_lightning_weapon_attack_percent: 347.36
       mana_cost: 5
       release_interval_ms: 1000
     29:
       base_damage: 349.03
+      weapon_attack_percent: 349.03
+      hit_damage_component_physical: 349.03
+      secondary_hit_forked_lightning_base_damage: 349.03
+      secondary_hit_forked_lightning_damage_component_physical: 349.03
+      secondary_hit_forked_lightning_weapon_attack_percent: 349.03
       mana_cost: 5
       release_interval_ms: 1000
     30:
       base_damage: 350.7
+      weapon_attack_percent: 350.7
+      hit_damage_component_physical: 350.7
+      secondary_hit_forked_lightning_base_damage: 350.7
+      secondary_hit_forked_lightning_damage_component_physical: 350.7
+      secondary_hit_forked_lightning_weapon_attack_percent: 350.7
       mana_cost: 5
       release_interval_ms: 1000
     31:
       base_damage: 352.37
+      weapon_attack_percent: 352.37
+      hit_damage_component_physical: 352.37
+      secondary_hit_forked_lightning_base_damage: 352.37
+      secondary_hit_forked_lightning_damage_component_physical: 352.37
+      secondary_hit_forked_lightning_weapon_attack_percent: 352.37
       mana_cost: 5
       release_interval_ms: 1000
     32:
       base_damage: 354.04
+      weapon_attack_percent: 354.04
+      hit_damage_component_physical: 354.04
+      secondary_hit_forked_lightning_base_damage: 354.04
+      secondary_hit_forked_lightning_damage_component_physical: 354.04
+      secondary_hit_forked_lightning_weapon_attack_percent: 354.04
       mana_cost: 5
       release_interval_ms: 1000
     33:
       base_damage: 355.71
+      weapon_attack_percent: 355.71
+      hit_damage_component_physical: 355.71
+      secondary_hit_forked_lightning_base_damage: 355.71
+      secondary_hit_forked_lightning_damage_component_physical: 355.71
+      secondary_hit_forked_lightning_weapon_attack_percent: 355.71
       mana_cost: 5
       release_interval_ms: 1000
     34:
       base_damage: 357.38
+      weapon_attack_percent: 357.38
+      hit_damage_component_physical: 357.38
+      secondary_hit_forked_lightning_base_damage: 357.38
+      secondary_hit_forked_lightning_damage_component_physical: 357.38
+      secondary_hit_forked_lightning_weapon_attack_percent: 357.38
       mana_cost: 5
       release_interval_ms: 1000
     35:
       base_damage: 359.05
+      weapon_attack_percent: 359.05
+      hit_damage_component_physical: 359.05
+      secondary_hit_forked_lightning_base_damage: 359.05
+      secondary_hit_forked_lightning_damage_component_physical: 359.05
+      secondary_hit_forked_lightning_weapon_attack_percent: 359.05
       mana_cost: 5
       release_interval_ms: 1000
     36:
       base_damage: 360.72
+      weapon_attack_percent: 360.72
+      hit_damage_component_physical: 360.72
+      secondary_hit_forked_lightning_base_damage: 360.72
+      secondary_hit_forked_lightning_damage_component_physical: 360.72
+      secondary_hit_forked_lightning_weapon_attack_percent: 360.72
       mana_cost: 5
       release_interval_ms: 1000
     37:
       base_damage: 362.39
+      weapon_attack_percent: 362.39
+      hit_damage_component_physical: 362.39
+      secondary_hit_forked_lightning_base_damage: 362.39
+      secondary_hit_forked_lightning_damage_component_physical: 362.39
+      secondary_hit_forked_lightning_weapon_attack_percent: 362.39
       mana_cost: 5
       release_interval_ms: 1000
     38:
       base_damage: 364.06
+      weapon_attack_percent: 364.06
+      hit_damage_component_physical: 364.06
+      secondary_hit_forked_lightning_base_damage: 364.06
+      secondary_hit_forked_lightning_damage_component_physical: 364.06
+      secondary_hit_forked_lightning_weapon_attack_percent: 364.06
       mana_cost: 5
       release_interval_ms: 1000
     39:
       base_damage: 365.73
+      weapon_attack_percent: 365.73
+      hit_damage_component_physical: 365.73
+      secondary_hit_forked_lightning_base_damage: 365.73
+      secondary_hit_forked_lightning_damage_component_physical: 365.73
+      secondary_hit_forked_lightning_weapon_attack_percent: 365.73
       mana_cost: 5
       release_interval_ms: 1000
     40:
       base_damage: 367.4
+      weapon_attack_percent: 367.4
+      hit_damage_component_physical: 367.4
+      secondary_hit_forked_lightning_base_damage: 367.4
+      secondary_hit_forked_lightning_damage_component_physical: 367.4
+      secondary_hit_forked_lightning_weapon_attack_percent: 367.4
       mana_cost: 5
       release_interval_ms: 1000
 auto_release:

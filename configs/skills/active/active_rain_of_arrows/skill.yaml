@@ -17,162 +17,242 @@ level_table:
   levels:
     1:
       base_damage: 13.4
+      weapon_attack_percent: 13.4
+      hit_damage_component_physical: 13.4
       mana_cost: 5
       release_interval_ms: 1000
     2:
       base_damage: 19.75
+      weapon_attack_percent: 19.75
+      hit_damage_component_physical: 19.75
       mana_cost: 5
       release_interval_ms: 1000
     3:
       base_damage: 26.09
+      weapon_attack_percent: 26.09
+      hit_damage_component_physical: 26.09
       mana_cost: 5
       release_interval_ms: 1000
     4:
       base_damage: 32.44
+      weapon_attack_percent: 32.44
+      hit_damage_component_physical: 32.44
       mana_cost: 5
       release_interval_ms: 1000
     5:
       base_damage: 38.79
+      weapon_attack_percent: 38.79
+      hit_damage_component_physical: 38.79
       mana_cost: 5
       release_interval_ms: 1000
     6:
       base_damage: 45.14
+      weapon_attack_percent: 45.14
+      hit_damage_component_physical: 45.14
       mana_cost: 5
       release_interval_ms: 1000
     7:
       base_damage: 51.48
+      weapon_attack_percent: 51.48
+      hit_damage_component_physical: 51.48
       mana_cost: 5
       release_interval_ms: 1000
     8:
       base_damage: 57.83
+      weapon_attack_percent: 57.83
+      hit_damage_component_physical: 57.83
       mana_cost: 5
       release_interval_ms: 1000
     9:
       base_damage: 64.18
+      weapon_attack_percent: 64.18
+      hit_damage_component_physical: 64.18
       mana_cost: 5
       release_interval_ms: 1000
     10:
       base_damage: 70.53
+      weapon_attack_percent: 70.53
+      hit_damage_component_physical: 70.53
       mana_cost: 5
       release_interval_ms: 1000
     11:
       base_damage: 76.87
+      weapon_attack_percent: 76.87
+      hit_damage_component_physical: 76.87
       mana_cost: 5
       release_interval_ms: 1000
     12:
       base_damage: 83.22
+      weapon_attack_percent: 83.22
+      hit_damage_component_physical: 83.22
       mana_cost: 5
       release_interval_ms: 1000
     13:
       base_damage: 89.57
+      weapon_attack_percent: 89.57
+      hit_damage_component_physical: 89.57
       mana_cost: 5
       release_interval_ms: 1000
     14:
       base_damage: 95.92
+      weapon_attack_percent: 95.92
+      hit_damage_component_physical: 95.92
       mana_cost: 5
       release_interval_ms: 1000
     15:
       base_damage: 102.26
+      weapon_attack_percent: 102.26
+      hit_damage_component_physical: 102.26
       mana_cost: 5
       release_interval_ms: 1000
     16:
       base_damage: 108.61
+      weapon_attack_percent: 108.61
+      hit_damage_component_physical: 108.61
       mana_cost: 5
       release_interval_ms: 1000
     17:
       base_damage: 114.96
+      weapon_attack_percent: 114.96
+      hit_damage_component_physical: 114.96
       mana_cost: 5
       release_interval_ms: 1000
     18:
       base_damage: 121.31
+      weapon_attack_percent: 121.31
+      hit_damage_component_physical: 121.31
       mana_cost: 5
       release_interval_ms: 1000
     19:
       base_damage: 127.65
+      weapon_attack_percent: 127.65
+      hit_damage_component_physical: 127.65
       mana_cost: 5
       release_interval_ms: 1000
     20:
-      base_damage: 134.0
+      base_damage: 134
+      weapon_attack_percent: 134
+      hit_damage_component_physical: 134
       mana_cost: 5
       release_interval_ms: 1000
     21:
       base_damage: 134.67
+      weapon_attack_percent: 134.67
+      hit_damage_component_physical: 134.67
       mana_cost: 5
       release_interval_ms: 1000
     22:
       base_damage: 135.34
+      weapon_attack_percent: 135.34
+      hit_damage_component_physical: 135.34
       mana_cost: 5
       release_interval_ms: 1000
     23:
       base_damage: 136.01
+      weapon_attack_percent: 136.01
+      hit_damage_component_physical: 136.01
       mana_cost: 5
       release_interval_ms: 1000
     24:
       base_damage: 136.68
+      weapon_attack_percent: 136.68
+      hit_damage_component_physical: 136.68
       mana_cost: 5
       release_interval_ms: 1000
     25:
       base_damage: 137.35
+      weapon_attack_percent: 137.35
+      hit_damage_component_physical: 137.35
       mana_cost: 5
       release_interval_ms: 1000
     26:
       base_damage: 138.02
+      weapon_attack_percent: 138.02
+      hit_damage_component_physical: 138.02
       mana_cost: 5
       release_interval_ms: 1000
     27:
       base_damage: 138.69
+      weapon_attack_percent: 138.69
+      hit_damage_component_physical: 138.69
       mana_cost: 5
       release_interval_ms: 1000
     28:
       base_damage: 139.36
+      weapon_attack_percent: 139.36
+      hit_damage_component_physical: 139.36
       mana_cost: 5
       release_interval_ms: 1000
     29:
       base_damage: 140.03
+      weapon_attack_percent: 140.03
+      hit_damage_component_physical: 140.03
       mana_cost: 5
       release_interval_ms: 1000
     30:
       base_damage: 140.7
+      weapon_attack_percent: 140.7
+      hit_damage_component_physical: 140.7
       mana_cost: 5
       release_interval_ms: 1000
     31:
       base_damage: 141.37
+      weapon_attack_percent: 141.37
+      hit_damage_component_physical: 141.37
       mana_cost: 5
       release_interval_ms: 1000
     32:
       base_damage: 142.04
+      weapon_attack_percent: 142.04
+      hit_damage_component_physical: 142.04
       mana_cost: 5
       release_interval_ms: 1000
     33:
       base_damage: 142.71
+      weapon_attack_percent: 142.71
+      hit_damage_component_physical: 142.71
       mana_cost: 5
       release_interval_ms: 1000
     34:
       base_damage: 143.38
+      weapon_attack_percent: 143.38
+      hit_damage_component_physical: 143.38
       mana_cost: 5
       release_interval_ms: 1000
     35:
       base_damage: 144.05
+      weapon_attack_percent: 144.05
+      hit_damage_component_physical: 144.05
       mana_cost: 5
       release_interval_ms: 1000
     36:
       base_damage: 144.72
+      weapon_attack_percent: 144.72
+      hit_damage_component_physical: 144.72
       mana_cost: 5
       release_interval_ms: 1000
     37:
       base_damage: 145.39
+      weapon_attack_percent: 145.39
+      hit_damage_component_physical: 145.39
       mana_cost: 5
       release_interval_ms: 1000
     38:
       base_damage: 146.06
+      weapon_attack_percent: 146.06
+      hit_damage_component_physical: 146.06
       mana_cost: 5
       release_interval_ms: 1000
     39:
       base_damage: 146.73
+      weapon_attack_percent: 146.73
+      hit_damage_component_physical: 146.73
       mana_cost: 5
       release_interval_ms: 1000
     40:
       base_damage: 147.4
+      weapon_attack_percent: 147.4
+      hit_damage_component_physical: 147.4
       mana_cost: 5
       release_interval_ms: 1000
 auto_release:

@@ -17,162 +17,322 @@ level_table:
   levels:
     1:
       base_damage: 25.6
+      weapon_attack_percent: 25.6
+      hit_damage_component_physical: 25.6
+      hit_ailment_ignite_base_damage_per_second: 2.56
+      on_ignited_hit_indirect_fire_damage: 0.5
       mana_cost: 5
       release_interval_ms: 1000
     2:
       base_damage: 37.73
+      weapon_attack_percent: 37.73
+      hit_damage_component_physical: 37.73
+      hit_ailment_ignite_base_damage_per_second: 3.773
+      on_ignited_hit_indirect_fire_damage: 0.7369
       mana_cost: 5
       release_interval_ms: 1000
     3:
       base_damage: 49.85
+      weapon_attack_percent: 49.85
+      hit_damage_component_physical: 49.85
+      hit_ailment_ignite_base_damage_per_second: 4.985
+      on_ignited_hit_indirect_fire_damage: 0.9736
       mana_cost: 5
       release_interval_ms: 1000
     4:
       base_damage: 61.98
+      weapon_attack_percent: 61.98
+      hit_damage_component_physical: 61.98
+      hit_ailment_ignite_base_damage_per_second: 6.198
+      on_ignited_hit_indirect_fire_damage: 1.2105
       mana_cost: 5
       release_interval_ms: 1000
     5:
       base_damage: 74.11
+      weapon_attack_percent: 74.11
+      hit_damage_component_physical: 74.11
+      hit_ailment_ignite_base_damage_per_second: 7.411
+      on_ignited_hit_indirect_fire_damage: 1.4475
       mana_cost: 5
       release_interval_ms: 1000
     6:
       base_damage: 86.23
+      weapon_attack_percent: 86.23
+      hit_damage_component_physical: 86.23
+      hit_ailment_ignite_base_damage_per_second: 8.623
+      on_ignited_hit_indirect_fire_damage: 1.6842
       mana_cost: 5
       release_interval_ms: 1000
     7:
       base_damage: 98.36
+      weapon_attack_percent: 98.36
+      hit_damage_component_physical: 98.36
+      hit_ailment_ignite_base_damage_per_second: 9.836
+      on_ignited_hit_indirect_fire_damage: 1.9211
       mana_cost: 5
       release_interval_ms: 1000
     8:
       base_damage: 110.48
+      weapon_attack_percent: 110.48
+      hit_damage_component_physical: 110.48
+      hit_ailment_ignite_base_damage_per_second: 11.048
+      on_ignited_hit_indirect_fire_damage: 2.1578
       mana_cost: 5
       release_interval_ms: 1000
     9:
       base_damage: 122.61
+      weapon_attack_percent: 122.61
+      hit_damage_component_physical: 122.61
+      hit_ailment_ignite_base_damage_per_second: 12.261
+      on_ignited_hit_indirect_fire_damage: 2.3947
       mana_cost: 5
       release_interval_ms: 1000
     10:
       base_damage: 134.74
+      weapon_attack_percent: 134.74
+      hit_damage_component_physical: 134.74
+      hit_ailment_ignite_base_damage_per_second: 13.474
+      on_ignited_hit_indirect_fire_damage: 2.6316
       mana_cost: 5
       release_interval_ms: 1000
     11:
       base_damage: 146.86
+      weapon_attack_percent: 146.86
+      hit_damage_component_physical: 146.86
+      hit_ailment_ignite_base_damage_per_second: 14.686
+      on_ignited_hit_indirect_fire_damage: 2.8684
       mana_cost: 5
       release_interval_ms: 1000
     12:
       base_damage: 158.99
+      weapon_attack_percent: 158.99
+      hit_damage_component_physical: 158.99
+      hit_ailment_ignite_base_damage_per_second: 15.899
+      on_ignited_hit_indirect_fire_damage: 3.1053
       mana_cost: 5
       release_interval_ms: 1000
     13:
       base_damage: 171.12
+      weapon_attack_percent: 171.12
+      hit_damage_component_physical: 171.12
+      hit_ailment_ignite_base_damage_per_second: 17.112
+      on_ignited_hit_indirect_fire_damage: 3.3422
       mana_cost: 5
       release_interval_ms: 1000
     14:
       base_damage: 183.24
+      weapon_attack_percent: 183.24
+      hit_damage_component_physical: 183.24
+      hit_ailment_ignite_base_damage_per_second: 18.324
+      on_ignited_hit_indirect_fire_damage: 3.5789
       mana_cost: 5
       release_interval_ms: 1000
     15:
       base_damage: 195.37
+      weapon_attack_percent: 195.37
+      hit_damage_component_physical: 195.37
+      hit_ailment_ignite_base_damage_per_second: 19.537
+      on_ignited_hit_indirect_fire_damage: 3.8158
       mana_cost: 5
       release_interval_ms: 1000
     16:
       base_damage: 207.49
+      weapon_attack_percent: 207.49
+      hit_damage_component_physical: 207.49
+      hit_ailment_ignite_base_damage_per_second: 20.749
+      on_ignited_hit_indirect_fire_damage: 4.0525
       mana_cost: 5
       release_interval_ms: 1000
     17:
       base_damage: 219.62
+      weapon_attack_percent: 219.62
+      hit_damage_component_physical: 219.62
+      hit_ailment_ignite_base_damage_per_second: 21.962
+      on_ignited_hit_indirect_fire_damage: 4.2895
       mana_cost: 5
       release_interval_ms: 1000
     18:
       base_damage: 231.75
+      weapon_attack_percent: 231.75
+      hit_damage_component_physical: 231.75
+      hit_ailment_ignite_base_damage_per_second: 23.175
+      on_ignited_hit_indirect_fire_damage: 4.5264
       mana_cost: 5
       release_interval_ms: 1000
     19:
       base_damage: 243.87
+      weapon_attack_percent: 243.87
+      hit_damage_component_physical: 243.87
+      hit_ailment_ignite_base_damage_per_second: 24.387
+      on_ignited_hit_indirect_fire_damage: 4.7631
       mana_cost: 5
       release_interval_ms: 1000
     20:
-      base_damage: 256.0
+      base_damage: 256
+      weapon_attack_percent: 256
+      hit_damage_component_physical: 256
+      hit_ailment_ignite_base_damage_per_second: 25.6
+      on_ignited_hit_indirect_fire_damage: 5
       mana_cost: 5
       release_interval_ms: 1000
     21:
       base_damage: 257.28
+      weapon_attack_percent: 257.28
+      hit_damage_component_physical: 257.28
+      hit_ailment_ignite_base_damage_per_second: 25.728
+      on_ignited_hit_indirect_fire_damage: 5.025
       mana_cost: 5
       release_interval_ms: 1000
     22:
       base_damage: 258.56
+      weapon_attack_percent: 258.56
+      hit_damage_component_physical: 258.56
+      hit_ailment_ignite_base_damage_per_second: 25.856
+      on_ignited_hit_indirect_fire_damage: 5.05
       mana_cost: 5
       release_interval_ms: 1000
     23:
       base_damage: 259.84
+      weapon_attack_percent: 259.84
+      hit_damage_component_physical: 259.84
+      hit_ailment_ignite_base_damage_per_second: 25.984
+      on_ignited_hit_indirect_fire_damage: 5.075
       mana_cost: 5
       release_interval_ms: 1000
     24:
       base_damage: 261.12
+      weapon_attack_percent: 261.12
+      hit_damage_component_physical: 261.12
+      hit_ailment_ignite_base_damage_per_second: 26.112
+      on_ignited_hit_indirect_fire_damage: 5.1
       mana_cost: 5
       release_interval_ms: 1000
     25:
       base_damage: 262.4
+      weapon_attack_percent: 262.4
+      hit_damage_component_physical: 262.4
+      hit_ailment_ignite_base_damage_per_second: 26.24
+      on_ignited_hit_indirect_fire_damage: 5.125
       mana_cost: 5
       release_interval_ms: 1000
     26:
       base_damage: 263.68
+      weapon_attack_percent: 263.68
+      hit_damage_component_physical: 263.68
+      hit_ailment_ignite_base_damage_per_second: 26.368
+      on_ignited_hit_indirect_fire_damage: 5.15
       mana_cost: 5
       release_interval_ms: 1000
     27:
       base_damage: 264.96
+      weapon_attack_percent: 264.96
+      hit_damage_component_physical: 264.96
+      hit_ailment_ignite_base_damage_per_second: 26.496
+      on_ignited_hit_indirect_fire_damage: 5.175
       mana_cost: 5
       release_interval_ms: 1000
     28:
       base_damage: 266.24
+      weapon_attack_percent: 266.24
+      hit_damage_component_physical: 266.24
+      hit_ailment_ignite_base_damage_per_second: 26.624
+      on_ignited_hit_indirect_fire_damage: 5.2
       mana_cost: 5
       release_interval_ms: 1000
     29:
       base_damage: 267.52
+      weapon_attack_percent: 267.52
+      hit_damage_component_physical: 267.52
+      hit_ailment_ignite_base_damage_per_second: 26.752
+      on_ignited_hit_indirect_fire_damage: 5.225
       mana_cost: 5
       release_interval_ms: 1000
     30:
       base_damage: 268.8
+      weapon_attack_percent: 268.8
+      hit_damage_component_physical: 268.8
+      hit_ailment_ignite_base_damage_per_second: 26.88
+      on_ignited_hit_indirect_fire_damage: 5.25
       mana_cost: 5
       release_interval_ms: 1000
     31:
       base_damage: 270.08
+      weapon_attack_percent: 270.08
+      hit_damage_component_physical: 270.08
+      hit_ailment_ignite_base_damage_per_second: 27.008
+      on_ignited_hit_indirect_fire_damage: 5.275
       mana_cost: 5
       release_interval_ms: 1000
     32:
       base_damage: 271.36
+      weapon_attack_percent: 271.36
+      hit_damage_component_physical: 271.36
+      hit_ailment_ignite_base_damage_per_second: 27.136
+      on_ignited_hit_indirect_fire_damage: 5.3
       mana_cost: 5
       release_interval_ms: 1000
     33:
       base_damage: 272.64
+      weapon_attack_percent: 272.64
+      hit_damage_component_physical: 272.64
+      hit_ailment_ignite_base_damage_per_second: 27.264
+      on_ignited_hit_indirect_fire_damage: 5.325
       mana_cost: 5
       release_interval_ms: 1000
     34:
       base_damage: 273.92
+      weapon_attack_percent: 273.92
+      hit_damage_component_physical: 273.92
+      hit_ailment_ignite_base_damage_per_second: 27.392
+      on_ignited_hit_indirect_fire_damage: 5.35
       mana_cost: 5
       release_interval_ms: 1000
     35:
       base_damage: 275.2
+      weapon_attack_percent: 275.2
+      hit_damage_component_physical: 275.2
+      hit_ailment_ignite_base_damage_per_second: 27.52
+      on_ignited_hit_indirect_fire_damage: 5.375
       mana_cost: 5
       release_interval_ms: 1000
     36:
       base_damage: 276.48
+      weapon_attack_percent: 276.48
+      hit_damage_component_physical: 276.48
+      hit_ailment_ignite_base_damage_per_second: 27.648
+      on_ignited_hit_indirect_fire_damage: 5.4
       mana_cost: 5
       release_interval_ms: 1000
     37:
       base_damage: 277.76
+      weapon_attack_percent: 277.76
+      hit_damage_component_physical: 277.76
+      hit_ailment_ignite_base_damage_per_second: 27.776
+      on_ignited_hit_indirect_fire_damage: 5.425
       mana_cost: 5
       release_interval_ms: 1000
     38:
       base_damage: 279.04
+      weapon_attack_percent: 279.04
+      hit_damage_component_physical: 279.04
+      hit_ailment_ignite_base_damage_per_second: 27.904
+      on_ignited_hit_indirect_fire_damage: 5.45
       mana_cost: 5
       release_interval_ms: 1000
     39:
       base_damage: 280.32
+      weapon_attack_percent: 280.32
+      hit_damage_component_physical: 280.32
+      hit_ailment_ignite_base_damage_per_second: 28.032
+      on_ignited_hit_indirect_fire_damage: 5.475
       mana_cost: 5
       release_interval_ms: 1000
     40:
       base_damage: 281.6
+      weapon_attack_percent: 281.6
+      hit_damage_component_physical: 281.6
+      hit_ailment_ignite_base_damage_per_second: 28.16
+      on_ignited_hit_indirect_fire_damage: 5.5
       mana_cost: 5
       release_interval_ms: 1000
 auto_release:

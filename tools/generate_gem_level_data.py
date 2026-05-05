@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import json
 import re
 import sys
 from fractions import Fraction
@@ -63,6 +64,18 @@ def _round(value: float) -> float | int:
     if rounded.is_integer():
         return int(rounded)
     return rounded
+
+
+def _safe_stat_fragment(value: Any) -> str:
+    return re.sub(r"[^0-9A-Za-z_]+", "_", str(value)).strip("_").lower()
+
+
+def _scaled_level_value(base_value: Any, reference_base: float, level_base: float) -> float | int:
+    if not isinstance(base_value, (int, float)) or isinstance(base_value, bool):
+        return base_value
+    if reference_base <= 0:
+        return _round(float(base_value))
+    return _round(float(base_value) * level_base / reference_base)
 
 
 def _interpolate(points: list[tuple[int, float]], level: int) -> float:
@@ -198,6 +211,135 @@ def _support_level_table(package: dict[str, Any]) -> dict[int, dict[str, Any]]:
     return levels
 
 
+def _active_level_table(package: dict[str, Any]) -> dict[int, dict[str, Any]]:
+    existing = package.get("level_table", {}).get("levels", {})
+    levels: dict[int, dict[str, Any]] = {}
+    for level in range(1, 41):
+        value = existing.get(level, existing.get(str(level), {}))
+        if not isinstance(value, dict):
+            value = {}
+        levels[level] = dict(value)
+
+    hit = package.get("hit", {})
+    if not isinstance(hit, dict):
+        hit = {}
+    level_20_base = float(levels.get(20, {}).get("base_damage", hit.get("base_damage", 0.0)) or 0.0)
+    hit_reference_base = float(
+        hit.get("weapon_attack_percent", hit.get("base_damage", level_20_base)) or level_20_base
+    )
+
+    for level, values in levels.items():
+        level_base = float(values.get("base_damage", 0.0) or 0.0)
+        if hit.get("damage_basis") == "weapon_attack":
+            values["weapon_attack_percent"] = _round(level_base)
+
+        components = hit.get("damage_components")
+        if isinstance(components, dict):
+            for damage_type, amount in components.items():
+                values[f"hit_damage_component_{_safe_stat_fragment(damage_type)}"] = _scaled_level_value(
+                    amount,
+                    hit_reference_base,
+                    level_base,
+                )
+
+        for ailment in hit.get("ailments", []):
+            if not isinstance(ailment, dict) or "base_damage_per_second" not in ailment:
+                continue
+            ailment_type = _safe_stat_fragment(ailment.get("type", "unknown"))
+            values[f"hit_ailment_{ailment_type}_base_damage_per_second"] = _scaled_level_value(
+                ailment["base_damage_per_second"],
+                hit_reference_base,
+                level_base,
+            )
+
+        for secondary in hit.get("secondary_hits", []):
+            if not isinstance(secondary, dict):
+                continue
+            secondary_id = _safe_stat_fragment(secondary.get("id", "secondary_hit"))
+            prefix = f"secondary_hit_{secondary_id}"
+            if "base_damage" in secondary:
+                values[f"{prefix}_base_damage"] = _scaled_level_value(
+                    secondary["base_damage"],
+                    hit_reference_base,
+                    level_base,
+                )
+            if secondary.get("damage_basis") == "weapon_attack" and "weapon_attack_percent" in secondary:
+                values[f"{prefix}_weapon_attack_percent"] = _scaled_level_value(
+                    secondary["weapon_attack_percent"],
+                    hit_reference_base,
+                    level_base,
+                )
+            secondary_components = secondary.get("damage_components")
+            if isinstance(secondary_components, dict):
+                secondary_reference = float(
+                    secondary.get("weapon_attack_percent", secondary.get("base_damage", hit_reference_base)) or hit_reference_base
+                )
+                secondary_level_base = float(values.get(f"{prefix}_base_damage", 0.0) or 0.0)
+                for damage_type, amount in secondary_components.items():
+                    values[f"{prefix}_damage_component_{_safe_stat_fragment(damage_type)}"] = _scaled_level_value(
+                        amount,
+                        secondary_reference,
+                        secondary_level_base,
+                    )
+
+        params = package.get("behavior", {}).get("params", {})
+        if isinstance(params, dict):
+            if "split_projectile_damage_multiplier" in params:
+                values["split_projectile_base_damage"] = _round(
+                    level_base * float(params.get("split_projectile_damage_multiplier", 0.0))
+                )
+            if "on_ignited_hit_indirect_fire_damage" in params:
+                values["on_ignited_hit_indirect_fire_damage"] = _scaled_level_value(
+                    params["on_ignited_hit_indirect_fire_damage"],
+                    level_20_base,
+                    level_base,
+                )
+
+        for module in package.get("modules", []):
+            if not isinstance(module, dict):
+                continue
+            module_id = _safe_stat_fragment(module.get("id", "module"))
+            module_params = module.get("params", {})
+            if not isinstance(module_params, dict):
+                continue
+            for key, value in module_params.items():
+                if key != "damage_amount":
+                    continue
+                values[f"module_{module_id}_{key}"] = _scaled_level_value(value, level_20_base, level_base)
+
+        ordered: dict[str, Any] = {}
+        for key in sorted(values, key=_active_level_table_sort_key):
+            ordered[key] = values[key]
+        levels[level] = ordered
+    return levels
+
+
+def _active_level_table_sort_key(key: str) -> tuple[int, str]:
+    order = {
+        "base_damage": 0,
+        "weapon_attack_percent": 1,
+        "mana_cost": 90,
+        "release_interval_ms": 91,
+        "base_cooldown_ms": 92,
+        "trigger_interval_ms": 93,
+    }
+    if key in order:
+        return (order[key], key)
+    if key.startswith("hit_damage_component_"):
+        return (10, key)
+    if key.startswith("hit_ailment_"):
+        return (20, key)
+    if key.startswith("secondary_hit_"):
+        return (30, key)
+    if key.startswith("split_projectile_"):
+        return (40, key)
+    if key.startswith("module_"):
+        return (50, key)
+    if "damage" in key:
+        return (60, key)
+    return (80, key)
+
+
 def _render_level_table(levels: dict[int, dict[str, Any]]) -> str:
     lines = ["level_table:", "  levels:"]
     for level in sorted(levels):
@@ -209,9 +351,9 @@ def _render_level_table(levels: dict[int, dict[str, Any]]) -> str:
 
 def _insert_level_table(path: Path, levels: dict[int, dict[str, Any]]) -> None:
     text = path.read_text(encoding="utf-8")
-    marker = "\ntags:"
-    if marker not in text:
-        raise ValueError(f"Cannot find tags marker in {path}")
+    marker = next((candidate for candidate in ("\ntags:", "\nauto_release:", "\ndisplay:") if candidate in text), "")
+    if not marker:
+        raise ValueError(f"Cannot find level_table insertion marker in {path}")
     if "\nlevel_table:\n" in text:
         start = text.index("\nlevel_table:\n")
         end = text.index(marker, start)
@@ -226,6 +368,45 @@ def _update_support_level_tables() -> None:
         if package["id"] in CONDUIT_IDS:
             continue
         _insert_level_table(path, _support_level_table(package))
+
+
+def _update_active_level_tables() -> None:
+    for path in sorted((ROOT / "configs" / "skills" / "active").glob("*/skill.yaml")):
+        package = load_yaml_file(path)
+        _insert_level_table(path, _active_level_table(package))
+
+
+def _write_frontend_skill_level_tables() -> None:
+    tables: dict[str, dict[str, dict[str, int | float]]] = {}
+    for path in sorted((ROOT / "configs" / "skills").glob("*/*/skill.yaml")):
+        package = load_yaml_file(path)
+        levels = package.get("level_table", {}).get("levels")
+        if not isinstance(levels, dict):
+            continue
+        table: dict[str, dict[str, int | float]] = {}
+        for raw_level, values in levels.items():
+            if not isinstance(values, dict):
+                continue
+            numeric_values = {
+                str(key): _round(float(value))
+                for key, value in values.items()
+                if isinstance(value, (int, float)) and not isinstance(value, bool)
+            }
+            table[str(int(raw_level))] = numeric_values
+        if table:
+            tables[str(package["id"])] = dict(sorted(table.items(), key=lambda item: int(item[0])))
+
+    output = [
+        "// Generated from configs/skills/**/skill.yaml. Client-only static skill level data.",
+        "",
+        "export type FrontendSkillLevelTable = Record<number, Record<string, number>>;",
+        "",
+        "export const FRONTEND_SKILL_LEVEL_TABLES = "
+        + json.dumps(tables, ensure_ascii=False, indent=2)
+        + " satisfies Record<string, FrontendSkillLevelTable>;",
+        "",
+    ]
+    (ROOT / "webapp" / "frontendSkillLevelTables.ts").write_text("\n".join(output), encoding="utf-8", newline="\n")
 
 
 def _toml_string(value: str) -> str:
@@ -277,7 +458,9 @@ def _update_active_descriptions() -> None:
 
 
 def main() -> None:
+    _update_active_level_tables()
     _update_support_level_tables()
+    _write_frontend_skill_level_tables()
     _write_item_catalog()
     _update_active_descriptions()
 
