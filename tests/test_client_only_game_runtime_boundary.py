@@ -176,6 +176,7 @@ def test_frontend_equipment_runtime_consumes_recent_affix_effects() -> None:
         "floatingTextDamageComponents",
         "frontendEquipmentAttackAddedDamageStat",
         "frontendEquipmentGrantedEffects",
+        "frontendEquipmentGrantedEffectMatchesTags",
         "frontend_equipment_granted_effects",
         "frontendEquipmentGrantedDamageComponents",
         "equipment_granted_direct_damage",
@@ -187,6 +188,8 @@ def test_frontend_equipment_runtime_consumes_recent_affix_effects() -> None:
         "gemWithFrontendSkillPreviewTooltip",
         "frontendDamageComponentTooltipLines",
         "frontendEquipmentGrantedTooltipLines",
+        "frontendSkillPreviewEffectiveLevelText",
+        "isSkillLevelTooltipLine",
         "frontendSkillHitImpactRadius",
         "impact_radius: impactRadius",
         "impact_radius: Number(params.impact_radius ?? skill.hit?.hit_radius ?? 24) * skill.area_multiplier",
@@ -197,7 +200,8 @@ def test_frontend_equipment_runtime_consumes_recent_affix_effects() -> None:
         assert token in source
     assert "source_text?: string" in equipment_source
     assert "source_text: operation.source_text" in equipment_source
-    assert 'if (modifier.source_text?.includes("法术附加")) return "spell_hit";' in source
+    assert 'sourceText.includes("法术附加")' in source
+    assert 'if (!frontendEquipmentGrantedEffectMatchesTags(triggerCondition, tags)) return null;' in source
     for token in [
         "active_gem_level_add",
         "attack_skill_level_add",

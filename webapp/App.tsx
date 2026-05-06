@@ -2000,10 +2000,12 @@ function frontendEquipmentGrantedEffect(
   if (!damageType) return null;
   const resolvedDamageType = damageType === "generic" ? primaryDamageType : damageType;
   const multiplier = addedDamageEffectiveness * (1 + frontendComponentAdditivePercent(resolvedDamageType, skillStats, tags) / 100) * (1 + finalPercent / 100);
+  const triggerCondition = frontendEquipmentGrantedEffectTriggerCondition(modifier);
+  if (!frontendEquipmentGrantedEffectMatchesTags(triggerCondition, tags)) return null;
   return {
     id: `equipment_affix.${modifier.source_modifier_id}.${modifier.stat}`,
     effect_kind: "direct_damage",
-    trigger_condition: frontendEquipmentGrantedEffectTriggerCondition(modifier),
+    trigger_condition: triggerCondition,
     direct_damage_module_id: `equipment_affix.${modifier.source_modifier_id}.direct_damage`,
     damage_type: damageType,
     value: modifier.value,
@@ -2023,8 +2025,17 @@ function frontendAddedDamageStatType(stat: string) {
 function frontendEquipmentGrantedEffectTriggerCondition(modifier: FrontendEquipmentStatModifier) {
   const payloadCondition = modifier.payload?.trigger_condition;
   if (typeof payloadCondition === "string" && payloadCondition) return payloadCondition;
-  if (modifier.source_text?.includes("法术附加")) return "spell_hit";
+  const sourceText = modifier.source_text ?? "";
+  if (sourceText.includes("法术附加") || sourceText.includes("娉曟湳闄勫姞")) return "spell_hit";
+  if (sourceText.includes("攻击附加") || sourceText.includes("鏀诲嚮闄勫姞")) return "attack_hit";
   return "attack_hit";
+}
+
+function frontendEquipmentGrantedEffectMatchesTags(condition: string, tags: Set<string>) {
+  if (condition === "hit") return true;
+  if (condition === "attack_hit") return tags.has("attack");
+  if (condition === "spell_hit") return tags.has("spell");
+  return false;
 }
 
 function attributeScaledDamageAddPercent(skillStats: Record<string, number | boolean>) {
@@ -16674,7 +16685,8 @@ function gemWithFrontendSkillPreviewTooltip(gem: Gem, skill?: SkillPreview): Gem
     ...frontendEquipmentGrantedTooltipLines(skill.runtime_params?.frontend_equipment_granted_effects)
   ];
   const bonusLines = frontendSupportModifierTooltipLines(skill);
-  if (componentLines.length === 0 && bonusLines.length === 0) return gem;
+  const levelText = frontendSkillPreviewEffectiveLevelText(skill);
+  if (componentLines.length === 0 && bonusLines.length === 0 && !levelText) return gem;
   return {
     ...gem,
     tooltip_view: {
@@ -16683,7 +16695,7 @@ function gemWithFrontendSkillPreviewTooltip(gem: Gem, skill?: SkillPreview): Gem
         ...view.sections,
         stats: {
           ...view.sections.stats,
-          lines: mergeFrontendSkillPreviewTooltipLines(view.sections.stats.lines, skill, componentLines)
+          lines: mergeFrontendSkillPreviewTooltipLines(view.sections.stats.lines, skill, componentLines, levelText)
         },
         bonuses: {
           title_text: view.sections.bonuses?.title_text ?? "当前加成",
@@ -16770,10 +16782,16 @@ function mergeFrontendSkillPreviewBonusLines(lines: string[], bonusLines: string
   return merged;
 }
 
-function mergeFrontendSkillPreviewTooltipLines(lines: TooltipStatLine[], skill: SkillPreview, componentLines: TooltipStatLine[]) {
-  const nextLines = lines.map((line) => isPrimaryDamageTooltipLine(line.label_text)
-    ? { ...line, value_text: formatPreviewNumber(skill.final_damage ?? line.value_text) }
-    : line);
+function mergeFrontendSkillPreviewTooltipLines(lines: TooltipStatLine[], skill: SkillPreview, componentLines: TooltipStatLine[], levelText = "") {
+  const nextLines = lines.map((line) => {
+    if (isPrimaryDamageTooltipLine(line.label_text)) {
+      return { ...line, value_text: formatPreviewNumber(skill.final_damage ?? line.value_text) };
+    }
+    if (levelText && isSkillLevelTooltipLine(line.label_text)) {
+      return { ...line, value_text: levelText };
+    }
+    return line;
+  });
   const insertAfter = nextLines.findIndex((line) => isPrimaryDamageTooltipLine(line.label_text));
   const existingLabels = new Set(nextLines.map((line) => line.label_text));
   const missingComponentLines = componentLines.filter((line) => !existingLabels.has(line.label_text));
@@ -16784,6 +16802,19 @@ function mergeFrontendSkillPreviewTooltipLines(lines: TooltipStatLine[], skill: 
 
 function isPrimaryDamageTooltipLine(labelText: string) {
   return labelText.includes("\u4f24\u5bb3") || labelText.includes("\u6d5c\u3085");
+}
+
+function isSkillLevelTooltipLine(labelText: string) {
+  return labelText === "\u7b49\u7ea7";
+}
+
+function frontendSkillPreviewEffectiveLevelText(skill: SkillPreview) {
+  const sourceContext = frontendRecord(skill.source_context);
+  const equipmentLevelAdd = Math.max(0, Math.floor(Number(sourceContext.equipment_skill_level_add ?? 0)));
+  if (equipmentLevelAdd <= 0) return "";
+  const effectiveLevel = Math.max(1, Math.floor(Number(sourceContext.effective_gem_level ?? 1)));
+  const baseLevel = Math.max(1, effectiveLevel - equipmentLevelAdd);
+  return `${effectiveLevel}(${baseLevel}+${equipmentLevelAdd})`;
 }
 
 function frontendDamageComponentTooltipLines(components?: Record<string, number>) {
