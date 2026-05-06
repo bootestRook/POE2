@@ -733,6 +733,11 @@ class SkillEffectCalculator:
             base_damage_components = level_base_damage_components
             component_total = sum(base_damage_components.values())
             level_damage_scale = base_damage / component_total if component_total > 0 else 1.0
+            if component_total > 0 and abs(component_total - base_damage) > 1e-9:
+                base_damage_components = {
+                    damage_type: amount * level_damage_scale
+                    for damage_type, amount in base_damage_components.items()
+                }
         else:
             base_damage_components = normalize_damage_components(
                 template.hit.get("damage_components"),

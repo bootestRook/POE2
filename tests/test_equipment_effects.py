@@ -247,6 +247,15 @@ class EquipmentEffectRuntimeTest(unittest.TestCase):
         self.assertNotIn("physical_damage_add_percent", by_stat)
         self.assertNotIn("fire_damage_add_percent", by_stat)
 
+    def test_equipment_crit_damage_reduction_maps_to_defense_stat(self) -> None:
+        item = self._item(self._definition("1504016"))
+
+        modifiers = equipment_stat_modifiers((item,), definitions=self.equipment_definitions)
+        by_stat = {modifier.stat: modifier.value for modifier in modifiers}
+
+        self.assertEqual(by_stat["crit_damage_taken_reduction_percent"], 16.0)
+        self.assertNotIn("crit_damage_add_percent", by_stat)
+
     def test_equipment_local_weapon_modifiers_apply_to_base_affix_before_aggregation(self) -> None:
         item = EquipmentItem(
             instance_id="bow",
@@ -261,7 +270,7 @@ class EquipmentEffectRuntimeTest(unittest.TestCase):
         modifiers = equipment_stat_modifiers((item,), definitions=self.equipment_definitions)
         weapon_damage = next(modifier.value for modifier in modifiers if modifier.stat == "weapon_attack_base_damage")
 
-        self.assertAlmostEqual(weapon_damage, 123.14)
+        self.assertAlmostEqual(weapon_damage, 164.58)
 
     def test_equipment_ignite_and_aggravation_effects_feed_existing_skill_runtime(self) -> None:
         ignite = self._calculator("active_burning_shot", self._item(self._definition("140061301"))).calculate_all()[0]

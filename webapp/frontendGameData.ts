@@ -6128,6 +6128,18 @@ export const FRONTEND_INITIAL_APP_STATE = {
         "derived": 150.0
       }
     },
+    "crit_damage_taken_reduction_percent": {
+      "label_text": "暴击伤害减免",
+      "value": 0,
+      "value_type": "percent",
+      "category": "crit",
+      "v1_status": "V1_ACTIVE",
+      "runtime_effective": true,
+      "affix_spawn_enabled_v1": true,
+      "trace": {
+        "base": 0.0
+      }
+    },
     "cannot_crit": {
       "label_text": "无法暴击",
       "value": false,
@@ -7616,6 +7628,17 @@ export const FRONTEND_INITIAL_APP_STATE = {
             "formatter": "percent",
             "icon_text": "?",
             "tone": "fire",
+            "v1_status": "V1_ACTIVE"
+          },
+          {
+            "id": "crit_damage_taken_reduction_percent",
+            "stat_id": "crit_damage_taken_reduction_percent",
+            "label_text": "暴击伤害减免",
+            "value": 0,
+            "value_type": "percent",
+            "formatter": "percent",
+            "icon_text": "?",
+            "tone": "evasion",
             "v1_status": "V1_ACTIVE"
           },
           {

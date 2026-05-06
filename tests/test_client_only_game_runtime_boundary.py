@@ -108,7 +108,7 @@ def test_equipped_player_stats_feed_actual_frontend_combat_runtime() -> None:
     assert "statNumber(playerStats.mana_regen_flat, 0) * (1 + Math.max(0, statNumber(playerStats.mana_regen_add_percent, 0)) / 100)" in source
     assert 'row.stat_id === "life_regen_flat"' in source
     assert "statNumber(playerStats.life_regen_flat, 0) * (1 + Math.max(0, statNumber(playerStats.life_regen_add_percent, 0)) / 100)" in source
-    assert "resolveMonsterHitAgainstPlayer(enemy, playerBeforeHit, state?.player_stats, blocked)" in source
+    assert "resolveMonsterHitAgainstPlayer(enemy, playerBeforeHit, state?.player_stats, blocked, nowMs)" in source
     assert "regeneratePlayerResources(currentPlayer, state?.player_stats, dt)" in source
     assert "applyFrontendEnergyShieldRecharge(regeneratePlayerResources(currentPlayer, state?.player_stats, dt), dt)" in source
     assert "resetEnergyShieldRechargeDelay(nowMs)" in source
@@ -187,6 +187,12 @@ def test_frontend_equipment_runtime_consumes_recent_affix_effects() -> None:
         "gemWithFrontendSkillPreviewTooltip",
         "frontendDamageComponentTooltipLines",
         "frontendEquipmentGrantedTooltipLines",
+        "frontendSkillHitImpactRadius",
+        "impact_radius: impactRadius",
+        "impact_radius: Number(params.impact_radius ?? skill.hit?.hit_radius ?? 24) * skill.area_multiplier",
+        "area_scale: skill.area_multiplier",
+        "runtimeParams.projectile_count = projectileCount",
+        "defaultFrontendExtraProjectileSpreadAngle(projectileCount)",
     ]:
         assert token in source
     assert "source_text?: string" in equipment_source
@@ -267,6 +273,9 @@ def test_frontend_spawn_monster_loot_pickup_and_progress_paths_are_seeded() -> N
     for token in [
         "createProceduralSpawnPlanEnemies",
         "resolveMonsterHitAgainstPlayer",
+        "monsterCritChancePercent",
+        "monsterCritDamagePercent",
+        "crit_damage_taken_reduction_percent",
         "applyRuntimeMonsterAttacks",
         "damageEventAmountAgainstEnemy",
         "spawnFrontendDrops(killedEnemies)",

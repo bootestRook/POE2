@@ -764,6 +764,15 @@ runtime_effective = true
 affix_spawn_enabled_v1 = false
 
 [[stats]]
+id = "crit_damage_taken_reduction_percent"
+name_key = "stat.crit_damage_taken_reduction_percent.name"
+category = "crit"
+value_type = "percent"
+v1_status = "V1_ACTIVE"
+runtime_effective = true
+affix_spawn_enabled_v1 = true
+
+[[stats]]
 id = "cannot_crit"
 name_key = "stat.cannot_crit.name"
 category = "crit"

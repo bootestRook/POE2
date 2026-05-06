@@ -348,7 +348,7 @@ def _local_equipment_stat_modifiers(
             elif operation.stat.startswith("local_added_") and operation.stat.endswith("_damage"):
                 damage_type = operation.stat.removeprefix("local_added_").removesuffix("_damage")
                 local_added_damage[damage_type] = local_added_damage.get(damage_type, 0.0) + operation.value
-    weapon_damage = base_physical_damage * (1.0 + local_physical_percent / 100.0) + local_added_physical
+    weapon_damage = (base_physical_damage + local_added_physical) * (1.0 + local_physical_percent / 100.0)
     energy_shield = base_energy_shield * (1.0 + local_energy_shield_percent / 100.0)
     modifiers: list[EquipmentStatModifier] = []
     if weapon_damage > 0:
@@ -654,8 +654,24 @@ def _map_equipment_effect_operations(effect: str) -> tuple[EquipmentEffectOperat
         return ()
     operations: list[EquipmentEffectOperation] = []
 
+    if ("暴击伤害减免" in text or "熬轎" in text) and ("暴击伤害" in text or "惟僻夼漲" in text):
+        value_min, value_max = _first_value_range(text)
+        if value_min is not None and value_max is not None:
+            operations.append(
+                EquipmentEffectOperation(
+                    kind="player_stat",
+                    stat="crit_damage_taken_reduction_percent",
+                    value=(value_min + value_max) / 2.0,
+                    value_min=value_min,
+                    value_max=value_max,
+                    source_text=effect,
+                )
+            )
+
     for phrase, stat, kind in _EQUIPMENT_EFFECT_STAT_PATTERNS:
         if phrase not in text:
+            continue
+        if stat == "crit_damage_add_percent" and ("暴击伤害减免" in text or "熬轎" in text):
             continue
         if "该装备" in text and stat in {"physical_damage_add_percent", "armor", "evasion", "max_energy_shield"}:
             continue

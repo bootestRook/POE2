@@ -84,6 +84,7 @@ crit_damage_add_percent = 0
 crit_damage_final_percent = 0
 derived_crit_chance_percent = 0
 derived_crit_damage_percent = 150
+crit_damage_taken_reduction_percent = 0
 cannot_crit = false
 prevent_elemental_ailments = false
 area_add_percent = 0

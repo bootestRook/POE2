@@ -546,6 +546,7 @@
 "stat.crit_damage_rating.name" = "暴击伤害值"
 "stat.derived_crit_chance_percent.name" = "暴击率"
 "stat.derived_crit_damage_percent.name" = "暴击伤害"
+"stat.crit_damage_taken_reduction_percent.name" = "暴击伤害减免"
 "damage_type.chaos.name" = "混沌"
 "tag.chaos.name" = "混沌"
 "ui.character.section.life" = "生命"

@@ -659,6 +659,15 @@ formatter = "percent"
 order = 40
 
 [[rows]]
+id = "crit_damage_taken_reduction_percent"
+section_id = "crit"
+stat_id = "crit_damage_taken_reduction_percent"
+icon_text = "?"
+tone = "evasion"
+formatter = "percent"
+order = 45
+
+[[rows]]
 id = "cannot_crit"
 section_id = "crit"
 stat_id = "cannot_crit"

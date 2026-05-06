@@ -167,7 +167,7 @@ type SkillPreview = {
     source_instance_id: string;
     source_name_text: string;
     target_instance_id: string;
-    stat: { text: string };
+    stat: { id?: string; text: string };
     value: number;
     relation_text: string;
     reason_text: string;
@@ -839,6 +839,11 @@ type MapProgressionStageView = {
   map_entry_weight?: number;
   equipment_rarity_weights?: Record<string, number>;
 };
+
+const MONSTER_NORMAL_LIFE_BASE = 70;
+const MONSTER_NORMAL_LIFE_GROWTH = 1.115;
+const MONSTER_NORMAL_DAMAGE_BASE = 8;
+const MONSTER_NORMAL_DAMAGE_GROWTH = 1.075;
 
 type GmGemOption = {
   id: string;
@@ -1565,24 +1570,26 @@ function frontendSupportSkillModifiersForTarget(
     if (!frontendSupportCanAffect(sourceGem, targetTags)) continue;
     const supportLevel = frontendSupportEffectiveLevel(sourceGem, supportLevelAdd);
     for (const modifier of frontendGemBaseModifiers(sourceGem)) {
-      const stat = String(frontendRecord(modifier.stat).id ?? "");
+      const modifierStat = frontendRecord(modifier.stat);
+      const stat = String(modifierStat.id ?? "");
       if (!stat) continue;
       const baseValue = Number(modifier.value ?? 0);
       const value = frontendSkillLevelTableValueById(String(sourceGem.base_gem_id ?? sourceGem.instance_id), supportLevel, stat) ?? baseValue;
       if (!Number.isFinite(value) || value === 0) continue;
+      const appliedValue = value * frontendRelationCoefficient(relation);
       modifiers.push({
         source_modifier_id: `${sourceGem.instance_id}:${targetGem.instance_id}:${stat}`,
         kind: "skill_stat",
         stat,
-        value: value * frontendRelationCoefficient(relation),
+        value: appliedValue,
         reason_key: "modifier.support_base",
       });
       appliedModifiers.push({
         source_instance_id: sourceGem.instance_id,
         source_name_text: sourceGem.name_text,
         target_instance_id: targetGem.instance_id,
-        stat: { text: String(frontendRecord(modifier.stat).text ?? stat) },
-        value,
+        stat: { id: stat, text: String(modifierStat.text ?? stat) },
+        value: appliedValue,
         relation_text: frontendRelationText(relation),
         reason_text: supportLevelAdd ? `辅助等级 ${supportLevel}` : "辅助基础效果",
         applied: true,
@@ -1920,7 +1927,19 @@ function applyFrontendEquipmentSkillModifiers(
   runtimeParams.frontend_skill_tags = [...tags];
   scaleRuntimeParam(runtimeParams, "projectile_speed", statValue(skillStats, "projectile_speed_add_percent"));
   scaleFrontendRuntimeDurations(runtimeParams, statValue(skillStats, "duration_add_percent"));
-  const projectileCount = Math.max(1, Math.round(Number(skill.projectile_count ?? 1) + statValue(skillStats, "projectile_count_add")));
+  const projectileCountAdd = statValue(skillStats, "projectile_count_add");
+  const projectileCount = Math.max(1, Math.round(Number(skill.projectile_count ?? 1) + projectileCountAdd));
+  if (projectileCountAdd !== 0 || runtimeParams.projectile_count !== undefined) {
+    runtimeParams.projectile_count = projectileCount;
+  }
+  if (
+    projectileCountAdd > 0
+    && projectileCount > 1
+    && Number(runtimeParams.spread_angle_deg ?? 0) <= 0
+    && Number(runtimeParams.angle_step ?? 0) <= 0
+  ) {
+    runtimeParams.spread_angle_deg = defaultFrontendExtraProjectileSpreadAngle(projectileCount);
+  }
   const critChance = frontendExpectedCritChance(skill, skillStats);
   const critMultiplier = frontendExpectedCritMultiplier(skill, skillStats);
   const expectedHitDamage = nextDamage * ((1 - critChance) + critChance * critMultiplier);
@@ -6126,7 +6145,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       const hitKind = enemy.hitKind ?? "attack";
       const blocked = resolveFrontendPlayerBlock(enemy, hitKind);
       const playerBeforeHit = blocked ? recoverFrontendPlayerOnBlock(nextPlayer, nowMs) : nextPlayer;
-      const hit = resolveMonsterHitAgainstPlayer(enemy, playerBeforeHit, state?.player_stats, blocked);
+      const hit = resolveMonsterHitAgainstPlayer(enemy, playerBeforeHit, state?.player_stats, blocked, nowMs);
       const guarded = applyGuardBuffsToMonsterHit(hit, playerBeforeHit, nextBuffs);
       nextBuffs = guarded.nextBuffs;
       if (guarded.hit.totalDamage <= 0) return attackedEnemy;
@@ -6155,14 +6174,14 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         id: nextTextId.current++,
         x: playerPosition.x,
         y: playerPosition.y - 42,
-        text: `-${Math.max(1, Math.round(hit.totalDamage))}`,
+        text: `${hit.isCritical ? "暴击 " : ""}-${Math.max(1, Math.round(hit.totalDamage))}`,
         ttl: 0.8,
         duration: 0.8
       }))
     ], MAX_RUNTIME_FLOATING_TEXT));
     setCombatLogs((logs) => [
       ...(defeated ? ["玩家生命归零，游戏失败。"] : []),
-      ...hits.map(({ hit }) => `怪物攻击造成 ${formatPreviewNumber(hit.totalDamage)} 点${damageTypeText(hit.damageType)}伤害${hit.blocked ? "（已格挡）" : ""}。`),
+      ...hits.map(({ hit }) => `怪物${hit.isCritical ? "暴击" : "攻击"}造成 ${formatPreviewNumber(hit.totalDamage)} 点${damageTypeText(hit.damageType)}伤害${hit.blocked ? "（已格挡）" : ""}。`),
       ...logs
     ].slice(0, 8));
     return nextEnemies;
@@ -6888,7 +6907,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     });
   }
 
-  function frontendDamageEventsForTarget(
+function frontendDamageEventsForTarget(
     skill: SkillPreview,
     target: Enemy,
     position: { x: number; y: number },
@@ -6908,6 +6927,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       ...frontendFloatingDamageComponentPayload(baseDamageComponents, "skill_direct_damage"),
       ...grantedDamage.floatingComponents
     ];
+    const impactRadius = frontendSkillHitImpactRadius(skill, hitConfig, payload);
     const damagePayload = {
       ...payload,
       damage_conversions: hitConfig?.damage_conversions ?? skill.hit?.damage_conversions ?? [],
@@ -6920,6 +6940,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       damage_components: damageComponents,
       floating_damage_components: floatingDamageComponents,
       hit_world_position: position,
+      impact_radius: impactRadius,
       hit_vfx_key: hitVfxKey
     };
     const eventAmount = frontendDamageMapTotal(damageComponents) || amount;
@@ -6947,6 +6968,19 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         amount: Number(amount ?? 0)
       }))
       .filter((item) => Number.isFinite(item.amount) && item.amount > 0);
+  }
+
+  function frontendSkillHitImpactRadius(skill: SkillPreview, hitConfig?: Record<string, unknown>, payload: Record<string, unknown> = {}) {
+    if (payload.impact_radius !== undefined) return Math.max(1, Number(payload.impact_radius ?? 18));
+    const baseRadius = Number(
+      hitConfig?.impact_radius
+      ?? hitConfig?.hit_radius
+      ?? skill.runtime_params?.impact_radius
+      ?? skill.hit?.hit_radius
+      ?? 18
+    );
+    const areaMultiplier = Math.max(0.05, Number(skill.area_multiplier ?? 1));
+    return Math.max(1, baseRadius * areaMultiplier);
   }
 
   function frontendSecondaryHitAmount(skill: SkillPreview, secondary: SecondaryHitConfig) {
@@ -7096,7 +7130,8 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         projectile_speed: Number(params.projectile_speed ?? 600),
         projectile_width: Number(params.projectile_width ?? 38),
         projectile_height: Number(params.projectile_height ?? 24),
-        impact_radius: Number(params.impact_radius ?? skill.hit?.hit_radius ?? 24),
+        impact_radius: Number(params.impact_radius ?? skill.hit?.hit_radius ?? 24) * skill.area_multiplier,
+        area_scale: skill.area_multiplier,
         projectile_visual_mode: String(params.projectile_visual_mode ?? "standard"),
         trajectory: String(params.trajectory ?? "linear"),
         arc_height: Number(params.arc_height ?? 0),
@@ -7180,7 +7215,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         hit_vfx_key: frontendSkillVfxKey(skill, "hit"),
         marker_id: params.impact_marker_id ?? `${skill.active_gem_instance_id}.hit`,
         on_kill_explosion_chance_percent: params.on_kill_explosion_chance_percent,
-        on_kill_explosion_radius: params.on_kill_explosion_radius,
+        on_kill_explosion_radius: Number(params.on_kill_explosion_radius ?? 0) * skill.area_multiplier,
         on_kill_explosion_max_life_percent: params.on_kill_explosion_max_life_percent,
         on_kill_explosion_damage_type: params.on_kill_explosion_damage_type
       }, projectileDelayMs + lifetimeMs));
@@ -7202,7 +7237,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
             y: triggerPosition.y + direction.y * Number(secondary.offset_distance ?? 0)
           }
         : triggerPosition;
-      const radius = Math.max(1, Number(secondary.radius ?? skill.hit?.hit_radius ?? 60));
+      const radius = Math.max(1, Number(secondary.radius ?? skill.hit?.hit_radius ?? 60) * skill.area_multiplier);
       const maxTargets = Math.max(1, Math.round(Number(secondary.max_targets ?? 1)));
       const targets = frontendUniqueTargetsByDistance(current, center, radius, maxTargets);
       const secondaryId = String(secondary.id ?? "secondary_hit");
@@ -7313,7 +7348,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
 
   function buildFrontendIgnitedHitExplosionEvents(skill: SkillPreview, triggerTarget: Enemy, triggerPosition: { x: number; y: number }, direction: { x: number; y: number }, current: Enemy[], triggerDelayMs = 0) {
     const params = skill.runtime_params ?? {};
-    const radius = Number(params.on_ignited_hit_explosion_radius ?? 0);
+    const radius = Number(params.on_ignited_hit_explosion_radius ?? 0) * skill.area_multiplier;
     if (radius <= 0) return [];
     const ignite = (triggerTarget.activeBuffs ?? []).find((buff) => buff.statusType === "ignite" && buff.remaining > 0);
     if (!ignite) return [];
@@ -7399,6 +7434,8 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         projectile_speed: Number(projectileParams.projectile_speed ?? params.projectile_speed ?? 540),
         projectile_width: Number(projectileParams.projectile_width ?? params.projectile_width ?? 46),
         projectile_height: Number(projectileParams.projectile_height ?? params.projectile_height ?? 30),
+        impact_radius: Number(projectileParams.impact_radius ?? params.impact_radius ?? skill.hit?.hit_radius ?? 24) * skill.area_multiplier,
+        area_scale: skill.area_multiplier,
         trajectory: String(projectileParams.trajectory ?? "linear"),
         arc_height: Number(projectileParams.arc_height ?? 0),
         lifetime_ms: Number(projectileParams.travel_time_ms ?? 520)
@@ -7407,6 +7444,8 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
       vfx_key: projectileParams.vfx_key ?? frontendSkillVfxKey(skill, "hit"),
       projectile_id: projectileId,
       marker_id: projectileParams.impact_marker_id ?? "corrosive_impact",
+      impact_radius: Number(projectileParams.impact_radius ?? params.impact_radius ?? skill.hit?.hit_radius ?? 24) * skill.area_multiplier,
+      area_scale: skill.area_multiplier,
       impact_position: impact
     }, 180, Number(projectileParams.travel_time_ms ?? 520))
     ];
@@ -7695,7 +7734,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
         projectileSpeed: Math.hypot(launch.velocityWorld.x, launch.velocityWorld.y),
         projectileWidth: Number(skill.runtime_params?.projectile_width ?? 38),
         projectileHeight: Number(skill.runtime_params?.projectile_height ?? 24),
-        impactRadius: Number(skill.runtime_params?.impact_radius ?? skill.hit?.hit_radius ?? 18),
+        impactRadius: Number(skill.runtime_params?.impact_radius ?? skill.hit?.hit_radius ?? 18) * skill.area_multiplier,
         ttl: 0.42 + projectileExitFadeDuration,
         duration: 0.42,
         fadeDuration: projectileExitFadeDuration,
@@ -8512,7 +8551,7 @@ function consumeImmediateSkillEvents(events: SkillEvent[]) {
           visualEffect: event.vfx_key,
           vfxKey: event.vfx_key,
           shapeEffects: [],
-          areaScale: 1,
+          areaScale: Number(event.payload?.area_scale ?? 1),
           vfxScale: normalizedVfxScale(event.payload?.vfx_scale)
         });
         continue;
@@ -14310,10 +14349,10 @@ function createProceduralSpawnPlanEnemies(map: BakedBattleMapData, startId: numb
     seed: `${selectedMapId ?? map.id}:${map.displayName}:v1:${Date.now()}:${Math.random()}`
   });
   const level = Math.max(1, Number(stage?.monster_level ?? 1));
-  const lifeScale = 1 + Math.max(0, level - 1) * 0.08;
-  const damageScale = 1 + Math.max(0, level - 1) * 0.045;
+  const normalLife = monsterNormalLifeForLevel(level);
+  const normalDamage = monsterNormalDamageForLevel(level);
   const enemies: Enemy[] = result.enemies.map((monster) => {
-    const maxHp = Math.max(1, Math.round(monster.max_hp * lifeScale));
+    const maxHp = Math.max(1, Math.round(normalLife * monster.life_multiplier));
     return {
       id: monster.runtime_id,
       x: monster.x,
@@ -14327,9 +14366,9 @@ function createProceduralSpawnPlanEnemies(map: BakedBattleMapData, startId: numb
       proceduralMonsterPackId: monster.monster_pack_id,
       proceduralZoneType: monster.zone_type,
       spawnRarity: monster.spawn_rarity,
-      lifeMultiplier: monster.life_multiplier * lifeScale,
-      damageMultiplier: monster.damage_multiplier * damageScale,
-      baseDamage: monster.base_damage * damageScale,
+      lifeMultiplier: monster.life_multiplier,
+      damageMultiplier: monster.damage_multiplier,
+      baseDamage: normalDamage,
       damageType: monster.damage_type,
       hitKind: monster.hit_kind,
       attackRange: monster.attack_range,
@@ -14347,6 +14386,14 @@ function createProceduralSpawnPlanEnemies(map: BakedBattleMapData, startId: numb
     aggroRadius: source.aggroRadius
   }));
   return { enemies, aggroSources, nextId: result.nextId, debug: result.debug };
+}
+
+function monsterNormalLifeForLevel(level: number) {
+  return Math.max(1, Math.round(MONSTER_NORMAL_LIFE_BASE * Math.pow(MONSTER_NORMAL_LIFE_GROWTH, Math.max(0, level - 1))));
+}
+
+function monsterNormalDamageForLevel(level: number) {
+  return Math.max(0, Math.round(MONSTER_NORMAL_DAMAGE_BASE * Math.pow(MONSTER_NORMAL_DAMAGE_GROWTH, Math.max(0, level - 1))));
 }
 
 function shapeEffectsFromUnknown(value: unknown): ShapeEffectPreview[] {
@@ -14721,11 +14768,19 @@ function monsterOutgoingDamage(enemy: Enemy) {
     * Math.max(0, 1 + finalPercent / 100);
 }
 
-function resolveMonsterHitAgainstPlayer(enemy: Enemy, player: PlayerRuntimeState, stats: AppState["player_stats"] | undefined, blocked = false) {
+function resolveMonsterHitAgainstPlayer(enemy: Enemy, player: PlayerRuntimeState, stats: AppState["player_stats"] | undefined, blocked = false, timestampMs = 0) {
   const damageType = enemy.damageType ?? "physical";
   const hitKind = enemy.hitKind ?? "attack";
   const penetrationPercent = monsterOffenseModifier(enemy, "resistance_penetration_percent");
   let incoming = monsterOutgoingDamage(enemy);
+  const critChancePercent = monsterCritChancePercent(enemy);
+  const isCritical = critChancePercent > 0 && stablePercent(`monster:${enemy.id}:crit:${Math.round(timestampMs)}`) < critChancePercent;
+  const critDamagePercent = monsterCritDamagePercent(enemy);
+  const critDamageTakenReductionPercent = clamp(statNumber(stats?.crit_damage_taken_reduction_percent, 0), 0, 100);
+  if (isCritical) {
+    const critExtraMultiplier = Math.max(0, critDamagePercent / 100 - 1);
+    incoming *= 1 + critExtraMultiplier * (1 - critDamageTakenReductionPercent / 100);
+  }
   const evasion = statNumber(stats?.evasion, 0);
   const evasionAddPercent = statNumber(stats?.evasion_add_percent, 0);
   const effectiveEvasion = Math.max(0, evasion * (1 + evasionAddPercent / 100));
@@ -14748,7 +14803,40 @@ function resolveMonsterHitAgainstPlayer(enemy: Enemy, player: PlayerRuntimeState
     currentEnergyShield: clamp(player.currentEnergyShield - shieldDamage, 0, player.maxEnergyShield),
     hp: clamp(player.hp - lifeDamage, 0, player.maxHp)
   };
-  return { damageType, hitKind, blocked, totalDamage, shieldDamage, lifeDamage, nextPlayer };
+  return {
+    damageType,
+    hitKind,
+    blocked,
+    isCritical,
+    critChancePercent,
+    critDamagePercent,
+    critDamageTakenReductionPercent,
+    totalDamage,
+    shieldDamage,
+    lifeDamage,
+    nextPlayer
+  };
+}
+
+function monsterCritChancePercent(enemy: Enemy) {
+  return clamp(
+    monsterOffenseModifier(enemy, "crit_chance_percent")
+    + monsterOffenseModifier(enemy, "critical_chance_percent"),
+    0,
+    95
+  );
+}
+
+function monsterCritDamagePercent(enemy: Enemy) {
+  const explicitBase = enemy.offenseModifiers?.crit_damage_percent ?? enemy.offenseModifiers?.critical_damage_percent;
+  const basePercent = Number(explicitBase ?? 150);
+  const addPercent =
+    monsterOffenseModifier(enemy, "crit_damage_add_percent")
+    + monsterOffenseModifier(enemy, "critical_damage_add_percent");
+  const finalPercent =
+    monsterOffenseModifier(enemy, "crit_damage_final_percent")
+    + monsterOffenseModifier(enemy, "critical_damage_final_percent");
+  return Math.max(100, (basePercent + addPercent) * Math.max(0, 1 + finalPercent / 100));
 }
 
 function playerResistancePercent(stats: AppState["player_stats"] | undefined, damageType: string, penetrationPercent: number) {
@@ -15718,6 +15806,10 @@ function projectileAngleStepDeg(
   return isProjectileSkillTemplate(behaviorTemplate) ? Math.max(0, Number(runtimeParams.angle_step ?? 0)) : 0;
 }
 
+function defaultFrontendExtraProjectileSpreadAngle(projectileCount: number) {
+  return Math.min(60, 12 * Math.max(0, Math.round(projectileCount) - 1));
+}
+
 function projectileSpreadDirections(
   direction: { x: number; y: number },
   projectileCount: number,
@@ -16569,7 +16661,8 @@ function gemWithFrontendSkillPreviewTooltip(gem: Gem, skill?: SkillPreview): Gem
     ...frontendDamageComponentTooltipLines(skill.final_damage_components),
     ...frontendEquipmentGrantedTooltipLines(skill.runtime_params?.frontend_equipment_granted_effects)
   ];
-  if (componentLines.length === 0) return gem;
+  const bonusLines = frontendSupportModifierTooltipLines(skill);
+  if (componentLines.length === 0 && bonusLines.length === 0) return gem;
   return {
     ...gem,
     tooltip_view: {
@@ -16579,10 +16672,90 @@ function gemWithFrontendSkillPreviewTooltip(gem: Gem, skill?: SkillPreview): Gem
         stats: {
           ...view.sections.stats,
           lines: mergeFrontendSkillPreviewTooltipLines(view.sections.stats.lines, skill, componentLines)
-        }
+        },
+        bonuses: {
+          title_text: view.sections.bonuses?.title_text ?? "当前加成",
+          lines: mergeFrontendSkillPreviewBonusLines(view.sections.bonuses?.lines ?? [], bonusLines)
+        },
       }
     }
   };
+}
+
+function frontendSupportModifierTooltipLines(skill: SkillPreview) {
+  return (skill.applied_modifiers ?? [])
+    .filter((modifier) => modifier.applied && modifier.source_instance_id && modifier.source_instance_id !== skill.active_gem_instance_id && Number(modifier.value) !== 0)
+    .map((modifier) => {
+      const statId = String(modifier.stat?.id ?? "");
+      const statText = frontendSupportStatText(statId, String(modifier.stat?.text ?? statId));
+      const valueText = formatModifierValue(statId, Number(modifier.value));
+      const relationText = modifier.relation_text ? ` / ${modifier.relation_text}` : "";
+      return `${modifier.source_name_text}: ${statText} ${valueText}${relationText}`;
+    });
+}
+
+function frontendSupportStatText(statId: string, fallback: string) {
+  if (fallback && !fallback.startsWith("未配置文案")) return fallback;
+  return FRONTEND_SUPPORT_STAT_TEXT[statId] ?? statId;
+}
+
+const FRONTEND_SUPPORT_STAT_TEXT: Record<string, string> = {
+  added_chaos_damage: "附加混沌伤害",
+  added_cold_damage: "附加冰霜伤害",
+  added_fire_damage: "附加火焰伤害",
+  added_fire_damage_from_physical_percent: "物理额外火焰伤害",
+  added_lightning_damage: "附加闪电伤害",
+  ailment_damage_add_percent: "异常伤害提高",
+  area_add_percent: "范围扩大",
+  area_damage_add_percent: "范围伤害提高",
+  attack_speed_add_percent: "攻击速度提高",
+  bounce_count_add: "弹射次数",
+  cast_speed_add_percent: "施法速度提高",
+  channel_min_stacks_add: "引导最低层数",
+  cold_damage_add_percent: "冰霜伤害提高",
+  continuous_attack_chance_percent: "连续攻击概率",
+  continuous_attack_damage_step_percent: "连续攻击伤害递增",
+  conversion_lightning_to_cold_percent: "闪电转冰霜",
+  conversion_physical_to_fire_percent: "物理转火焰",
+  cooldown_recovery_add_percent: "冷却回复速度提高",
+  crit_damage_add_percent: "暴击伤害提高",
+  crit_rating: "暴击值",
+  damage_final_percent: "最终伤害修正",
+  deterioration_chance_add_percent: "恶化概率",
+  deterioration_extra_stack_chance_percent: "额外恶化层数概率",
+  dot_damage_add_percent: "持续伤害提高",
+  duration_add_percent: "持续时间提高",
+  elemental_damage_add_percent: "元素伤害提高",
+  energy_blessing_damage_per_stack_percent: "每层能量祝福伤害",
+  guard_internal_cooldown_ms: "守护内置冷却",
+  guard_trigger_count: "守护触发次数",
+  ignite_chance_add_percent: "点燃概率提高",
+  ignite_damage_bonus_max_percent: "点燃伤害上限提高",
+  ignite_damage_bonus_per_stack_percent: "每层点燃伤害提高",
+  ignite_stacks_add: "点燃层数",
+  knockback_chance_percent: "击退概率",
+  knockback_distance_add_percent: "击退距离提高",
+  lightning_damage_add_percent: "闪电伤害提高",
+  melee_damage_add_percent: "近战伤害提高",
+  physical_damage_add_percent: "物理伤害提高",
+  prevent_elemental_ailments: "免疫元素异常",
+  projectile_count_add: "投射物数量",
+  projectile_speed_add_percent: "投射物速度提高",
+  slash_chance_add_percent: "斩击概率",
+  split_projectile_chance_percent: "投射物分裂概率",
+  split_projectile_count_add: "分裂投射物数量",
+  status_chance_add_percent: "状态施加概率提高",
+};
+
+function mergeFrontendSkillPreviewBonusLines(lines: string[], bonusLines: string[]) {
+  const merged = [...lines];
+  const seen = new Set(merged);
+  for (const line of bonusLines) {
+    if (seen.has(line)) continue;
+    seen.add(line);
+    merged.unshift(line);
+  }
+  return merged;
 }
 
 function mergeFrontendSkillPreviewTooltipLines(lines: TooltipStatLine[], skill: SkillPreview, componentLines: TooltipStatLine[]) {

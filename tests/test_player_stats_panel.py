@@ -85,6 +85,7 @@ class PlayerStatsPanelTest(unittest.TestCase):
             "base_crit_chance_percent",
             "crit_rating",
             "crit_damage_rating",
+            "crit_damage_taken_reduction_percent",
             "cannot_crit",
             "chain_count_add",
             "pierce_count_add",
