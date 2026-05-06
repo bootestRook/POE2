@@ -54,6 +54,7 @@ export type FrontendEquipmentStatModifier = {
   value: number;
   value_min?: number | null;
   value_max?: number | null;
+  source_text?: string;
   reason_key: string;
   runtime_hook?: string;
   payload?: Record<string, unknown> | null;
@@ -239,6 +240,7 @@ export function frontendEquipmentStatModifiers(item: FrontendEquipmentItem): Fro
         value: operation.value,
         value_min: operation.value_min,
         value_max: operation.value_max,
+        source_text: operation.source_text,
         reason_key: "modifier.equipment_affix",
         runtime_hook: operation.runtime_hook,
         payload: operation.payload,
@@ -382,7 +384,8 @@ function frontendEquipmentModifier(
   stat: string,
   value: number,
   valueMin: number | null = null,
-  valueMax: number | null = null
+  valueMax: number | null = null,
+  sourceText = ""
 ): FrontendEquipmentStatModifier {
   return {
     source_modifier_id: sourceModifierId,
@@ -391,6 +394,7 @@ function frontendEquipmentModifier(
     value,
     value_min: valueMin,
     value_max: valueMax,
+    source_text: sourceText,
     reason_key: "modifier.equipment_affix",
   };
 }
@@ -508,7 +512,7 @@ function rollEffect(effect: string, rng: FrontendSeedRandom) {
     (match, groupMin, groupMax, plainMin, plainMax, offset) => {
       const rolled = rollRangeNumberText(groupMin ?? plainMin, groupMax ?? plainMax, rng);
       ranges.push({ index: Number(offset), value: rolled.value });
-      return match.startsWith("(") ? `(${rolled.text})` : rolled.text;
+      return rolled.text;
     }
   );
   return { text, ranges };

@@ -2003,6 +2003,7 @@ function frontendAddedDamageStatType(stat: string) {
 function frontendEquipmentGrantedEffectTriggerCondition(modifier: FrontendEquipmentStatModifier) {
   const payloadCondition = modifier.payload?.trigger_condition;
   if (typeof payloadCondition === "string" && payloadCondition) return payloadCondition;
+  if (modifier.source_text?.includes("法术附加")) return "spell_hit";
   return "attack_hit";
 }
 
@@ -2556,6 +2557,15 @@ function recalculateFrontendCharacterPanel(playerStats: Record<string, PlayerSta
         const stat = playerStats[row.stat_id];
         if (["fire_resistance_percent", "cold_resistance_percent", "lightning_resistance_percent"].includes(row.stat_id)) {
           const value = statNumber(stat, 0) + statNumber(playerStats.elemental_resistance_percent, 0);
+          return { ...row, value };
+        }
+        if (row.stat_id === "life_regen_flat") {
+          const value = Math.max(0, statNumber(playerStats.life_regen_flat, 0) * (1 + Math.max(0, statNumber(playerStats.life_regen_add_percent, 0)) / 100))
+            + Math.max(0, statNumber(playerStats.max_life, 0) * statNumber(playerStats.life_regen_percent_per_second, 0) / 100);
+          return { ...row, value };
+        }
+        if (row.stat_id === "mana_regen_flat") {
+          const value = Math.max(0, statNumber(playerStats.mana_regen_flat, 0) * (1 + Math.max(0, statNumber(playerStats.mana_regen_add_percent, 0)) / 100));
           return { ...row, value };
         }
         return typeof stat?.value === "number" || typeof stat?.value === "boolean"

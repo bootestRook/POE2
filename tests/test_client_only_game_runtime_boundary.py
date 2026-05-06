@@ -88,6 +88,8 @@ def test_frontend_equipment_affix_generation_and_gm_items_are_local() -> None:
     assert "craftFrontendEquipmentAffix" in runtime
     assert "prefixSuffixCapacity" in runtime
     assert "applyFrontendEquipmentStatModifiers" in runtime
+    assert 'return match.startsWith("(") ? `(${rolled.text})` : rolled.text;' not in runtime
+    assert "return rolled.text;" in runtime
     assert 'operation.stat === "local_energy_shield"' in runtime
     assert 'baseEnergyShield + localEnergyShield' in runtime
     assert 'modifier.stat === "move_speed"' in runtime
@@ -102,6 +104,10 @@ def test_equipped_player_stats_feed_actual_frontend_combat_runtime() -> None:
     assert "const playerStats = applyFrontendEquipmentStatModifiers(baseStats, modifiers)" in source
     assert "player_stats: playerStats" in source
     assert "character_panel: recalculateFrontendCharacterPanel(playerStats)" in source
+    assert 'row.stat_id === "mana_regen_flat"' in source
+    assert "statNumber(playerStats.mana_regen_flat, 0) * (1 + Math.max(0, statNumber(playerStats.mana_regen_add_percent, 0)) / 100)" in source
+    assert 'row.stat_id === "life_regen_flat"' in source
+    assert "statNumber(playerStats.life_regen_flat, 0) * (1 + Math.max(0, statNumber(playerStats.life_regen_add_percent, 0)) / 100)" in source
     assert "resolveMonsterHitAgainstPlayer(enemy, playerBeforeHit, state?.player_stats, blocked)" in source
     assert "regeneratePlayerResources(currentPlayer, state?.player_stats, dt)" in source
     assert "applyFrontendEnergyShieldRecharge(regeneratePlayerResources(currentPlayer, state?.player_stats, dt), dt)" in source
@@ -183,6 +189,9 @@ def test_frontend_equipment_runtime_consumes_recent_affix_effects() -> None:
         "frontendEquipmentGrantedTooltipLines",
     ]:
         assert token in source
+    assert "source_text?: string" in equipment_source
+    assert "source_text: operation.source_text" in equipment_source
+    assert 'if (modifier.source_text?.includes("法术附加")) return "spell_hit";' in source
     for token in [
         "active_gem_level_add",
         "attack_skill_level_add",
