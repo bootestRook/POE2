@@ -305,9 +305,9 @@ boss_stage = true
 
 [loot_profile.growth_early]
 base_drop_chance = 0.10
-equipment_weight = 75
-gem_weight = 5
-map_entry_weight = 20
+equipment_weight = 70
+gem_weight = 20
+map_entry_weight = 10
 equipment_rarity_weights = { white = 760, blue = 220, purple = 20, pink = 0 }
 gem_rarity_weights = { normal = 850, magic = 130, rare = 20 }
 gem_level_min = 1
@@ -316,9 +316,9 @@ boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
 
 [loot_profile.growth_mid]
 base_drop_chance = 0.12
-equipment_weight = 75
-gem_weight = 5
-map_entry_weight = 20
+equipment_weight = 70
+gem_weight = 20
+map_entry_weight = 10
 equipment_rarity_weights = { white = 700, blue = 260, purple = 38, pink = 2 }
 gem_rarity_weights = { normal = 760, magic = 190, rare = 50 }
 gem_level_min = 3
@@ -327,9 +327,9 @@ boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
 
 [loot_profile.growth_late]
 base_drop_chance = 0.14
-equipment_weight = 75
-gem_weight = 5
-map_entry_weight = 20
+equipment_weight = 70
+gem_weight = 20
+map_entry_weight = 10
 equipment_rarity_weights = { white = 640, blue = 290, purple = 65, pink = 5 }
 gem_rarity_weights = { normal = 640, magic = 270, rare = 90 }
 gem_level_min = 6
@@ -338,9 +338,9 @@ boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
 
 [loot_profile.timemark_1]
 base_drop_chance = 0.16
-equipment_weight = 75
-gem_weight = 5
-map_entry_weight = 20
+equipment_weight = 70
+gem_weight = 20
+map_entry_weight = 10
 equipment_rarity_weights = { white = 590, blue = 320, purple = 80, pink = 10 }
 gem_rarity_weights = { normal = 520, magic = 330, rare = 150 }
 gem_level_min = 9
@@ -349,9 +349,9 @@ boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
 
 [loot_profile.timemark_2]
 base_drop_chance = 0.18
-equipment_weight = 75
-gem_weight = 5
-map_entry_weight = 20
+equipment_weight = 70
+gem_weight = 20
+map_entry_weight = 10
 equipment_rarity_weights = { white = 540, blue = 340, purple = 100, pink = 20 }
 gem_rarity_weights = { normal = 450, magic = 350, rare = 200 }
 gem_level_min = 11
@@ -360,9 +360,9 @@ boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
 
 [loot_profile.timemark_3]
 base_drop_chance = 0.20
-equipment_weight = 75
-gem_weight = 5
-map_entry_weight = 20
+equipment_weight = 70
+gem_weight = 20
+map_entry_weight = 10
 equipment_rarity_weights = { white = 500, blue = 350, purple = 115, pink = 35 }
 gem_rarity_weights = { normal = 390, magic = 360, rare = 250 }
 gem_level_min = 13
@@ -371,9 +371,9 @@ boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
 
 [loot_profile.timemark_4]
 base_drop_chance = 0.22
-equipment_weight = 75
-gem_weight = 5
-map_entry_weight = 20
+equipment_weight = 70
+gem_weight = 20
+map_entry_weight = 10
 equipment_rarity_weights = { white = 460, blue = 360, purple = 130, pink = 50 }
 gem_rarity_weights = { normal = 340, magic = 360, rare = 300 }
 gem_level_min = 14
@@ -382,9 +382,9 @@ boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
 
 [loot_profile.timemark_5]
 base_drop_chance = 0.24
-equipment_weight = 75
-gem_weight = 5
-map_entry_weight = 20
+equipment_weight = 70
+gem_weight = 20
+map_entry_weight = 10
 equipment_rarity_weights = { white = 420, blue = 370, purple = 145, pink = 65 }
 gem_rarity_weights = { normal = 290, magic = 360, rare = 350 }
 gem_level_min = 15
@@ -393,9 +393,9 @@ boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
 
 [loot_profile.timemark_6]
 base_drop_chance = 0.26
-equipment_weight = 75
-gem_weight = 5
-map_entry_weight = 20
+equipment_weight = 70
+gem_weight = 20
+map_entry_weight = 10
 equipment_rarity_weights = { white = 390, blue = 375, purple = 155, pink = 80 }
 gem_rarity_weights = { normal = 240, magic = 360, rare = 400 }
 gem_level_min = 16
@@ -404,9 +404,9 @@ boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
 
 [loot_profile.timemark_7]
 base_drop_chance = 0.28
-equipment_weight = 75
-gem_weight = 5
-map_entry_weight = 20
+equipment_weight = 70
+gem_weight = 20
+map_entry_weight = 10
 equipment_rarity_weights = { white = 360, blue = 350, purple = 190, pink = 100 }
 gem_rarity_weights = { normal = 190, magic = 350, rare = 460 }
 gem_level_min = 17
@@ -415,9 +415,9 @@ boss_guaranteed_kinds = ["equipment", "gem", "map_entry"]
 
 [loot_profile.timemark_8]
 base_drop_chance = 0.30
-equipment_weight = 75
-gem_weight = 5
-map_entry_weight = 20
+equipment_weight = 70
+gem_weight = 20
+map_entry_weight = 10
 equipment_rarity_weights = { white = 340, blue = 330, purple = 220, pink = 110 }
 gem_rarity_weights = { normal = 140, magic = 330, rare = 530 }
 gem_level_min = 18

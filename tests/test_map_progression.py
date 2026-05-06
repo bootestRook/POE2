@@ -69,9 +69,9 @@ class MapProgressionConfigTest(unittest.TestCase):
         self.assertLess(early.base_drop_chance, late.base_drop_chance)
         self.assertLess(late.base_drop_chance, 1.0)
         for profile in self.config.loot_profiles.values():
-            self.assertEqual(profile.equipment_weight, 75)
-            self.assertEqual(profile.gem_weight, 5)
-            self.assertEqual(profile.map_entry_weight, 20)
+            self.assertEqual(profile.equipment_weight, 70)
+            self.assertEqual(profile.gem_weight, 20)
+            self.assertEqual(profile.map_entry_weight, 10)
         for profile in self.config.loot_profiles.values():
             weights = profile.equipment_rarity_weights
             self.assertGreater(weights["white"], weights["blue"])
@@ -94,9 +94,9 @@ class MapProgressionConfigTest(unittest.TestCase):
         self.assertTrue(first["free_entry"])
         self.assertFalse(second["enterable"])
         self.assertEqual(first["map_level_text"], "1-9")
-        self.assertEqual(first["equipment_weight"], 75)
-        self.assertEqual(first["gem_weight"], 5)
-        self.assertEqual(first["map_entry_weight"], 20)
+        self.assertEqual(first["equipment_weight"], 70)
+        self.assertEqual(first["gem_weight"], 20)
+        self.assertEqual(first["map_entry_weight"], 10)
 
 
 if __name__ == "__main__":
