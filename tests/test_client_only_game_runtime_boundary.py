@@ -52,6 +52,16 @@ def test_frontend_seed_data_contains_effect_baselines() -> None:
         assert preserved_effect_token in source
 
 
+def test_frontend_chromatic_shot_preserves_forced_element_damage_payload() -> None:
+    source = _read(WEBAPP / "App.tsx")
+    helper = source.split("function frontendDamageEventsForTarget(", 1)[1].split("function frontendFloatingDamageComponentPayload", 1)[0]
+
+    assert "payload.forced_element_type" in helper
+    assert "const damageType = forcedDamageType || convertedDamageType(skill, hitConfig);" in helper
+    assert "const payloadDamageComponents = payload.damage_components;" in helper
+    assert ": damagePayloadComponents(skill, amount, damageType, hitConfig);" in helper
+
+
 def test_client_only_runtime_recalculates_without_backend_adapters() -> None:
     source = _read(WEBAPP / "App.tsx")
 

@@ -272,16 +272,16 @@ class TlidbSkillAlignmentTest(unittest.TestCase):
         self.assertEqual(corrosive_impact.payload["marker_id"], "corrosive_impact")
         self.assertEqual(corrosive_zone.payload["trigger_marker_id"], "corrosive_impact")
         self.assertFalse(corrosive_zone.payload["emit_hit_vfx"])
-        self.assertEqual(corrosive_zone.duration_ms, 20000)
-        self.assertEqual(corrosive_zone.payload["tick_count"], 20)
+        self.assertEqual(corrosive_zone.duration_ms, 3000)
+        self.assertEqual(corrosive_zone.payload["tick_count"], 3)
         self.assertEqual(corrosive_zone.payload["hit_target_count"], 3)
-        self.assertEqual(len(corrosive_ground_hits), 60)
-        self.assertEqual(len(corrosive_ground_damage), 60)
-        self.assertEqual(len(corrosive_buffs), 21)
+        self.assertEqual(len(corrosive_ground_hits), 9)
+        self.assertEqual(len(corrosive_ground_damage), 9)
+        self.assertEqual(len(corrosive_buffs), 4)
         self.assertEqual(corrosive_ground_hit_vfx, [])
         self.assertEqual(
             {event.payload["tick_time_ms"] for event in corrosive_ground_hits},
-            set(range(1000, 21000, 1000)),
+            set(range(1000, 4000, 1000)),
         )
         self.assertTrue(all(event.amount == 0.741 for event in corrosive_ground_damage))
         self.assertTrue(all(event.payload["buff_type"] == "" for event in corrosive_buffs))

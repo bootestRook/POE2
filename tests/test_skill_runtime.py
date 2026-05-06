@@ -627,6 +627,41 @@ class SkillRuntimeTest(unittest.TestCase):
             self.assertEqual(event.payload["forced_element_type"], event.damage_type)
             self.assertEqual(event.payload["damage_components"], {event.damage_type: round(event.amount or 0, 6)})
 
+    def test_chromatic_shot_varies_forced_element_across_releases(self) -> None:
+        self.inventory.add_instance("active", "active_chromatic_shot")
+        self.board.mount_gem("active", 0, 0)
+        final_skill = self.calculator.calculate_all()[0]
+        final_skill = replace(
+            final_skill,
+            runtime_params={
+                **(final_skill.runtime_params or {}),
+                "projectile_count": 3,
+                "burst_interval_ms": 0,
+                "forced_element_types": ["fire", "cold", "lightning"],
+            },
+        )
+
+        chosen_types: set[str] = set()
+        for timestamp_ms in range(0, 650 * 12, 650):
+            events = SkillRuntime().execute(
+                final_skill,
+                source_entity="player_1",
+                source_position=Position(0, 0),
+                target_entity="near",
+                target_position=Position(80, 0),
+                timestamp_ms=timestamp_ms,
+                target_entities=[
+                    {"entity_id": "near", "position": {"x": 80, "y": 0}},
+                ],
+            )
+            damage_events = [event for event in events if event.type == "damage"]
+            release_types = {event.damage_type for event in damage_events}
+
+            self.assertEqual(len(release_types), 1)
+            chosen_types.update(release_types)
+
+        self.assertEqual(chosen_types, {"fire", "cold", "lightning"})
+
     def test_penetrating_shot_uses_projectile_params_and_pierces_targets(self) -> None:
         self.inventory.add_instance("active", "active_penetrating_shot")
         self.board.mount_gem("active", 0, 0)

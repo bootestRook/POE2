@@ -129,6 +129,8 @@ def test_frontend_skill_preview_recalculates_template_damage_for_gem_level() -> 
     source = _app_source()
     recalculate_body = source.split("function recalculateFrontendSkillPreview", 1)[1].split("function frontendSupportSkillModifiersForTarget", 1)[0]
     level_adapter_body = source.split("function frontendSkillPreviewForGemLevel", 1)[1].split("function frontendSkillClampedLevel", 1)[0]
+    timing_body = source.split("function frontendSkillTiming", 1)[1].split("function scaleFrontendDamageMap", 1)[0]
+    equipment_body = source.split("function applyFrontendEquipmentSkillModifiers", 1)[1].split("function frontendEquipmentAttackAddedDamageStat", 1)[0]
 
     assert "frontendSkillPreviewForGemLevel(cloneFrontendData(template), fullGem)" in recalculate_body
     assert "const levelValues = frontendSkillLevelTableValues(skill, targetLevel)" in level_adapter_body
@@ -141,6 +143,31 @@ def test_frontend_skill_preview_recalculates_template_damage_for_gem_level() -> 
     assert "targetLevel === templateLevel" not in level_adapter_body
     assert "base_gem_level: targetLevel" in level_adapter_body
     assert "effective_gem_level: targetLevel" in level_adapter_body
+    assert "actualIntervalMs: Math.max(releaseIntervalMs, finalCooldownMs)" in timing_body
+    assert 'statValue(skillStats, "attack_speed_add_percent")' in timing_body
+    assert 'statValue(skillStats, "cast_speed_add_percent")' in timing_body
+    assert 'statValue(skillStats, "cooldown_recovery_add_percent")' in timing_body
+    assert 'statValue(skillStats, "added_cooldown_ms")' in timing_body
+    assert "actual_interval_ms: timing.actualIntervalMs" in level_adapter_body
+    assert "actual_interval_ms: timing.actualIntervalMs" in equipment_body
+    assert "actual_interval_ms: typeof levelValues.release_interval_ms" not in level_adapter_body
+    assert "actual_interval_ms: Math.max(1, Number(skill.actual_interval_ms" not in equipment_body
+
+
+def test_frontend_self_centered_damage_zone_releases_after_event_validation() -> None:
+    source = _app_source()
+    release_body = source.split("function releaseFrontendCanonicalSkill", 1)[1].split("function buildFrontendCanonicalSkillEvents", 1)[0]
+    hit_body = source.split("function hitEnemies", 1)[1].split("function buildFrontendProjectileSkillEvents", 1)[0]
+    damage_zone_body = source.split("function buildFrontendDamageZoneSkillEvents", 1)[1].split("function buildFrontendMeleeArcSkillEvents", 1)[0]
+
+    assert 'runtimeSkill.cast?.target_selector === "self"' in release_body
+    assert 'String(runtimeSkill.runtime_params?.origin_policy ?? "") === "caster"' in release_body
+    assert "if (targets.length === 0 && !canReleaseWithoutEnemyTarget) return false" in release_body
+    assert "if (events.length === 0) return false" in release_body
+    assert "if (!options.manaAlreadySpent && !trySpendSkillMana(skill)) return false" in release_body
+    assert "if (!trySpendSkillMana(skill)) return false" not in hit_body
+    assert 'if (!originTarget && originPolicy !== "caster") return []' in damage_zone_body
+    assert 'const direction = originTarget ? guideDirection(caster, originTarget) : { x: 1, y: 0 }' in damage_zone_body
 
 def test_frontend_gem_drop_pool_is_not_seed_inventory() -> None:
     source = _app_source()

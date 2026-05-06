@@ -164,6 +164,7 @@ type SkillPreview = {
   projectile_count: number;
   area_multiplier: number;
   speed_multiplier: number;
+  tags?: { id?: string; text: string }[];
   applied_modifiers: {
     source_instance_id: string;
     source_name_text: string;
@@ -1633,6 +1634,12 @@ function frontendSkillPreviewForGemLevel(skill: SkillPreview, gem: Gem): SkillPr
   if (Number(nextRuntimeParams.split_projectile_base_damage ?? 0) > 0 && targetBaseDamage > 0) {
     nextRuntimeParams.split_projectile_damage_multiplier = Number(nextRuntimeParams.split_projectile_base_damage) / targetBaseDamage;
   }
+  const baseReleaseIntervalMs = typeof levelValues.release_interval_ms === "number" ? levelValues.release_interval_ms : skill.base_release_interval_ms;
+  const baseCooldownMs = typeof levelValues.base_cooldown_ms === "number" ? levelValues.base_cooldown_ms : skill.base_cooldown_ms;
+  const timing = frontendSkillTiming(skill, new Set(skill.tags?.map((tag) => tag.id ?? tag.text) ?? []), skill.skill_stats, {
+    baseReleaseIntervalMs,
+    baseCooldownMs,
+  });
   return {
     ...skill,
     base_damage: targetBaseDamage,
@@ -1650,11 +1657,11 @@ function frontendSkillPreviewForGemLevel(skill: SkillPreview, gem: Gem): SkillPr
       ...(typeof levelValues.trigger_interval_ms === "number" ? { trigger_interval_ms: levelValues.trigger_interval_ms } : {}),
       ...(typeof levelValues.mana_cost === "number" ? { mana_cost: levelValues.mana_cost } : {}),
     },
-    base_release_interval_ms: typeof levelValues.release_interval_ms === "number" ? levelValues.release_interval_ms : skill.base_release_interval_ms,
-    release_interval_ms: typeof levelValues.release_interval_ms === "number" ? levelValues.release_interval_ms : skill.release_interval_ms,
-    base_cooldown_ms: typeof levelValues.base_cooldown_ms === "number" ? levelValues.base_cooldown_ms : skill.base_cooldown_ms,
-    final_cooldown_ms: typeof levelValues.base_cooldown_ms === "number" ? levelValues.base_cooldown_ms : skill.final_cooldown_ms,
-    actual_interval_ms: typeof levelValues.release_interval_ms === "number" ? levelValues.release_interval_ms : skill.actual_interval_ms,
+    base_release_interval_ms: timing.baseReleaseIntervalMs,
+    release_interval_ms: timing.releaseIntervalMs,
+    base_cooldown_ms: timing.baseCooldownMs,
+    final_cooldown_ms: timing.finalCooldownMs,
+    actual_interval_ms: timing.actualIntervalMs,
     trigger_interval_ms: typeof levelValues.trigger_interval_ms === "number" ? levelValues.trigger_interval_ms : skill.trigger_interval_ms,
     mana_cost: typeof levelValues.mana_cost === "number" ? levelValues.mana_cost : skill.mana_cost,
     runtime_params: nextRuntimeParams,
@@ -1682,6 +1689,60 @@ function frontendSkillLevelTableValues(skill: SkillPreview, level: number): Reco
 function frontendLevelValueNumber(levelValues: Record<string, number>, key: string, fallback: number) {
   const value = levelValues[key];
   return Number.isFinite(value) ? value : fallback;
+}
+
+function frontendSkillTiming(
+  skill: SkillPreview,
+  tags: Set<string>,
+  skillStats: Record<string, number | boolean> | undefined,
+  overrides: { baseReleaseIntervalMs?: number; baseCooldownMs?: number } = {}
+) {
+  const baseReleaseIntervalMs = Math.max(0, Math.round(Number(
+    overrides.baseReleaseIntervalMs
+    ?? skill.base_release_interval_ms
+    ?? skill.release_interval_ms
+    ?? skill.actual_interval_ms
+    ?? 0
+  )));
+  const baseCooldownMs = Math.max(0, Math.round(Number(
+    overrides.baseCooldownMs
+    ?? skill.base_cooldown_ms
+    ?? skill.final_cooldown_ms
+    ?? 0
+  )));
+  let releaseSpeedAddPercent = 0;
+  if (tags.has("attack")) {
+    releaseSpeedAddPercent = statValue(skillStats, "attack_speed_add_percent");
+  } else if (tags.has("spell")) {
+    releaseSpeedAddPercent = statValue(skillStats, "cast_speed_add_percent");
+  }
+  const speedMultiplier = Math.max(
+    0.01,
+    1 + releaseSpeedAddPercent / 100
+  ) * Math.max(0.01, 1 + statValue(skillStats, "skill_speed_final_percent") / 100);
+  const releaseIntervalMs = baseReleaseIntervalMs > 0 && (tags.has("attack") || tags.has("spell"))
+    ? Math.max(1, Math.round(baseReleaseIntervalMs / speedMultiplier))
+    : 0;
+  const movementCooldownRecovery = tags.has("movement") || tags.has("skill_movement")
+    ? statValue(skillStats, "movement_skill_cooldown_recovery_add_percent")
+    : 0;
+  const cooldownRecoveryMultiplier = Math.max(
+    0.01,
+    1 + (statValue(skillStats, "cooldown_recovery_add_percent") + movementCooldownRecovery) / 100
+  );
+  const addedCooldownMs = statValue(skillStats, "added_cooldown_ms");
+  const hasCooldownConstraint = baseCooldownMs > 0 || addedCooldownMs !== 0;
+  const finalCooldownMs = hasCooldownConstraint
+    ? Math.max(0, Math.round(Math.max(100, baseCooldownMs / cooldownRecoveryMultiplier + addedCooldownMs)))
+    : 0;
+  return {
+    baseReleaseIntervalMs,
+    releaseIntervalMs,
+    baseCooldownMs,
+    finalCooldownMs,
+    actualIntervalMs: Math.max(releaseIntervalMs, finalCooldownMs),
+    speedMultiplier,
+  };
 }
 
 function scaleFrontendDamageMap(value: unknown, scale: number) {
@@ -1876,9 +1937,7 @@ function applyFrontendEquipmentSkillModifiers(
     ])
     .filter(([, componentAmount]) => componentAmount > 0));
   const nextDamage = Object.values(finalDamageComponents).reduce((total, value) => total + value, 0);
-  const attackSpeed = tags.has("attack") ? statValue(skillStats, "attack_speed_add_percent") : 0;
-  const castSpeed = tags.has("spell") ? statValue(skillStats, "cast_speed_add_percent") : 0;
-  const speedMultiplier = Math.max(0.05, 1 + (attackSpeed + castSpeed) / 100);
+
   const runtimeParams = { ...(skill.runtime_params ?? {}) };
   for (const modifier of modifiers) {
     if (modifier.kind === "runtime_hook" && modifier.payload && typeof modifier.payload === "object") {
@@ -1944,9 +2003,7 @@ function applyFrontendEquipmentSkillModifiers(
   const critChance = frontendExpectedCritChance(skill, skillStats);
   const critMultiplier = frontendExpectedCritMultiplier(skill, skillStats);
   const expectedHitDamage = nextDamage * ((1 - critChance) + critChance * critMultiplier);
-  const movementCooldownRecovery = tags.has("movement") || tags.has("skill_movement")
-    ? statValue(skillStats, "movement_skill_cooldown_recovery_add_percent")
-    : 0;
+  const timing = frontendSkillTiming(skill, tags, skillStats);
   return {
     ...skill,
     skill_stats: skillStats,
@@ -1957,9 +2014,14 @@ function applyFrontendEquipmentSkillModifiers(
     crit_chance: critChance,
     crit_multiplier: critMultiplier,
     expected_hit_damage: expectedHitDamage,
-    preview_dps: Number(skill.preview_dps ?? 0) > 0 ? Number(skill.preview_dps) * (expectedHitDamage / Math.max(1, baselineDamage)) * speedMultiplier : skill.preview_dps,
-    actual_interval_ms: Math.max(1, Number(skill.actual_interval_ms ?? 1000) / speedMultiplier),
-    final_cooldown_ms: Math.max(0, Number(skill.final_cooldown_ms ?? 0) / Math.max(0.05, 1 + (statValue(skillStats, "cooldown_recovery_add_percent") + movementCooldownRecovery) / 100)),
+    preview_dps: timing.actualIntervalMs > 0 ? expectedHitDamage * (1000 / timing.actualIntervalMs) : 0,
+    base_release_interval_ms: timing.baseReleaseIntervalMs,
+    release_interval_ms: timing.releaseIntervalMs,
+    base_cooldown_ms: timing.baseCooldownMs,
+    final_cooldown_ms: timing.finalCooldownMs,
+    actual_interval_ms: timing.actualIntervalMs,
+    uses_per_second: timing.actualIntervalMs > 0 ? 1000 / timing.actualIntervalMs : 0,
+    speed_multiplier: timing.speedMultiplier,
     projectile_count: projectileCount,
     area_multiplier: Number(skill.area_multiplier ?? 1) * Math.max(0.05, 1 + statValue(skillStats, "area_add_percent") / 100),
     runtime_params: runtimeParams,
@@ -6340,7 +6402,7 @@ function syncPlayerVisual(moveVector: { x: number; y: number }) {
     }
     if (channel.stacks < maxStacks) return false;
     if (!trySpendSkillMana(skill)) return false;
-    const released = releaseFrontendCanonicalSkill(skill, current);
+    const released = releaseFrontendCanonicalSkill(skill, current, { manaAlreadySpent: true });
     if (!released) return false;
     channel.stacks = 0;
     channel.progressMs = 0;
@@ -6929,10 +6991,20 @@ function frontendDamageEventsForTarget(
     payload: Record<string, unknown> = {},
     delayMs = 0
   ) {
-    const damageType = convertedDamageType(skill, hitConfig);
+    const forcedDamageType = typeof payload.forced_element_type === "string"
+      ? String(payload.forced_element_type)
+      : "";
+    const damageType = forcedDamageType || convertedDamageType(skill, hitConfig);
     const hitVfxKey = String(payload.hit_vfx_key ?? payload.vfx_key ?? frontendSkillVfxKey(skill, "hit"));
     const emitHitVfx = payload.emit_hit_vfx !== false && !payload.tick_interval_ms;
-    const baseDamageComponents = damagePayloadComponents(skill, amount, damageType, hitConfig);
+    const payloadDamageComponents = payload.damage_components;
+    const baseDamageComponents = payloadDamageComponents
+      && typeof payloadDamageComponents === "object"
+      && !Array.isArray(payloadDamageComponents)
+      ? Object.fromEntries(Object.entries(payloadDamageComponents as Record<string, unknown>)
+        .map(([componentType, componentAmount]) => [componentType, Number(componentAmount ?? 0)])
+        .filter(([, componentAmount]) => Number.isFinite(componentAmount) && componentAmount > 0))
+      : damagePayloadComponents(skill, amount, damageType, hitConfig);
     const grantedDamage = frontendEquipmentGrantedDamageComponents(skill, target, payload, damageType);
     const damageComponents = mergeFrontendDamageComponents(baseDamageComponents, grantedDamage.components);
     const floatingDamageComponents = [
@@ -7034,9 +7106,10 @@ function frontendDamageEventsForTarget(
     if (immediate.length > 0) consumeSkillEventBatch(immediate);
   }
 
-  function releaseFrontendCanonicalSkill(skill: SkillPreview, current: Enemy[]) {
+  function releaseFrontendCanonicalSkill(skill: SkillPreview, current: Enemy[], options: { manaAlreadySpent?: boolean } = {}) {
     const runtimeSkill = applyFrontendWarIntentToSkill(skill);
     if (applyFrontendGuardRuntime(runtimeSkill)) {
+      if (!options.manaAlreadySpent && !trySpendSkillMana(skill)) return false;
       setCombatLogs((logs) => [`${skill.name_text} 获得防护。`, ...logs].slice(0, 8));
       return true;
     }
@@ -7044,9 +7117,15 @@ function frontendDamageEventsForTarget(
     const behavior = runtimeSkill.behavior_template ?? runtimeSkill.behavior_type;
     const range = frontendRuntimeRange(runtimeSkill, 520);
     const targets = frontendNearestSkillTargets(current, caster, range, Math.max(1, runtimeSkill.projectile_count));
-    if (targets.length === 0) return false;
+    const canReleaseWithoutEnemyTarget = behavior === "damage_zone"
+      && (
+        runtimeSkill.cast?.target_selector === "self"
+        || String(runtimeSkill.runtime_params?.origin_policy ?? "") === "caster"
+      );
+    if (targets.length === 0 && !canReleaseWithoutEnemyTarget) return false;
     const events = buildFrontendCanonicalSkillEvents(runtimeSkill, caster, targets, current, behavior);
     if (events.length === 0) return false;
+    if (!options.manaAlreadySpent && !trySpendSkillMana(skill)) return false;
     consumeSkillEventTimeline(events);
     setCombatLogs((logs) => [`${skill.name_text} 自动释放。`, ...logs].slice(0, 8));
     return true;
@@ -7073,7 +7152,6 @@ function frontendDamageEventsForTarget(
     const selfBuffSkill = isFrontendSelfBuffSkill(skill);
     if (current.length === 0 && !selfBuffSkill) return false;
     if (!selfBuffSkill && !hasLiveEnemyInCastRange(current, skill, playerStateRef.current)) return false;
-    if (!trySpendSkillMana(skill)) return false;
     const released = releaseFrontendCanonicalSkill(skill, current);
     if (released && !options.isContinuousRepeat) enqueueFrontendContinuousAttack(skill);
     return released;
@@ -7469,7 +7547,7 @@ function frontendDamageEventsForTarget(
     }, impactDelayMs));
     const radius = Number(zoneParams.radius ?? 80) * skill.area_multiplier;
     const tickIntervalMs = Math.max(1, Number(zoneParams.tick_interval_ms ?? 1000));
-    const durationMs = Math.max(tickIntervalMs, Number(zoneParams.duration_ms ?? 20000));
+    const durationMs = Math.max(tickIntervalMs, Number(zoneParams.duration_ms ?? 3000));
     const tickCount = Math.max(1, Math.floor(durationMs / tickIntervalMs));
     const zoneTargets = frontendUniqueTargetsByDistance(current, impact, radius, Math.max(1, Number(zoneParams.max_targets ?? 8)));
     const zoneBaseDamageAmount = frontendScaledSkillConfigDamageAmount(skill, Number(zoneParams.damage_amount ?? 0));
@@ -7537,8 +7615,9 @@ function frontendDamageEventsForTarget(
     const params = skill.runtime_params ?? {};
     const originPolicy = String(params.origin_policy ?? "target_position");
     const originTarget = initialTargets[0];
+    if (!originTarget && originPolicy !== "caster") return [];
     const origin = originPolicy === "caster" ? caster : { x: originTarget.x, y: originTarget.y };
-    const direction = guideDirection(caster, originTarget);
+    const direction = originTarget ? guideDirection(caster, originTarget) : { x: 1, y: 0 };
     const radius = Number(params.radius ?? skill.hit?.hit_radius ?? 120) * skill.area_multiplier;
     const waveCount = Math.max(1, Math.round(Number(params.wave_count ?? 1)));
     const tickIntervalMs = Math.max(0, Number(params.tick_interval_ms ?? 0));
@@ -7552,7 +7631,8 @@ function frontendDamageEventsForTarget(
       const waveOriginTarget = String(params.target_lock_policy ?? "") === "nearest_unique_enemy"
         ? (frontendUniqueTargetsByDistance(current, caster, Number(skill.cast?.search_range ?? 630), waveCount)[wave] ?? originTarget)
         : originTarget;
-      const center = originPolicy === "caster" ? caster : { x: waveOriginTarget.x, y: waveOriginTarget.y };
+      if (!waveOriginTarget && originPolicy !== "caster") continue;
+      const center = originPolicy === "caster" ? caster : { x: waveOriginTarget!.x, y: waveOriginTarget!.y };
       const zoneTargets = frontendUniqueTargetsByDistance(current, center, radius, Math.max(1, Number(params.max_targets ?? 8)));
       const zoneId = `${skill.active_gem_instance_id}.zone.${Math.round(elapsedRef.current * 1000)}.${wave + 1}`;
       const useDynamicTickRuntime = tickIntervalMs > 0 && durationMs > 0;

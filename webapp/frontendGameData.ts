@@ -11983,7 +11983,7 @@ export const FRONTEND_SKILL_PREVIEWS_BY_SKILL_TAG = {
             "hit_at_ms": 1000,
             "radius": 80.0,
             "max_targets": 8,
-            "duration_ms": 20000,
+            "duration_ms": 3000,
             "tick_interval_ms": 1000,
             "max_hits": 160,
             "max_hits_per_target": 20,
