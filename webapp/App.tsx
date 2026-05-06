@@ -68,6 +68,7 @@ type Gem = {
   level?: number;
   equipment_affixes?: FrontendEquipmentAffixRoll[];
   equipment_stat_modifiers?: FrontendEquipmentStatModifier[];
+  equipment_slot_id?: string;
 };
 
 type TooltipView = {
@@ -9415,6 +9416,7 @@ async function placeFloatingItem(current: FloatingGem, target: DropTarget, event
         ? drop.status_text.split(/[、；]/).map((line) => line.trim()).filter(Boolean)
         : []);
       const descriptionText = `${rarityText}${sourceText}。等级 ${drop.level ?? 1}。`;
+      const equipmentSlotId = frontendEquipmentSourceSlotIdFromText(sourceText);
       const tags = [
         { id: "equipment", text: "装备", tone: "category" },
         { id: drop.equipment_source ?? "equipment", text: sourceText, tone: "type" },
@@ -9433,6 +9435,7 @@ async function placeFloatingItem(current: FloatingGem, target: DropTarget, event
         current_effective_targets: [],
         board_position: null,
         level: drop.level,
+        equipment_slot_id: equipmentSlotId,
         tooltip_view: createFrontendItemTooltipView({
           nameText: drop.name_text,
           rarityText,
@@ -16036,6 +16039,8 @@ function isTwoHandedWeapon(item: Gem) {
 }
 
 function equipmentSourceSlotId(item: Gem): string {
+  const explicitSlot = normalizeEquipmentSlotId(item.equipment_slot_id ?? "");
+  if (explicitSlot) return explicitSlot;
   const source = equipmentSourceText(item);
   if (!source) return "";
   const sourceSlot = frontendEquipmentSourceSlotIdFromText(source);
@@ -16069,6 +16074,13 @@ function equipmentSourceSlotId(item: Gem): string {
     "锡杖",
     "魔杖"
   ].some((keyword) => source.includes(keyword))) return "weapon";
+  return "";
+}
+
+function normalizeEquipmentSlotId(slotId: string) {
+  if (slotId === "ring") return "ring";
+  if (slotId === "weapon") return "weapon";
+  if (EQUIPMENT_SLOT_SPECS.some((slot) => slot.id === slotId)) return slotId;
   return "";
 }
 
